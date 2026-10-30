@@ -93,13 +93,23 @@ def generate_records(gen: Generator, prompts: List[str], out: Path, tag: str, ma
             jobs += [("repeat", i) for i in range(min(n_repeat, len(prompts))) for _ in range(2)]
         else:
             jobs += [(m, i) for i in range(len(prompts))]
-    recs = []
-    for mode, i in jobs:
-        r = gen.reply(prompts[i], 1.0 if mode == "sample" else 0.0, max_tokens, rng, date)
-        r.update({"mode": mode, "prompt_idx": i, "date": date, "provider": tag, "tag": tag, "quantization": label})
-        recs.append(r)
+    # Records are appended to a .partial file as they are made, so an interrupted run resumes where it stopped.
     out.parent.mkdir(parents=True, exist_ok=True)
+    partial = out.with_suffix(".partial")
+    done = []
+    if partial.exists():
+        done = [json.loads(x) for x in partial.read_text().splitlines() if x.strip()]
+    with partial.open("a") as pf:
+        for k, (mode, i) in enumerate(jobs):
+            if k < len(done):
+                continue
+            r = gen.reply(prompts[i], 1.0 if mode == "sample" else 0.0, max_tokens, rng, date)
+            r.update({"mode": mode, "prompt_idx": i, "date": date, "provider": tag, "tag": tag, "quantization": label})
+            pf.write(json.dumps(r) + "\n")
+            pf.flush()
+            done.append(r)
     with gzip.open(out, "wt") as f:
-        for x in recs:
+        for x in done:
             f.write(json.dumps(x) + "\n")
+    partial.replace(out.with_suffix(".done"))
     return out
