@@ -25,11 +25,13 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import List, Optional
 
-API = "https://openrouter.ai/api/v1"
+API = os.environ.get("LLMVERIFY_API_BASE", "https://openrouter.ai/api/v1")  # any OpenAI-compatible base works
 _lock = threading.Lock()
 
 
 def _key() -> str:
+    if "openrouter.ai" not in API:
+        return os.environ.get("LLMVERIFY_API_KEY", "none")
     return os.environ.get("OPENROUTER_API_KEY") or Path("~/.config/openrouter/api-key").expanduser().read_text().strip()
 
 
@@ -51,6 +53,8 @@ def call(path: str, payload: Optional[dict] = None, timeout: float = 180) -> dic
 
 
 def usage_usd() -> float:
+    if "openrouter.ai" not in API:
+        return 0.0
     return float(call("/key").get("data", {}).get("usage", 0.0))
 
 

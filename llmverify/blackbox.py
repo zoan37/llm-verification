@@ -48,8 +48,12 @@ class ChatFormat:
         return ([self.bos] if self.add_bos and self.bos >= 0 else []) + ids
 
     def prompt_only(self, engine, prompt: str, rec: dict) -> List[int]:
-        return self.context(engine, prompt, rec, "reasoning") if self.kind == "harmony" else \
-            self.context(engine, prompt, rec, "answer")
+        """The prompt as the API counts it: the template with its generation prompt (gpt-oss: ends at
+        `<|start|>assistant`, before the model's own channel tokens)."""
+        if self.kind == "harmony":
+            return engine.tokenize(harmony_prompt_only(prompt, self.effort, rec.get("date"))
+                                   .removesuffix("<|channel|>analysis<|message|>"), special=True)
+        return self.context(engine, prompt, rec, "answer")
 
 
 class TokenMap:
