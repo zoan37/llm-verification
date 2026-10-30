@@ -1,0 +1,18 @@
+# lv-engine: verification front end on top of llama.cpp.
+#   cmake -B build -DLLAMA_CPP_DIR=/path/to/llama.cpp -DCMAKE_BUILD_TYPE=Release && cmake --build build -j
+cmake_minimum_required(VERSION 3.16)
+project(lv-engine C CXX)
+set(LLAMA_CPP_DIR "" CACHE PATH "llama.cpp source tree")
+if(NOT LLAMA_CPP_DIR)
+  message(FATAL_ERROR "Set -DLLAMA_CPP_DIR=/path/to/llama.cpp")
+endif()
+set(LLAMA_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(LLAMA_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(LLAMA_BUILD_TOOLS OFF CACHE BOOL "" FORCE)
+set(LLAMA_BUILD_SERVER OFF CACHE BOOL "" FORCE)
+set(LLAMA_CURL OFF CACHE BOOL "" FORCE)
+add_subdirectory(${LLAMA_CPP_DIR} llama.cpp EXCLUDE_FROM_ALL)
+add_executable(lv-engine lv_engine.cpp)
+target_include_directories(lv-engine PRIVATE ${LLAMA_CPP_DIR}/vendor)
+target_link_libraries(lv-engine PRIVATE llama)
+target_compile_features(lv-engine PRIVATE cxx_std_17)
