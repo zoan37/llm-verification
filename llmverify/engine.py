@@ -23,7 +23,7 @@ class Model(Protocol):
     def tokenize(self, text: str, special: bool = False) -> List[int]: ...
     def detokenize(self, tokens: Sequence[int]) -> str: ...
     def score(self, context: Sequence[int], tokens: Sequence[int], k: int = 20,
-              temperature: float = 1.0) -> List[RefStep]: ...
+              temperature: float = 1.0, stats: bool = True) -> List[RefStep]: ...
     def start(self, context: Sequence[int], k: int = 20) -> TopK: ...
     def step(self, token: int, k: int = 20) -> TopK: ...
 
@@ -71,9 +71,9 @@ class LlamaEngine:
     def detokenize(self, tokens: Sequence[int]) -> str:
         return self.call({"cmd": "detokenize", "tokens": [int(t) for t in tokens]})["text"]
 
-    def score(self, context, tokens, k=20, temperature=1.0) -> List[RefStep]:
+    def score(self, context, tokens, k=20, temperature=1.0, stats=True) -> List[RefStep]:
         r = self.call({"cmd": "score", "context": [int(t) for t in context], "tokens": [int(t) for t in tokens],
-                       "k": k, "temperature": temperature})
+                       "k": k, "temperature": temperature, "stats": stats})
         return [RefStep(top=_top(s["top"]), lp=float(s["lp"]), lp_t=s.get("lp_t"), entropy=s.get("entropy"),
                         m2=s.get("m2"), mass_above=s.get("mass_above")) for s in r["steps"]]
 

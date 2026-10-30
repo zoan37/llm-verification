@@ -83,6 +83,12 @@ def reply_ids(engine, tmap: TokenMap, text: str, logprobs: Optional[list]) -> Tu
     return ids, False, [None] * len(ids), [None] * len(ids)
 
 
+def has_repair_candidate(ids: Sequence[int], ref: Sequence[RefStep], confident: float = math.log(0.9)) -> bool:
+    """Cheap pre-check from the scoring pass itself: is any token not the referee's choice at a position where the
+    referee was >= 90% sure? Only then can the repair change anything."""
+    return any(s.top and s.top[0][0] != tok and s.top[0][1] > confident for tok, s in zip(ids, ref))
+
+
 def repair_dropped(engine, context: Sequence[int], ids: List[int], max_insertions: int = 32, max_gap: int = 2,
                    confident: float = math.log(0.9)) -> Tuple[List[int], List[int]]:
     """Re-insert tokens a provider generated but dropped from its returned text (seen in the wild: line breaks
@@ -92,13 +98,13 @@ def repair_dropped(engine, context: Sequence[int], ids: List[int], max_insertion
     scoring and reported separately."""
 
     def regret_total(seq, skip):
-        st = engine.score(context, seq, k=1)
+        st = engine.score(context, seq, k=1, stats=False)
         return sum(s.top[0][1] - s.lp for t, s in enumerate(st) if t not in skip)
 
     inserted: List[int] = []
     rejected = set()
     while len(inserted) < max_insertions:
-        steps = engine.score(context, ids, k=5)
+        steps = engine.score(context, ids, k=5, stats=False)
         cand = next((t for t, (tok, s) in enumerate(zip(ids, steps)) if t not in inserted and t not in rejected
                      and s.top and s.top[0][0] != tok and s.top[0][1] > confident), None)
         if cand is None:
@@ -106,12 +112,12 @@ def repair_dropped(engine, context: Sequence[int], ids: List[int], max_insertion
         gap, trial, accepted = [], list(ids), False
         for _ in range(max_gap):
             pos = cand + len(gap)
-            top = engine.score(context, trial[:pos + 1], k=1)[pos].top
+            top = engine.score(context, trial[:pos + 1], k=1, stats=False)[pos].top
             if not top or top[0][1] <= confident:
                 break
             trial.insert(pos, top[0][0])
             gap.append(pos)
-            after = engine.score(context, trial[:pos + 2], k=1)[pos + 1].top
+            after = engine.score(context, trial[:pos + 2], k=1, stats=False)[pos + 1].top
             shifted = [i + len(gap) * (i >= cand) for i in inserted]
             if after and after[0][0] == ids[cand] and \
                     regret_total(trial, set(shifted + gap)) < regret_total(ids, set(inserted)):
@@ -135,13 +141,15 @@ def score_record(engine, fmt: ChatFormat, tmap: TokenMap, prompt: str, rec: dict
     if max_tokens:
         ids, tops, lps = ids[:max_tokens], tops[:max_tokens], lps[:max_tokens]
     inserted: List[int] = []
-    if repair and ids:
-        ids, inserted = repair_dropped(engine, context, ids)
-        for t in inserted:
-            tops.insert(t, None)
-            lps.insert(t, None)
     temp = 1.0
-    ref = engine.score(context, ids, k=50, temperature=temp)
+    ref = engine.score(context, ids, k=50, temperature=temp) if ids else []
+    if repair and ids and has_repair_candidate(ids, ref):
+        ids, inserted = repair_dropped(engine, context, ids)
+        if inserted:
+            for t in inserted:
+                tops.insert(t, None)
+                lps.insert(t, None)
+            ref = engine.score(context, ids, k=50, temperature=temp)
     scores = score_reply(ids, ref, GREEDY, f"{rec.get('tag')}:{rec.get('prompt_idx')}:{rec.get('mode')}",
                          reported_tops=tops, reported_lps=lps, skip=inserted)
     own_miss = None

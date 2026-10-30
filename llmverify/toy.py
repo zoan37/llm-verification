@@ -70,7 +70,7 @@ class ToyLM:
     def detokenize(self, tokens: Sequence[int]) -> str:
         return " ".join(str(int(t)) for t in tokens)
 
-    def score(self, context, tokens, k=20, temperature=1.0) -> List[RefStep]:
+    def score(self, context, tokens, k=20, temperature=1.0, stats=True) -> List[RefStep]:
         seq = list(context)
         out = []
         for tok in tokens:

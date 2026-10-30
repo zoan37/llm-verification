@@ -10,7 +10,8 @@
 //   {"cmd": "score", "context": [ids], "tokens": [ids], "k": 20, "temperature": 1.0}
 //     One forward pass over context + tokens. For every reply position returns
 //     {"top": [[id, lp], ...], "lp": raw logprob of the actual token,
-//      "lp_t", "entropy", "m2", "mass_above"}  (the last four at the given temperature, over the full vocab)
+//      "lp_t", "entropy", "m2", "mass_above"}  (the last four at the given temperature, over the full vocab;
+//      left out with "stats": false)
 //   {"cmd": "start", "context": [ids], "k": 20}       -> {"top": [[id, lp], ...]}  (next-token distribution)
 //   {"cmd": "step", "token": id, "k": 20}             -> {"top": [...]}            (append one token, predict next)
 //     start/step also take optional "u" (uniform in [0,1)) and "temperature": then the reply adds "sampled", an
@@ -92,11 +93,12 @@ struct Engine {
         return n_vocab - 1;
     }
 
-    json score_step(const float * lg, int k, llama_token actual, double temp) {
+    json score_step(const float * lg, int k, llama_token actual, double temp, bool stats) {
         double lse = 0;
         json step;
         step["top"] = topk(lg, k, lse);
         step["lp"] = (double) lg[actual] - lse;
+        if (!stats) return step;
         // Stats at temperature `temp`
         double mx = -INFINITY;
         for (int v = 0; v < n_vocab; v++) mx = std::max(mx, (double) lg[v] / temp);
@@ -119,7 +121,8 @@ struct Engine {
         return step;
     }
 
-    json score(const std::vector<llama_token> & context, const std::vector<llama_token> & reply, int k, double temp) {
+    json score(const std::vector<llama_token> & context, const std::vector<llama_token> & reply, int k, double temp,
+               bool stats) {
         if (context.empty() || reply.empty()) throw std::runtime_error("empty context or reply");
         std::vector<llama_token> seq(context);
         seq.insert(seq.end(), reply.begin(), reply.end());
@@ -142,7 +145,7 @@ struct Engine {
             }
             if (llama_decode(ctx, batch) != 0) { llama_batch_free(batch); throw std::runtime_error("llama_decode failed"); }
             for (int i = std::max(start, first); i < end; i++)
-                steps.push_back(score_step(llama_get_logits_ith(ctx, i - start), k, seq[i + 1], temp));
+                steps.push_back(score_step(llama_get_logits_ith(ctx, i - start), k, seq[i + 1], temp, stats));
         }
         llama_batch_free(batch);
         return steps;
@@ -272,7 +275,7 @@ int main(int argc, char ** argv) {
             } else if (cmd == "score") {
                 auto context = req["context"].get<std::vector<llama_token>>();
                 auto reply = req["tokens"].get<std::vector<llama_token>>();
-                resp["steps"] = E.score(context, reply, k, req.value("temperature", 1.0));
+                resp["steps"] = E.score(context, reply, k, req.value("temperature", 1.0), req.value("stats", true));
             } else if (cmd == "start" || cmd == "step") {
                 resp["top"] = cmd == "start" ? E.start(req["context"].get<std::vector<llama_token>>(), k)
                                              : E.step(req["token"].get<llama_token>(), k);
