@@ -72,9 +72,7 @@
     "prompt_tokens_mismatch_share": null,
     "cost_usd": 0.0539886
    },
-   "flags": [
-    "non-deterministic at temperature 0"
-   ]
+   "flags": []
   },
   "cerebras__fp16": {
    "tag": "cerebras/fp16",
@@ -139,7 +137,6 @@
     "cost_usd": 0.026692326
    },
    "flags": [
-    "non-deterministic at temperature 0",
     "no logprobs (text-only checks)"
    ]
   },
@@ -592,9 +589,7 @@
     "prompt_tokens_mismatch_share": null,
     "cost_usd": 0.04736756
    },
-   "flags": [
-    "non-deterministic at temperature 0"
-   ]
+   "flags": []
   },
   "phala": {
    "tag": "phala",
@@ -623,7 +618,6 @@
     "cost_usd": 0.0534718
    },
    "flags": [
-    "non-deterministic at temperature 0",
     "no logprobs (text-only checks)"
    ]
   },
@@ -765,7 +759,6 @@
    },
    "flags": [
     "samples at temperature 0 (27.6% of tokens not its own top choice)",
-    "non-deterministic at temperature 0",
     "top_logprobs disagree with the chosen token's logprob at 64% of positions (misaligned logprob output)",
     "reported logprobs don't match its own samples (self-PIT mean 0.591)"
    ]

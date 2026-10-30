@@ -5,7 +5,7 @@ Raw replies are not committed (large); the collection scripts reproduce them.
 
 Same 48 prompts everywhere (`prompts/general.json`), three modes per endpoint: greedy (temperature 0), sampled
 (temperature 1, top_p 1) and 4 greedy repeats. Method: [docs/black-box.md](../docs/black-box.md). What any of this can
-and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend for all four models: about $3.
+and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend for all four models: about $1.80.
 
 ## Findings so far
 
