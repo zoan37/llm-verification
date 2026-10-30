@@ -1,0 +1,1628 @@
+{
+ "model": "google/gemma-4-26b-a4b-it",
+ "honest_regret": 0.0027335018018018018,
+ "cheat_regret": 0.11441290762331838,
+ "endpoints": {
+  "akashml__fp4": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.1449623649739817,
+     "lo": 0.11873613604610547,
+     "hi": 0.17339055435952636,
+     "n_tokens": 11146,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.07652969675219812,
+     "lo": 0.06584561675717615,
+     "hi": 0.08744810529105207,
+     "n_tokens": 11146,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.1983645805905586,
+     "lo": 0.17151688323917136,
+     "hi": 0.22596408418084785,
+     "n_tokens": 10634,
+     "n_replies": 46
+    },
+    "topk": {
+     "mean": 1.536677881324055,
+     "lo": 1.4519966888396156,
+     "hi": 1.6187164167053363,
+     "n_tokens": 10634,
+     "n_replies": 46
+    },
+    "big_miss_per_1k": 22.78844428494527,
+    "first_token_match": 0.875
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -41.43678840073556,
+     "p": 0.0,
+     "excess_ce": 0.17302525334989796,
+     "excess_ce_lo": 0.14086548273301153,
+     "excess_ce_hi": 0.2070952066362011,
+     "n_tokens": 11269
+    },
+    "pit": {
+     "ks": 0.04082539621971781,
+     "p": 8.908516353415805e-17,
+     "mean": 0.5233672029461354,
+     "n_tokens": 11269
+    },
+    "tail": {
+     "observed": null,
+     "expected": null,
+     "ratio": null,
+     "z": null,
+     "n_tokens": 0
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": 0,
+    "stop_replies_checked": 18,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 12,
+    "scored_tokens": 24463,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.0,
+     "mean_distinct": 3.0
+    },
+    "max_completion_tokens": 256,
+    "cost_usd": 0.0060769000000000005,
+    "logprob_self_consistency": {
+     "ks": 0.005855951956296956,
+     "p": 0.8334975225089266,
+     "mean": 0.49938428336567303,
+     "n_tokens": 11266
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0,
+     "n_tokens": 24457
+    }
+   },
+   "tag": "akashml/fp4",
+   "provider": "AkashML",
+   "quantization": "fp4",
+   "local": false,
+   "reference": null,
+   "label": "fp4",
+   "pricing": {
+    "prompt": "0.00000007",
+    "completion": "0.00000024",
+    "input_cache_read": "0.000000046",
+    "discount": 0
+   },
+   "peer_agreement": 0.32902173913043475,
+   "x_honest": 53.03,
+   "fidelity": 0.0,
+   "flags": [
+    "drops tokens from its output (12 re-inserted)"
+   ]
+  },
+  "cloudflare": {
+   "greedy": {
+    "replies": 45,
+    "regret": {
+     "mean": 0.0063550950209046,
+     "lo": 0.004322786336235767,
+     "hi": 0.008619404795753958,
+     "n_tokens": 10524,
+     "n_replies": 45
+    },
+    "disagree": {
+     "mean": 0.0147282402128468,
+     "lo": 0.01152604887044717,
+     "hi": 0.018185354468540305,
+     "n_tokens": 10524,
+     "n_replies": 45
+    },
+    "wgap": {
+     "mean": 0.032737281451919426,
+     "lo": 0.0276611104250283,
+     "hi": 0.03781952986621444,
+     "n_tokens": 10524,
+     "n_replies": 45
+    },
+    "topk": {
+     "mean": 0.3334922063854048,
+     "lo": 0.3145432510655169,
+     "hi": 0.3517867202817169,
+     "n_tokens": 10524,
+     "n_replies": 45
+    },
+    "big_miss_per_1k": 0.0,
+    "first_token_match": 1.0
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -3.5429702591661707,
+     "p": 0.00039564731930056434,
+     "excess_ce": 0.014191227404193782,
+     "excess_ce_lo": 0.0058906951385733755,
+     "excess_ce_hi": 0.022433119697528585,
+     "n_tokens": 11064
+    },
+    "pit": {
+     "ks": 0.009254924078091142,
+     "p": 0.2982225825286364,
+     "mean": 0.5033649692697035,
+     "n_tokens": 11064
+    },
+    "tail": {
+     "observed": null,
+     "expected": null,
+     "ratio": null,
+     "z": null,
+     "n_tokens": 0
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": 0,
+    "stop_replies_checked": 18,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 3,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 0,
+    "scored_tokens": 23636,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 3,
+     "identical_share": 0.0,
+     "mean_distinct": 2.6666666666666665
+    },
+    "max_completion_tokens": 256,
+    "cost_usd": 0.0073764,
+    "logprob_self_consistency": {
+     "ks": 0.0070668777058349175,
+     "p": 0.6369566497930036,
+     "mean": 0.5022403162546449,
+     "n_tokens": 11064
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0,
+     "n_tokens": 23636
+    }
+   },
+   "tag": "cloudflare",
+   "provider": "Cloudflare",
+   "quantization": "unknown",
+   "local": false,
+   "reference": null,
+   "label": "unknown",
+   "pricing": {
+    "prompt": "0.0000001",
+    "completion": "0.0000003",
+    "input_cache_read": "0.00000005",
+    "discount": 0
+   },
+   "peer_agreement": 0.6688068181818181,
+   "x_honest": 2.32,
+   "fidelity": 77.4,
+   "flags": []
+  },
+  "coreweave__bf16": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.003521569941149842,
+     "lo": 0.0026538375953342307,
+     "hi": 0.004440771487745944,
+     "n_tokens": 11045,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.012222725215029429,
+     "lo": 0.01012354152367878,
+     "hi": 0.01439674969086735,
+     "n_tokens": 11045,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.022298465368945225,
+     "lo": 0.01931361087590554,
+     "hi": 0.025131836320296638,
+     "n_tokens": 11045,
+     "n_replies": 48
+    },
+    "topk": {
+     "mean": 0.23995796740606612,
+     "lo": 0.23114837273373626,
+     "hi": 0.24849810608139003,
+     "n_tokens": 11045,
+     "n_replies": 48
+    },
+    "big_miss_per_1k": 0.0,
+    "first_token_match": 1.0
+   },
+   "sample_answer": {
+    "replies": 47,
+    "likelihood": {
+     "z": 0.1372239232748285,
+     "p": 0.8908538017421845,
+     "excess_ce": -0.0005535170238426571,
+     "excess_ce_lo": -0.006745978330731797,
+     "excess_ce_hi": 0.005861610106971596,
+     "n_tokens": 10779
+    },
+    "pit": {
+     "ks": 0.0071736469060209584,
+     "p": 0.6344931021488973,
+     "mean": 0.49746965024584844,
+     "n_tokens": 10779
+    },
+    "tail": {
+     "observed": null,
+     "expected": null,
+     "ratio": null,
+     "z": null,
+     "n_tokens": 0
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": 0,
+    "stop_replies_checked": 20,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 1,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 0,
+    "scored_tokens": 23872,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.25,
+     "mean_distinct": 2.5
+    },
+    "max_completion_tokens": 256,
+    "cost_usd": 0.0074451,
+    "logprob_self_consistency": {
+     "ks": 0.004810956110596454,
+     "p": 0.9639034511886586,
+     "mean": 0.5001013904375285,
+     "n_tokens": 10779
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0,
+     "n_tokens": 23872
+    }
+   },
+   "tag": "coreweave/bf16",
+   "provider": "CoreWeave",
+   "quantization": "bf16",
+   "local": false,
+   "reference": null,
+   "label": "bf16",
+   "pricing": {
+    "prompt": "0.0000001",
+    "completion": "0.0000003",
+    "input_cache_read": "0.00000005",
+    "discount": 0
+   },
+   "peer_agreement": 0.6675,
+   "x_honest": 1.29,
+   "fidelity": 93.2,
+   "flags": []
+  },
+  "darkbloom": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.1147346179069132,
+     "lo": 0.0945061123261307,
+     "hi": 0.13511262131639315,
+     "n_tokens": 10979,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.06567082612259767,
+     "lo": 0.05750891050958484,
+     "hi": 0.07342015558080583,
+     "n_tokens": 10979,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.1910497832225157,
+     "lo": 0.16662201550387598,
+     "hi": 0.21856289633548892,
+     "n_tokens": 10979,
+     "n_replies": 48
+    },
+    "topk": {
+     "mean": 2.222843627834958,
+     "lo": 2.0799177046315176,
+     "hi": 2.3649580472556773,
+     "n_tokens": 10979,
+     "n_replies": 48
+    },
+    "big_miss_per_1k": 16.759267692868203,
+    "first_token_match": 0.8333333333333334
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -43.247816111759164,
+     "p": 0.0,
+     "excess_ce": 0.17953433351518458,
+     "excess_ce_lo": 0.14682242435126158,
+     "excess_ce_hi": 0.21120805902066653,
+     "n_tokens": 10998
+    },
+    "pit": {
+     "ks": 0.040047330423713445,
+     "p": 8.811770765970041e-16,
+     "mean": 0.5198089325331879,
+     "n_tokens": 10998
+    },
+    "tail": {
+     "observed": null,
+     "expected": null,
+     "ratio": null,
+     "z": null,
+     "n_tokens": 0
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": 0,
+    "stop_replies_checked": 20,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 0,
+    "scored_tokens": 24025,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.5,
+     "mean_distinct": 1.5
+    },
+    "max_completion_tokens": 256,
+    "cost_usd": 0.005410776,
+    "logprob_self_consistency": {
+     "ks": 0.008472224180838706,
+     "p": 0.40736336814465746,
+     "mean": 0.5023915995974017,
+     "n_tokens": 10998
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0022892819979188346,
+     "n_tokens": 24025
+    }
+   },
+   "tag": "darkbloom",
+   "provider": "Darkbloom",
+   "quantization": "unknown",
+   "local": false,
+   "reference": null,
+   "label": "unknown",
+   "pricing": {
+    "prompt": "0.000000042",
+    "completion": "0.00000022",
+    "input_cache_read": "0.000000021",
+    "discount": 0
+   },
+   "peer_agreement": 0.3415266798418972,
+   "x_honest": 41.97,
+   "fidelity": 0.0,
+   "flags": []
+  },
+  "deepinfra__fp8": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.01278718309859155,
+     "lo": 0.01031720220313667,
+     "hi": 0.015135901694629457,
+     "n_tokens": 11076,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.02275189599133265,
+     "lo": 0.018992637215528796,
+     "hi": 0.026441457375309563,
+     "n_tokens": 11076,
+     "n_replies": 48
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": 0.27085590465872156,
+    "first_token_match": 1.0
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -2.190594411310557,
+     "p": 0.02848115594042152,
+     "excess_ce": 0.008827802706876192,
+     "excess_ce_lo": 0.0015532995618838987,
+     "excess_ce_hi": 0.016326842105263157,
+     "n_tokens": 11009
+    },
+    "pit": {
+     "ks": 0.00805890271595966,
+     "p": 0.4705814028327725,
+     "mean": 0.501249753837769,
+     "n_tokens": 11009
+    },
+    "tail": {
+     "observed": null,
+     "expected": null,
+     "ratio": null,
+     "z": null,
+     "n_tokens": 0
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": 0,
+    "stop_replies_checked": 20,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 24133,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.0,
+     "mean_distinct": 2.75
+    },
+    "max_completion_tokens": 256,
+    "cost_usd": 0.00841348,
+    "logprob_self_consistency": null,
+    "logprob_alignment": null
+   },
+   "tag": "deepinfra/fp8",
+   "provider": "DeepInfra",
+   "quantization": "fp8",
+   "local": false,
+   "reference": null,
+   "label": "fp8",
+   "pricing": {
+    "prompt": "0.00000007",
+    "completion": "0.00000034",
+    "discount": 0
+   },
+   "peer_agreement": 0.6328804347826087,
+   "x_honest": 4.68,
+   "fidelity": 58.7,
+   "flags": [
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "dekallm__bf16": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.017473117572920416,
+     "lo": 0.013961156729428171,
+     "hi": 0.021271553551099043,
+     "n_tokens": 11108,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.027637738566798742,
+     "lo": 0.022735131396957153,
+     "hi": 0.03249263622974963,
+     "n_tokens": 11108,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.055617641986321735,
+     "lo": 0.048201262695312504,
+     "hi": 0.06306473384030419,
+     "n_tokens": 10089,
+     "n_replies": 40
+    },
+    "topk": {
+     "mean": 0.5485607354544554,
+     "lo": 0.52607132054957,
+     "hi": 0.5717459487074691,
+     "n_tokens": 10089,
+     "n_replies": 40
+    },
+    "big_miss_per_1k": 0.6301764494058336,
+    "first_token_match": 0.9791666666666666
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -4.047261065314228,
+     "p": 5.182043475558725e-05,
+     "excess_ce": 0.01615687348478046,
+     "excess_ce_lo": 0.0064103016988869355,
+     "excess_ce_hi": 0.026412967157417894,
+     "n_tokens": 11137
+    },
+    "pit": {
+     "ks": 0.016739452276196498,
+     "p": 0.003838937890559471,
+     "mean": 0.508052328275119,
+     "n_tokens": 11137
+    },
+    "tail": {
+     "observed": null,
+     "expected": null,
+     "ratio": null,
+     "z": null,
+     "n_tokens": 0
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": 0,
+    "stop_replies_checked": 19,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 0,
+    "scored_tokens": 24293,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.0,
+     "mean_distinct": 3.0
+    },
+    "max_completion_tokens": 256,
+    "cost_usd": 0.00819564,
+    "logprob_self_consistency": {
+     "ks": 0.005775834605650787,
+     "p": 0.8501460251030438,
+     "mean": 0.5010011783959363,
+     "n_tokens": 11145
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0,
+     "n_tokens": 24309
+    }
+   },
+   "tag": "dekallm/bf16",
+   "provider": "DekaLLM",
+   "quantization": "bf16",
+   "local": false,
+   "reference": null,
+   "label": "bf16",
+   "pricing": {
+    "prompt": "0.00000006",
+    "completion": "0.00000033",
+    "input_cache_read": "0.00000004",
+    "discount": 0
+   },
+   "peer_agreement": 0.6356521739130434,
+   "x_honest": 6.39,
+   "fidelity": 50.3,
+   "flags": []
+  },
+  "google-vertex__global": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.003543944020356234,
+     "lo": 0.0025722006821037517,
+     "hi": 0.0045679414298018944,
+     "n_tokens": 11004,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.012540894220283483,
+     "lo": 0.009750908607392916,
+     "hi": 0.015390153901538972,
+     "n_tokens": 11004,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.02288159396583061,
+     "lo": 0.0199072498225692,
+     "hi": 0.025825774371436582,
+     "n_tokens": 11004,
+     "n_replies": 48
+    },
+    "topk": {
+     "mean": 0.249649280261723,
+     "lo": 0.23913186039858872,
+     "hi": 0.25951777172407425,
+     "n_tokens": 11004,
+     "n_replies": 48
+    },
+    "big_miss_per_1k": 0.0,
+    "first_token_match": 1.0
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -1.2747626586105003,
+     "p": 0.202393261331438,
+     "excess_ce": 0.00520486989519335,
+     "excess_ce_lo": -0.0041612277924362355,
+     "excess_ce_hi": 0.015776580010095912,
+     "n_tokens": 11068
+    },
+    "pit": {
+     "ks": 0.00917924828333938,
+     "p": 0.3072881932226603,
+     "mean": 0.49870065504156125,
+     "n_tokens": 11068
+    },
+    "tail": {
+     "observed": null,
+     "expected": null,
+     "ratio": null,
+     "z": null,
+     "n_tokens": 0
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": 0,
+    "stop_replies_checked": 19,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 8,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 0,
+    "scored_tokens": 22072,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": null,
+    "max_completion_tokens": 256,
+    "cost_usd": 0.0136482,
+    "logprob_self_consistency": {
+     "ks": 0.00561256104645802,
+     "p": 0.8758521778252581,
+     "mean": 0.5001907793478303,
+     "n_tokens": 11066
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0,
+     "n_tokens": 22070
+    }
+   },
+   "tag": "google-vertex/global",
+   "provider": "Google",
+   "quantization": "unknown",
+   "local": false,
+   "reference": null,
+   "label": "unknown",
+   "pricing": {
+    "prompt": "0.00000015",
+    "completion": "0.0000006",
+    "discount": 0
+   },
+   "peer_agreement": 0.6827717391304348,
+   "x_honest": 1.3,
+   "fidelity": 93.0,
+   "flags": []
+  },
+  "io-net__bf16": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.017744424954792046,
+     "lo": 0.01415764163372859,
+     "hi": 0.021648916681345783,
+     "n_tokens": 11060,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.02848101265822789,
+     "lo": 0.024128686327077764,
+     "hi": 0.032604735883424385,
+     "n_tokens": 11060,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.0570170204469805,
+     "lo": 0.050460710496400156,
+     "hi": 0.06409976900017633,
+     "n_tokens": 10515,
+     "n_replies": 45
+    },
+    "topk": {
+     "mean": 0.5452678782691394,
+     "lo": 0.526576189687104,
+     "hi": 0.5636457705232838,
+     "n_tokens": 10515,
+     "n_replies": 45
+    },
+    "big_miss_per_1k": 0.9945750452079566,
+    "first_token_match": 1.0
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": 1.485052812878452,
+     "p": 0.13752983453738066,
+     "excess_ce": -0.00592557054881362,
+     "excess_ce_lo": -0.012417888362775452,
+     "excess_ce_hi": 0.0006758687158114083,
+     "n_tokens": 11042
+    },
+    "pit": {
+     "ks": 0.005801057779387775,
+     "p": 0.8503813610206191,
+     "mean": 0.5001918420575983,
+     "n_tokens": 11042
+    },
+    "tail": {
+     "observed": null,
+     "expected": null,
+     "ratio": null,
+     "z": null,
+     "n_tokens": 0
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": 0,
+    "stop_replies_checked": 20,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 0,
+    "scored_tokens": 24150,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.25,
+     "mean_distinct": 2.5
+    },
+    "max_completion_tokens": 256,
+    "cost_usd": 0.007740744,
+    "logprob_self_consistency": {
+     "ks": 0.009109767119995005,
+     "p": 0.31732394494810234,
+     "mean": 0.4986839963843478,
+     "n_tokens": 11042
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0,
+     "n_tokens": 24150
+    }
+   },
+   "tag": "io-net/bf16",
+   "provider": "Io Net",
+   "quantization": "bf16",
+   "local": false,
+   "reference": null,
+   "label": "bf16",
+   "pricing": {
+    "prompt": "0.00000009",
+    "completion": "0.00000031",
+    "input_cache_read": "0.000000041",
+    "discount": 0
+   },
+   "peer_agreement": 0.5779813664596274,
+   "x_honest": 6.49,
+   "fidelity": 49.9,
+   "flags": []
+  },
+  "local__substitute-q4_0": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.11441290762331838,
+     "lo": 0.09636131176522585,
+     "hi": 0.13149178452391677,
+     "n_tokens": 11150,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.06582959641255604,
+     "lo": 0.05675530965554165,
+     "hi": 0.074936083928414,
+     "n_tokens": 11150,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.1464802197309417,
+     "lo": 0.12799145568502826,
+     "hi": 0.1645337701214346,
+     "n_tokens": 11150,
+     "n_replies": 48
+    },
+    "topk": {
+     "mean": 2.08305997309417,
+     "lo": 1.9501927648703363,
+     "hi": 2.2204610451074407,
+     "n_tokens": 11150,
+     "n_replies": 48
+    },
+    "big_miss_per_1k": 16.591928251121075,
+    "first_token_match": 0.8541666666666666
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -41.9299354864992,
+     "p": 0.0,
+     "excess_ce": 0.1784020393076091,
+     "excess_ce_lo": 0.1470853000179115,
+     "excess_ce_hi": 0.2075146923747699,
+     "n_tokens": 11092
+    },
+    "pit": {
+     "ks": 0.04245581319870173,
+     "p": 7.854908316110065e-18,
+     "mean": 0.5243888847818247,
+     "n_tokens": 11092
+    },
+    "tail": {
+     "observed": null,
+     "expected": null,
+     "ratio": null,
+     "z": null,
+     "n_tokens": 0
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": 0,
+    "stop_replies_checked": 21,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 0,
+    "scored_tokens": 24290,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 1.0,
+     "mean_distinct": 1.0
+    },
+    "max_completion_tokens": 256,
+    "cost_usd": 0,
+    "logprob_self_consistency": {
+     "ks": 0.008983126769026017,
+     "p": 0.33096343169698134,
+     "mean": 0.5015225852556405,
+     "n_tokens": 11092
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0,
+     "n_tokens": 24290
+    }
+   },
+   "tag": "local/substitute-q4_0",
+   "provider": "substitute-q4_0",
+   "quantization": "cheat: Q4_0 4-bit quant served as BF16",
+   "local": true,
+   "reference": "cheat",
+   "label": "cheat: Q4_0 4-bit quant served as BF16",
+   "pricing": null,
+   "peer_agreement": 0.35239130434782606,
+   "x_honest": 41.86,
+   "fidelity": 0.0,
+   "flags": []
+  },
+  "local__vllm-bf16": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.0027335018018018018,
+     "lo": 0.0018342562644393105,
+     "hi": 0.0037548010540184454,
+     "n_tokens": 11100,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.010450450450450455,
+     "lo": 0.008181896477478245,
+     "hi": 0.013018573164381153,
+     "n_tokens": 11100,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.020512456825657895,
+     "lo": 0.017719764597039472,
+     "hi": 0.02325735505756579,
+     "n_tokens": 9728,
+     "n_replies": 38
+    },
+    "topk": {
+     "mean": 0.24164122532894738,
+     "lo": 0.2315526675575658,
+     "hi": 0.25183475842927633,
+     "n_tokens": 9728,
+     "n_replies": 38
+    },
+    "big_miss_per_1k": 0.0,
+    "first_token_match": 1.0
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -1.5809315910206292,
+     "p": 0.11389368015331058,
+     "excess_ce": 0.006399409119525137,
+     "excess_ce_lo": -0.0011784685105587739,
+     "excess_ce_hi": 0.014413283038963345,
+     "n_tokens": 11119
+    },
+    "pit": {
+     "ks": 0.005509194172137799,
+     "p": 0.8876769546350171,
+     "mean": 0.5014598821836496,
+     "n_tokens": 11119
+    },
+    "tail": {
+     "observed": 5,
+     "expected": 0.7795458,
+     "ratio": 6.413991326744369,
+     "z": 4.7817623623603085,
+     "p": 1.737650233227195e-06,
+     "n_tokens": 11119
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": 0,
+    "stop_replies_checked": 20,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 0,
+    "scored_tokens": 24267,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 1.0,
+     "mean_distinct": 1.0
+    },
+    "max_completion_tokens": 256,
+    "cost_usd": 0,
+    "logprob_self_consistency": {
+     "ks": 0.004109858822391885,
+     "p": 0.9917242234116905,
+     "mean": 0.5006434718745864,
+     "n_tokens": 11129
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0,
+     "n_tokens": 24287
+    }
+   },
+   "tag": "local/vllm-bf16",
+   "provider": "vllm-bf16",
+   "quantization": "honest: BF16 release weights, vLLM 0.32, RTX PRO 6000",
+   "local": true,
+   "reference": "honest",
+   "label": "honest: BF16 release weights, vLLM 0.32, RTX PRO 6000",
+   "pricing": null,
+   "peer_agreement": 0.6661413043478261,
+   "x_honest": 1.0,
+   "fidelity": 100.0,
+   "flags": []
+  },
+  "makora": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.03087051597051597,
+     "lo": 0.024783607906269566,
+     "hi": 0.03687994769202533,
+     "n_tokens": 10989,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.03503503503503502,
+     "lo": 0.029251406317611472,
+     "hi": 0.04029015906310085,
+     "n_tokens": 10989,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.07434823487688721,
+     "lo": 0.06400113381410256,
+     "hi": 0.08494424236210786,
+     "n_tokens": 9869,
+     "n_replies": 39
+    },
+    "topk": {
+     "mean": 0.679210686999696,
+     "lo": 0.6442445881041645,
+     "hi": 0.7139114433092949,
+     "n_tokens": 9869,
+     "n_replies": 39
+    },
+    "big_miss_per_1k": 2.275002275002275,
+    "first_token_match": 0.9791666666666666
+   },
+   "sample_answer": {
+    "replies": 46,
+    "likelihood": {
+     "z": -7.73921800930049,
+     "p": 1.0003013343031324e-14,
+     "excess_ce": 0.031282024299065424,
+     "excess_ce_lo": 0.02221862017666202,
+     "excess_ce_hi": 0.0409538137969714,
+     "n_tokens": 10700
+    },
+    "pit": {
+     "ks": 0.01359831775700937,
+     "p": 0.03788149504989353,
+     "mean": 0.5064913196261682,
+     "n_tokens": 10700
+    },
+    "tail": {
+     "observed": 3,
+     "expected": 0.7145164,
+     "ratio": 4.198644005931844,
+     "z": 2.70447885421396,
+     "p": 0.006841162373908262,
+     "n_tokens": 10700
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": 0,
+    "stop_replies_checked": 19,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 3,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 0,
+    "scored_tokens": 23481,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 3,
+     "identical_share": 0.0,
+     "mean_distinct": 3.0
+    },
+    "max_completion_tokens": 256,
+    "cost_usd": 0.00583481,
+    "logprob_self_consistency": {
+     "ks": 0.0059439567641376145,
+     "p": 0.8427809803294034,
+     "mean": 0.4993308345047789,
+     "n_tokens": 10706
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0006384065372829418,
+     "n_tokens": 23496
+    }
+   },
+   "tag": "makora",
+   "provider": "Makora",
+   "quantization": "unknown",
+   "local": false,
+   "reference": null,
+   "label": "unknown",
+   "pricing": {
+    "prompt": "0.00000007",
+    "completion": "0.00000024",
+    "input_cache_read": "0.000000046",
+    "discount": 0
+   },
+   "peer_agreement": 0.5440093873517786,
+   "x_honest": 11.29,
+   "fidelity": 35.1,
+   "flags": []
+  },
+  "nextbit__bf16": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.02792314601608187,
+     "lo": 0.022767528500178127,
+     "hi": 0.03309045912454311,
+     "n_tokens": 10944,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.033625730994152,
+     "lo": 0.028069254984260272,
+     "hi": 0.03917050691244239,
+     "n_tokens": 10944,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.07142581959355829,
+     "lo": 0.06266404470802919,
+     "hi": 0.08035062909431215,
+     "n_tokens": 10432,
+     "n_replies": 46
+    },
+    "topk": {
+     "mean": 0.6223034135352761,
+     "lo": 0.5973803355580275,
+     "hi": 0.6464032956737393,
+     "n_tokens": 10432,
+     "n_replies": 46
+    },
+    "big_miss_per_1k": 2.1016081871345027,
+    "first_token_match": 0.9166666666666666
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -3.929095959149694,
+     "p": 8.526581176002399e-05,
+     "excess_ce": 0.015752200699488832,
+     "excess_ce_lo": 0.009743073221038158,
+     "excess_ce_hi": 0.022497624261383384,
+     "n_tokens": 11151
+    },
+    "pit": {
+     "ks": 0.013470764953815828,
+     "p": 0.03462790206659644,
+     "mean": 0.506704966370729,
+     "n_tokens": 11151
+    },
+    "tail": {
+     "observed": 0,
+     "expected": 0.7672461,
+     "ratio": 0.0,
+     "z": -0.8761804204694223,
+     "p": 0.38093195885657105,
+     "n_tokens": 11151
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": 0,
+    "stop_replies_checked": 19,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 0,
+    "scored_tokens": 24143,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.0,
+     "mean_distinct": 2.75
+    },
+    "max_completion_tokens": 256,
+    "cost_usd": 0.00746538,
+    "logprob_self_consistency": {
+     "ks": 0.00816942928173825,
+     "p": 0.4450272042059163,
+     "mean": 0.5003479619400034,
+     "n_tokens": 11147
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0,
+     "n_tokens": 24136
+    }
+   },
+   "tag": "nextbit/bf16",
+   "provider": "NextBit",
+   "quantization": "bf16",
+   "local": false,
+   "reference": null,
+   "label": "bf16",
+   "pricing": {
+    "prompt": "0.00000009",
+    "completion": "0.0000003",
+    "input_cache_read": "0.00000005",
+    "discount": 0
+   },
+   "peer_agreement": 0.5142391304347826,
+   "x_honest": 10.22,
+   "fidelity": 37.8,
+   "flags": []
+  },
+  "parasail__bf16": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.007699278079710144,
+     "lo": 0.006084130359312619,
+     "hi": 0.009413613128359899,
+     "n_tokens": 11040,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.0185688405797102,
+     "lo": 0.015125619552213254,
+     "hi": 0.022132390096008092,
+     "n_tokens": 11040,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.036487561,
+     "lo": 0.03101219840226514,
+     "hi": 0.04222654177786902,
+     "n_tokens": 10000,
+     "n_replies": 40
+    },
+    "topk": {
+     "mean": 0.35262751800000003,
+     "lo": 0.33781296834301744,
+     "hi": 0.3665146233188391,
+     "n_tokens": 10000,
+     "n_replies": 40
+    },
+    "big_miss_per_1k": 0.09057971014492754,
+    "first_token_match": 0.9791666666666666
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -0.638344902454196,
+     "p": 0.523249188499902,
+     "excess_ce": 0.0024962835901110717,
+     "excess_ce_lo": -0.006281455880968075,
+     "excess_ce_hi": 0.011320419619030091,
+     "n_tokens": 11164
+    },
+    "pit": {
+     "ks": 0.005522031529917593,
+     "p": 0.884578654400516,
+     "mean": 0.5007248333930491,
+     "n_tokens": 11164
+    },
+    "tail": {
+     "observed": 0,
+     "expected": 0.7221242,
+     "ratio": 0.0,
+     "z": -0.8500330371144132,
+     "p": 0.3953067188663051,
+     "n_tokens": 11164
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": 0,
+    "stop_replies_checked": 21,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 0,
+    "scored_tokens": 24252,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.0,
+     "mean_distinct": 2.75
+    },
+    "max_completion_tokens": 256,
+    "cost_usd": 0.01008334,
+    "logprob_self_consistency": {
+     "ks": 0.004502553221086836,
+     "p": 0.9770461862759163,
+     "mean": 0.500140414110901,
+     "n_tokens": 11172
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0,
+     "n_tokens": 24268
+    }
+   },
+   "tag": "parasail/bf16",
+   "provider": "Parasail",
+   "quantization": "bf16",
+   "local": false,
+   "reference": null,
+   "label": "bf16",
+   "pricing": {
+    "prompt": "0.00000013",
+    "completion": "0.0000004",
+    "input_cache_read": "0.00000005",
+    "discount": 0
+   },
+   "peer_agreement": 0.6296739130434783,
+   "x_honest": 2.82,
+   "fidelity": 72.3,
+   "flags": []
+  },
+  "primeintellect__bf16": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.0029286709607184973,
+     "lo": 0.002231243012790147,
+     "hi": 0.003663639566144433,
+     "n_tokens": 11023,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.010069853941758189,
+     "lo": 0.008107352530053125,
+     "hi": 0.012136607394863108,
+     "n_tokens": 11023,
+     "n_replies": 48
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": 0.0,
+    "first_token_match": 1.0
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -2.4339654004431925,
+     "p": 0.01493442257269625,
+     "excess_ce": 0.009773809653420432,
+     "excess_ce_lo": 0.00037790313901345376,
+     "excess_ce_hi": 0.01935276759366896,
+     "n_tokens": 11022
+    },
+    "pit": {
+     "ks": 0.010761732897840659,
+     "p": 0.154705714718926,
+     "mean": 0.505642255489022,
+     "n_tokens": 11022
+    },
+    "tail": {
+     "observed": 0,
+     "expected": 0.7467836,
+     "ratio": 0.0,
+     "z": -0.8644407274933841,
+     "p": 0.38734582780502247,
+     "n_tokens": 11022
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": 0,
+    "stop_replies_checked": 20,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 24093,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.25,
+     "mean_distinct": 2.25
+    },
+    "max_completion_tokens": 256,
+    "cost_usd": 0.002251095,
+    "logprob_self_consistency": null,
+    "logprob_alignment": null
+   },
+   "tag": "primeintellect/bf16",
+   "provider": "PrimeIntellect",
+   "quantization": "bf16",
+   "local": false,
+   "reference": null,
+   "label": "bf16",
+   "pricing": {
+    "prompt": "0.00000003",
+    "completion": "0.00000009",
+    "input_cache_read": "0.000000015",
+    "discount": 0
+   },
+   "peer_agreement": 0.6499999999999999,
+   "x_honest": 1.07,
+   "fidelity": 98.2,
+   "flags": [
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "siliconflow__fp8": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.01940861403190718,
+     "lo": 0.015669662311372838,
+     "hi": 0.023366428432137286,
+     "n_tokens": 11032,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.028734590282813666,
+     "lo": 0.02439657409810536,
+     "hi": 0.03339658444022775,
+     "n_tokens": 11032,
+     "n_replies": 48
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": 0.9970993473531544,
+    "first_token_match": 0.9375
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -5.878860917255585,
+     "p": 4.1309927550795715e-09,
+     "excess_ce": 0.024020839660159075,
+     "excess_ce_lo": 0.013575028977871445,
+     "excess_ce_hi": 0.03488455568774595,
+     "n_tokens": 11064
+    },
+    "pit": {
+     "ks": 0.011874201012292196,
+     "p": 0.08767697849274453,
+     "mean": 0.5079788141720897,
+     "n_tokens": 11064
+    },
+    "tail": {
+     "observed": 0,
+     "expected": 0.8040856,
+     "ratio": 0.0,
+     "z": -0.8970485469347772,
+     "p": 0.3696930126095362,
+     "n_tokens": 11064
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": 0,
+    "stop_replies_checked": 19,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 24144,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.0,
+     "mean_distinct": 2.25
+    },
+    "max_completion_tokens": 256,
+    "cost_usd": 0.01002348,
+    "logprob_self_consistency": null,
+    "logprob_alignment": null
+   },
+   "tag": "siliconflow/fp8",
+   "provider": "SiliconFlow",
+   "quantization": "fp8",
+   "local": false,
+   "reference": null,
+   "label": "fp8",
+   "pricing": {
+    "prompt": "0.00000014",
+    "completion": "0.0000004",
+    "input_cache_read": "0.00000005",
+    "discount": 0
+   },
+   "peer_agreement": 0.6010326086956522,
+   "x_honest": 7.1,
+   "fidelity": 47.5,
+   "flags": [
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "venice__bf16": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.013673215807124084,
+     "lo": 0.010809506435863293,
+     "hi": 0.016623395820252938,
+     "n_tokens": 11033,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.024653312788906034,
+     "lo": 0.020596256935954127,
+     "hi": 0.028847943420807765,
+     "n_tokens": 11033,
+     "n_replies": 48
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": 0.3625487174839119,
+    "first_token_match": 1.0
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -3.95363324444544,
+     "p": 7.697336680994952e-05,
+     "excess_ce": 0.015591008787661405,
+     "excess_ce_lo": 0.007091670455578794,
+     "excess_ce_hi": 0.024385888398088883,
+     "n_tokens": 11152
+    },
+    "pit": {
+     "ks": 0.006568593974174974,
+     "p": 0.7204394827743805,
+     "mean": 0.4979940692252511,
+     "n_tokens": 11152
+    },
+    "tail": {
+     "observed": 1,
+     "expected": 0.7248181,
+     "ratio": 1.3796564958849675,
+     "z": 0.3233322687935873,
+     "p": 0.7464436183611536,
+     "n_tokens": 11152
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": 0,
+    "stop_replies_checked": 20,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 24233,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.0,
+     "mean_distinct": 3.0
+    },
+    "max_completion_tokens": 256,
+    "cost_usd": 0.01007534,
+    "logprob_self_consistency": null,
+    "logprob_alignment": null
+   },
+   "tag": "venice/bf16",
+   "provider": "Venice",
+   "quantization": "bf16",
+   "local": false,
+   "reference": null,
+   "label": "bf16",
+   "pricing": {
+    "prompt": "0.00000013",
+    "completion": "0.0000004",
+    "input_cache_read": "0.00000005",
+    "discount": 0
+   },
+   "peer_agreement": 0.6002717391304349,
+   "x_honest": 5.0,
+   "fidelity": 56.9,
+   "flags": [
+    "no logprobs (text-only checks)"
+   ]
+  }
+ },
+ "referee": "Gemma-4-26B-A4B Q8_0, llama.cpp CUDA, DGX Spark (GB10)",
+ "anchor": "a 4-bit Q4_0 quantization of the same model",
+ "notes": "100 is set by the BF16 release weights served with vLLM on an RTX PRO 6000 (what an honest provider runs); the referee is Q8_0.",
+ "built": "2026-10-30"
+}

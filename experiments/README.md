@@ -9,6 +9,10 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
 
 ## Findings so far
 
+0. **Most endpoints serve something consistent with the claimed model; none looks like a different model.** On
+   Gemma-4-26B, three endpoints are indistinguishable from honest BF16 serving and two behave like a 4-bit copy (one
+   of them unlabelled).
+
 1. **Several endpoints sit further from the real model than a 3-bit quantization of it.** On Qwen3.5-35B-A3B,
    AtlasCloud (labelled fp8), Darkbloom (fp4) and Alibaba are 10-16× an honest re-encoding's distance from the referee,
    past a deliberately 3-bit-quantized copy (5.8×). Their temperature-1 samples also fit the referee worse (PIT mean
@@ -81,6 +85,35 @@ nearly-tied tokens appears, and is invisible within honest noise.
 Reference weights could not be hosted for this run, so only referee-free checks: peer agreement, determinism,
 own-top-choice at temperature 0, logprob self-consistency and alignment, prompt size. See `results/qwen__qwen3.8-27b.json`.
 
-## gpt-oss-120b (26 endpoints) and Gemma-4-26B-A4B (15 endpoints)
+## Gemma-4-26B-A4B (15 endpoints)
 
-Scoring in progress (single CUDA referee for every gpt-oss row; Gemma referee Q8_0 with a vLLM BF16 honest reference).
+Referee: Q8_0 on llama.cpp CUDA (DGX Spark). 100 = the BF16 release weights served by vLLM 0.32 on an RTX PRO 6000
+(what an honest provider runs); 0 = a 4-bit Q4_0 quantization. Novita failed 44 of 104 requests and is left out.
+
+| Endpoint | Label | Regret | × honest | Fidelity | Other token | PIT mean | Peer agreement |
+|---|---|---|---|---|---|---|---|
+| *BF16 release weights* |  | 0.0027 [0.0018, 0.0038] | 1.0 | 100 | 1.0% | 0.501 | 0.67 |
+| PrimeIntellect | bf16 | 0.0029 [0.0022, 0.0037] | 1.1 | 98 | 1.0% | 0.506 | 0.65 |
+| CoreWeave | bf16 | 0.0035 [0.0027, 0.0044] | 1.3 | 93 | 1.2% | 0.497 | 0.67 |
+| Google | unknown | 0.0035 [0.0026, 0.0046] | 1.3 | 93 | 1.3% | 0.499 | 0.68 |
+| Cloudflare | unknown | 0.0064 [0.0043, 0.0086] | 2.3 | 77 | 1.5% | 0.503 | 0.67 |
+| Parasail | bf16 | 0.0077 [0.0061, 0.0094] | 2.8 | 72 | 1.9% | 0.501 | 0.63 |
+| DeepInfra | fp8 | 0.0128 [0.0103, 0.0151] | 4.7 | 59 | 2.3% | 0.501 | 0.63 |
+| Venice | bf16 | 0.0137 [0.0108, 0.0166] | 5.0 | 57 | 2.5% | 0.498 | 0.6 |
+| DekaLLM | bf16 | 0.0175 [0.0140, 0.0213] | 6.4 | 50 | 2.8% | 0.508 | 0.64 |
+| Io Net | bf16 | 0.0177 [0.0142, 0.0216] | 6.5 | 50 | 2.8% | 0.500 | 0.58 |
+| SiliconFlow | fp8 | 0.0194 [0.0157, 0.0234] | 7.1 | 48 | 2.9% | 0.508 | 0.6 |
+| NextBit | bf16 | 0.0279 [0.0228, 0.0331] | 10.2 | 38 | 3.4% | 0.507 | 0.51 |
+| Makora | unknown | 0.0309 [0.0248, 0.0369] | 11.3 | 35 | 3.5% | 0.506 | 0.54 |
+| *Q4_0 4-bit quant served as BF16* |  | 0.1144 [0.0964, 0.1315] | 41.9 | 0 | 6.6% | 0.524 | 0.35 |
+| Darkbloom | unknown | 0.1147 [0.0945, 0.1351] | 42.0 | 0 | 6.6% | 0.520 | 0.34 |
+| AkashML | fp4 | 0.1450 [0.1187, 0.1734] | 53.0 | 0 | 7.7% | 0.523 | 0.33 |
+
+The clearest spectrum of the four models: three endpoints are indistinguishable from honest BF16 serving
+(PrimeIntellect, CoreWeave, Google Vertex), most sit between honest and 4-bit, and two sit at the 4-bit copy's
+distance. AkashML labels itself fp4, so that is disclosed; Darkbloom carries no label but behaves like a 4-bit model.
+Their temperature-1 samples also fit the referee worse (PIT mean 0.52, like the Q4_0 copy).
+
+## gpt-oss-120b (26 endpoints)
+
+Scoring in progress (one CUDA referee for every row).
