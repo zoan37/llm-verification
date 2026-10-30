@@ -74,6 +74,24 @@ def likelihood_test(replies: Sequence[Sequence[Optional[TokenScore]]]) -> Dict[s
             "excess_ce_hi": None if ci["lo"] is None else -ci["lo"], "n_tokens": len(devs)}
 
 
+def tail_test(replies: Sequence[Sequence[Optional[TokenScore]]]) -> Dict[str, Optional[float]]:
+    """Long-tail draws: observed number of sampled tokens with p < 1e-4 vs the number the referee expects (the sum of
+    its per-position tail mass). Under honest temperature-1, top_p-1 sampling the count is a sum of independent-ish
+    Bernoullis (Poisson-binomial). Far fewer than expected means the endpoint truncates the tail (an undisclosed
+    top-k/top-p/min-p, or a sharper model); far more means a flatter or different model. Robust where the likelihood
+    statistic is not, because each token contributes 0 or 1."""
+    pairs = [(s.tail_hit, s.tail_mass) for r in replies for s in r
+             if s is not None and s.tail_hit is not None and s.tail_mass is not None]
+    if not pairs:
+        return {"observed": None, "expected": None, "ratio": None, "z": None, "n_tokens": 0}
+    obs = sum(h for h, _ in pairs)
+    exp = sum(m for _, m in pairs)
+    var = sum(m * (1 - m) for _, m in pairs)
+    z = (obs - exp) / math.sqrt(var) if var > 0 else 0.0
+    return {"observed": obs, "expected": exp, "ratio": obs / exp if exp > 0 else None, "z": z,
+            "p": 2 * normal_sf(abs(z)), "n_tokens": len(pairs)}
+
+
 def kolmogorov_sf(d: float, n: int) -> float:
     """P(D_n >= d) for the one-sample KS statistic, asymptotic (Stephens' small-n correction)."""
     if n <= 0:

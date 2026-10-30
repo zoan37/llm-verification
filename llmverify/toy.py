@@ -79,7 +79,8 @@ class ToyLM:
             p = np.exp(lpt)
             ent = float(-(p * lpt).sum())
             out.append(RefStep(top=self._top(lp, k), lp=float(lp[tok]), lp_t=float(lpt[tok]), entropy=ent,
-                               m2=float((p * lpt * lpt).sum()), mass_above=float(p[lpt > lpt[tok]].sum())))
+                               m2=float((p * lpt * lpt).sum()), mass_above=float(p[lpt > lpt[tok]].sum()),
+                               tail_mass=float(p[lpt < np.log(1e-4)].sum())))
             seq.append(int(tok))
         return out
 

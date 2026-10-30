@@ -75,7 +75,8 @@ class LlamaEngine:
         r = self.call({"cmd": "score", "context": [int(t) for t in context], "tokens": [int(t) for t in tokens],
                        "k": k, "temperature": temperature, "stats": stats})
         return [RefStep(top=_top(s["top"]), lp=float(s["lp"]), lp_t=s.get("lp_t"), entropy=s.get("entropy"),
-                        m2=s.get("m2"), mass_above=s.get("mass_above")) for s in r["steps"]]
+                        m2=s.get("m2"), mass_above=s.get("mass_above"), tail_mass=s.get("tail_mass"))
+                for s in r["steps"]]
 
     def start(self, context, k=20) -> TopK:
         return _top(self.call({"cmd": "start", "context": [int(t) for t in context], "k": k})["top"])

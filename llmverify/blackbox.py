@@ -196,12 +196,13 @@ def score_record(engine, fmt: ChatFormat, tmap: TokenMap, prompt: str, rec: dict
 
 
 def _compact(s: TokenScore) -> list:
-    """[regret, agree, ce_dev, var_lp, pit, drift, topk, wgap] with None where absent."""
+    """[regret, agree, ce_dev, var_lp, pit, drift, topk, wgap, tail_hit, tail_mass] with None where absent."""
     r = lambda x: None if x is None else round(float(x), 5)
-    return [r(s.regret), int(s.agree), r(s.ce_dev), r(s.var_lp), r(s.pit), r(s.drift), r(s.topk), r(s.wgap)]
+    return [r(s.regret), int(s.agree), r(s.ce_dev), r(s.var_lp), r(s.pit), r(s.drift), r(s.topk), r(s.wgap),
+            None if s.tail_hit is None else int(s.tail_hit), None if s.tail_mass is None else round(s.tail_mass, 7)]
 
 
-COMPACT_FIELDS = ("regret", "agree", "ce_dev", "var_lp", "pit", "drift", "topk", "wgap")
+COMPACT_FIELDS = ("regret", "agree", "ce_dev", "var_lp", "pit", "drift", "topk", "wgap", "tail_hit", "tail_mass")
 
 
 def expand(tokens: Sequence[list]) -> List[TokenScore]:
@@ -209,5 +210,6 @@ def expand(tokens: Sequence[list]) -> List[TokenScore]:
     for t in tokens:
         d = dict(zip(COMPACT_FIELDS, t))
         out.append(TokenScore(regret=d["regret"], agree=d["agree"], lp=0.0, ce_dev=d["ce_dev"], var_lp=d["var_lp"],
-                              pit=d["pit"], drift=d["drift"], topk=d["topk"], wgap=d["wgap"]))
+                              pit=d["pit"], drift=d["drift"], topk=d["topk"], wgap=d["wgap"],
+                              tail_hit=d.get("tail_hit"), tail_mass=d.get("tail_mass")))
     return out

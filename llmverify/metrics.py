@@ -34,7 +34,8 @@ from typing import Dict, List, Optional, Sequence
 
 from .sampling import SamplingSpec, TopK, candidates, gumbel_noise
 
-METRICS = ("regret", "agree", "lp", "ce_dev", "var_lp", "pit", "drift", "topk", "wgap")
+METRICS = ("regret", "agree", "lp", "ce_dev", "var_lp", "pit", "drift", "topk", "wgap", "tail_hit", "tail_mass")
+TAIL_LP = math.log(1e-4)
 
 
 @dataclass
@@ -47,6 +48,7 @@ class RefStep:
     entropy: Optional[float] = None   # H(p_T)
     m2: Optional[float] = None        # E_{p_T}[(log p_T)^2]
     mass_above: Optional[float] = None  # total p_T of tokens strictly more likely than x
+    tail_mass: Optional[float] = None   # total p_T of long-tail tokens (p_T < 1e-4)
 
 
 @dataclass
@@ -60,6 +62,8 @@ class TokenScore:
     drift: Optional[float] = None
     topk: Optional[float] = None
     wgap: Optional[float] = None
+    tail_hit: Optional[float] = None    # 1 if x is a long-tail token (p_T(x) < 1e-4)
+    tail_mass: Optional[float] = None   # the referee's probability of drawing any long-tail token here
     extra: Dict[str, float] = field(default_factory=dict)
 
     def get(self, name: str) -> Optional[float]:
@@ -89,6 +93,9 @@ def score_token(token: int, ref: RefStep, spec: SamplingSpec, key: str, step: in
     if ref.entropy is not None and ref.m2 is not None:
         s.ce_dev = lp_t + ref.entropy
         s.var_lp = max(0.0, ref.m2 - ref.entropy ** 2)
+    if ref.tail_mass is not None:
+        s.tail_mass = ref.tail_mass
+        s.tail_hit = float(lp_t < TAIL_LP)
     if ref.mass_above is not None:
         s.pit = min(1.0, max(0.0, ref.mass_above + pit_uniform(key, step) * math.exp(lp_t)))
     if reported_top:

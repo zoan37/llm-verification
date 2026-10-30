@@ -10,7 +10,7 @@
 //   {"cmd": "score", "context": [ids], "tokens": [ids], "k": 20, "temperature": 1.0}
 //     One forward pass over context + tokens. For every reply position returns
 //     {"top": [[id, lp], ...], "lp": raw logprob of the actual token,
-//      "lp_t", "entropy", "m2", "mass_above"}  (the last four at the given temperature, over the full vocab;
+//      "lp_t", "entropy", "m2", "mass_above", "tail_mass"}  (at the given temperature, over the full vocab;
 //      left out with "stats": false)
 //   {"cmd": "start", "context": [ids], "k": 20}       -> {"top": [[id, lp], ...]}  (next-token distribution)
 //   {"cmd": "step", "token": id, "k": 20}             -> {"top": [...]}            (append one token, predict next)
@@ -106,18 +106,21 @@ struct Engine {
         for (int v = 0; v < n_vocab; v++) z += std::exp((double) lg[v] / temp - mx);
         const double lse_t = mx + std::log(z);
         const double lp_x = (double) lg[actual] / temp - lse_t;
-        double ent = 0.0, m2 = 0.0, above = 0.0;
+        double ent = 0.0, m2 = 0.0, above = 0.0, tail = 0.0;
+        const double tail_lp = std::log(1e-4);
         for (int v = 0; v < n_vocab; v++) {
             const double lp = (double) lg[v] / temp - lse_t;
             const double p = std::exp(lp);
             ent -= p * lp;
             m2 += p * lp * lp;
             if (lp > lp_x) above += p;
+            if (lp < tail_lp) tail += p;
         }
         step["lp_t"] = lp_x;
         step["entropy"] = ent;
         step["m2"] = m2;
         step["mass_above"] = above;
+        step["tail_mass"] = tail;  // total probability of tokens with p < 1e-4 (the long tail)
         return step;
     }
 

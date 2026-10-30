@@ -21,7 +21,7 @@ from typing import Dict, List, Optional
 from .blackbox import expand
 from .openrouter import load
 from .peer import greedy_texts, logprob_alignment, prefix_agreement, self_consistency
-from .stats import cluster_bootstrap_mean, likelihood_test, pit_test
+from .stats import cluster_bootstrap_mean, likelihood_test, pit_test, tail_test
 
 
 def _load_scores(path: Path) -> List[dict]:
@@ -60,7 +60,8 @@ def endpoint_summary(scores: List[dict], raw: List[dict]) -> dict:
     for seg in ("answer", "reasoning"):
         reps = [expand(s["tokens"]) for s in sample if s["segment"] == seg]
         if reps:
-            out[f"sample_{seg}"] = {"replies": len(reps), "likelihood": likelihood_test(reps), "pit": pit_test(reps)}
+            out[f"sample_{seg}"] = {"replies": len(reps), "likelihood": likelihood_test(reps), "pit": pit_test(reps),
+                                    "tail": tail_test(reps)}
     misses = [s["own_top_miss"] for s in scores if s.get("own_top_miss") is not None]
     deltas = [s["prompt_tokens_reported"] - s["prompt_tokens_ours"] for s in scores
               if s.get("prompt_tokens_reported") is not None and s["segment"] == "answer"]

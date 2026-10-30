@@ -62,3 +62,25 @@ def test_eprocess_detects_shift():
     for _ in range(300):
         e.update(rng.expovariate(1 / 0.06))
     assert e.p_value() < 1e-3
+
+
+def test_tail_test_detects_truncated_sampling():
+    from llmverify.stats import tail_test
+    flat = ToyLM(vocab=6000, states=128, weights_seed=1)  # big vocabulary: real long-tail mass
+    rng = np.random.default_rng(5)
+    honest, truncated = [], []
+    for i in range(40):
+        ctx = [int(x) for x in rng.integers(1, 6000, 5)]
+        toks = flat.sample(ctx, 60, 1.0, rng)
+        honest.append(score_reply(toks, flat.score(ctx, toks, k=20), SamplingSpec(), f"h{i}"))
+        # truncated sampler: only from the top 40 tokens
+        seq, out = list(ctx), []
+        for _ in range(60):
+            lp = flat.logprobs(seq)
+            top = np.argsort(-lp)[:40]
+            p = np.exp(lp[top]); p /= p.sum()
+            t = int(rng.choice(top, p=p)); out.append(t); seq.append(t)
+        truncated.append(score_reply(out, flat.score(ctx, out, k=20), SamplingSpec(), f"t{i}"))
+    h, t = tail_test(honest), tail_test(truncated)
+    assert h["expected"] > 0 and abs(h["z"]) < 4
+    assert t["observed"] == 0 and t["z"] < -2
