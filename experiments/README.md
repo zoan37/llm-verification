@@ -155,8 +155,17 @@ with ~100 requests.
 
 ## Qwen3.8-27B (21 endpoints)
 
-Reference weights could not be hosted for this run, so only referee-free checks: peer agreement, determinism,
-own-top-choice at temperature 0, logprob self-consistency and alignment, prompt size. See `results/qwen__qwen3.8-27b.json`.
+Referee: Q8_0 on llama.cpp CUDA (DGX Spark). 100 = a near-lossless Q6_K copy, 0 = a 2-bit copy (UD-Q2_K_XL).
+
+- Modal and Cloudflare land closer to the referee than our Q6_K copy (likely BF16 serving).
+- The FP8 group (CoreWeave, Wafer, DekaLLM, Ionstream, Mancer, Chutes, Phala, Cerebras fp16, AkashML, Reka, NEAR AI,
+  Parasail, DeepInfra bf16) sits at 2-5× an honest machine, fidelity 63-81: normal FP8-class serving.
+- fp4 hosts follow their labels: Tenstorrent 56, Darkbloom 27, ModelRun 22.
+- Alibaba (unlabelled): 45×, fidelity 12, also far on Qwen3.5.
+- Venice: 165×, past the 2-bit copy (case study above).
+- 16 of 21 endpoints barely sample the long tail at temperature 1 (an unrequested default top_k, most likely Qwen's
+  recommended 20); Cerebras does not truncate.
+- DekaLLM and Wafer return misaligned top-20 logprob lists; Novita failed every request.
 
 ## Gemma-4-26B-A4B (15 endpoints)
 
