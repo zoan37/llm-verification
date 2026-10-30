@@ -1,0 +1,12 @@
+openai/gpt-oss-20b: 10 endpoints; key usage $4.0975
+amazon-bedrock                 quant=unknown  ok=12/12 logprobs=0 errors=0
+groq                           quant=unknown  ok=12/12 logprobs=0 errors=0
+amazon-bedrock/eu-west-1       quant=unknown  ok=12/12 logprobs=0 errors=0
+akashml/fp4                    quant=fp4      ok=12/12 logprobs=12 errors=0
+deepinfra/bf16                 quant=bf16     ok=0/12 logprobs=0 errors=4
+parasail/fp4                   quant=fp4      ok=11/12 logprobs=11 errors=1
+dekallm/bf16                   quant=bf16     ok=12/12 logprobs=12 errors=0
+coreweave/fp4                  quant=fp4      ok=12/12 logprobs=12 errors=0
+siliconflow/fp8                quant=fp8      ok=12/12 logprobs=0 errors=0
+darkbloom/fp8                  quant=fp8      ok=12/12 logprobs=12 errors=0
+openai/gpt-oss-20b: spent $0.1295

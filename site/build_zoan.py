@@ -34,20 +34,37 @@ body { margin: 0; }
 .lv-top, .lv-top *, .wrap { box-sizing: border-box; }
 header.lv-top { display: block; max-width: none; gap: 0; position: sticky; top: 0; z-index: 10;
   background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); }
-.lv-top nav { max-width: 1120px; margin: 0 auto; padding: 0.65rem 16px; display: flex; align-items: center; gap: 1.1rem;
-  flex-wrap: nowrap; overflow-x: auto; white-space: nowrap; scrollbar-width: none; font: 14px/1.4 var(--body); }
-.lv-top nav::-webkit-scrollbar { display: none; }
+.lv-top nav { max-width: 1120px; margin: 0 auto; padding: 0.65rem 16px; display: flex; align-items: center;
+  gap: 0.4rem 1.2rem; flex-wrap: wrap; font: 14px/1.4 var(--body); }
 .lv-top nav a { color: var(--muted); text-decoration: none; }
 .lv-top nav a:hover, .lv-top nav a[aria-current] { color: var(--ink); }
-.lv-top nav .home { color: var(--ink); font-weight: 600; margin-right: auto; padding-right: 0.6rem; }
+.lv-top nav .home { color: var(--ink); font-weight: 600; margin-right: auto; }
+.lv-top nav a[aria-current] { text-decoration: underline; text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px; text-underline-offset: 7px; }
 .lv-top nav .short { display: none; }
 @media (max-width: 560px) {
-  .lv-top nav { gap: 0.9rem; font-size: 13.5px; }
+  .lv-top nav { gap: 0.35rem 1.1rem; padding-block: 0.55rem 0.6rem; font-size: 14px; }
+  .lv-top nav .home { flex: 0 0 100%; }
   .lv-top nav .long { display: none; }
   .lv-top nav .short { display: inline; }
 }
+.pager { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 40px;
+  padding-top: 18px; border-top: 1px solid var(--rule); }
+.pager a { display: grid; gap: 2px; text-decoration: none; color: var(--ink); max-width: 48%; }
+.pager a.next { margin-left: auto; text-align: right; }
+.pager .dir { font: 500 11px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.pager .t { font: 600 17px/1.3 var(--display); color: var(--accent); }
+.pager a:hover .t { text-decoration: underline; }
 </style>
 """
+pager = """<nav class="pager" aria-label="Previous and next page">
+  <a class="prev" href="./"><span class="dir">← Previous</span><span class="t">Overview</span></a>
+  <a class="next" href="venice.html"><span class="dir">Next →</span><span class="t">Venice case study</span></a>
+</nav>
+"""
+
+i = rest.rfind("</div>", 0, rest.index('<script id="data"'))
+rest = rest[:i] + pager + rest[i:]
 doc = ("<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"
        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
        "<meta name=\"description\" content=\"Per-provider audit of OpenRouter endpoints: how close each one's outputs "
