@@ -146,8 +146,10 @@ Thresholds come from honest machines (same weights, different hardware/engine/ke
 ## Open problems
 
 1. **Black-box audit stealth.** A provider can route traffic it recognises as an audit (account, IP, prompt
-   style, timing) to the real model. Mitigation directions: audit real traffic shared by consenting users;
-   audit through an aggregator; diverse, realistic prompts.
+   style, timing) to the real model. A fixed public prompt list is the easiest fingerprint, so audits should use
+   seeded, rotating prompt sets (`prompts/generate.py`) whose seed is published only after collection. Further
+   directions: audit real traffic shared by consenting users; audit through an aggregator (as here, where requests
+   reach providers from OpenRouter's servers).
 2. **Referee trust.** The referee must run M's true weights at reference precision. For very large models that
    is expensive; a consensus of providers (each used as a referee for the others via teacher-forced completion
    requests) is a cheaper but weaker alternative, honest-majority dependent.
