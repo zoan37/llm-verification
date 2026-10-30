@@ -55,3 +55,45 @@ def test_peer_agreement_separates_a_different_model():
     res = prefix_agreement({"a": base, "b": dict(base), "c": near, "d": other})
     assert res["a"]["median_peer_agreement"] > 0.9
     assert res["d"]["median_peer_agreement"] < 0.1
+
+
+def _lp(tok, lp, top):
+    return {"token": tok, "logprob": lp, "top_logprobs": [{"token": t, "logprob": l} for t, l in top]}
+
+
+def test_logprob_alignment_flags_stale_top_lists():
+    from llmverify.peer import logprob_alignment
+    good = [{"logprobs": [_lp("a", -0.1, [("a", -0.1), ("b", -2.5)]), _lp("b", -1.0, [("c", -0.5), ("b", -1.0)])]}]
+    stale = [{"logprobs": [_lp("a", -0.1, [("a", -0.1), ("b", -2.5)]), _lp("x", -0.0, [("a", -0.1), ("b", -2.5)])]}]
+    assert logprob_alignment(good)["bad_share"] == 0
+    assert logprob_alignment(stale)["bad_share"] == 0.5
+
+
+def test_self_consistency_is_uniform_for_honest_samples():
+    import math
+    import random
+
+    from llmverify.peer import self_consistency
+    rng = random.Random(0)
+    recs = []
+    for i in range(40):
+        lps = []
+        for j in range(30):
+            ws = [rng.random() ** 3 for _ in range(8)]
+            z = sum(ws)
+            top = [(f"t{k}", math.log(w / z)) for k, w in enumerate(ws)]
+            u, acc = rng.random(), 0.0
+            for tok, l in top:
+                acc += math.exp(l)
+                if acc >= u:
+                    break
+            lps.append(_lp(tok, l, top))
+        recs.append({"mode": "sample", "prompt_idx": i, "logprobs": lps})
+    sc = self_consistency(recs)
+    assert sc["p"] > 0.01 and abs(sc["mean"] - 0.5) < 0.03
+    # a sampler hotter than its reported distribution: pick uniformly among the top-8
+    for r in recs:
+        for x in r["logprobs"]:
+            c = rng.choice(x["top_logprobs"])
+            x["token"], x["logprob"] = c["token"], c["logprob"]
+    assert self_consistency(recs)["mean"] > 0.55

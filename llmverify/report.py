@@ -20,7 +20,7 @@ from typing import Dict, List, Optional
 
 from .blackbox import expand
 from .openrouter import load
-from .peer import greedy_texts, prefix_agreement
+from .peer import greedy_texts, logprob_alignment, prefix_agreement, self_consistency
 from .stats import cluster_bootstrap_mean, likelihood_test, pit_test
 
 
@@ -81,6 +81,8 @@ def endpoint_summary(scores: List[dict], raw: List[dict]) -> dict:
         "determinism": _determinism(raw),
         "max_completion_tokens": max(lengths) if lengths else None,
         "cost_usd": sum(((r.get("usage") or {}).get("cost") or 0) for r in raw),
+        "logprob_self_consistency": self_consistency(raw),
+        "logprob_alignment": logprob_alignment(raw),
     }
     return out
 
@@ -127,6 +129,13 @@ def flags(s: dict, ref_regret: Optional[float]) -> List[str]:
         f.append(f"prompt token count differs from the reference template (median {i['prompt_tokens_delta_median']:+d})")
     if i.get("early_stop_share") and i["early_stop_share"] > 0.1:
         f.append(f"ends {i['early_stop_share']:.0%} of 'stop' replies where the model would continue (truncation?)")
+    al = i.get("logprob_alignment")
+    if al and al["bad_share"] > 0.01:
+        f.append(f"top_logprobs disagree with the chosen token's logprob at {al['bad_share']:.0%} of positions "
+                 "(misaligned logprob output)")
+    sc = i.get("logprob_self_consistency")
+    if sc and sc["p"] < 1e-4 and abs(sc["mean"] - 0.5) > 0.02:
+        f.append(f"reported logprobs don't match its own samples (self-PIT mean {sc['mean']:.3f})")
     if not i["logprobs"]:
         f.append("no logprobs (text-only checks)")
     if i["requests"] and i["errors"] / i["requests"] > 0.2:
