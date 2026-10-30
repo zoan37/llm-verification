@@ -109,7 +109,11 @@
    "fidelity": 0.0,
    "flags": [
     "drops tokens from its output (12 re-inserted)"
-   ]
+   ],
+   "verdict": {
+    "level": "far",
+    "text": "about as far from the real model as the substitute (a heavily quantized copy), or further; output-path problem: drops tokens from its output"
+   }
   },
   "cloudflare": {
    "greedy": {
@@ -215,7 +219,11 @@
    "peer_agreement": 0.6688068181818181,
    "x_honest": 2.32,
    "fidelity": 77.4,
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "lossy",
+    "text": "measurably further from the real model than the honest reference"
+   }
   },
   "coreweave__bf16": {
    "greedy": {
@@ -321,7 +329,11 @@
    "peer_agreement": 0.6675,
    "x_honest": 1.29,
    "fidelity": 93.2,
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "ok",
+    "text": "consistent with the real model"
+   }
   },
   "darkbloom": {
    "greedy": {
@@ -427,7 +439,11 @@
    "peer_agreement": 0.3415266798418972,
    "x_honest": 41.97,
    "fidelity": 0.0,
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "far",
+    "text": "about as far from the real model as the substitute (a heavily quantized copy), or further"
+   }
   },
   "deepinfra__fp8": {
    "greedy": {
@@ -514,7 +530,11 @@
    "fidelity": 58.7,
    "flags": [
     "no logprobs (text-only checks)"
-   ]
+   ],
+   "verdict": {
+    "level": "lossy",
+    "text": "measurably further from the real model than the honest reference"
+   }
   },
   "dekallm__bf16": {
    "greedy": {
@@ -620,7 +640,11 @@
    "peer_agreement": 0.6356521739130434,
    "x_honest": 6.39,
    "fidelity": 50.3,
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "lossy",
+    "text": "measurably further from the real model than the honest reference"
+   }
   },
   "google-vertex__global": {
    "greedy": {
@@ -721,7 +745,11 @@
    "peer_agreement": 0.6827717391304348,
    "x_honest": 1.3,
    "fidelity": 93.0,
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "ok",
+    "text": "consistent with the real model"
+   }
   },
   "io-net__bf16": {
    "greedy": {
@@ -827,7 +855,11 @@
    "peer_agreement": 0.5779813664596274,
    "x_honest": 6.49,
    "fidelity": 49.9,
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "lossy",
+    "text": "measurably further from the real model than the honest reference"
+   }
   },
   "local__substitute-q4_0": {
    "greedy": {
@@ -928,7 +960,11 @@
    "peer_agreement": 0.35239130434782606,
    "x_honest": 41.86,
    "fidelity": 0.0,
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "reference",
+    "text": "reference run"
+   }
   },
   "local__vllm-bf16": {
    "greedy": {
@@ -1030,7 +1066,11 @@
    "peer_agreement": 0.6661413043478261,
    "x_honest": 1.0,
    "fidelity": 100.0,
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "reference",
+    "text": "reference run"
+   }
   },
   "makora": {
    "greedy": {
@@ -1137,7 +1177,11 @@
    "peer_agreement": 0.5440093873517786,
    "x_honest": 11.29,
    "fidelity": 35.1,
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "lossy",
+    "text": "measurably further from the real model than the honest reference"
+   }
   },
   "nextbit__bf16": {
    "greedy": {
@@ -1244,7 +1288,11 @@
    "peer_agreement": 0.5142391304347826,
    "x_honest": 10.22,
    "fidelity": 37.8,
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "lossy",
+    "text": "measurably further from the real model than the honest reference"
+   }
   },
   "parasail__bf16": {
    "greedy": {
@@ -1351,7 +1399,11 @@
    "peer_agreement": 0.6296739130434783,
    "x_honest": 2.82,
    "fidelity": 72.3,
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "lossy",
+    "text": "measurably further from the real model than the honest reference"
+   }
   },
   "primeintellect__bf16": {
    "greedy": {
@@ -1440,7 +1492,11 @@
    "fidelity": 98.2,
    "flags": [
     "no logprobs (text-only checks)"
-   ]
+   ],
+   "verdict": {
+    "level": "ok",
+    "text": "consistent with the real model"
+   }
   },
   "siliconflow__fp8": {
    "greedy": {
@@ -1529,7 +1585,11 @@
    "fidelity": 47.5,
    "flags": [
     "no logprobs (text-only checks)"
-   ]
+   ],
+   "verdict": {
+    "level": "lossy",
+    "text": "measurably further from the real model than the honest reference"
+   }
   },
   "venice__bf16": {
    "greedy": {
@@ -1618,7 +1678,11 @@
    "fidelity": 56.9,
    "flags": [
     "no logprobs (text-only checks)"
-   ]
+   ],
+   "verdict": {
+    "level": "lossy",
+    "text": "measurably further from the real model than the honest reference"
+   }
   }
  },
  "referee": "Gemma-4-26B-A4B Q8_0, llama.cpp CUDA, DGX Spark (GB10)",

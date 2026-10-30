@@ -54,6 +54,11 @@ td.num { font-family: var(--mono); font-size: 13px; white-space: nowrap; }
   border: 1px solid currentColor; white-space: nowrap; }
 .pill.good { color: var(--good); } .pill.warn { color: var(--warn); } .pill.bad { color: var(--bad); } .pill.ref { color: var(--accent); }
 .flags { max-width: 300px; }
+td.verdict { min-width: 190px; max-width: 260px; }
+.why { font-size: 12.5px; color: var(--muted); line-height: 1.35; margin-top: 2px; }
+.howto { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; margin: 0 0 16px;
+  font-size: 14px; display: grid; gap: 6px; max-width: 90ch; }
+.howto b { font-weight: 600; }
 .flag { font-size: 12.5px; color: var(--warn); line-height: 1.35; margin-bottom: 3px; }
 .findings { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-top: 28px; }
 .finding { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 14px; display: grid;
@@ -150,14 +155,12 @@ function scaleBar(r, m) {
     <span class="pt" style="left:${pos(g.mean)}%"></span></div>`;
 }
 
+const LEVEL = {ok: ['good', 'consistent'], lossy: ['warn', 'lossy'], far: ['bad', 'far off'],
+  broken: ['bad', 'broken output'], check: ['warn', 'check'], reference: ['ref', 'reference']};
 function verdict(r) {
-  if (r.reference === 'honest') return '<span class="pill ref">honest reference</span>';
-  if (r.reference === 'cheat') return '<span class="pill ref">substitute reference</span>';
-  const f = r.fidelity;
-  if (f == null) return '';
-  if (f >= 80) return '<span class="pill good">consistent</span>';
-  if (f >= 40) return '<span class="pill warn">deviates</span>';
-  return '<span class="pill bad">far from referee</span>';
+  const v = r.verdict || {level: 'check', text: ''};
+  const [cls, label] = LEVEL[v.level] || ['warn', v.level];
+  return `<span class="pill ${cls}">${label}</span><div class="why">${esc(v.text)}</div>`;
 }
 
 function flagCell(r) {
@@ -170,7 +173,19 @@ function head(m, providers) {
         ${m.referee_free ? '<span><b>no referee</b>: checks that need no reference weights</span>'
           : `<span>referee <b>${esc(m.referee)}</b></span><span>0 = <b>${esc(m.anchor)}</b></span>`}
         <span>collected <b>${esc(m.built)}</b></span></div>
-      ${m.notes ? `<p class="lede" style="font-size:14px;max-width:80ch">${esc(m.notes)}</p>` : ''}</div>`;
+      ${m.notes ? `<p class="lede" style="font-size:14px;max-width:80ch">${esc(m.notes)}</p>` : ''}</div>
+    <div class="howto">${m.referee_free ? `
+      <div><b>How to read this tab.</b> No reference weights were run here, so nothing on this tab can measure how close an
+        endpoint is to the real model. It can only spot outliers and broken outputs.</div>
+      <div><b>Verdict</b> sums it up. <b>Peer agreement</b> is a weak hint: an endpoint far below the others (and below the
+        quantized substitute row) is worth a closer look. <b>Misaligned logprobs</b> above 1% means its logprobs are
+        unusable; other logprob-based columns are then meaningless for that row.</div>` : `
+      <div><b>How to read this tab.</b> Start with <b>Fidelity</b> and the <b>Verdict</b>: 100 means as close to the real
+        model as an honest machine, 0 means as far as the named substitute. Lower is lossier, not necessarily dishonest:
+        heavier quantization, a compressed cache or different kernels all move it.</div>
+      <div><b>Flags</b> are separate problems in what the endpoint returns (dropped tokens, edited prompts, broken
+        logprobs, undisclosed sampling defaults). Shaded rows are our own reference runs.</div>`}
+    </div>`;
 }
 
 function renderRefereeFree(m) {
@@ -180,6 +195,7 @@ function renderRefereeFree(m) {
     return `<tr class="${r.local ? 'ref' : ''}">
       <td><div class="name">${esc(r.local ? (r.label || r.tag) : r.provider)}</div>
         <div class="sub">${esc(r.tag)}${r.quantization && !r.local ? ' · ' + esc(r.quantization) : ''}</div></td>
+      <td class="verdict">${verdict(r)}</td>
       <td class="num">${r.peer_agreement == null ? '–' : r.peer_agreement.toFixed(2)}</td>
       <td class="num">${det ? Math.round(100 * det.identical_share) + '%' : '–'}</td>
       <td class="num">${i.own_top_miss == null ? '–' : (100 * i.own_top_miss).toFixed(1) + '%'}</td>
@@ -189,7 +205,7 @@ function renderRefereeFree(m) {
       <td class="flags">${flagCell(r)}</td></tr>`;
   }).join('');
   return `<div class="ledger"><table>
-      <thead><tr><th>Endpoint</th><th>Peer agreement</th><th>Same reply at T=0</th><th>Sampled at T=0</th>
+      <thead><tr><th>Endpoint</th><th>Verdict</th><th>Peer agreement</th><th>Same reply at T=0</th><th>Sampled at T=0</th>
         <th>Self-PIT mean</th><th>Misaligned logprobs</th><th>Prompt tokens</th><th>Flags</th></tr></thead>
       <tbody>${body}</tbody></table></div>`;
 }
@@ -214,7 +230,8 @@ function render(key) {
     return `<tr class="${r.local ? 'ref' : ''}">
       <td><div class="name">${esc(r.local ? (r.label || r.tag) : r.provider)}</div>
         <div class="sub">${esc(r.tag)}${r.quantization && !r.local ? ' · ' + esc(r.quantization) : ''}</div></td>
-      <td><div class="score">${r.fidelity == null ? '–' : Math.round(r.fidelity)}</div>${verdict(r)}</td>
+      <td><div class="score">${r.fidelity == null ? '–' : Math.round(r.fidelity)}</div></td>
+      <td class="verdict">${verdict(r)}</td>
       <td class="num">${fmt(g.regret.mean)}<div class="sub">[${fmt(g.regret.lo)}, ${fmt(g.regret.hi)}]</div>${scaleBar(r, m)}</td>
       <td class="num">${r.x_honest == null ? '–' : r.x_honest.toFixed(1) + '×'}</td>
       <td class="num">${g.disagree.mean == null ? '–' : (100 * g.disagree.mean).toFixed(1) + '%'}<div class="sub">${g.big_miss_per_1k == null ? '' : g.big_miss_per_1k.toFixed(1) + ' big/1k'}</div></td>
@@ -226,7 +243,7 @@ function render(key) {
   }).join('');
   document.getElementById('model').innerHTML = head(m, providers) + `
     <div class="ledger"><table>
-      <thead><tr><th>Endpoint</th><th>Fidelity</th><th>Regret (nats/token)</th><th>× honest</th><th>Other token</th>
+      <thead><tr><th>Endpoint</th><th>Fidelity</th><th>Verdict</th><th>Regret (nats/token)</th><th>× honest</th><th>Other token</th>
         <th>Sampled fit (PIT)</th><th>Peer agreement</th><th>Same reply at T=0</th><th>Flags</th></tr></thead>
       <tbody>${body}</tbody></table></div>`;
   try { localStorage.setItem('lv-model', key); } catch (e) {}

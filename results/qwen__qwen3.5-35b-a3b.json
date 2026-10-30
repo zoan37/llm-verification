@@ -63,6 +63,7 @@
     }
    },
    "integrity": {
+    "billed_minus_returned_median": 0,
     "stop_replies_checked": 30,
     "early_stop_share": 0.0,
     "requests": 104,
@@ -107,9 +108,12 @@
    "x_honest": 10.38,
    "fidelity": 0.0,
    "flags": [
-    "non-deterministic at temperature 0",
     "truncates sampling at top_p=1: 0 long-tail tokens vs 8.8 expected (likely an unrequested default top_k/min_p)"
-   ]
+   ],
+   "verdict": {
+    "level": "far",
+    "text": "about as far from the real model as the substitute (a heavily quantized copy), or further"
+   }
   },
   "atlas-cloud__fp8": {
    "greedy": {
@@ -159,6 +163,7 @@
     }
    },
    "integrity": {
+    "billed_minus_returned_median": 0,
     "stop_replies_checked": 29,
     "early_stop_share": 0.0,
     "requests": 104,
@@ -196,10 +201,13 @@
    "x_honest": 16.01,
    "fidelity": 0.0,
    "flags": [
-    "non-deterministic at temperature 0",
     "truncates sampling at top_p=1: 2 long-tail tokens vs 9.9 expected (likely an unrequested default top_k/min_p)",
     "no logprobs (text-only checks)"
-   ]
+   ],
+   "verdict": {
+    "level": "far",
+    "text": "about as far from the real model as the substitute (a heavily quantized copy), or further"
+   }
   },
   "darkbloom__fp4": {
    "greedy": {
@@ -261,6 +269,7 @@
     }
    },
    "integrity": {
+    "billed_minus_returned_median": 0,
     "stop_replies_checked": 27,
     "early_stop_share": 0.0,
     "requests": 104,
@@ -305,9 +314,11 @@
    "peer_agreement": 0.3740697674418605,
    "x_honest": 15.67,
    "fidelity": 0.0,
-   "flags": [
-    "non-deterministic at temperature 0"
-   ]
+   "flags": [],
+   "verdict": {
+    "level": "far",
+    "text": "about as far from the real model as the substitute (a heavily quantized copy), or further"
+   }
   },
   "deepinfra__fp8": {
    "greedy": {
@@ -357,6 +368,7 @@
     }
    },
    "integrity": {
+    "billed_minus_returned_median": 0,
     "stop_replies_checked": 30,
     "early_stop_share": 0.0,
     "requests": 104,
@@ -394,9 +406,12 @@
    "x_honest": 2.44,
    "fidelity": 49.1,
    "flags": [
-    "non-deterministic at temperature 0",
     "no logprobs (text-only checks)"
-   ]
+   ],
+   "verdict": {
+    "level": "lossy",
+    "text": "measurably further from the real model than the honest reference"
+   }
   },
   "local__cpu-arm-q8": {
    "greedy": {
@@ -458,6 +473,7 @@
     }
    },
    "integrity": {
+    "billed_minus_returned_median": 0,
     "stop_replies_checked": 30,
     "early_stop_share": 0.0,
     "requests": 104,
@@ -497,7 +513,11 @@
    "peer_agreement": 0.5468604651162791,
    "x_honest": 0.3,
    "fidelity": 100.0,
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "reference",
+    "text": "reference run"
+   }
   },
   "local__q6_k-metal": {
    "greedy": {
@@ -559,6 +579,7 @@
     }
    },
    "integrity": {
+    "billed_minus_returned_median": 0,
     "stop_replies_checked": 30,
     "early_stop_share": 0.0,
     "requests": 104,
@@ -598,7 +619,11 @@
    "peer_agreement": 0.5667441860465117,
    "x_honest": 1.0,
    "fidelity": 100.0,
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "reference",
+    "text": "reference run"
+   }
   },
   "local__substitute-iq2_xxs": {
    "greedy": {
@@ -660,6 +685,7 @@
     }
    },
    "integrity": {
+    "billed_minus_returned_median": 0,
     "stop_replies_checked": 30,
     "early_stop_share": 0.0,
     "requests": 104,
@@ -699,7 +725,11 @@
    "peer_agreement": 0.29534883720930233,
    "x_honest": 28.29,
    "fidelity": 0.0,
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "reference",
+    "text": "reference run"
+   }
   },
   "local__substitute-q3_k_m": {
    "greedy": {
@@ -761,6 +791,7 @@
     }
    },
    "integrity": {
+    "billed_minus_returned_median": 0,
     "stop_replies_checked": 31,
     "early_stop_share": 0.0,
     "requests": 104,
@@ -800,7 +831,11 @@
    "peer_agreement": 0.458953488372093,
    "x_honest": 5.75,
    "fidelity": 0.0,
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "reference",
+    "text": "reference run"
+   }
   },
   "local__substitute-qwen3.5-4b": {
    "greedy": {
@@ -862,6 +897,7 @@
     }
    },
    "integrity": {
+    "billed_minus_returned_median": 0,
     "stop_replies_checked": 28,
     "early_stop_share": 0.0,
     "requests": 104,
@@ -901,7 +937,11 @@
    "peer_agreement": 0.19906976744186047,
    "x_honest": 105.34,
    "fidelity": 0.0,
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "reference",
+    "text": "reference run"
+   }
   },
   "parasail__fp8": {
    "greedy": {
@@ -963,6 +1003,7 @@
     }
    },
    "integrity": {
+    "billed_minus_returned_median": 0,
     "stop_replies_checked": 29,
     "early_stop_share": 0.0,
     "requests": 104,
@@ -1008,9 +1049,12 @@
    "x_honest": 2.53,
    "fidelity": 47.0,
    "flags": [
-    "non-deterministic at temperature 0",
     "truncates sampling at top_p=1: 1 long-tail tokens vs 9.1 expected (likely an unrequested default top_k/min_p)"
-   ]
+   ],
+   "verdict": {
+    "level": "lossy",
+    "text": "measurably further from the real model than the honest reference"
+   }
   },
   "siliconflow__fp8": {
    "greedy": {
@@ -1060,6 +1104,7 @@
     }
    },
    "integrity": {
+    "billed_minus_returned_median": 0,
     "stop_replies_checked": 58,
     "early_stop_share": 0.017241379310344827,
     "requests": 104,
@@ -1097,10 +1142,13 @@
    "x_honest": 6.58,
    "fidelity": 0.0,
    "flags": [
-    "non-deterministic at temperature 0",
     "truncates sampling at top_p=1: 5 long-tail tokens vs 15.4 expected (likely an unrequested default top_k/min_p)",
     "no logprobs (text-only checks)"
-   ]
+   ],
+   "verdict": {
+    "level": "far",
+    "text": "about as far from the real model as the substitute (a heavily quantized copy), or further"
+   }
   },
   "venice": {
    "greedy": {
@@ -1162,6 +1210,7 @@
     }
    },
    "integrity": {
+    "billed_minus_returned_median": 0,
     "stop_replies_checked": 29,
     "early_stop_share": 0.0,
     "requests": 104,
@@ -1207,13 +1256,16 @@
    "x_honest": 2.15,
    "fidelity": 56.2,
    "flags": [
-    "non-deterministic at temperature 0",
     "truncates sampling at top_p=1: 1 long-tail tokens vs 9.2 expected (likely an unrequested default top_k/min_p)"
-   ]
+   ],
+   "verdict": {
+    "level": "lossy",
+    "text": "measurably further from the real model than the honest reference"
+   }
   }
  },
  "referee": "Qwen3.5-35B-A3B Q8_0, llama.cpp Metal, M5 Max",
  "anchor": "a 3-bit quantization (Q3_K_M) of the same model",
- "notes": "100 is set by a near-lossless 6-bit re-quantization (Q6_K), standing in for faithful FP8/BF16 serving; the same Q8 weights on the CPU show how tight same-weights agreement is. The referee is Q8_0, so FP8-class endpoints cannot be told apart from each other, only from 4-bit-and-worse behaviour.",
+ "notes": "100 is set by a near-lossless 6-bit re-quantization (Q6_K), stricter than FP8 serving can be; well-behaved FP8 endpoints land around 50 here. The same Q8 weights on the CPU show how tight same-weights agreement is. The referee is Q8_0, so FP8-class endpoints cannot be told apart from each other, only from 4-bit-and-worse behaviour.",
  "built": "2026-10-30"
 }

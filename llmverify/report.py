@@ -123,7 +123,9 @@ def fidelity(d: Optional[float], honest: Optional[float], cheat: Optional[float]
 def flags(s: dict, ref_regret: Optional[float]) -> List[str]:
     f = []
     i = s["integrity"]
-    if i["own_top_miss"] is not None and i["own_top_miss"] > 0.01:
+    al0 = i.get("logprob_alignment")
+    broken_lp = bool(al0 and al0["bad_share"] > 0.1)  # then checks computed from its logprobs mean nothing
+    if not broken_lp and i["own_top_miss"] is not None and i["own_top_miss"] > 0.01:
         f.append(f"samples at temperature 0 ({i['own_top_miss']:.1%} of tokens not its own top choice)")
     if i["inserted_tokens"] >= 3:
         f.append(f"drops tokens from its output ({i['inserted_tokens']} re-inserted)")
@@ -140,10 +142,10 @@ def flags(s: dict, ref_regret: Optional[float]) -> List[str]:
                  "expected (likely an unrequested default top_k/min_p)")
     al = i.get("logprob_alignment")
     if al and al["bad_share"] > 0.01:
-        f.append(f"top_logprobs disagree with the chosen token's logprob at {al['bad_share']:.0%} of positions "
-                 "(misaligned logprob output)")
+        f.append(f"logprob output is broken: top-20 lists contradict the returned token at {al['bad_share']:.0%} "
+                 "of positions, so its logprobs can't be used to verify anything")
     sc = i.get("logprob_self_consistency")
-    if sc and sc["p"] < 1e-4 and abs(sc["mean"] - 0.5) > 0.02:
+    if not broken_lp and sc and sc["p"] < 1e-4 and abs(sc["mean"] - 0.5) > 0.02:
         f.append(f"reported logprobs don't match its own samples (self-PIT mean {sc['mean']:.3f})")
     if not i["logprobs"]:
         f.append("no logprobs (text-only checks)")
@@ -196,6 +198,7 @@ def model_report(model: str, root: Path = Path("data")) -> dict:
         s["x_honest"] = round(r / h_reg, 2) if r is not None and h_reg else None
         s["fidelity"] = fidelity(r, h_reg, c_reg)
         s["flags"] = flags(s, h_reg)
+        s["verdict"] = verdict(s)
     return {"model": model, "honest_regret": h_reg, "cheat_regret": c_reg, "endpoints": eps}
 
 
@@ -252,4 +255,43 @@ def referee_free_report(model: str, root: Path = Path("data")) -> dict:
             f.append(f"prompt token count {counts[k]} vs {consensus} at most endpoints (different template or added text)")
         s["flags"] = f
         eps[k] = s
+    floor = max((s["peer_agreement"] for s in eps.values() if s["reference"] == "cheat" and s["peer_agreement"] is not None),
+                default=None)
+    for s in eps.values():
+        s["verdict"] = verdict(s, floor)
     return {"model": model, "referee_free": True, "endpoints": eps}
+
+
+def verdict(s: dict, peer_floor: Optional[float] = None) -> dict:
+    """A plain-language summary for one endpoint: level ("ok", "lossy", "far", "broken", "check", "reference") and a
+    one-line reason. Distance-based levels need a fidelity score; referee-free tabs fall back on peer agreement
+    relative to the substitute reference (`peer_floor`)."""
+    if s.get("local"):
+        return {"level": "reference", "text": "reference run"}
+    i = s.get("integrity") or {}
+    if i.get("requests") and i.get("errors", 0) >= 0.5 * i["requests"]:
+        return {"level": "check", "text": f"no usable data: {i['errors']} of {i['requests']} requests failed"}
+    fl = s.get("flags") or []
+    broken = [x for x in fl if x.startswith(("logprob output is broken", "drops tokens", "prompt token count",
+                                              "samples at temperature 0"))]
+    fid = s.get("fidelity")
+    if fid is not None:
+        if fid >= 80:
+            lvl, txt = "ok", "consistent with the real model"
+        elif fid >= 15:
+            lvl, txt = "lossy", "measurably further from the real model than the honest reference"
+        else:
+            lvl, txt = "far", "about as far from the real model as the substitute (a heavily quantized copy), or further"
+    else:
+        pa = s.get("peer_agreement")
+        if pa is not None and peer_floor is not None and pa <= peer_floor:
+            lvl, txt = "far", "agrees with other endpoints less than a heavily quantized copy does"
+        elif pa is not None and peer_floor is not None and pa < (peer_floor + 0.6) / 2:
+            lvl, txt = "check", "agrees with other endpoints noticeably less than most"
+        else:
+            lvl, txt = "ok", "no sign of a different model (no referee yet)"
+    if broken:
+        txt += "; " + ("output-path problem: " + broken[0].split(" (")[0].split(":")[0])
+        if lvl == "ok":
+            lvl = "broken"
+    return {"level": lvl, "text": txt}

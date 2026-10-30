@@ -36,7 +36,11 @@
     "prompt_tokens_mismatch_share": null,
     "cost_usd": 0.04269348
    },
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "ok",
+    "text": "no sign of a different model (no referee yet)"
+   }
   },
   "alibaba": {
    "tag": "alibaba",
@@ -72,7 +76,11 @@
     "prompt_tokens_mismatch_share": null,
     "cost_usd": 0.0539886
    },
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "check",
+    "text": "agrees with other endpoints noticeably less than most"
+   }
   },
   "cerebras__fp16": {
    "tag": "cerebras/fp16",
@@ -108,7 +116,11 @@
     "prompt_tokens_mismatch_share": null,
     "cost_usd": 0.03421453
    },
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "ok",
+    "text": "no sign of a different model (no referee yet)"
+   }
   },
   "chutes__fp8": {
    "tag": "chutes/fp8",
@@ -138,7 +150,11 @@
    },
    "flags": [
     "no logprobs (text-only checks)"
-   ]
+   ],
+   "verdict": {
+    "level": "ok",
+    "text": "no sign of a different model (no referee yet)"
+   }
   },
   "cloudflare": {
    "tag": "cloudflare",
@@ -174,7 +190,11 @@
     "prompt_tokens_mismatch_share": null,
     "cost_usd": 0.0691344
    },
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "ok",
+    "text": "no sign of a different model (no referee yet)"
+   }
   },
   "coreweave__fp8": {
    "tag": "coreweave/fp8",
@@ -210,7 +230,11 @@
     "prompt_tokens_mismatch_share": null,
     "cost_usd": 0.0656226
    },
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "ok",
+    "text": "no sign of a different model (no referee yet)"
+   }
   },
   "darkbloom__fp4": {
    "tag": "darkbloom/fp4",
@@ -246,7 +270,11 @@
     "prompt_tokens_mismatch_share": null,
     "cost_usd": 0.0319161
    },
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "check",
+    "text": "agrees with other endpoints noticeably less than most"
+   }
   },
   "deepinfra__bf16": {
    "tag": "deepinfra/bf16",
@@ -276,7 +304,11 @@
    },
    "flags": [
     "no logprobs (text-only checks)"
-   ]
+   ],
+   "verdict": {
+    "level": "ok",
+    "text": "no sign of a different model (no referee yet)"
+   }
   },
   "dekallm": {
    "tag": "dekallm",
@@ -313,10 +345,12 @@
     "cost_usd": 0.05369136
    },
    "flags": [
-    "samples at temperature 0 (31.5% of tokens not its own top choice)",
-    "top_logprobs disagree with the chosen token's logprob at 73% of positions (misaligned logprob output)",
-    "reported logprobs don't match its own samples (self-PIT mean 0.577)"
-   ]
+    "logprob output is broken: top-20 lists contradict the returned token at 73% of positions, so its logprobs can't be used to verify anything"
+   ],
+   "verdict": {
+    "level": "broken",
+    "text": "no sign of a different model (no referee yet); output-path problem: logprob output is broken"
+   }
   },
   "ionstream__fp8": {
    "tag": "ionstream/fp8",
@@ -352,7 +386,11 @@
     "prompt_tokens_mismatch_share": null,
     "cost_usd": 0.04149426
    },
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "ok",
+    "text": "no sign of a different model (no referee yet)"
+   }
   },
   "local__substitute-q2_k_xl": {
    "tag": "local/substitute-q2_k_xl",
@@ -388,7 +426,11 @@
     "prompt_tokens_mismatch_share": null,
     "cost_usd": 0
    },
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "reference",
+    "text": "reference run"
+   }
   },
   "mancer__fp8": {
    "tag": "mancer/fp8",
@@ -424,7 +466,11 @@
     "prompt_tokens_mismatch_share": null,
     "cost_usd": 0.0534075
    },
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "ok",
+    "text": "no sign of a different model (no referee yet)"
+   }
   },
   "modal": {
    "tag": "modal",
@@ -460,7 +506,11 @@
     "prompt_tokens_mismatch_share": null,
     "cost_usd": 0.04911516
    },
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "ok",
+    "text": "no sign of a different model (no referee yet)"
+   }
   },
   "modelrun__fp4": {
    "tag": "modelrun/fp4",
@@ -490,7 +540,11 @@
    },
    "flags": [
     "no logprobs (text-only checks)"
-   ]
+   ],
+   "verdict": {
+    "level": "check",
+    "text": "agrees with other endpoints noticeably less than most"
+   }
   },
   "near-ai__fp8": {
    "tag": "near-ai/fp8",
@@ -526,7 +580,11 @@
     "prompt_tokens_mismatch_share": null,
     "cost_usd": 0.02506503
    },
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "ok",
+    "text": "no sign of a different model (no referee yet)"
+   }
   },
   "novita": {
    "tag": "novita",
@@ -553,7 +611,11 @@
    "flags": [
     "no logprobs (text-only checks)",
     "4 of 4 requests failed"
-   ]
+   ],
+   "verdict": {
+    "level": "check",
+    "text": "no usable data: 4 of 4 requests failed"
+   }
   },
   "parasail__fp8": {
    "tag": "parasail/fp8",
@@ -589,7 +651,11 @@
     "prompt_tokens_mismatch_share": null,
     "cost_usd": 0.04736756
    },
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "ok",
+    "text": "no sign of a different model (no referee yet)"
+   }
   },
   "phala": {
    "tag": "phala",
@@ -619,7 +685,11 @@
    },
    "flags": [
     "no logprobs (text-only checks)"
-   ]
+   ],
+   "verdict": {
+    "level": "ok",
+    "text": "no sign of a different model (no referee yet)"
+   }
   },
   "reka__fp8": {
    "tag": "reka/fp8",
@@ -655,7 +725,11 @@
     "prompt_tokens_mismatch_share": null,
     "cost_usd": 0.04731896
    },
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "ok",
+    "text": "no sign of a different model (no referee yet)"
+   }
   },
   "tenstorrent__fp4": {
    "tag": "tenstorrent/fp4",
@@ -691,7 +765,11 @@
     "prompt_tokens_mismatch_share": null,
     "cost_usd": 0.0424696
    },
-   "flags": []
+   "flags": [],
+   "verdict": {
+    "level": "ok",
+    "text": "no sign of a different model (no referee yet)"
+   }
   },
   "venice__fp8": {
    "tag": "venice/fp8",
@@ -721,7 +799,11 @@
    },
    "flags": [
     "no logprobs (text-only checks)"
-   ]
+   ],
+   "verdict": {
+    "level": "far",
+    "text": "agrees with other endpoints less than a heavily quantized copy does"
+   }
   },
   "wafer__fp8": {
    "tag": "wafer/fp8",
@@ -758,12 +840,14 @@
     "cost_usd": 0.04916164
    },
    "flags": [
-    "samples at temperature 0 (27.6% of tokens not its own top choice)",
-    "top_logprobs disagree with the chosen token's logprob at 64% of positions (misaligned logprob output)",
-    "reported logprobs don't match its own samples (self-PIT mean 0.591)"
-   ]
+    "logprob output is broken: top-20 lists contradict the returned token at 64% of positions, so its logprobs can't be used to verify anything"
+   ],
+   "verdict": {
+    "level": "broken",
+    "text": "no sign of a different model (no referee yet); output-path problem: logprob output is broken"
+   }
   }
  },
- "notes": "No referee yet: the reference weights could not be hosted for this run. Shown: checks that need no weights. The 2-bit substitute row shows how far a heavily quantized copy lands on peer agreement.",
+ "notes": "Referee scoring is running; until then only checks that need no reference weights. The 2-bit substitute row shows where a heavily quantized copy lands on peer agreement.",
  "built": "2026-10-30"
 }
