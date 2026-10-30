@@ -70,6 +70,7 @@ table.small { min-width: 560px; }
 .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px 28px; margin-top: 28px; }
 .legend div { min-width: 0; }
 .legend p { color: var(--muted); font-size: 14px; }
+.legend b { color: var(--ink); font-weight: 600; }
 .note { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 14px; max-width: 75ch; display: grid; gap: 10px; }
 code { font: 13px var(--mono); }
 @media (max-width: 520px) { .wrap { padding-block: 24px 48px; } }
@@ -113,22 +114,42 @@ code { font: 13px var(--mono); }
         <tr><td>Tie steering: nudging near-ties</td><td class="num">0 / 32</td><td class="num">3&ndash;13%</td><td class="num">2&ndash;13%</td></tr>
       </tbody></table></div>
   </section>
-  <section class="legend">
-    <div><h3>Fidelity</h3><p>100 = as close to the referee as an honest second machine; 0 = as far as the substitute named
-      for that model. Linear in log distance, clipped. A ranking aid; the distance and its interval are the evidence.</p></div>
-    <div><h3>Regret (greedy)</h3><p>At temperature 0, how much less likely the referee found the provider's chosen token than
-      its own first choice, in nats per token. 0 means the same token. Bar: 95% interval, ticks at the honest and substitute levels.</p></div>
-    <div><h3>Sampled fit (PIT)</h3><p>At temperature 1, where each sampled token falls in the referee's distribution: 0.500
-      on average for true samples, needing no calibration. Above 0.5 means less likely tokens than the real model would
-      pick. * marks p &lt; 0.001. "tail" is long-tail draws (p &lt; 1e-4) observed vs expected: honest sampling is near 1×,
-      a silent top-k is near 0×, a flatter substitute model is well above 1×.</p></div>
-    <div><h3>Peer agreement</h3><p>How long an endpoint's temperature-0 replies stay identical to the other endpoints', as a
-      share of the first 200 characters (median over peers). Needs no reference weights, but it rewards being like the
-      crowd, not being correct.</p></div>
-    <div><h3>Self-PIT</h3><p>Referee-free check that an endpoint's reported logprobs describe its own temperature-1 samples:
-      0.500 when they do. Far from 0.5 means the logprobs and the sampler disagree.</p></div>
-    <div><h3>Flags</h3><p>Integrity findings that are not about model identity: sampling when asked for temperature 0, dropped
-      output tokens, prompt token counts that disagree with the published template, no logprobs.</p></div>
+  <section class="legend" aria-label="Column guide">
+    <h2 style="grid-column: 1 / -1">What each column means</h2>
+    <div><h3>Shaded rows: references</h3><p>Our own runs, scored exactly like the endpoints. <b>Honest</b> rows run the real
+      weights faithfully on other hardware (or a near-lossless copy): they show how close "really the model" gets.
+      <b>Substitute</b> rows are deliberately wrong (a heavily quantized copy, or a smaller model posing as the big one):
+      they show what clearly-not-the-model looks like.</p></div>
+    <div><h3>Fidelity</h3><p>Where an endpoint sits between the two references: 100 = as close to the real model as the honest
+      reference, 0 = as far as the substitute. Measured on log distance and clipped to 0-100. A ranking aid; the columns
+      after it are the evidence.</p></div>
+    <div><h3>Verdict</h3><p><b>consistent</b> (close to the real model), <b>lossy</b> (measurably further than honest
+      serving), <b>far off</b> (as far as the substitute or further), <b>broken output</b> (model looks fine but what
+      it returns is wrong), <b>check</b> (an outlier or missing data). Distance, not intent.</p></div>
+    <div><h3>Regret</h3><p>At temperature 0 the referee (the real model) replays every reply and asks: how much less likely was
+      the endpoint's token than the real model's own first choice? In nats per token; 0 when they match. Bracket: 95%
+      interval. Bar: log scale with ticks at the honest and substitute levels.</p></div>
+    <div><h3>× honest</h3><p>Regret divided by the honest reference's regret. 1× = as close as an honest second machine;
+      5× = five times further off.</p></div>
+    <div><h3>Other token</h3><p>Share of temperature-0 tokens where the endpoint picked something other than the real model's
+      favourite. Honest machines are around 1-2% (near-ties flip on different hardware). "big/1k" counts serious misses:
+      tokens the real model rated at least 10× less likely than its favourite, per 1,000 tokens.</p></div>
+    <div><h3>Sampled fit (PIT)</h3><p>At temperature 1, where each sampled token falls in the real model's distribution: 0.500
+      on average for true samples, with no calibration needed. Above 0.5 means it picks less likely tokens than the real
+      model would. * marks p &lt; 0.001. "tail" counts long-tail tokens (p &lt; 1e-4) observed vs expected: near 1× is
+      honest sampling, near 0× means a silent top-k, well above 1× a flatter substitute.</p></div>
+    <div><h3>Peer agreement</h3><p>How long an endpoint's temperature-0 replies stay word-for-word identical to the other
+      endpoints' (first 200 characters, median over peers). Needs no reference weights, but rewards being like the crowd,
+      not being correct: only far-below-everyone values mean much.</p></div>
+    <div><h3>Same reply at T=0</h3><p>Share of repeated temperature-0 prompts that came back identical. Most servers batch
+      requests, which changes the arithmetic slightly, so below 100% is normal.</p></div>
+    <div><h3>Sampled at T=0 / Self-PIT / Misaligned logprobs</h3><p>Checks on the endpoint's own reported logprobs (no
+      referee): picking tokens that are not its own top choice when asked for greedy; whether its probabilities explain its
+      own temperature-1 samples (0.500 = yes); and whether its top-20 lists even belong to the token it returned.</p></div>
+    <div><h3>Prompt tokens</h3><p>The prompt size the endpoint billed. Everyone running the published template bills the
+      same; a different number means it added to or changed your prompt.</p></div>
+    <div><h3>Flags</h3><p>Specific problems in what an endpoint returns: dropped tokens, edited prompts, broken logprobs,
+      undisclosed sampling defaults, failed requests.</p></div>
   </section>
   <section class="note">
     <p>A low score is not proof of cheating. Honest serving choices (FP8 weights, an FP8 KV cache, different kernels) move
