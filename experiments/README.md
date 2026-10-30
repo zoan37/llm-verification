@@ -145,6 +145,19 @@ The clearest spectrum of the four models: three endpoints are indistinguishable 
 distance. AkashML labels itself fp4, so that is disclosed; Darkbloom carries no label but behaves like a 4-bit model.
 Their temperature-1 samples also fit the referee worse (PIT mean 0.52, like the Q4_0 copy).
 
+## gpt-oss-20b (10 endpoints)
+
+Referee: the MXFP4 release weights on llama.cpp CUDA (DGX Spark). 100 = the same weights on the Grace CPU; 0 = a
+re-quantized copy (experts Q4_0, rest Q2_K). Every endpoint is within 1.2× an honest machine (fidelity 92-100):
+on this model, nobody serves noticeably degraded weights at temperature 0. The differences are in sampling:
+
+- **Darkbloom (labelled fp8)** samples *hotter* than requested at temperature 1: 93 long-tail tokens where the model's
+  distribution predicts 30 (honest CPU run: 23 vs 21.9), and its sampled text fits the model worse (excess
+  cross-entropy +0.17 nats/token), although its temperature-0 output matches the model exactly. A temperature above
+  the requested value, a sampler bug, or added noise would all do this.
+- **Groq** truncates the tail (0 vs 16.8 expected) and bills 4 extra prompt tokens; **DeepInfra (bf16)** failed 81
+  of 104 requests and bills 13 fewer prompt tokens than the published template.
+
 ## gpt-oss-120b (26 endpoints)
 
 Deferred: the largest and slowest model to score (reasoning text plus 63 GB of weights). Replies from all 26 endpoints

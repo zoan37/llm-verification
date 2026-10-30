@@ -1,0 +1,1416 @@
+{
+ "model": "openai/gpt-oss-20b",
+ "honest_regret": 0.03883300902281239,
+ "cheat_regret": 0.23990669853132876,
+ "endpoints": {
+  "akashml__fp4": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.0451728404502105,
+     "lo": 0.03962929451875164,
+     "hi": 0.05109654639175258,
+     "n_tokens": 11639,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.08016152590428727,
+     "lo": 0.0709269662921348,
+     "hi": 0.08944077804793327,
+     "n_tokens": 11639,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.14881069847429226,
+     "lo": 0.13444545679230294,
+     "hi": 0.16280479967219086,
+     "n_tokens": 11339,
+     "n_replies": 47
+    },
+    "topk": {
+     "mean": 0.6883378728282917,
+     "lo": 0.6657694131493507,
+     "hi": 0.7134133936894944,
+     "n_tokens": 11339,
+     "n_replies": 47
+    },
+    "big_miss_per_1k": 1.0310164103445314,
+    "first_token_match": 0.75
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -1.6090732871588425,
+     "p": 0.1076003175130179,
+     "excess_ce": 0.014621967227253129,
+     "excess_ce_lo": -0.0005621788749494139,
+     "excess_ce_hi": 0.030097785151389465,
+     "n_tokens": 11595
+    },
+    "pit": {
+     "ks": 0.012219077188443284,
+     "p": 0.062220379520493474,
+     "mean": 0.5053160008624408,
+     "n_tokens": 11595
+    },
+    "tail": {
+     "observed": 22,
+     "expected": 22.6529058,
+     "ratio": 0.9711778345010379,
+     "z": -0.1381672167592734,
+     "p": 0.8901082637951077,
+     "n_tokens": 11595
+    }
+   },
+   "sample_reasoning": {
+    "replies": 48,
+    "likelihood": {
+     "z": -2.3219765499755107,
+     "p": 0.020234198346295147,
+     "excess_ce": 0.10090168096054888,
+     "excess_ce_lo": -0.008405398230088491,
+     "excess_ce_hi": 0.20999992438563328,
+     "n_tokens": 583
+    },
+    "pit": {
+     "ks": 0.02111022298456261,
+     "p": 0.9554961035829406,
+     "mean": 0.5055871355060034,
+     "n_tokens": 583
+    },
+    "tail": {
+     "observed": 4,
+     "expected": 1.2447642,
+     "ratio": 3.2134600272083658,
+     "z": 2.487327171457417,
+     "p": 0.012870697320643566,
+     "n_tokens": 583
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": null,
+    "stop_replies_checked": 39,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 0,
+    "scored_tokens": 25704,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.0,
+     "mean_distinct": 3.0
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.00290182,
+    "logprob_self_consistency": {
+     "ks": 0.006862894336404302,
+     "p": 0.6445252410321552,
+     "mean": 0.5000269682919473,
+     "n_tokens": 11591
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0,
+     "n_tokens": 25116
+    }
+   },
+   "tag": "akashml/fp4",
+   "provider": "AkashML",
+   "quantization": "fp4",
+   "local": false,
+   "reference": null,
+   "label": "fp4",
+   "pricing": {
+    "prompt": "0.00000002",
+    "completion": "0.0000001",
+    "discount": 0
+   },
+   "peer_agreement": 0.31302325581395346,
+   "x_honest": 1.16,
+   "fidelity": 91.7,
+   "flags": [],
+   "verdict": {
+    "level": "ok",
+    "text": "consistent with the real model"
+   }
+  },
+  "amazon-bedrock": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.03573687603162193,
+     "lo": 0.031273658670072056,
+     "hi": 0.04040131851127942,
+     "n_tokens": 11511,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.07028060116410395,
+     "lo": 0.0627490039840638,
+     "hi": 0.07820945945945945,
+     "n_tokens": 11511,
+     "n_replies": 48
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": 0.43436712709582137,
+    "first_token_match": 0.7708333333333334
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -0.529980943290769,
+     "p": 0.5961251435484073,
+     "excess_ce": 0.004820480132450331,
+     "excess_ce_lo": -0.010784238111470938,
+     "excess_ce_hi": 0.020214427440163718,
+     "n_tokens": 11476
+    },
+    "pit": {
+     "ks": 0.00960125827814573,
+     "p": 0.23950647514768605,
+     "mean": 0.5003728084698501,
+     "n_tokens": 11476
+    },
+    "tail": {
+     "observed": 22,
+     "expected": 23.2931136,
+     "ratio": 0.9444851546166846,
+     "z": -0.2706445881447958,
+     "p": 0.7866643988060608,
+     "n_tokens": 11476
+    }
+   },
+   "sample_reasoning": {
+    "replies": 48,
+    "likelihood": {
+     "z": -0.5189003674997885,
+     "p": 0.6038302214923991,
+     "excess_ce": 0.020315016339869284,
+     "excess_ce_lo": -0.0462127365356623,
+     "excess_ce_hi": 0.1070217399617591,
+     "n_tokens": 612
+    },
+    "pit": {
+     "ks": 0.023317647058823554,
+     "p": 0.8899086418143111,
+     "mean": 0.5045721241830066,
+     "n_tokens": 612
+    },
+    "tail": {
+     "observed": 0,
+     "expected": 0.8555944,
+     "ratio": 0.0,
+     "z": -0.9275029602812986,
+     "p": 0.3536654555042268,
+     "n_tokens": 612
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": null,
+    "stop_replies_checked": 39,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 25506,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.5,
+     "mean_distinct": 1.75
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.00464787,
+    "logprob_self_consistency": null,
+    "logprob_alignment": null
+   },
+   "tag": "amazon-bedrock",
+   "provider": "Amazon Bedrock",
+   "quantization": "unknown",
+   "local": false,
+   "reference": null,
+   "label": "unknown",
+   "pricing": {
+    "prompt": "0.00000007",
+    "completion": "0.00000015",
+    "discount": 0
+   },
+   "peer_agreement": 0.3355813953488372,
+   "x_honest": 0.92,
+   "fidelity": 100.0,
+   "flags": [
+    "no logprobs (text-only checks)"
+   ],
+   "verdict": {
+    "level": "ok",
+    "text": "consistent with the real model"
+   }
+  },
+  "amazon-bedrock__eu-west-1": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.041520639182400836,
+     "lo": 0.03527090297100799,
+     "hi": 0.0484062623451248,
+     "n_tokens": 11546,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.07517755066689757,
+     "lo": 0.06648681576886262,
+     "hi": 0.08408785298072619,
+     "n_tokens": 11546,
+     "n_replies": 48
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": 0.6062705698943357,
+    "first_token_match": 0.875
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -1.9574443383323161,
+     "p": 0.050295249918360825,
+     "excess_ce": 0.017136885202738282,
+     "excess_ce_lo": -0.0021061904289118357,
+     "excess_ce_hi": 0.03718195655792277,
+     "n_tokens": 11394
+    },
+    "pit": {
+     "ks": 0.01006370721432337,
+     "p": 0.19770358868275267,
+     "mean": 0.50248649552396,
+     "n_tokens": 11394
+    },
+    "tail": {
+     "observed": 19,
+     "expected": 18.6086324,
+     "ratio": 1.0210315079360694,
+     "z": 0.09129863465153959,
+     "p": 0.9272553028495765,
+     "n_tokens": 11394
+    }
+   },
+   "sample_reasoning": {
+    "replies": 48,
+    "likelihood": {
+     "z": 0.4366641835632756,
+     "p": 0.6623549077652832,
+     "excess_ce": -0.017091073529411766,
+     "excess_ce_lo": -0.11578950199203188,
+     "excess_ce_hi": 0.09038317853457173,
+     "n_tokens": 680
+    },
+    "pit": {
+     "ks": 0.03747176470588243,
+     "p": 0.2900236959414541,
+     "mean": 0.5132607794117647,
+     "n_tokens": 680
+    },
+    "tail": {
+     "observed": 0,
+     "expected": 1.2253935,
+     "ratio": 0.0,
+     "z": -1.111656382395719,
+     "p": 0.2662859203531918,
+     "n_tokens": 680
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": null,
+    "stop_replies_checked": 40,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 25525,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.25,
+     "mean_distinct": 2.5
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.00465552,
+    "logprob_self_consistency": null,
+    "logprob_alignment": null
+   },
+   "tag": "amazon-bedrock/eu-west-1",
+   "provider": "Amazon Bedrock",
+   "quantization": "unknown",
+   "local": false,
+   "reference": null,
+   "label": "unknown",
+   "pricing": {
+    "prompt": "0.00000007",
+    "completion": "0.00000015",
+    "discount": 0
+   },
+   "peer_agreement": 0.3913953488372093,
+   "x_honest": 1.07,
+   "fidelity": 96.3,
+   "flags": [
+    "no logprobs (text-only checks)"
+   ],
+   "verdict": {
+    "level": "ok",
+    "text": "consistent with the real model"
+   }
+  },
+  "coreweave__fp4": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.041447377649829885,
+     "lo": 0.03419210234067999,
+     "hi": 0.04914882176326085,
+     "n_tokens": 11463,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.07336648346855101,
+     "lo": 0.06465279056916562,
+     "hi": 0.08174726989079562,
+     "n_tokens": 11463,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.14420060774471138,
+     "lo": 0.12854257632565613,
+     "hi": 0.15991548560690186,
+     "n_tokens": 11156,
+     "n_replies": 47
+    },
+    "topk": {
+     "mean": 0.7082560855145213,
+     "lo": 0.6830115240870908,
+     "hi": 0.7337889223726874,
+     "n_tokens": 11156,
+     "n_replies": 47
+    },
+    "big_miss_per_1k": 0.9596091773532234,
+    "first_token_match": 0.8333333333333334
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -1.9248664373127267,
+     "p": 0.054246069718754425,
+     "excess_ce": 0.0174913607266436,
+     "excess_ce_lo": -0.0075639933911606765,
+     "excess_ce_hi": 0.05268550737854418,
+     "n_tokens": 11560
+    },
+    "pit": {
+     "ks": 0.012170588235294155,
+     "p": 0.06462142502190867,
+     "mean": 0.5048291098615917,
+     "n_tokens": 11560
+    },
+    "tail": {
+     "observed": 35,
+     "expected": 28.7832603,
+     "ratio": 1.2159845561345253,
+     "z": 1.1873684697971878,
+     "p": 0.23508231126279866,
+     "n_tokens": 11560
+    }
+   },
+   "sample_reasoning": {
+    "replies": 48,
+    "likelihood": {
+     "z": -0.406200064474855,
+     "p": 0.6845956067151898,
+     "excess_ce": 0.016818692913385825,
+     "excess_ce_lo": -0.042581457564575646,
+     "excess_ce_hi": 0.08015893455098934,
+     "n_tokens": 635
+    },
+    "pit": {
+     "ks": 0.029991338582677163,
+     "p": 0.6112195223498831,
+     "mean": 0.507324409448819,
+     "n_tokens": 635
+    },
+    "tail": {
+     "observed": 2,
+     "expected": 1.2436276,
+     "ratio": 1.608198467129549,
+     "z": 0.6814733376028349,
+     "p": 0.49557203193722266,
+     "n_tokens": 635
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": null,
+    "stop_replies_checked": 39,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 0,
+    "scored_tokens": 25531,
+    "prompt_tokens_delta_median": -2,
+    "prompt_tokens_mismatch_share": 1.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.25,
+     "mean_distinct": 2.25
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.00377711,
+    "logprob_self_consistency": {
+     "ks": 0.009490860746987906,
+     "p": 0.24771343712618388,
+     "mean": 0.5042762390370965,
+     "n_tokens": 11557
+    },
+    "logprob_alignment": {
+     "bad_share": 0.00040175163713792136,
+     "n_tokens": 24891
+    }
+   },
+   "tag": "coreweave/fp4",
+   "provider": "CoreWeave",
+   "quantization": "fp4",
+   "local": false,
+   "reference": null,
+   "label": "fp4",
+   "pricing": {
+    "prompt": "0.00000003",
+    "completion": "0.00000013",
+    "input_cache_read": "0.00000003",
+    "discount": 0
+   },
+   "peer_agreement": 0.42127906976744184,
+   "x_honest": 1.07,
+   "fidelity": 96.4,
+   "flags": [
+    "prompt token count differs from the reference template (median -2)"
+   ],
+   "verdict": {
+    "level": "broken",
+    "text": "consistent with the real model; output-path problem: prompt token count differs from the reference template"
+   }
+  },
+  "darkbloom__fp8": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.03867108149931224,
+     "lo": 0.03343201109350238,
+     "hi": 0.044424730081583055,
+     "n_tokens": 11632,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.07384800550206327,
+     "lo": 0.06513269131809163,
+     "hi": 0.08239110287303053,
+     "n_tokens": 11632,
+     "n_replies": 48
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": 0.687757909215956,
+    "first_token_match": 0.7916666666666666
+   },
+   "sample_answer": {
+    "replies": 47,
+    "likelihood": {
+     "z": -18.01104815010871,
+     "p": 1.5957806034293287e-72,
+     "excess_ce": 0.17328646602626244,
+     "excess_ce_lo": 0.14012782933042214,
+     "excess_ce_hi": 0.20752056270237157,
+     "n_tokens": 11347
+    },
+    "pit": {
+     "ks": 0.011749780558737988,
+     "p": 0.08654152123612575,
+     "mean": 0.5045976231603068,
+     "n_tokens": 11347
+    },
+    "tail": {
+     "observed": 93,
+     "expected": 30.0009235,
+     "ratio": 3.0999045746041785,
+     "z": 11.68885894193997,
+     "p": 1.4532594684193917e-31,
+     "n_tokens": 11347
+    }
+   },
+   "sample_reasoning": {
+    "replies": 47,
+    "likelihood": {
+     "z": -3.0599135238597004,
+     "p": 0.0022140090811867577,
+     "excess_ce": 0.1375224574669187,
+     "excess_ce_lo": -0.06417896405919662,
+     "excess_ce_hi": 0.3275474186550976,
+     "n_tokens": 529
+    },
+    "pit": {
+     "ks": 0.03697986767485828,
+     "p": 0.4575269942647791,
+     "mean": 0.5047760680529301,
+     "n_tokens": 529
+    },
+    "tail": {
+     "observed": 2,
+     "expected": 0.8901225,
+     "ratio": 2.24688174942213,
+     "z": 1.1806465146344782,
+     "p": 0.23774317715231016,
+     "n_tokens": 529
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": null,
+    "stop_replies_checked": 37,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 1,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 25477,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.25,
+     "mean_distinct": 2.25
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.002608848,
+    "logprob_self_consistency": {
+     "ks": 0.014164764212258985,
+     "p": 0.014250326343149534,
+     "mean": 0.5073471128946193,
+     "n_tokens": 12294
+    },
+    "logprob_alignment": {
+     "bad_share": 0.00037125037125037126,
+     "n_tokens": 26936
+    }
+   },
+   "tag": "darkbloom/fp8",
+   "provider": "Darkbloom",
+   "quantization": "fp8",
+   "local": false,
+   "reference": null,
+   "label": "fp8",
+   "pricing": {
+    "prompt": "0.000000018",
+    "completion": "0.00000009",
+    "input_cache_read": "0.000000009",
+    "discount": 0
+   },
+   "peer_agreement": 0.34930232558139535,
+   "x_honest": 1.0,
+   "fidelity": 100.0,
+   "flags": [
+    "samples hotter than requested at temperature 1: 93 long-tail tokens vs 30.0 expected, while its temperature-0 output matches the model",
+    "no logprobs (text-only checks)"
+   ],
+   "verdict": {
+    "level": "ok",
+    "text": "consistent with the real model"
+   }
+  },
+  "deepinfra__bf16": {
+   "greedy": {
+    "replies": 7,
+    "regret": {
+     "mean": 0.04362630243397204,
+     "lo": 0.02730831607629428,
+     "hi": 0.06296811224489796,
+     "n_tokens": 1931,
+     "n_replies": 7
+    },
+    "disagree": {
+     "mean": 0.08182288969445883,
+     "lo": 0.05702436495593577,
+     "hi": 0.10537190082644632,
+     "n_tokens": 1931,
+     "n_replies": 7
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": 1.5535991714137753,
+    "first_token_match": 0.7142857142857143
+   },
+   "sample_answer": {
+    "replies": 14,
+    "likelihood": {
+     "z": -2.2837821677148193,
+     "p": 0.022384336189641755,
+     "excess_ce": 0.035578905238375515,
+     "excess_ce_lo": 0.012929408265497808,
+     "excess_ce_hi": 0.05531563185227928,
+     "n_tokens": 3398
+    },
+    "pit": {
+     "ks": 0.011649028840494458,
+     "p": 0.7434540248202903,
+     "mean": 0.5047551294879341,
+     "n_tokens": 3398
+    },
+    "tail": {
+     "observed": 6,
+     "expected": 4.8194553,
+     "ratio": 1.2449539681382664,
+     "z": 0.5413683450461015,
+     "p": 0.5882537212698802,
+     "n_tokens": 3398
+    }
+   },
+   "sample_reasoning": {
+    "replies": 14,
+    "likelihood": {
+     "z": 0.049997922381084046,
+     "p": 0.9601240439525668,
+     "excess_ce": -0.0031862230215827323,
+     "excess_ce_lo": -0.12255455,
+     "excess_ce_hi": 0.20066450847457626,
+     "n_tokens": 278
+    },
+    "pit": {
+     "ks": 0.047878561151079135,
+     "p": 0.5370709568935416,
+     "mean": 0.5012245323741007,
+     "n_tokens": 278
+    },
+    "tail": {
+     "observed": 1,
+     "expected": 0.6461883,
+     "ratio": 1.547536530760461,
+     "z": 0.44231289183885447,
+     "p": 0.65826280327716,
+     "n_tokens": 278
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": null,
+    "stop_replies_checked": 6,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 81,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 6169,
+    "prompt_tokens_delta_median": -13,
+    "prompt_tokens_mismatch_share": 1.0,
+    "determinism": null,
+    "max_completion_tokens": 320,
+    "cost_usd": 0.00096843,
+    "logprob_self_consistency": null,
+    "logprob_alignment": null
+   },
+   "tag": "deepinfra/bf16",
+   "provider": "DeepInfra",
+   "quantization": "bf16",
+   "local": false,
+   "reference": null,
+   "label": "bf16",
+   "pricing": {
+    "prompt": "0.00000003",
+    "completion": "0.00000014",
+    "discount": 0
+   },
+   "peer_agreement": 0.22785714285714287,
+   "x_honest": 1.12,
+   "fidelity": 93.6,
+   "flags": [
+    "prompt token count differs from the reference template (median -13)",
+    "no logprobs (text-only checks)",
+    "81 of 104 requests failed"
+   ],
+   "verdict": {
+    "level": "check",
+    "text": "no usable data: 81 of 104 requests failed"
+   }
+  },
+  "dekallm__bf16": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.04419368288663371,
+     "lo": 0.03718219043515726,
+     "hi": 0.052478718111091005,
+     "n_tokens": 11529,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.07320669615751585,
+     "lo": 0.06563812306006933,
+     "hi": 0.08057109459797951,
+     "n_tokens": 11529,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.14924207068803017,
+     "lo": 0.1322626926025297,
+     "hi": 0.16724615787015415,
+     "n_tokens": 10610,
+     "n_replies": 45
+    },
+    "topk": {
+     "mean": 0.7093515127238454,
+     "lo": 0.6748036496279834,
+     "hi": 0.7496408530805687,
+     "n_tokens": 10610,
+     "n_replies": 45
+    },
+    "big_miss_per_1k": 1.0408534998698933,
+    "first_token_match": 0.8125
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -0.17287334131037227,
+     "p": 0.8627509866875814,
+     "excess_ce": 0.0015441412012644894,
+     "excess_ce_lo": -0.012279418560244415,
+     "excess_ce_hi": 0.015707366306579772,
+     "n_tokens": 11388
+    },
+    "pit": {
+     "ks": 0.010959912188268361,
+     "p": 0.12884110236416002,
+     "mean": 0.5031240463645943,
+     "n_tokens": 11388
+    },
+    "tail": {
+     "observed": 13,
+     "expected": 19.5780286,
+     "ratio": 0.6640096541691639,
+     "z": -1.4957394245675437,
+     "p": 0.13472157228255768,
+     "n_tokens": 11388
+    }
+   },
+   "sample_reasoning": {
+    "replies": 48,
+    "likelihood": {
+     "z": -1.0928628935815186,
+     "p": 0.2744540024044627,
+     "excess_ce": 0.04359199421965318,
+     "excess_ce_lo": -0.05024385490753912,
+     "excess_ce_hi": 0.1443396441281139,
+     "n_tokens": 692
+    },
+    "pit": {
+     "ks": 0.027527109826589624,
+     "p": 0.6650281963071858,
+     "mean": 0.4958868497109827,
+     "n_tokens": 692
+    },
+    "tail": {
+     "observed": 2,
+     "expected": 1.3398884,
+     "ratio": 1.4926616276400333,
+     "z": 0.5731893324042302,
+     "p": 0.5665165064672332,
+     "n_tokens": 692
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": null,
+    "stop_replies_checked": 38,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 2,
+    "scored_tokens": 25553,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.25,
+     "mean_distinct": 2.5
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.004045674,
+    "logprob_self_consistency": {
+     "ks": 0.006932414871882564,
+     "p": 0.6434522257363687,
+     "mean": 0.5000027599343223,
+     "n_tokens": 11379
+    },
+    "logprob_alignment": {
+     "bad_share": 0.00032190568163528087,
+     "n_tokens": 24852
+    }
+   },
+   "tag": "dekallm/bf16",
+   "provider": "DekaLLM",
+   "quantization": "bf16",
+   "local": false,
+   "reference": null,
+   "label": "bf16",
+   "pricing": {
+    "prompt": "0.000000029",
+    "completion": "0.00000014",
+    "input_cache_read": "0.000000029",
+    "discount": 0
+   },
+   "peer_agreement": 0.5153488372093024,
+   "x_honest": 1.14,
+   "fidelity": 92.9,
+   "flags": [],
+   "verdict": {
+    "level": "ok",
+    "text": "consistent with the real model"
+   }
+  },
+  "groq": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.041806697463610216,
+     "lo": 0.036309897328643405,
+     "hi": 0.04783353971661657,
+     "n_tokens": 11473,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.07835788372701125,
+     "lo": 0.06991826581378824,
+     "hi": 0.08681401798470456,
+     "n_tokens": 11473,
+     "n_replies": 48
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": 0.9587727708533078,
+    "first_token_match": 0.8333333333333334
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": 12.80493586008431,
+     "p": 1.538528872844738e-37,
+     "excess_ce": -0.1104991220423412,
+     "excess_ce_lo": -0.13171219699777614,
+     "excess_ce_hi": -0.09135553628955846,
+     "n_tokens": 11242
+    },
+    "pit": {
+     "ks": 0.022785274862124116,
+     "p": 1.65933422795628e-05,
+     "mean": 0.48624449653086643,
+     "n_tokens": 11242
+    },
+    "tail": {
+     "observed": 0,
+     "expected": 16.8181649,
+     "ratio": 0.0,
+     "z": -4.122898110260921,
+     "p": 3.74135217469798e-05,
+     "n_tokens": 11242
+    }
+   },
+   "sample_reasoning": {
+    "replies": 48,
+    "likelihood": {
+     "z": 3.1106491853750615,
+     "p": 0.0018667657213226265,
+     "excess_ce": -0.14199242299794662,
+     "excess_ce_lo": -0.20383453978159125,
+     "excess_ce_hi": -0.0772603021978022,
+     "n_tokens": 487
+    },
+    "pit": {
+     "ks": 0.038763080082135526,
+     "p": 0.44985022758439497,
+     "mean": 0.4822711293634497,
+     "n_tokens": 487
+    },
+    "tail": {
+     "observed": 0,
+     "expected": 0.7546807,
+     "ratio": 0.0,
+     "z": -0.871692192659348,
+     "p": 0.3833763205966849,
+     "n_tokens": 487
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": null,
+    "stop_replies_checked": 39,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 25124,
+    "prompt_tokens_delta_median": 4,
+    "prompt_tokens_mismatch_share": 1.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.75,
+     "mean_distinct": 1.25
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.00869955,
+    "logprob_self_consistency": null,
+    "logprob_alignment": null
+   },
+   "tag": "groq",
+   "provider": "Groq",
+   "quantization": "unknown",
+   "local": false,
+   "reference": null,
+   "label": "unknown",
+   "pricing": {
+    "prompt": "0.000000075",
+    "completion": "0.0000003",
+    "input_cache_read": "0.0000000375",
+    "discount": 0
+   },
+   "peer_agreement": 0.3345348837209302,
+   "x_honest": 1.08,
+   "fidelity": 95.9,
+   "flags": [
+    "prompt token count differs from the reference template (median +4)",
+    "truncates sampling at top_p=1: 0 long-tail tokens vs 16.8 expected (likely an unrequested default top_k/min_p)",
+    "no logprobs (text-only checks)"
+   ],
+   "verdict": {
+    "level": "broken",
+    "text": "consistent with the real model; output-path problem: prompt token count differs from the reference template"
+   }
+  },
+  "local__cpu-grace": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.03883300902281239,
+     "lo": 0.03402807423857868,
+     "hi": 0.04396377165627166,
+     "n_tokens": 11748,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.07048008171603681,
+     "lo": 0.063415382255962,
+     "hi": 0.07785577536694321,
+     "n_tokens": 11748,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.13945644512304653,
+     "lo": 0.12533142356305932,
+     "hi": 0.15293545761893262,
+     "n_tokens": 11134,
+     "n_replies": 46
+    },
+    "topk": {
+     "mean": 0.6664674034488953,
+     "lo": 0.6413942758427491,
+     "hi": 0.6934064577732456,
+     "n_tokens": 11134,
+     "n_replies": 46
+    },
+    "big_miss_per_1k": 0.8512087163772557,
+    "first_token_match": 0.8541666666666666
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": 0.5335268496612305,
+     "p": 0.5936689299625619,
+     "excess_ce": -0.0048609733508082125,
+     "excess_ce_lo": -0.021498887526278907,
+     "excess_ce_hi": 0.011443109384139718,
+     "n_tokens": 11445
+    },
+    "pit": {
+     "ks": 0.008793302752293591,
+     "p": 0.3376789189146015,
+     "mean": 0.4977058348623853,
+     "n_tokens": 11445
+    },
+    "tail": {
+     "observed": 23,
+     "expected": 21.9412144,
+     "ratio": 1.0482555605491006,
+     "z": 0.2275445250198302,
+     "p": 0.820000351132758,
+     "n_tokens": 11445
+    }
+   },
+   "sample_reasoning": {
+    "replies": 48,
+    "likelihood": {
+     "z": -1.6979880186142244,
+     "p": 0.08951002320488077,
+     "excess_ce": 0.0590873216374269,
+     "excess_ce_lo": -0.0025282069672131176,
+     "excess_ce_hi": 0.12808171668667467,
+     "n_tokens": 855
+    },
+    "pit": {
+     "ks": 0.032152514619883,
+     "p": 0.3347448044302646,
+     "mean": 0.5039247251461988,
+     "n_tokens": 855
+    },
+    "tail": {
+     "observed": 0,
+     "expected": 1.4899035,
+     "ratio": 0.0,
+     "z": -1.2245493137293613,
+     "p": 0.2207450752520332,
+     "n_tokens": 855
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": null,
+    "stop_replies_checked": 38,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 0,
+    "scored_tokens": 26024,
+    "prompt_tokens_delta_median": 3,
+    "prompt_tokens_mismatch_share": 1.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 1.0,
+     "mean_distinct": 1.0
+    },
+    "max_completion_tokens": 325,
+    "cost_usd": 0,
+    "logprob_self_consistency": {
+     "ks": 0.00813316713865797,
+     "p": 0.4338714434314806,
+     "mean": 0.5024226252945195,
+     "n_tokens": 11445
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0007151654813461004,
+     "n_tokens": 25169
+    }
+   },
+   "tag": "local/cpu-grace",
+   "provider": "cpu-grace",
+   "quantization": "honest: MXFP4 release weights, Grace ARM CPU (no GPU)",
+   "local": true,
+   "reference": "honest",
+   "label": "honest: MXFP4 release weights, Grace ARM CPU (no GPU)",
+   "pricing": null,
+   "peer_agreement": 0.2879069767441861,
+   "x_honest": 1.0,
+   "fidelity": 100.0,
+   "flags": [],
+   "verdict": {
+    "level": "reference",
+    "text": "reference run"
+   }
+  },
+  "local__substitute-requant": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.23990669853132876,
+     "lo": 0.21278721628498729,
+     "hi": 0.2648347141510243,
+     "n_tokens": 11507,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.17319892239506385,
+     "lo": 0.15670936129975066,
+     "hi": 0.18830472103004292,
+     "n_tokens": 11507,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.36656335381996974,
+     "lo": 0.33305453124999995,
+     "hi": 0.39810133503323925,
+     "n_tokens": 10576,
+     "n_replies": 45
+    },
+    "topk": {
+     "mean": 1.324074246406959,
+     "lo": 1.254503927907841,
+     "hi": 1.4021396644812958,
+     "n_tokens": 10576,
+     "n_replies": 45
+    },
+    "big_miss_per_1k": 29.373424871817154,
+    "first_token_match": 0.6458333333333334
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -40.613301607084985,
+     "p": 0.0,
+     "excess_ce": 0.4489818223827928,
+     "excess_ce_lo": 0.40575484792471855,
+     "excess_ce_hi": 0.49477138199020104,
+     "n_tokens": 11902
+    },
+    "pit": {
+     "ks": 0.0863527071080491,
+     "p": 1.101624962631865e-77,
+     "mean": 0.5553076667786927,
+     "n_tokens": 11902
+    },
+    "tail": {
+     "observed": 167,
+     "expected": 63.3556627,
+     "ratio": 2.6359127642745026,
+     "z": 13.357612252398491,
+     "p": 1.0693973494866242e-40,
+     "n_tokens": 11902
+    }
+   },
+   "sample_reasoning": {
+    "replies": 48,
+    "likelihood": {
+     "z": -14.912371880981226,
+     "p": 2.7384913833906534e-50,
+     "excess_ce": 0.4928123786407767,
+     "excess_ce_lo": 0.36491117136659434,
+     "excess_ce_hi": 0.6669206425233645,
+     "n_tokens": 1030
+    },
+    "pit": {
+     "ks": 0.08723902912621362,
+     "p": 2.752433492088149e-07,
+     "mean": 0.5434581747572815,
+     "n_tokens": 1030
+    },
+    "tail": {
+     "observed": 15,
+     "expected": 2.2507724,
+     "ratio": 6.664378859452871,
+     "z": 8.545167588500602,
+     "p": 1.2834988213092477e-17,
+     "n_tokens": 1030
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": null,
+    "stop_replies_checked": 42,
+    "early_stop_share": 0.047619047619047616,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 3,
+    "scored_tokens": 26749,
+    "prompt_tokens_delta_median": 3,
+    "prompt_tokens_mismatch_share": 1.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 1.0,
+     "mean_distinct": 1.0
+    },
+    "max_completion_tokens": 325,
+    "cost_usd": 0,
+    "logprob_self_consistency": {
+     "ks": 0.03323897149364863,
+     "p": 7.12940017408695e-12,
+     "mean": 0.5137427907187028,
+     "n_tokens": 11903
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0023716951788491447,
+     "n_tokens": 25720
+    }
+   },
+   "tag": "local/substitute-requant",
+   "provider": "substitute-requant",
+   "quantization": "cheat: re-quantized copy (experts Q4_0, rest Q2_K) served as the release weights",
+   "local": true,
+   "reference": "cheat",
+   "label": "cheat: re-quantized copy (experts Q4_0, rest Q2_K) served as the release weights",
+   "pricing": null,
+   "peer_agreement": 0.08046511627906977,
+   "x_honest": 6.18,
+   "fidelity": 0.0,
+   "flags": [
+    "drops tokens from its output (3 re-inserted)"
+   ],
+   "verdict": {
+    "level": "reference",
+    "text": "reference run"
+   }
+  },
+  "parasail__fp4": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.04126910423170309,
+     "lo": 0.035027160685154976,
+     "hi": 0.048191290471785386,
+     "n_tokens": 11532,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.07474852584113767,
+     "lo": 0.06538246343217968,
+     "hi": 0.08405545927209701,
+     "n_tokens": 11532,
+     "n_replies": 48
+    },
+    "wgap": {
+     "mean": 0.09377344594594594,
+     "lo": 0.04872600682593856,
+     "hi": 0.13791692307692308,
+     "n_tokens": 592,
+     "n_replies": 2
+    },
+    "topk": {
+     "mean": 0.7700327027027026,
+     "lo": 0.7675336120401337,
+     "hi": 0.7725829692832764,
+     "n_tokens": 592,
+     "n_replies": 2
+    },
+    "big_miss_per_1k": 1.0405827263267429,
+    "first_token_match": 0.8333333333333334
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": 1.5674626594696155,
+     "p": 0.11700658770014612,
+     "excess_ce": -0.013867295197740112,
+     "excess_ce_lo": -0.02907587203102278,
+     "excess_ce_hi": 0.0009327399131972348,
+     "n_tokens": 11328
+    },
+    "pit": {
+     "ks": 0.0062358474576271195,
+     "p": 0.7692932797708599,
+     "mean": 0.49871630649717513,
+     "n_tokens": 11328
+    },
+    "tail": {
+     "observed": 16,
+     "expected": 19.4804883,
+     "ratio": 0.8213346479615709,
+     "z": -0.7936280085658334,
+     "p": 0.4274120219921745,
+     "n_tokens": 11328
+    }
+   },
+   "sample_reasoning": {
+    "replies": 48,
+    "likelihood": {
+     "z": 0.2115706231972812,
+     "p": 0.8324420297867489,
+     "excess_ce": -0.008396552795031056,
+     "excess_ce_lo": -0.06307893333333334,
+     "excess_ce_hi": 0.04690065286624204,
+     "n_tokens": 644
+    },
+    "pit": {
+     "ks": 0.03148496894409941,
+     "p": 0.5394092744748112,
+     "mean": 0.4866526242236025,
+     "n_tokens": 644
+    },
+    "tail": {
+     "observed": 0,
+     "expected": 0.9829616,
+     "ratio": 0.0,
+     "z": -0.9939865374168818,
+     "p": 0.3202294216868759,
+     "n_tokens": 644
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": null,
+    "stop_replies_checked": 38,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "inserted_tokens": 0,
+    "scored_tokens": 25439,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.0,
+     "mean_distinct": 2.75
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.00423367,
+    "logprob_self_consistency": {
+     "ks": 0.00809099576950173,
+     "p": 0.41767565537917606,
+     "mean": 0.4977583497542894,
+     "n_tokens": 11864
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0004218923790894795,
+     "n_tokens": 26073
+    }
+   },
+   "tag": "parasail/fp4",
+   "provider": "Parasail",
+   "quantization": "fp4",
+   "local": false,
+   "reference": null,
+   "label": "fp4",
+   "pricing": {
+    "prompt": "0.00000003",
+    "completion": "0.00000015",
+    "input_cache_read": "0.00000002",
+    "discount": 0
+   },
+   "peer_agreement": 0.43488372093023253,
+   "x_honest": 1.06,
+   "fidelity": 96.7,
+   "flags": [],
+   "verdict": {
+    "level": "ok",
+    "text": "consistent with the real model"
+   }
+  }
+ },
+ "referee": "gpt-oss-20b MXFP4 (release weights), llama.cpp CUDA, DGX Spark (GB10)",
+ "anchor": "a re-quantized copy of the same model (experts Q4_0, rest Q2_K)",
+ "notes": "100 is set by the same release weights on the Spark's Grace CPU. gpt-oss-20b has many near-tied tokens, so honest machines disagree on ~7% of tokens, almost all harmless near-tie flips.",
+ "built": "2026-10-30"
+}

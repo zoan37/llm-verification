@@ -90,8 +90,9 @@ code { font: 13px var(--mono); }
       something consistent with the claimed weights; on Gemma-4 three are indistinguishable from honest BF16 serving.</p></div>
     <div class="finding"><span class="pill warn">lossy</span><p>A meaningful minority sit at or past a 3- to 4-bit copy's
       distance (Qwen3.5: AtlasCloud, Darkbloom, Alibaba; Gemma-4: Darkbloom, AkashML). Distance, not proof of intent.</p></div>
-    <div class="finding"><span class="pill warn">silent defaults</span><p>Asked for temperature 1 and top_p 1, six of seven
-      Qwen3.5 endpoints almost never sample long-tail tokens: an unrequested top-k, most likely.</p></div>
+    <div class="finding"><span class="pill warn">sampling not as requested</span><p>Asked for temperature 1 and top_p 1,
+      six of seven Qwen3.5 endpoints (and Groq on gpt-oss-20b) almost never sample long-tail tokens, likely an unrequested
+      top-k. Darkbloom on gpt-oss-20b does the opposite: 3× too many, sampling hotter than asked.</p></div>
     <div class="finding"><span class="pill bad">not the released model</span><p>Venice's Qwen3.8-27B is 165× an honest
       machine's distance from the real weights (a 2-bit copy: 75×), fluent, with no hidden prompt and not an older Qwen. It
       tells a dark joke where the released model deflects. Most consistent with modified (e.g. uncensored) weights.</p></div>

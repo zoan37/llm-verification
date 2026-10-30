@@ -140,6 +140,10 @@ def flags(s: dict, ref_regret: Optional[float]) -> List[str]:
     if tail.get("z") is not None and tail["z"] < -2.5 and (tail.get("ratio") or 0) < 0.5:
         f.append(f"truncates sampling at top_p=1: {tail['observed']:.0f} long-tail tokens vs {tail['expected']:.1f} "
                  "expected (likely an unrequested default top_k/min_p)")
+    if tail.get("z") is not None and tail["z"] > 4 and (tail.get("ratio") or 0) > 2 and \
+            (s.get("x_honest") is None or s["x_honest"] < 2):
+        f.append(f"samples hotter than requested at temperature 1: {tail['observed']:.0f} long-tail tokens vs "
+                 f"{tail['expected']:.1f} expected, while its temperature-0 output matches the model")
     al = i.get("logprob_alignment")
     if al and al["bad_share"] > 0.01:
         f.append(f"logprob output is broken: top-20 lists contradict the returned token at {al['bad_share']:.0%} "
