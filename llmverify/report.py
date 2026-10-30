@@ -68,7 +68,11 @@ def endpoint_summary(scores: List[dict], raw: List[dict]) -> dict:
     ok_raw = [r for r in raw if r.get("content") is not None or r.get("reasoning")]
     lengths = [((r.get("usage") or {}).get("completion_tokens") or 0) for r in ok_raw]
     ends = [s["end_prob"] for s in scores if s.get("end_prob") is not None]
+    billed = [s["completion_tokens_reported"] - s["n"] - s.get("inserted", 0) for s in scores
+              if s["segment"] == "answer" and s.get("completion_tokens_reported") is not None
+              and not any(r.get("reasoning") for r in raw)]  # reasoning tokens are billed too: not comparable
     out["integrity"] = {
+        "billed_minus_returned_median": _median(billed),
         "stop_replies_checked": len(ends),
         "early_stop_share": sum(1 for e in ends if e < 0.01) / len(ends) if ends else None,
         "requests": len(raw), "errors": sum(1 for r in raw if "error" in r),
@@ -127,6 +131,9 @@ def flags(s: dict, ref_regret: Optional[float]) -> List[str]:
         f.append(f"prompt token count differs from the reference template (median {i['prompt_tokens_delta_median']:+d})")
     if i.get("early_stop_share") and i["early_stop_share"] > 0.1:
         f.append(f"ends {i['early_stop_share']:.0%} of 'stop' replies where the model would continue (truncation?)")
+    bm = i.get("billed_minus_returned_median")
+    if bm is not None and bm > 2:
+        f.append(f"bills a median {bm} more completion tokens than it returns")
     tail = (s.get("sample_answer") or {}).get("tail") or {}
     if tail.get("z") is not None and tail["z"] < -2.5 and (tail.get("ratio") or 0) < 0.5:
         f.append(f"truncates sampling at top_p=1: {tail['observed']:.0f} long-tail tokens vs {tail['expected']:.1f} "
