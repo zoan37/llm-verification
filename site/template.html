@@ -1,0 +1,164 @@
+<title>Provider Fidelity Audit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a calibration report. Model tabs on top, one ranked ledger per model, each row placed on a
+   referee scale that runs from "honest machine" to "a different model". */
+:root {
+  --bg: #f3f4f1; --panel: #fbfbf9; --ink: #1d2321; --muted: #5d6763; --rule: #d6dad5;
+  --accent: #2c5d8a; --good: #2f7d4f; --warn: #a86a12; --bad: #b3372e; --track: #e3e6e1;
+  --display: "Fraunces", Georgia, serif; --body: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #141816; --panel: #1b201e; --ink: #e5e9e6; --muted: #9aa49f; --rule: #2e3532;
+  --accent: #7fb0dd; --good: #5fbf85; --warn: #e0a447; --bad: #ec7a6f; --track: #262c29; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #141816; --panel: #1b201e; --ink: #e5e9e6; --muted: #9aa49f; --rule: #2e3532;
+  --accent: #7fb0dd; --good: #5fbf85; --warn: #e0a447; --bad: #ec7a6f; --track: #262c29; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 40px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header { display: grid; gap: 10px; max-width: 70ch; }
+.eyebrow { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 650 clamp(30px, 5vw, 44px)/1.08 var(--display); margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+h2 { font: 600 22px/1.2 var(--display); margin: 0; text-wrap: balance; }
+h3 { font: 600 15px/1.3 var(--body); margin: 0; }
+p { margin: 0; }
+.lede { color: var(--muted); font-size: 16px; }
+a { color: var(--accent); }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 32px 0 20px; }
+.tab { font: 500 13px/1 var(--mono); padding: 9px 12px; border: 1px solid var(--rule); background: var(--panel);
+  color: var(--ink); border-radius: 4px; cursor: pointer; }
+.tab[aria-selected="true"] { border-color: var(--accent); color: var(--accent); box-shadow: inset 0 -2px 0 var(--accent); }
+.tab:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.model-head { display: grid; gap: 6px; margin-bottom: 16px; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px 20px; font: 13px/1.4 var(--mono); color: var(--muted); }
+.facts b { color: var(--ink); font-weight: 500; }
+.ledger { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 860px; font-variant-numeric: tabular-nums; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 500 11px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+tr.ref td { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+td.num { font-family: var(--mono); font-size: 13px; white-space: nowrap; }
+.name { font-weight: 600; }
+.sub { color: var(--muted); font: 12px/1.35 var(--mono); }
+.score { font: 600 18px/1 var(--display); }
+.scale { position: relative; height: 10px; width: 180px; background: var(--track); border-radius: 5px; margin-top: 6px; }
+.scale .ci { position: absolute; top: 2px; height: 6px; border-radius: 3px; background: color-mix(in srgb, var(--accent) 35%, transparent); }
+.scale .pt { position: absolute; top: -2px; width: 4px; height: 14px; border-radius: 2px; background: var(--accent); transform: translateX(-2px); }
+.scale .mark { position: absolute; top: -4px; bottom: -4px; width: 1px; background: var(--muted); opacity: .6; }
+.pill { display: inline-block; font: 500 11px/1 var(--mono); padding: 4px 6px; border-radius: 3px; margin: 0 4px 4px 0;
+  border: 1px solid currentColor; white-space: nowrap; }
+.pill.good { color: var(--good); } .pill.warn { color: var(--warn); } .pill.bad { color: var(--bad); } .pill.ref { color: var(--accent); }
+.flags { max-width: 300px; }
+.flag { font-size: 12.5px; color: var(--warn); line-height: 1.35; margin-bottom: 3px; }
+.legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px 28px; margin-top: 28px; }
+.legend div { min-width: 0; }
+.legend p { color: var(--muted); font-size: 14px; }
+.note { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 14px; max-width: 75ch; display: grid; gap: 10px; }
+code { font: 13px var(--mono); }
+@media (max-width: 520px) { .wrap { padding-block: 24px 48px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">llm-verification · black-box audit</div>
+    <h1>Is each provider serving the model it lists?</h1>
+    <p class="lede">Every OpenRouter endpoint of a model got the same prompts. A referee running the real weights replayed
+      each reply and measured how well it fits. Rows sit on a scale from an honest machine running those weights (100)
+      to a known substitute (0).</p>
+  </header>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Model"></nav>
+  <section id="model"></section>
+  <section class="legend">
+    <div><h3>Fidelity</h3><p>100 = as close to the referee as an honest second machine; 0 = as far as the substitute named
+      for that model. Linear in log distance, clipped. A ranking aid; the distance and its interval are the evidence.</p></div>
+    <div><h3>Regret (greedy)</h3><p>At temperature 0, how much less likely the referee found the provider's chosen token than
+      its own first choice, in nats per token. 0 means the same token. Bar: 95% interval, ticks at the honest and substitute levels.</p></div>
+    <div><h3>Sampled-text fit</h3><p>At temperature 1, excess cross-entropy: how much worse (positive) or better (negative) the
+      text fits the referee than the referee's own samples would. Needs no calibration; honest FP8 serving shows a small positive value.</p></div>
+    <div><h3>Flags</h3><p>Integrity findings that are not about model identity: sampling when asked for temperature 0, dropped
+      output tokens, prompt token counts that disagree with the published template, no logprobs.</p></div>
+  </section>
+  <section class="note">
+    <p>A low score is not proof of cheating. Honest serving choices (FP8 weights, an FP8 KV cache, different kernels) move
+      outputs too, and a provider can behave differently for audit traffic than for yours. A high score means the replies we
+      got are statistically consistent with the real model at this sample size. What the checks can and cannot prove is in
+      <code>docs/soundness.md</code>.</p>
+    <p id="built"></p>
+  </section>
+</div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+const DATA = JSON.parse(document.getElementById('data').textContent);
+const fmt = (x, d = 4) => x == null ? '–' : Number(x).toFixed(d);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function scaleBar(r, m) {
+  const g = r.greedy.regret; if (g.mean == null || !m.honest_regret || !m.cheat_regret) return '';
+  const lo = Math.log(m.honest_regret / 3), hi = Math.log(m.cheat_regret * 1.5);
+  const pos = v => Math.max(0, Math.min(100, 100 * (Math.log(Math.max(v, 1e-6)) - lo) / (hi - lo)));
+  return `<div class="scale" title="regret on a log scale">
+    <span class="mark" style="left:${pos(m.honest_regret)}%"></span><span class="mark" style="left:${pos(m.cheat_regret)}%"></span>
+    <span class="ci" style="left:${pos(g.lo)}%;width:${Math.max(1, pos(g.hi) - pos(g.lo))}%"></span>
+    <span class="pt" style="left:${pos(g.mean)}%"></span></div>`;
+}
+
+function verdict(r) {
+  if (r.reference === 'honest') return '<span class="pill ref">honest reference</span>';
+  if (r.reference === 'cheat') return '<span class="pill ref">substitute reference</span>';
+  const f = r.fidelity;
+  if (f == null) return '';
+  if (f >= 80) return '<span class="pill good">consistent</span>';
+  if (f >= 40) return '<span class="pill warn">deviates</span>';
+  return '<span class="pill bad">far from referee</span>';
+}
+
+function render(key) {
+  const m = DATA.models[key];
+  document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', t.dataset.key === key));
+  const rows = Object.values(m.endpoints).sort((a, b) => (b.fidelity ?? -1) - (a.fidelity ?? -1) ||
+    (a.greedy.regret.mean ?? 9) - (b.greedy.regret.mean ?? 9));
+  const providers = rows.filter(r => !r.local).length;
+  const body = rows.map(r => {
+    const g = r.greedy, sa = (r.sample_answer || {}).likelihood || {}, pit = (r.sample_answer || {}).pit || {};
+    const ece = sa.excess_ce == null ? '–' : `${sa.excess_ce >= 0 ? '+' : ''}${fmt(sa.excess_ce, 3)}`;
+    const det = r.integrity.determinism;
+    return `<tr class="${r.local ? 'ref' : ''}">
+      <td><div class="name">${esc(r.local ? (r.label || r.tag) : r.provider)}</div>
+        <div class="sub">${esc(r.local ? r.tag : r.tag)}${r.quantization && !r.local ? ' · ' + esc(r.quantization) : ''}</div></td>
+      <td><div class="score">${r.fidelity == null ? '–' : Math.round(r.fidelity)}</div>${verdict(r)}</td>
+      <td class="num">${fmt(g.regret.mean)}<div class="sub">[${fmt(g.regret.lo)}, ${fmt(g.regret.hi)}]</div>${scaleBar(r, m)}</td>
+      <td class="num">${r.x_honest == null ? '–' : r.x_honest.toFixed(1) + '×'}</td>
+      <td class="num">${g.disagree.mean == null ? '–' : (100 * g.disagree.mean).toFixed(1) + '%'}<div class="sub">${g.big_miss_per_1k == null ? '' : g.big_miss_per_1k.toFixed(1) + ' big/1k'}</div></td>
+      <td class="num">${ece}<div class="sub">${sa.excess_ce_lo == null ? '' : `[${fmt(sa.excess_ce_lo, 3)}, ${fmt(sa.excess_ce_hi, 3)}]`}</div></td>
+      <td class="num">${det ? Math.round(100 * det.identical_share) + '%' : '–'}<div class="sub">${r.integrity.logprobs ? 'logprobs' : 'text only'}</div></td>
+      <td class="flags">${r.flags.filter(f => !f.startsWith('no logprobs')).map(f => `<div class="flag">${esc(f)}</div>`).join('') || '<span class="sub">none</span>'}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('model').innerHTML = `
+    <div class="model-head"><h2>${esc(m.model)}</h2>
+      <div class="facts"><span><b>${providers}</b> endpoints</span><span>referee <b>${esc(m.referee)}</b></span>
+        <span>0 = <b>${esc(m.anchor)}</b></span><span>collected <b>${esc(m.built)}</b></span></div>
+      ${m.notes ? `<p class="lede" style="font-size:14px;max-width:80ch">${esc(m.notes)}</p>` : ''}</div>
+    <div class="ledger"><table>
+      <thead><tr><th>Endpoint</th><th>Fidelity</th><th>Regret (nats/token)</th><th>× honest</th><th>Other token</th>
+        <th>Sampled fit</th><th>Same reply at T=0</th><th>Flags</th></tr></thead>
+      <tbody>${body}</tbody></table></div>`;
+  try { localStorage.setItem('lv-model', key); } catch (e) {}
+}
+
+const keys = Object.keys(DATA.models);
+document.getElementById('tabs').innerHTML = keys.map(k =>
+  `<button class="tab" role="tab" data-key="${esc(k)}">${esc(DATA.models[k].model)}</button>`).join('');
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => render(t.dataset.key)));
+let start = keys[0];
+try { const s = localStorage.getItem('lv-model'); if (s && DATA.models[s]) start = s; } catch (e) {}
+if (start) render(start);
+document.getElementById('built').textContent = `Built ${DATA.built}. Prompts: ${DATA.prompts}.`;
+</script>
