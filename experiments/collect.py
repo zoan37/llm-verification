@@ -18,8 +18,11 @@ ap.add_argument("--reasoning-effort", help="for always-reasoning models; otherwi
 ap.add_argument("--budget-usd", type=float, required=True, help="stop when the key's total usage reaches this")
 ap.add_argument("--workers", type=int, default=8)
 ap.add_argument("--only", nargs="*")
+ap.add_argument("--modes", default="greedy,sample,repeat")
+ap.add_argument("--root", default="data/raw", help="e.g. data/raw-long for a separate prompt set")
 a = ap.parse_args()
-prompts = json.loads(Path(a.prompts).read_text())
-openrouter.collect(a.model, prompts, Path("data/raw"), workers=a.workers, only=a.only, max_tokens=a.max_tokens,
+prompts = [p["prompt"] if isinstance(p, dict) else p for p in json.loads(Path(a.prompts).read_text())]
+openrouter.collect(a.model, prompts, Path(a.root), workers=a.workers, only=a.only, max_tokens=a.max_tokens,
+                   modes=tuple(a.modes.split(",")),
                    reasoning={"effort": a.reasoning_effort} if a.reasoning_effort else {"enabled": False},
                    budget_usd=a.budget_usd)

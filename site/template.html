@@ -55,6 +55,13 @@ td.num { font-family: var(--mono); font-size: 13px; white-space: nowrap; }
 .pill.good { color: var(--good); } .pill.warn { color: var(--warn); } .pill.bad { color: var(--bad); } .pill.ref { color: var(--accent); }
 .flags { max-width: 300px; }
 .flag { font-size: 12.5px; color: var(--warn); line-height: 1.35; margin-bottom: 3px; }
+.findings { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-top: 28px; }
+.finding { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 14px; display: grid;
+  gap: 8px; align-content: start; min-width: 0; }
+.finding p { font-size: 14px; color: var(--ink); }
+.finding .pill { justify-self: start; }
+.coop { margin-top: 40px; display: grid; gap: 12px; }
+table.small { min-width: 560px; }
 .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px 28px; margin-top: 28px; }
 .legend div { min-width: 0; }
 .legend p { color: var(--muted); font-size: 14px; }
@@ -72,8 +79,35 @@ code { font: 13px var(--mono); }
       each reply and measured how well it fits. Rows sit on a scale from an honest machine running those weights (100)
       to a known substitute (0).</p>
   </header>
+  <section class="findings" aria-label="Findings so far">
+    <div class="finding"><span class="pill good">no swaps</span><p>No endpoint looks like a different model. Most serve
+      something consistent with the claimed weights; on Gemma-4 three are indistinguishable from honest BF16 serving.</p></div>
+    <div class="finding"><span class="pill warn">lossy</span><p>A meaningful minority sit at or past a 3- to 4-bit copy's
+      distance (Qwen3.5: AtlasCloud, Darkbloom, Alibaba; Gemma-4: Darkbloom, AkashML). Distance, not proof of intent.</p></div>
+    <div class="finding"><span class="pill warn">silent defaults</span><p>Asked for temperature 1 and top_p 1, six of seven
+      Qwen3.5 endpoints almost never sample long-tail tokens: an unrequested top-k, most likely.</p></div>
+    <div class="finding"><span class="pill bad">broken outputs</span><p>Misaligned logprobs (DekaLLM, Wafer on Qwen3.8),
+      dropped tokens (DekaLLM on gpt-oss), and prompts that differ from the published template (several gpt-oss hosts).</p></div>
+  </section>
   <nav class="tabs" id="tabs" role="tablist" aria-label="Model"></nav>
   <section id="model"></section>
+  <section class="coop" aria-label="Cooperative mode">
+    <h2>When the provider opts in</h2>
+    <p class="lede" style="font-size:14px;max-width:80ch">Providers that run the llmverify server sign every reply (exact
+      prompt tokens, output tokens, top-20 logprobs, sampled with a seed the client picks). Measured on real weights:
+      Qwen3.5-35B-A3B as the honest provider, cheats built from Qwen3.5-4B, 16 replies of 128 tokens per variant at
+      temperature 0 and 0.7, thresholds at a 0.1% false-flag rate on honest cross-hardware noise.</p>
+    <div class="ledger"><table class="small">
+      <thead><tr><th>Cheat</th><th>Exact failures</th><th>Caught by 256 tokens</th><th>Caught by 2,048 tokens</th></tr></thead>
+      <tbody>
+        <tr><td>None (honest)</td><td class="num">0 / 32</td><td class="num">0%</td><td class="num">0%</td></tr>
+        <tr><td>Swap to the 4B model</td><td class="num">0 / 32</td><td class="num">100%</td><td class="num">100%</td></tr>
+        <tr><td>Laundering: 4B tokens, real model's logprobs</td><td class="num">31 / 32</td><td class="num">100%</td><td class="num">100%</td></tr>
+        <tr><td>Confident draft: 4B whenever it is &ge; 90% sure</td><td class="num">0 / 32</td><td class="num">57&ndash;76%</td><td class="num">99&ndash;100%</td></tr>
+        <tr><td>Confident draft, &ge; 97%</td><td class="num">0 / 32</td><td class="num">28&ndash;39%</td><td class="num">74&ndash;81%</td></tr>
+        <tr><td>Tie steering: nudging near-ties</td><td class="num">0 / 32</td><td class="num">3&ndash;13%</td><td class="num">2&ndash;13%</td></tr>
+      </tbody></table></div>
+  </section>
   <section class="legend">
     <div><h3>Fidelity</h3><p>100 = as close to the referee as an honest second machine; 0 = as far as the substitute named
       for that model. Linear in log distance, clipped. A ranking aid; the distance and its interval are the evidence.</p></div>

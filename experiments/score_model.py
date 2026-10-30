@@ -27,13 +27,15 @@ ap.add_argument("--prompts", default="prompts/general.json")
 ap.add_argument("--only", nargs="*")
 ap.add_argument("--reasoning", action="store_true", help="also score the reasoning text of sampled replies")
 ap.add_argument("--max-tokens", type=int, default=0)
+ap.add_argument("--raw-root", default="data/raw")
+ap.add_argument("--scores-root", default="data/scores")
 ap.add_argument("--pause-cmd", help="shell command run before each endpoint; while it exits 0 the referee is unloaded "
                                     "and scoring waits (e.g. a 'machine is busy' check)")
 a = ap.parse_args()
 
-prompts = json.loads(Path(a.prompts).read_text())
-raw = Path("data/raw") / a.model.replace("/", "__")
-out_dir = Path("data/scores") / a.model.replace("/", "__")
+prompts = [p["prompt"] if isinstance(p, dict) else p for p in json.loads(Path(a.prompts).read_text())]
+raw = Path(a.raw_root) / a.model.replace("/", "__")
+out_dir = Path(a.scores_root) / a.model.replace("/", "__")
 out_dir.mkdir(parents=True, exist_ok=True)
 import subprocess  # noqa: E402
 

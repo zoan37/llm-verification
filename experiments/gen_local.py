@@ -25,13 +25,14 @@ ap.add_argument("--max-tokens", type=int, default=320)
 ap.add_argument("--template-kwargs", default="{}")
 ap.add_argument("--seed", type=int, default=0)
 ap.add_argument("--modes", default="greedy,sample,repeat")
+ap.add_argument("--root", default="data/raw")
 a = ap.parse_args()
 
-prompts = json.loads(Path(a.prompts).read_text())
+prompts = [p["prompt"] if isinstance(p, dict) else p for p in json.loads(Path(a.prompts).read_text())]
 eng = LlamaEngine(shlex.split(a.engine))
 t0 = time.time()
 gen = Generator(eng, chat=a.chat, template_kwargs=json.loads(a.template_kwargs))
 print(f"loaded in {time.time() - t0:.0f}s: {eng.meta['desc']}", flush=True)
-out = Path("data/raw") / a.model.replace("/", "__") / f"{a.tag.replace('/', '__')}.jsonl.gz"
+out = Path(a.root) / a.model.replace("/", "__") / f"{a.tag.replace('/', '__')}.jsonl.gz"
 generate_records(gen, prompts, out, a.tag, a.max_tokens, modes=tuple(a.modes.split(",")), seed=a.seed, label=a.label)
 print(f"wrote {out} in {time.time() - t0:.0f}s", flush=True)

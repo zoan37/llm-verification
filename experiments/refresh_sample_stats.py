@@ -25,7 +25,7 @@ ap.add_argument("--prompts", default="prompts/general.json")
 ap.add_argument("--reasoning", action="store_true")
 a = ap.parse_args()
 
-prompts = json.loads(Path(a.prompts).read_text())
+prompts = [p["prompt"] if isinstance(p, dict) else p for p in json.loads(Path(a.prompts).read_text())]
 key = a.model.replace("/", "__")
 eng = LlamaEngine(shlex.split(a.engine))
 meta = eng.meta
