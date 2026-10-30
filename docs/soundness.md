@@ -64,12 +64,23 @@ with known variance. The catch: honest providers are not bit-exact M either (FP8
 with enough tokens these tests reject *everyone*. They are reported as effect sizes (excess cross-entropy in
 nats/token, with CI) and compared to honest references, not used as pass/fail on their own.
 
-### 3. Integrity signals: black-box mode
+### 3. Referee-free checks: black-box mode
+
+These need no reference weights, so they work for models too large to self-host:
+
+| Check | Idea | Catches |
+|---|---|---|
+| Logprob self-consistency (`peer.self_consistency`) | at temperature 1, an endpoint's samples must be distributed like its *own* reported logprobs: self-PIT values are uniform | logprobs computed by something other than the sampler, samplers that ignore the requested temperature, post-processed probabilities |
+| Logprob alignment (`peer.logprob_alignment`) | the chosen token's logprob must match its entry in the top-k list | top-k lists attached to the wrong position (found in the wild, see results) |
+| Peer prefix agreement (`peer.prefix_agreement`) | honest deployments of the same weights share long greedy prefixes | a different model or heavy quantization among mostly honest peers (honest-majority assumption) |
+
+### 4. Integrity signals: black-box mode
 
 Cheap checks that need no referee pass: provider-reported prompt token count vs our template (a different
 tokenizer means a different model family; an extra system prompt shows up as a constant offset), determinism at
 temperature 0, whether tokens are the provider's own top choice at temperature 0, dropped tokens in the output
-stream, `max_tokens` honoured. They catch sloppiness and some substitutions. They are weak against an adversary,
+stream, `max_tokens` honoured, and whether the referee agrees the model would stop where a reply ended
+(`end_prob`: catches silent truncation). They catch sloppiness and some substitutions. They are weak against an adversary,
 who can fake any of them.
 
 ## Threat model and status of each attack
