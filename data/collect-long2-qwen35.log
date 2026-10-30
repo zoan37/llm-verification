@@ -1,0 +1,9 @@
+qwen/qwen3.5-35b-a3b: 7 endpoints; key usage $3.8076
+deepinfra/fp8                  quant=fp8      ok=12/12 logprobs=0 errors=0
+parasail/fp8                   quant=fp8      ok=12/12 logprobs=12 errors=0
+venice                         quant=unknown  ok=12/12 logprobs=12 errors=0
+atlas-cloud/fp8                quant=fp8      ok=12/12 logprobs=0 errors=0
+siliconflow/fp8                quant=fp8      ok=12/12 logprobs=0 errors=0
+alibaba                        quant=unknown  ok=12/12 logprobs=12 errors=0
+darkbloom/fp4                  quant=fp4      ok=12/12 logprobs=12 errors=0
+qwen/qwen3.5-35b-a3b: spent $0.2120

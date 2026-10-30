@@ -33,14 +33,15 @@ def corpus():
     return texts
 
 
-def build(lengths=(4000, 16000, 32000), depths=(0.1, 0.5, 0.9), seed=0):
+def build(lengths=(4000, 16000, 32000), depths=(0.1, 0.5, 0.9), seed=0, offset=0):
     rng = random.Random(seed)
     texts = corpus()
     out = []
     for n_tok in lengths:
         for depth in depths:
-            name, text = texts[len(out) % len(texts)]
-            pool = "\n".join(t for _, t in texts[len(out) % len(texts):] + texts[: len(out) % len(texts)])
+            j = (len(out) + offset) % len(texts)
+            name, text = texts[j]
+            pool = "\n".join(t for _, t in texts[j:] + texts[:j])
             doc = pool[: int(n_tok * CHARS_PER_TOKEN)]
             code = f"{rng.choice(WORDS)}-{rng.choice(WORDS)}-{rng.randrange(1000, 9999)}"
             needle = f"\n# NOTE FOR REVIEWERS: the release codename for this module is {code}.\n"
@@ -56,7 +57,8 @@ def build(lengths=(4000, 16000, 32000), depths=(0.1, 0.5, 0.9), seed=0):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="prompts/long.json")
+    ap.add_argument("--extra", action="store_true", help="a second, disjoint set (other documents, depths, needles)")
     a = ap.parse_args()
-    items = build()
+    items = build(depths=(0.05, 0.3, 0.7, 0.95), seed=1, offset=5) if a.extra else build()
     Path(a.out).write_text(json.dumps(items, indent=1))
     print(f"wrote {len(items)} prompts to {a.out}")
