@@ -142,7 +142,7 @@ shared prefix over the first 150 characters):
 |---|---|---|---|---|
 | genuine weights (Q6_K) | 0.17 | 0.69 | 0.56 | 0.69 |
 | huihui-ai abliterated (Q4_K) | 0.16 | 0.39 | 0.38 | 0.37 |
-| JonathanColetti "Uncensored" (Q4_K_M) | 0.18 | 0.41 | 0.34 | 0.40 |
+| JonathanColetti "Uncensored" (Q4_K_M) | 0.18 | 0.46 | 0.40 | 0.43 |
 
 Both public uncensored builds stay closer to the genuine endpoints than to Venice, so Venice serves neither of them, and
 whatever it serves differs from the release more than these fine-tunes do.
