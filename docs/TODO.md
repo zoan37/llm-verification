@@ -11,6 +11,14 @@ Open work, roughly in priority order. Each item says what it would establish.
 - [ ] **gpt-oss-120b** full rescore on one referee (deferred: slow).
 - [ ] **Tie steering**: quantify the steering capacity on real models (bits per 1k tokens at a given tolerance).
 
+- [ ] **Tool calling / structured output fidelity**: same tool-call prompts to every endpoint; check the call is
+      well formed, arguments complete, and the referee agrees with the call tokens (verify-before-act).
+- [ ] **Reasoning effort honesty**: requested effort vs reasoning length and quality; reasoning tokens billed vs returned.
+- [ ] **Response caching**: near-duplicate prompts; detect stale reuse of an earlier answer.
+- [ ] **Image inputs on vision models**: fine-detail images to detect silent downscaling.
+- [ ] **Scheduled snapshots**: quality by time of day / load; detect quiet model swaps over time.
+- [ ] **Effective temperature** for every endpoint (Darkbloom first).
+
 ## Calibration
 - [ ] Honest baselines on AMD ROCm (R9700) and Intel (Arc B70); Vulkan is known to be noisier.
 - [ ] Cross-machine referee in the cooperative attack run (provider and referee were on one machine, so `wgap`
