@@ -161,14 +161,15 @@ def score_record(engine, fmt: ChatFormat, tmap: TokenMap, prompt: str, rec: dict
         ids, tops, lps = ids[:max_tokens], tops[:max_tokens], lps[:max_tokens]
     inserted: List[int] = []
     temp = 1.0
-    ref = engine.score(context, ids, k=50, temperature=temp) if ids else []
+    stats = rec.get("mode") not in ("greedy", "repeat")  # full-vocabulary statistics only matter for sampled text
+    ref = engine.score(context, ids, k=50, temperature=temp, stats=stats) if ids else []
     if repair and ids and has_repair_candidate(ids, ref):
         ids, inserted = repair_dropped(engine, context, ids)
         if inserted:
             for t in inserted:
                 tops.insert(t, None)
                 lps.insert(t, None)
-            ref = engine.score(context, ids, k=50, temperature=temp)
+            ref = engine.score(context, ids, k=50, temperature=temp, stats=stats)
     scores = score_reply(ids, ref, GREEDY, f"{rec.get('tag')}:{rec.get('prompt_idx')}:{rec.get('mode')}",
                          reported_tops=tops, reported_lps=lps, skip=inserted)
     end_prob = None

@@ -31,6 +31,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <thread>
 #include <vector>
 
 using json = nlohmann::json;
@@ -40,7 +41,7 @@ struct Engine {
     llama_context * ctx = nullptr;
     const llama_vocab * vocab = nullptr;
     int n_vocab = 0, n_ctx = 0, n_batch = 0;
-    std::vector<int> idx;
+    int n_threads = 8;
     int n_past = 0;  // tokens in the KV cache for start/step
     const float * last_logits = nullptr;
 
@@ -61,20 +62,32 @@ struct Engine {
         return n > 0 ? std::string(buf, n) : std::string();
     }
 
-    json topk(const float * lg, int k, double & lse_out) {
+    // Top-k by a single pass with a small min-heap (no shared buffer, so positions can be scored in parallel).
+    json topk(const float * lg, int k, double & lse_out) const {
         float mx = -INFINITY;
         for (int v = 0; v < n_vocab; v++) mx = std::max(mx, lg[v]);
         double sum = 0.0;
         for (int v = 0; v < n_vocab; v++) sum += std::exp((double) lg[v] - mx);
         const double lse = mx + std::log(sum);
         lse_out = lse;
-        for (int v = 0; v < n_vocab; v++) idx[v] = v;
         const int kk = std::min(k, n_vocab);
-        std::partial_sort(idx.begin(), idx.begin() + kk, idx.end(), [&](int a, int b) {
-            return lg[a] > lg[b] || (lg[a] == lg[b] && a < b);
-        });
+        // "better" = higher logit, ties to the lower id; the heap keeps the worst of the current best kk on top
+        auto better = [&](int a, int b) { return lg[a] > lg[b] || (lg[a] == lg[b] && a < b); };
+        std::vector<int> heap;
+        heap.reserve(kk);
+        for (int v = 0; v < n_vocab; v++) {
+            if ((int) heap.size() < kk) {
+                heap.push_back(v);
+                std::push_heap(heap.begin(), heap.end(), better);
+            } else if (better(v, heap.front())) {
+                std::pop_heap(heap.begin(), heap.end(), better);
+                heap.back() = v;
+                std::push_heap(heap.begin(), heap.end(), better);
+            }
+        }
+        std::sort(heap.begin(), heap.end(), better);
         json top = json::array();
-        for (int t = 0; t < kk; t++) top.push_back({idx[t], (double) lg[idx[t]] - lse});
+        for (int t : heap) top.push_back({t, (double) lg[t] - lse});
         return top;
     }
 
@@ -93,7 +106,7 @@ struct Engine {
         return n_vocab - 1;
     }
 
-    json score_step(const float * lg, int k, llama_token actual, double temp, bool stats) {
+    json score_step(const float * lg, int k, llama_token actual, double temp, bool stats) const {
         double lse = 0;
         json step;
         step["top"] = topk(lg, k, lse);
@@ -147,8 +160,20 @@ struct Engine {
                 batch.logits[j] = i >= first;
             }
             if (llama_decode(ctx, batch) != 0) { llama_batch_free(batch); throw std::runtime_error("llama_decode failed"); }
-            for (int i = std::max(start, first); i < end; i++)
-                steps.push_back(score_step(llama_get_logits_ith(ctx, i - start), k, seq[i + 1], temp, stats));
+            // Score this batch's positions in parallel: each needs passes over the full vocabulary, which dominate
+            // the runtime once the forward pass is on a GPU.
+            const int lo = std::max(start, first), cnt = end - lo;
+            std::vector<json> out(std::max(cnt, 0));
+            std::vector<const float *> rows(std::max(cnt, 0));
+            for (int i = lo; i < end; i++) rows[i - lo] = llama_get_logits_ith(ctx, i - start);
+            const int nt = std::max(1, std::min(n_threads, cnt));
+            std::vector<std::thread> pool;
+            for (int t = 0; t < nt; t++)
+                pool.emplace_back([&, t]() {
+                    for (int j = t; j < cnt; j += nt) out[j] = score_step(rows[j], k, seq[lo + j + 1], temp, stats);
+                });
+            for (auto & th : pool) th.join();
+            for (auto & o : out) steps.push_back(std::move(o));
         }
         llama_batch_free(batch);
         return steps;
@@ -251,7 +276,7 @@ int main(int argc, char ** argv) {
     E.n_vocab = llama_vocab_n_tokens(E.vocab);
     E.n_ctx = n_ctx;
     E.n_batch = n_batch;
-    E.idx.resize(E.n_vocab);
+    E.n_threads = (int) std::max(1u, std::min(16u, std::thread::hardware_concurrency()));
     fprintf(stderr, "lv-engine ready: vocab %d, ctx %d\n", E.n_vocab, n_ctx);
 
     std::string line;
