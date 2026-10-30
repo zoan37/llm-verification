@@ -202,10 +202,13 @@ Referee: the MXFP4 release weights on llama.cpp CUDA (DGX Spark). 100 = the same
 re-quantized copy (experts Q4_0, rest Q2_K). Every endpoint is within 1.2× an honest machine (fidelity 92-100):
 on this model, nobody serves noticeably degraded weights at temperature 0. The differences are in sampling:
 
-- **Darkbloom (labelled fp8)** samples *hotter* than requested at temperature 1: 93 long-tail tokens where the model's
-  distribution predicts 30 (honest CPU run: 23 vs 21.9), and its sampled text fits the model worse (excess
-  cross-entropy +0.17 nats/token), although its temperature-0 output matches the model exactly. A temperature above
-  the requested value, a sampler bug, or added noise would all do this.
+- **Darkbloom (labelled fp8)** injects junk tokens when sampling: tokens the model rates below 1e-10 (foreign-script
+  fragments, words glued into identifiers) at 39-62 per 10,000 sampled tokens for requested temperatures 0.9-1.1, in
+  two separate batches; every other endpoint, the honest CPU run and a crippled 2-bit copy show 0-1. Its temperature-0
+  output matches the model exactly and the rest of its samples fit an effective temperature close to the request, so
+  this is a sampling-path defect (e.g. low-precision softmax), not a different model. Effective-temperature scans
+  (`experiments/effective_temperature.py`) and junk counts are in `experiments/results/`. Side note: asked for 0.5,
+  Darkbloom and Bedrock both behave like ~0.6.
 - **Groq** truncates the tail (0 vs 16.8 expected) and bills 4 extra prompt tokens; **DeepInfra (bf16)** failed 81
   of 104 requests and bills 13 fewer prompt tokens than the published template.
 

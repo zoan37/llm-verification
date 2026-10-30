@@ -629,7 +629,7 @@
    "x_honest": 1.0,
    "fidelity": 100.0,
    "flags": [
-    "samples hotter than requested at temperature 1: 93 long-tail tokens vs 30.0 expected, while its temperature-0 output matches the model",
+    "too many long-tail tokens at temperature 1: 93 vs 30.0 expected, while its temperature-0 output matches the model (junk tokens or a hotter sampler)",
     "no logprobs (text-only checks)"
    ],
    "verdict": {
@@ -1409,6 +1409,6 @@
  },
  "referee": "gpt-oss-20b MXFP4 (release weights), llama.cpp CUDA, DGX Spark (GB10)",
  "anchor": "a re-quantized copy of the same model (experts Q4_0, rest Q2_K)",
- "notes": "100 is set by the same release weights on the Spark's Grace CPU. gpt-oss-20b has many near-tied tokens, so honest machines disagree on ~7% of tokens, almost all harmless near-tie flips.",
+ "notes": "100 is set by the same release weights on the Spark's Grace CPU. gpt-oss-20b has many near-tied tokens, so honest machines disagree on ~7% of tokens, almost all harmless near-tie flips. Darkbloom has its own case study.",
  "built": "2026-10-30"
 }

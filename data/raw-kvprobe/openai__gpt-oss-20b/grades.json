@@ -1,0 +1,106 @@
+{
+ "akashml__fp4": {
+  "kv_lookup@8000": 1.0,
+  "kv_lookup@16000": 0.9375,
+  "kv_lookup@32000": 0.875,
+  "copy@8000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0
+ },
+ "amazon-bedrock": {
+  "kv_lookup@8000": 1.0,
+  "kv_lookup@16000": 1.0,
+  "kv_lookup@32000": 0.9375,
+  "copy@8000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0
+ },
+ "amazon-bedrock__eu-west-1": {
+  "kv_lookup@8000": 1.0,
+  "kv_lookup@16000": 1.0,
+  "kv_lookup@32000": 1.0,
+  "copy@8000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 0.9979009235936188
+ },
+ "coreweave__fp4": {
+  "kv_lookup@8000": 1.0,
+  "kv_lookup@16000": 1.0,
+  "kv_lookup@32000": 0.9375,
+  "copy@8000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0
+ },
+ "darkbloom__fp8": {
+  "kv_lookup@8000": 1.0,
+  "kv_lookup@16000": 1.0,
+  "kv_lookup@32000": 0.875,
+  "copy@8000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0
+ },
+ "deepinfra__bf16": {
+  "kv_lookup@8000": 0.0,
+  "kv_lookup@16000": null,
+  "kv_lookup@32000": null,
+  "copy@8000": 0.0,
+  "copy@16000": null,
+  "copy@32000": null
+ },
+ "dekallm__bf16": {
+  "kv_lookup@8000": 0.6875,
+  "kv_lookup@16000": 0.875,
+  "kv_lookup@32000": 1.0,
+  "copy@8000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0
+ },
+ "groq": {
+  "kv_lookup@8000": 1.0,
+  "kv_lookup@16000": 1.0,
+  "kv_lookup@32000": 0.9375,
+  "copy@8000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 0.9987572493786248
+ },
+ "local__kv-f16": {
+  "kv_lookup@8000": 1.0,
+  "kv_lookup@16000": 1.0,
+  "kv_lookup@32000": 1.0,
+  "copy@8000": 1.0,
+  "copy@16000": 0.5,
+  "copy@32000": 0.9970563498738436
+ },
+ "local__kv-q4_0": {
+  "kv_lookup@8000": 0.9375,
+  "kv_lookup@16000": 0.875,
+  "kv_lookup@32000": 0.375,
+  "copy@8000": 0.8889816360601002,
+  "copy@16000": 0.7842105263157895,
+  "copy@32000": 0.7535446205170976
+ },
+ "local__kv-q8_0": {
+  "kv_lookup@8000": 1.0,
+  "kv_lookup@16000": 1.0,
+  "kv_lookup@32000": 1.0,
+  "copy@8000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0
+ },
+ "parasail__fp4": {
+  "kv_lookup@8000": 0.5,
+  "kv_lookup@16000": 1.0,
+  "kv_lookup@32000": 0.9375,
+  "copy@8000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0
+ },
+ "siliconflow__fp8": {
+  "kv_lookup@8000": 1.0,
+  "kv_lookup@16000": 1.0,
+  "kv_lookup@32000": 1.0,
+  "copy@8000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0
+ }
+}

@@ -92,7 +92,7 @@ code { font: 13px var(--mono); }
       distance (Qwen3.5: AtlasCloud, Darkbloom, Alibaba; Gemma-4: Darkbloom, AkashML). Distance, not proof of intent.</p></div>
     <div class="finding"><span class="pill warn">sampling not as requested</span><p>Asked for temperature 1 and top_p 1,
       six of seven Qwen3.5 endpoints (and Groq on gpt-oss-20b) almost never sample long-tail tokens, likely an unrequested
-      top-k. Darkbloom on gpt-oss-20b does the opposite: 3× too many, sampling hotter than asked.</p></div>
+      top-k. Darkbloom on gpt-oss-20b injects near-impossible junk tokens (about one per 200) when sampling.</p></div>
     <div class="finding"><span class="pill bad">not the released model</span><p>Venice's Qwen3.8-27B is 165× an honest
       machine's distance from the real weights (a 2-bit copy: 75×), fluent, with no hidden prompt and not an older Qwen. It
       tells a dark joke where the released model deflects. Most consistent with modified (e.g. uncensored) weights.</p></div>

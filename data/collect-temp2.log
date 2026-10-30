@@ -1,0 +1,4 @@
+openai/gpt-oss-20b: 2 endpoints; key usage $4.2276
+amazon-bedrock                 quant=unknown  ok=144/144 logprobs=0 errors=0
+darkbloom/fp8                  quant=fp8      ok=143/144 logprobs=143 errors=0
+openai/gpt-oss-20b: spent $0.0098

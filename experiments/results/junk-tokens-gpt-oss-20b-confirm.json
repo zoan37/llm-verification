@@ -1,0 +1,32 @@
+{
+ "amazon-bedrock@temp0.9": {
+  "tokens": 11601,
+  "junk": 0,
+  "per_10k": 0.0
+ },
+ "darkbloom__fp8@temp0.9": {
+  "tokens": 10757,
+  "junk": 42,
+  "per_10k": 39.0
+ },
+ "amazon-bedrock@temp1.0": {
+  "tokens": 11319,
+  "junk": 0,
+  "per_10k": 0.0
+ },
+ "darkbloom__fp8@temp1.0": {
+  "tokens": 11460,
+  "junk": 68,
+  "per_10k": 59.3
+ },
+ "amazon-bedrock@temp1.1": {
+  "tokens": 11340,
+  "junk": 0,
+  "per_10k": 0.0
+ },
+ "darkbloom__fp8@temp1.1": {
+  "tokens": 11834,
+  "junk": 73,
+  "per_10k": 61.7
+ }
+}

@@ -1,0 +1,82 @@
+{
+ "akashml__fp4@sample": {
+  "tokens": 11595,
+  "junk": 0,
+  "per_10k": 0.0
+ },
+ "amazon-bedrock@sample": {
+  "tokens": 11476,
+  "junk": 0,
+  "per_10k": 0.0
+ },
+ "amazon-bedrock__eu-west-1@sample": {
+  "tokens": 11394,
+  "junk": 0,
+  "per_10k": 0.0
+ },
+ "coreweave__fp4@sample": {
+  "tokens": 11560,
+  "junk": 0,
+  "per_10k": 0.0
+ },
+ "darkbloom__fp8@sample": {
+  "tokens": 11347,
+  "junk": 48,
+  "per_10k": 42.3
+ },
+ "deepinfra__bf16@sample": {
+  "tokens": 3398,
+  "junk": 0,
+  "per_10k": 0.0
+ },
+ "dekallm__bf16@sample": {
+  "tokens": 11388,
+  "junk": 1,
+  "per_10k": 0.9
+ },
+ "groq@sample": {
+  "tokens": 11242,
+  "junk": 0,
+  "per_10k": 0.0
+ },
+ "local__cpu-grace@sample": {
+  "tokens": 11445,
+  "junk": 0,
+  "per_10k": 0.0
+ },
+ "local__substitute-requant@sample": {
+  "tokens": 11902,
+  "junk": 0,
+  "per_10k": 0.0
+ },
+ "parasail__fp4@sample": {
+  "tokens": 11328,
+  "junk": 0,
+  "per_10k": 0.0
+ },
+ "siliconflow__fp8@sample": {
+  "tokens": 34326,
+  "junk": 0,
+  "per_10k": 0.0
+ },
+ "amazon-bedrock@temp0.5": {
+  "tokens": 11483,
+  "junk": 1,
+  "per_10k": 0.9
+ },
+ "darkbloom__fp8@temp0.5": {
+  "tokens": 11240,
+  "junk": 2,
+  "per_10k": 1.8
+ },
+ "amazon-bedrock@temp1.5": {
+  "tokens": 11549,
+  "junk": 0,
+  "per_10k": 0.0
+ },
+ "darkbloom__fp8@temp1.5": {
+  "tokens": 12660,
+  "junk": 9,
+  "per_10k": 7.1
+ }
+}
