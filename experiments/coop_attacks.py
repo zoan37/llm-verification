@@ -37,6 +37,9 @@ ap.add_argument("--n", type=int, default=16)
 ap.add_argument("--max-tokens", type=int, default=128)
 ap.add_argument("--template-kwargs", default="{}")
 ap.add_argument("--variants", default="honest,swap,launder,draft90,draft97,steer")
+ap.add_argument("--tau-regret", type=float, default=0.003,
+                help="tolerance: ~3x the honest cross-hardware regret measured for these weights")
+ap.add_argument("--tau-wgap", type=float, default=0.03)
 a = ap.parse_args()
 
 real, cheap = LlamaEngine(shlex.split(a.real)), LlamaEngine(shlex.split(a.cheap))
@@ -65,12 +68,13 @@ variants = {
     "steer": lambda: TieSteering(real, signer, info, prefer=prefer_short, budget=0.05),
 }
 specs = {"greedy": SamplingSpec(), "t0.7": SamplingSpec(mode="gumbel", temperature=0.7, seed=1234)}
-out = {"name": a.name, "max_tokens": a.max_tokens, "n_prompts": len(prompts), "variants": {}}
+out = {"name": a.name, "max_tokens": a.max_tokens, "n_prompts": len(prompts), "variants": {},
+       "tau": {"regret": a.tau_regret, "wgap": a.tau_wgap}}
 for vname in a.variants.split(","):
     prov = variants[vname]()
     for sname, spec in specs.items():
         t0 = time.time()
-        led = Ledger(signer.public_hex, tolerances={"regret": 0.02, "wgap": 0.10})
+        led = Ledger(signer.public_hex, tolerances={"regret": a.tau_regret, "wgap": a.tau_wgap})
         exact_fail, scores, first_flag, extra = 0, [], None, []
         for i, p in enumerate(prompts):
             nonce = f"{vname}-{sname}-{i}"
@@ -91,6 +95,7 @@ for vname in a.variants.split(","):
                 extra.append(f"draft_share={prov.draft_share:.2f}")
         m = means(scores, ("regret", "agree", "wgap", "topk", "drift"))
         res = {"exact_failures": exact_fail, "replies": len(prompts), "tokens": len(scores), **m,
+               "per_token": [[round(x.regret, 5), round(x.wgap or 0, 5)] for x in scores],
                "eprocess_flag_after_tokens": first_flag, "verdict": led.verdict()["status"],
                "steered": getattr(prov, "steered", None), "notes": extra[:6], "seconds": round(time.time() - t0)}
         out["variants"][f"{vname}/{sname}"] = res
