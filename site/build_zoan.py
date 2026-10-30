@@ -31,6 +31,7 @@ nav = """<header class="lv-top"><nav>
 # so the bar resets those properties.
 nav_css = """<style>
 body { margin: 0; }
+html { scroll-padding-top: 88px; }
 .lv-top, .lv-top *, .wrap { box-sizing: border-box; }
 header.lv-top { display: block; max-width: none; gap: 0; position: sticky; top: 0; z-index: 10;
   background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); }
