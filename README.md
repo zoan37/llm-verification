@@ -19,7 +19,9 @@ Two modes:
   controls. Tampering, hidden prompts, laundered logprobs and grinding become *exact* failures, not statistics,
   and any reply can be re-checked by any referee later.
 
-[What this can and cannot prove](docs/soundness.md) is the most important document here.
+[What this can and cannot prove](docs/soundness.md) is the most important document here. Results so far:
+[experiments/README.md](experiments/README.md). Guides: [black-box method](docs/black-box.md),
+[cooperative mode](docs/cooperative.md), [receipt spec](docs/receipt-spec.md).
 
 ## How it works (one paragraph)
 
@@ -57,10 +59,14 @@ cmake -S engine -B engine/build -DLLAMA_CPP_DIR=/path/to/llama.cpp -DCMAKE_BUILD
 cmake --build engine/build -j
 
 # audit every OpenRouter provider of a model (needs ~/.config/openrouter/api-key)
-python experiments/collect.py --model openai/gpt-oss-120b --reasoning-effort low
+python experiments/collect.py --model openai/gpt-oss-120b --reasoning-effort low --budget-usd 5
 python experiments/score_model.py --model openai/gpt-oss-120b --chat harmony \
     --engine "engine/build/lv-engine -m gpt-oss-120b-MXFP4.gguf -c 8192"
-python experiments/build_results.py --model openai/gpt-oss-120b
+python experiments/build_results.py --model openai/gpt-oss-120b --referee "..." --anchor "..."
+
+# or audit one OpenAI-compatible endpoint directly
+python -m llmverify audit --base-url https://host/v1 --model NAME --logprobs \
+    --referee "engine/build/lv-engine -m model.gguf -c 8192"
 ```
 
 ## Status
