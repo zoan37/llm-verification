@@ -52,6 +52,14 @@
      "p": 0.014705031314053376,
      "mean": 0.5069873694994633,
      "n_tokens": 10249
+    },
+    "tail": {
+     "observed": 0,
+     "expected": 8.8264576,
+     "ratio": 0.0,
+     "z": -2.9876124164732802,
+     "p": 0.002811658701576858,
+     "n_tokens": 10249
     }
    },
    "integrity": {
@@ -99,7 +107,8 @@
    "x_honest": 10.38,
    "fidelity": 0.0,
    "flags": [
-    "non-deterministic at temperature 0"
+    "non-deterministic at temperature 0",
+    "truncates sampling at top_p=1: 0 long-tail tokens vs 8.8 expected (likely an unrequested default top_k/min_p)"
    ]
   },
   "atlas-cloud__fp8": {
@@ -138,6 +147,14 @@
      "ks": 0.021122572866229983,
      "p": 0.00016200021425985116,
      "mean": 0.5124447469856641,
+     "n_tokens": 10533
+    },
+    "tail": {
+     "observed": 2,
+     "expected": 9.8663226,
+     "ratio": 0.2027097715211542,
+     "z": -2.5183658671176943,
+     "p": 0.011790078059847147,
      "n_tokens": 10533
     }
    },
@@ -180,6 +197,7 @@
    "fidelity": 0.0,
    "flags": [
     "non-deterministic at temperature 0",
+    "truncates sampling at top_p=1: 2 long-tail tokens vs 9.9 expected (likely an unrequested default top_k/min_p)",
     "no logprobs (text-only checks)"
    ]
   },
@@ -231,6 +249,14 @@
      "ks": 0.020813260340632578,
      "p": 0.0002664763892117152,
      "mean": 0.509704,
+     "n_tokens": 10275
+    },
+    "tail": {
+     "observed": 7,
+     "expected": 9.443181,
+     "ratio": 0.7412756358265293,
+     "z": -0.7993638292165977,
+     "p": 0.42407947755557773,
      "n_tokens": 10275
     }
    },
@@ -319,6 +345,14 @@
      "ks": 0.009082483010977527,
      "p": 0.4075677123949634,
      "mean": 0.4987310392054365,
+     "n_tokens": 9565
+    },
+    "tail": {
+     "observed": 2,
+     "expected": 7.9946263,
+     "ratio": 0.25016804100024037,
+     "z": -2.1292308452741695,
+     "p": 0.03323516609775195,
      "n_tokens": 9565
     }
    },
@@ -413,6 +447,14 @@
      "p": 0.026264175140023785,
      "mean": 0.5066797285506544,
      "n_tokens": 10315
+    },
+    "tail": {
+     "observed": 7,
+     "expected": 9.8459888,
+     "ratio": 0.7109494172896073,
+     "z": -0.9125155545503859,
+     "p": 0.36149738515977287,
+     "n_tokens": 10315
     }
    },
    "integrity": {
@@ -505,6 +547,14 @@
      "ks": 0.004943163014640928,
      "p": 0.9644099743321718,
      "mean": 0.5001357443254397,
+     "n_tokens": 10177
+    },
+    "tail": {
+     "observed": 12,
+     "expected": 9.2918103,
+     "ratio": 1.2914598568591096,
+     "z": 0.8935254187388965,
+     "p": 0.37157586610124527,
      "n_tokens": 10177
     }
    },
@@ -599,6 +649,14 @@
      "p": 7.239690329682682e-10,
      "mean": 0.5170022433013887,
      "n_tokens": 10226
+    },
+    "tail": {
+     "observed": 24,
+     "expected": 10.0584844,
+     "ratio": 2.386045356892933,
+     "z": 4.420689606017713,
+     "p": 9.83864133060066e-06,
+     "n_tokens": 10226
     }
    },
    "integrity": {
@@ -691,6 +749,14 @@
      "ks": 0.008688237585199543,
      "p": 0.4187358195149703,
      "mean": 0.5026917702044791,
+     "n_tokens": 10270
+    },
+    "tail": {
+     "observed": 14,
+     "expected": 9.0824549,
+     "ratio": 1.5414334730139976,
+     "z": 1.6392322869611664,
+     "p": 0.10116489203914202,
      "n_tokens": 10270
     }
    },
@@ -785,6 +851,14 @@
      "p": 3.653231076247931e-65,
      "mean": 0.5520824372315036,
      "n_tokens": 10475
+    },
+    "tail": {
+     "observed": 148,
+     "expected": 18.3113822,
+     "ratio": 8.082404614983133,
+     "z": 30.60645925059447,
+     "p": 1.0042118732813872e-205,
+     "n_tokens": 10475
     }
    },
    "integrity": {
@@ -878,6 +952,14 @@
      "p": 0.6518002207564045,
      "mean": 0.49977093624914576,
      "n_tokens": 10243
+    },
+    "tail": {
+     "observed": 1,
+     "expected": 9.0632419,
+     "ratio": 0.11033579496537547,
+     "z": -2.6961942149824814,
+     "p": 0.007013676017160803,
+     "n_tokens": 10243
     }
    },
    "integrity": {
@@ -926,7 +1008,8 @@
    "x_honest": 2.53,
    "fidelity": 47.0,
    "flags": [
-    "non-deterministic at temperature 0"
+    "non-deterministic at temperature 0",
+    "truncates sampling at top_p=1: 1 long-tail tokens vs 9.1 expected (likely an unrequested default top_k/min_p)"
    ]
   },
   "siliconflow__fp8": {
@@ -965,6 +1048,14 @@
      "ks": 0.01029208858919961,
      "p": 0.0519166241975696,
      "mean": 0.5066223984188805,
+     "n_tokens": 17203
+    },
+    "tail": {
+     "observed": 5,
+     "expected": 15.3886306,
+     "ratio": 0.3249152007066827,
+     "z": -2.6616237480587137,
+     "p": 0.0077764750100345085,
      "n_tokens": 17203
     }
    },
@@ -1007,6 +1098,7 @@
    "fidelity": 0.0,
    "flags": [
     "non-deterministic at temperature 0",
+    "truncates sampling at top_p=1: 5 long-tail tokens vs 15.4 expected (likely an unrequested default top_k/min_p)",
     "no logprobs (text-only checks)"
    ]
   },
@@ -1059,6 +1151,14 @@
      "p": 0.2902809230192133,
      "mean": 0.49976484230238516,
      "n_tokens": 10146
+    },
+    "tail": {
+     "observed": 1,
+     "expected": 9.1912947,
+     "ratio": 0.10879860048443447,
+     "z": -2.7187010052418086,
+     "p": 0.006553882137602855,
+     "n_tokens": 10146
     }
    },
    "integrity": {
@@ -1107,12 +1207,13 @@
    "x_honest": 2.15,
    "fidelity": 56.2,
    "flags": [
-    "non-deterministic at temperature 0"
+    "non-deterministic at temperature 0",
+    "truncates sampling at top_p=1: 1 long-tail tokens vs 9.2 expected (likely an unrequested default top_k/min_p)"
    ]
   }
  },
  "referee": "Qwen3.5-35B-A3B Q8_0, llama.cpp Metal, M5 Max",
  "anchor": "a 3-bit quantization (Q3_K_M) of the same model",
- "notes": "100 is set by a near-lossless 6-bit re-quantization (Q6_K), standing in for faithful FP8/BF16 serving; the same Q8 weights on the CPU (top row) show how tight same-weights agreement is. The referee is Q8_0, so FP8-class endpoints cannot be told apart from each other, only from 4-bit-and-worse behaviour.",
+ "notes": "100 is set by a near-lossless 6-bit re-quantization (Q6_K), standing in for faithful FP8/BF16 serving; the same Q8 weights on the CPU show how tight same-weights agreement is. The referee is Q8_0, so FP8-class endpoints cannot be told apart from each other, only from 4-bit-and-worse behaviour.",
  "built": "2026-10-30"
 }

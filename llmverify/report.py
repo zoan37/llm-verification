@@ -121,15 +121,16 @@ def flags(s: dict, ref_regret: Optional[float]) -> List[str]:
     i = s["integrity"]
     if i["own_top_miss"] is not None and i["own_top_miss"] > 0.01:
         f.append(f"samples at temperature 0 ({i['own_top_miss']:.1%} of tokens not its own top choice)")
-    det = i.get("determinism")
-    if det and det["identical_share"] < 0.5:
-        f.append("non-deterministic at temperature 0")
     if i["inserted_tokens"] >= 3:
         f.append(f"drops tokens from its output ({i['inserted_tokens']} re-inserted)")
     if i["prompt_tokens_mismatch_share"] and i["prompt_tokens_mismatch_share"] > 0.5 and not s.get("local"):
         f.append(f"prompt token count differs from the reference template (median {i['prompt_tokens_delta_median']:+d})")
     if i.get("early_stop_share") and i["early_stop_share"] > 0.1:
         f.append(f"ends {i['early_stop_share']:.0%} of 'stop' replies where the model would continue (truncation?)")
+    tail = (s.get("sample_answer") or {}).get("tail") or {}
+    if tail.get("z") is not None and tail["z"] < -2.5 and (tail.get("ratio") or 0) < 0.5:
+        f.append(f"truncates sampling at top_p=1: {tail['observed']:.0f} long-tail tokens vs {tail['expected']:.1f} "
+                 "expected (likely an unrequested default top_k/min_p)")
     al = i.get("logprob_alignment")
     if al and al["bad_share"] > 0.01:
         f.append(f"top_logprobs disagree with the chosen token's logprob at {al['bad_share']:.0%} of positions "

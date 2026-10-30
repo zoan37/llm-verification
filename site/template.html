@@ -79,8 +79,10 @@ code { font: 13px var(--mono); }
       for that model. Linear in log distance, clipped. A ranking aid; the distance and its interval are the evidence.</p></div>
     <div><h3>Regret (greedy)</h3><p>At temperature 0, how much less likely the referee found the provider's chosen token than
       its own first choice, in nats per token. 0 means the same token. Bar: 95% interval, ticks at the honest and substitute levels.</p></div>
-    <div><h3>Sampled-text fit</h3><p>At temperature 1, excess cross-entropy: how much worse (positive) or better (negative) the
-      text fits the referee than the referee's own samples would. Needs no calibration; honest FP8 serving shows a small positive value.</p></div>
+    <div><h3>Sampled fit (PIT)</h3><p>At temperature 1, where each sampled token falls in the referee's distribution: 0.500
+      on average for true samples, needing no calibration. Above 0.5 means less likely tokens than the real model would
+      pick. * marks p &lt; 0.001. "tail" is long-tail draws (p &lt; 1e-4) observed vs expected: honest sampling is near 1×,
+      a silent top-k is near 0×, a flatter substitute model is well above 1×.</p></div>
     <div><h3>Peer agreement</h3><p>How long an endpoint's temperature-0 replies stay identical to the other endpoints', as a
       share of the first 200 characters (median over peers). Needs no reference weights, but it rewards being like the
       crowd, not being correct.</p></div>
@@ -171,7 +173,9 @@ function render(key) {
     (a.greedy.regret.mean ?? 9) - (b.greedy.regret.mean ?? 9));
   const body = rows.map(r => {
     const g = r.greedy, sa = (r.sample_answer || {}).likelihood || {};
-    const ece = sa.excess_ce == null ? '–' : `${sa.excess_ce >= 0 ? '+' : ''}${fmt(sa.excess_ce, 3)}`;
+    const pit = (r.sample_answer || {}).pit || {}, tail = (r.sample_answer || {}).tail || {};
+    const pitc = pit.mean == null ? '–' : `${pit.mean.toFixed(3)}${pit.p < 1e-3 ? ' *' : ''}`;
+    const tailc = tail.ratio == null ? '' : `tail ${tail.ratio.toFixed(2)}×`;
     const det = r.integrity.determinism;
     return `<tr class="${r.local ? 'ref' : ''}">
       <td><div class="name">${esc(r.local ? (r.label || r.tag) : r.provider)}</div>
@@ -180,7 +184,7 @@ function render(key) {
       <td class="num">${fmt(g.regret.mean)}<div class="sub">[${fmt(g.regret.lo)}, ${fmt(g.regret.hi)}]</div>${scaleBar(r, m)}</td>
       <td class="num">${r.x_honest == null ? '–' : r.x_honest.toFixed(1) + '×'}</td>
       <td class="num">${g.disagree.mean == null ? '–' : (100 * g.disagree.mean).toFixed(1) + '%'}<div class="sub">${g.big_miss_per_1k == null ? '' : g.big_miss_per_1k.toFixed(1) + ' big/1k'}</div></td>
-      <td class="num">${ece}<div class="sub">${sa.excess_ce_lo == null ? '' : `[${fmt(sa.excess_ce_lo, 3)}, ${fmt(sa.excess_ce_hi, 3)}]`}</div></td>
+      <td class="num">${pitc}<div class="sub">${tailc}</div></td>
       <td class="num">${r.peer_agreement == null ? '–' : r.peer_agreement.toFixed(2)}</td>
       <td class="num">${det ? Math.round(100 * det.identical_share) + '%' : '–'}<div class="sub">${r.integrity.logprobs ? 'logprobs' : 'text only'}</div></td>
       <td class="flags">${flagCell(r)}</td>
@@ -189,7 +193,7 @@ function render(key) {
   document.getElementById('model').innerHTML = head(m, providers) + `
     <div class="ledger"><table>
       <thead><tr><th>Endpoint</th><th>Fidelity</th><th>Regret (nats/token)</th><th>× honest</th><th>Other token</th>
-        <th>Sampled fit</th><th>Peer agreement</th><th>Same reply at T=0</th><th>Flags</th></tr></thead>
+        <th>Sampled fit (PIT)</th><th>Peer agreement</th><th>Same reply at T=0</th><th>Flags</th></tr></thead>
       <tbody>${body}</tbody></table></div>`;
   try { localStorage.setItem('lv-model', key); } catch (e) {}
 }
