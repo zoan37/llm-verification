@@ -208,7 +208,7 @@ static std::string meta_str(llama_model * model, const char * key) {
 }
 
 int main(int argc, char ** argv) {
-    std::string model_path;
+    std::string model_path, cache_k = "f16", cache_v = "f16";
     int n_ctx = 16384, n_batch = 2048, n_gpu_layers = 99;
     for (int i = 1; i < argc; i++) {
         std::string a = argv[i];
@@ -216,9 +216,11 @@ int main(int argc, char ** argv) {
         else if (a == "-c" && i + 1 < argc) n_ctx = std::stoi(argv[++i]);
         else if (a == "-b" && i + 1 < argc) n_batch = std::stoi(argv[++i]);
         else if (a == "-ngl" && i + 1 < argc) n_gpu_layers = std::stoi(argv[++i]);
+        else if (a == "-ctk" && i + 1 < argc) cache_k = argv[++i];  // KV cache types, to emulate a provider that
+        else if (a == "-ctv" && i + 1 < argc) cache_v = argv[++i];  // compresses its cache (f16, q8_0, q4_0)
     }
     if (model_path.empty()) {
-        fprintf(stderr, "usage: lv-engine -m model.gguf [-c ctx] [-b batch] [-ngl layers] < requests.jsonl\n");
+        fprintf(stderr, "usage: lv-engine -m model.gguf [-c ctx] [-b batch] [-ngl layers] [-ctk t] [-ctv t] < requests.jsonl\n");
         return 1;
     }
     llama_log_set([](ggml_log_level level, const char * text, void *) {
@@ -234,6 +236,15 @@ int main(int argc, char ** argv) {
     cp.n_ctx = n_ctx;
     cp.n_batch = n_batch;
     cp.n_ubatch = std::min(n_batch, 512);
+    auto kv_type = [](const std::string & t) {
+        if (t == "q8_0") return GGML_TYPE_Q8_0;
+        if (t == "q4_0") return GGML_TYPE_Q4_0;
+        if (t == "f16") return GGML_TYPE_F16;
+        throw std::runtime_error("unknown cache type " + t);
+    };
+    cp.type_k = kv_type(cache_k);
+    cp.type_v = kv_type(cache_v);
+    if (cache_v != "f16") cp.flash_attn_type = LLAMA_FLASH_ATTN_TYPE_ENABLED;  // a quantized V cache needs flash attention
     E.ctx = llama_init_from_model(E.model, cp);
     if (!E.ctx) { fprintf(stderr, "failed to create context\n"); return 1; }
     E.vocab = llama_model_get_vocab(E.model);
