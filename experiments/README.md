@@ -60,6 +60,36 @@ The referee is Q8_0, so FP8-class endpoints cannot be told apart from each other
 Every endpoint except SiliconFlow varies its reply to the same temperature-0 prompt (batching changes arithmetic),
 which is honest noise; SiliconFlow also ignores `max_tokens`.
 
+## Long context (Qwen3.5-35B-A3B)
+
+21 prompts (Python standard-library source at ~4k, 16k and 32k tokens, one planted "release codename" at 5-95% depth,
+`prompts/build_long.py`), greedy, referee Q8_0 with a 40k context. Regret by prompt length (95% interval):
+
+| Endpoint | 4k | 16k | 32k | Needle recall |
+|---|---|---|---|---|
+| *honest: Q6_K copy* | 0.0021 [0.001, 0.004] | 0.0028 [0.001, 0.005] | 0.0018 [0.001, 0.003] | 100% |
+| *Q8 weights, 4-bit KV cache* | 0.0042 [0.003, 0.006] | 0.0049 [0.002, 0.008] | 0.0027 [0.001, 0.004] | 100% |
+| *3-bit weights (Q3_K_M)* | 0.0109 [0.008, 0.014] | 0.0141 [0.010, 0.018] | 0.0131 [0.006, 0.022] | 100% |
+| DeepInfra fp8 | 0.0096 [0.003, 0.016] | 0.0015 [0.000, 0.003] | 0.0061 [0.003, 0.009] | 100% |
+| Parasail fp8 | 0.0041 [0.001, 0.007] | 0.0071 [0.001, 0.014] | 0.0070 [0.004, 0.010] | 100% |
+| Venice | 0.0064 [0.003, 0.010] | 0.0046 [0.002, 0.008] | 0.0049 [0.002, 0.009] | 100% |
+| SiliconFlow fp8 | 0.0118 [0.004, 0.021] | 0.0073 [0.001, 0.017] | 0.0240 [0.007, 0.051] | 100% |
+| **Alibaba** | 0.0197 [0.011, 0.029] | 0.0351 [0.025, 0.047] | 0.0371 [0.021, 0.055] | 100% |
+| **AtlasCloud fp8** | 0.0290 [0.012, 0.047] | 0.0427 [0.032, 0.055] | 0.0515 [0.036, 0.068] | 100% |
+| Darkbloom fp4 | 0.0573 [0.050, 0.064] | 0.0706 [0.057, 0.089] | 0.0745 [0.063, 0.092] | 100% |
+
+- No endpoint truncates context: the needle was recalled in every reply up to 32k tokens.
+- Weight quantization is flat in length (the 3-bit copy); Alibaba and AtlasCloud drift further from the model as the
+  prompt grows (~1.8-1.9× from 4k to 32k), which points to something context-dependent (attention approximations,
+  cache compression of another kind, long-context kernels). Moderate evidence: intervals partly overlap.
+- A 4-bit KV cache is within honest noise on this model at every length: Qwen3.5 keeps a KV cache in only some of its
+  layers. Whether cache compression is detectable on full-attention models is the next experiment
+  (`prompts/build_kv_probes.py`, gpt-oss-20b).
+
+Short / edge prompts (`prompts/edge.json`: one-word prompts, exact-format replies, JSON, emoji, Chinese, Japanese,
+Arabic, Russian, tab-indented code, repetition) rank the Qwen3.5 endpoints the same way as the general prompts; no
+endpoint dropped or mangled emoji or non-Latin text; Darkbloom's distance doubles on these (0.081 vs 0.045).
+
 ## Cooperative mode on real weights
 
 `coop_attacks.py` + `coop_detection.py`: Qwen3.5-35B-A3B Q8_0 as the honest provider; cheats built from Qwen3.5-4B.
@@ -104,6 +134,18 @@ Ruling things out, with cheap follow-up probes (temperature 0, same prompts to V
   quantization that destructive usually shows in the text.
 - **Behaviour:** genuine Qwen3.8 (Mancer, DeepInfra BF16) answers "Tell me a dark joke" identically, with a deflection
   ("I don't have a sense of humor, but... Why did the scarecrow win an award?"). Venice tells an actual dark joke.
+
+Fingerprints against public modified builds (`experiments/fingerprint.py`, greedy replies to the same prompts, mean
+shared prefix over the first 150 characters):
+
+| Candidate | vs Venice | vs Mancer | vs DeepInfra BF16 | vs CoreWeave |
+|---|---|---|---|---|
+| genuine weights (Q6_K) | 0.17 | 0.69 | 0.56 | 0.69 |
+| huihui-ai abliterated (Q4_K) | 0.16 | 0.39 | 0.38 | 0.37 |
+| JonathanColetti "Uncensored" (Q4_K_M) | 0.18 | 0.41 | 0.34 | 0.40 |
+
+Both public uncensored builds stay closer to the genuine endpoints than to Venice, so Venice serves neither of them, and
+whatever it serves differs from the release more than these fine-tunes do.
 
 What it is not possible to say from outside: which modification. The pattern (fluent, self-identifies as Qwen,
 distribution shifted everywhere, fewer refusals or deflections) fits a fine-tuned or "abliterated" (refusal-removed)
