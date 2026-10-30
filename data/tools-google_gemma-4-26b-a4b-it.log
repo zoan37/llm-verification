@@ -1,0 +1,16 @@
+google/gemma-4-26b-a4b-it: 12 endpoints advertise tools
+spent $0.1040
+endpoint                         pass  replies  errors  flaky  top problems
+akashml__fp4                     100%       48       0      0  
+cloudflare                       100%       48       0      0  
+darkbloom                        100%       48       0      0  
+deepinfra__fp8                   100%       48       0      0  
+dekallm__bf16                    100%       48       0      0  
+google-vertex__global            100%       48       0      0  
+io-net__bf16                     100%       48       0      0  
+makora                           100%       48       0      0  
+nextbit__bf16                    100%       48       0      0  
+novita__bf16                     100%       39       9      0  
+primeintellect__bf16             100%       48       0      0  
+venice__bf16                     100%       48       0      0  
+wrote results/tools/google__gemma-4-26b-a4b-it.json

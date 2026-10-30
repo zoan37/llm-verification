@@ -1,0 +1,25 @@
+qwen/qwen3.8-27b: 21 endpoints advertise tools
+spent $0.2242
+endpoint                         pass  replies  errors  flaky  top problems
+akashml__fp8                     100%       48       0      0  
+alibaba                          100%       48       0      0  
+cerebras__fp16                   100%       48       0      0  
+chutes__fp8                      100%       48       0      0  
+cloudflare                       100%       48       0      0  
+coreweave__fp8                   100%       48       0      0  
+darkbloom__fp4                   100%       48       0      0  
+deepinfra__bf16                  100%       48       0      0  
+dekallm                          100%       48       0      0  
+ionstream__fp8                   100%       48       0      0  
+mancer__fp8                      100%       48       0      0  
+modal                            100%       48       0      0  
+modelrun__fp4                    100%       48       0      0  
+near-ai__fp8                     100%       48       0      0  
+novita                           100%       48       0      0  
+parasail__fp8                    100%       48       0      0  
+phala                            100%       48       0      0  
+reka__fp8                        100%       48       0      0  
+tenstorrent__fp4                 100%       48       0      0  
+wafer__fp8                       100%       48       0      0  
+venice__fp8                       94%       48       0      0  made a tool call where none was needed ×3
+wrote results/tools/qwen__qwen3.8-27b.json

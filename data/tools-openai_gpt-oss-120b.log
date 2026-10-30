@@ -1,0 +1,25 @@
+openai/gpt-oss-120b: 21 endpoints advertise tools
+spent $0.1013
+endpoint                         pass  replies  errors  flaky  top problems
+akashml__bf16                    100%       48       0      0  
+baseten__fp4                     100%       48       0      0  
+baseten__fp4__us                 100%       48       0      0  
+cerebras__fp16                   100%       48       0      0  
+coreweave__fp4                   100%       48       0      0  
+crusoe__bf16                     100%       48       0      0  
+deepinfra__bf16                  100%       48       0      0  
+deepinfra__fp8                   100%       48       0      0  
+dekallm__bf16                    100%       48       0      0  
+groq                             100%       48       0      0  
+mancer__fp8                      100%       48       0      0  
+mara                             100%       48       0      0  
+near-ai__fp4                     100%       48       0      0  
+parasail__fp4                    100%       48       0      0  
+phala                            100%       48       0      0  
+sail-research__fp4               100%       48       0      0  
+sambanova                        100%       48       0      0  
+together                         100%       48       0      0  
+venice__int4                     100%       48       0      0  
+novita__fp4                       98%       48       0      1  create_event ×1; called [] instead of create_event ×1
+nebius__fp4                       29%       48       0      2  get_weather ×9; called [] instead of get_weather ×9; convert_currency ×9
+wrote results/tools/openai__gpt-oss-120b.json

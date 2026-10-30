@@ -60,6 +60,20 @@ The referee is Q8_0, so FP8-class endpoints cannot be told apart from each other
 Every endpoint except SiliconFlow varies its reply to the same temperature-0 prompt (batching changes arithmetic),
 which is honest noise; SiliconFlow also ignores `max_tokens`.
 
+## Tool calling (68 endpoints, 5 models)
+
+`experiments/tool_calls.py` + `prompts/tool_cases.py`: 16 cases × 3 repeats at temperature 0 on every endpoint that
+advertises tools; graded exactly (right function, arguments parse as JSON and fit the schema, right extracted values,
+no call when none is needed). 64 of 68 endpoints pass every check.
+
+| Model | Endpoints | All passed | Problems |
+|---|---|---|---|
+| Qwen3.8-27B | 21 | 20 | Venice: calls `get_weather` for Boston when asked for a poem (3/3) |
+| Qwen3.5-35B-A3B | 5 | 4 | AtlasCloud: drops the category filter from a product search (3/3) |
+| Gemma-4-26B | 12 | 12 | (Novita: request errors) |
+| gpt-oss-120b | 21 | 19 | **Nebius: tool-call arguments truncated before the closing brace in 71% of calls**, reported as complete; Novita: one call with the same truncation |
+| gpt-oss-20b | 9 | 9 | (DeepInfra: most requests failed) |
+
 ## Long context (Qwen3.5-35B-A3B)
 
 21 prompts (Python standard-library source at ~4k, 16k and 32k tokens, one planted "release codename" at 5-95% depth,

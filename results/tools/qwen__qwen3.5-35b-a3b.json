@@ -1,0 +1,137 @@
+{
+ "model": "qwen/qwen3.5-35b-a3b",
+ "cases": 16,
+ "repeats": 3,
+ "endpoints": {
+  "alibaba": {
+   "pass_rate": 1.0,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 1.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": []
+  },
+  "atlas-cloud__fp8": {
+   "pass_rate": 0.9375,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 1.0,
+    "search_category": 0.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": [
+    [
+     "filters.category",
+     3
+    ]
+   ]
+  },
+  "darkbloom__fp4": {
+   "pass_rate": 1.0,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 1.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": []
+  },
+  "parasail__fp8": {
+   "pass_rate": 1.0,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 1.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": []
+  },
+  "venice": {
+   "pass_rate": 1.0,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 1.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": []
+  }
+ }
+}

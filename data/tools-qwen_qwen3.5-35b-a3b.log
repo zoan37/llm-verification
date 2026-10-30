@@ -1,0 +1,9 @@
+qwen/qwen3.5-35b-a3b: 5 endpoints advertise tools
+spent $0.0579
+endpoint                         pass  replies  errors  flaky  top problems
+alibaba                          100%       48       0      0  
+darkbloom__fp4                   100%       48       0      0  
+parasail__fp8                    100%       48       0      0  
+venice                           100%       48       0      0  
+atlas-cloud__fp8                  94%       48       0      0  filters.category ×3
+wrote results/tools/qwen__qwen3.5-35b-a3b.json

@@ -64,8 +64,37 @@ pager = """<nav class="pager" aria-label="Previous and next page">
 </nav>
 """
 
+# Tool-calling section, from results/tools/*.json (experiments/tool_calls.py)
+NOTES = {
+    ("openai/gpt-oss-120b", "nebius__fp4"): "tool-call arguments cut off before the closing brace (invalid JSON) while "
+                                            "reporting the call as complete",
+    ("openai/gpt-oss-120b", "novita__fp4"): "one call with the same truncated-JSON pattern",
+    ("qwen/qwen3.8-27b", "venice__fp8"): "calls get_weather for Boston when asked for a poem (3 of 3)",
+    ("qwen/qwen3.5-35b-a3b", "atlas-cloud__fp8"): "drops the category filter from a product search (3 of 3)",
+}
+rows = []
+for tf in sorted((root / "results" / "tools").glob("*.json")):
+    t = json.loads(tf.read_text())
+    eps = t["endpoints"]
+    usable = {k: v for k, v in eps.items() if v["pass_rate"] is not None}
+    perfect = sum(1 for v in usable.values() if v["pass_rate"] == 1.0)
+    issues = [f"<b>{k.split('__')[0]}</b> ({v['pass_rate']:.0%}): {NOTES.get((t['model'], k), ', '.join(p for p, _ in v['top_problems'][:2]))}"
+              for k, v in sorted(usable.items(), key=lambda kv: kv[1]['pass_rate']) if v["pass_rate"] < 1.0]
+    rows.append(f"<tr><td>{t['model']}</td><td class='num'>{len(usable)}</td><td class='num'>{perfect}</td>"
+                f"<td>{'<br>'.join(issues) or '<span class=sub>none</span>'}</td></tr>")
+tools_html = f"""<section class="coop" aria-label="Tool calling">
+    <h2>Tool calling</h2>
+    <p class="lede" style="font-size:14px;max-width:80ch">The same 16 tool-calling cases, three times each at temperature 0,
+      on every endpoint that advertises tools: the call must name the right function with arguments that parse as JSON,
+      fit the schema and carry the right values, and no call may be made when none is needed. Graded exactly, no
+      referee needed.</p>
+    <div class="ledger"><table class="small">
+      <thead><tr><th>Model</th><th>Endpoints</th><th>All checks passed</th><th>Problems</th></tr></thead>
+      <tbody>{''.join(rows)}</tbody></table></div>
+  </section>
+""" if rows else ""
 i = rest.rfind("</div>", 0, rest.index('<script id="data"'))
-rest = rest[:i] + pager + rest[i:]
+rest = rest[:i] + tools_html + pager + rest[i:]
 doc = ("<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"
        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
        "<meta name=\"description\" content=\"Per-provider audit of OpenRouter endpoints: how close each one's outputs "

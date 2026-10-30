@@ -1,0 +1,13 @@
+openai/gpt-oss-20b: 9 endpoints advertise tools
+spent $0.1040
+endpoint                         pass  replies  errors  flaky  top problems
+akashml__fp4                     100%       48       0      0  
+amazon-bedrock                   100%       48       0      0  
+amazon-bedrock__eu-west-1        100%       48       0      0  
+coreweave__fp4                   100%       48       0      0  
+darkbloom__fp8                   100%       48       0      0  
+deepinfra__bf16                  100%        9      39      0  
+dekallm__bf16                    100%       48       0      0  
+groq                             100%       48       0      0  
+parasail__fp4                    100%       48       0      0  
+wrote results/tools/openai__gpt-oss-20b.json
