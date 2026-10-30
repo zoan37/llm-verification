@@ -27,12 +27,30 @@ ap.add_argument("--prompts", default="prompts/general.json")
 ap.add_argument("--only", nargs="*")
 ap.add_argument("--reasoning", action="store_true", help="also score the reasoning text of sampled replies")
 ap.add_argument("--max-tokens", type=int, default=0)
+ap.add_argument("--pause-cmd", help="shell command run before each endpoint; while it exits 0 the referee is unloaded "
+                                    "and scoring waits (e.g. a 'machine is busy' check)")
 a = ap.parse_args()
 
 prompts = json.loads(Path(a.prompts).read_text())
 raw = Path("data/raw") / a.model.replace("/", "__")
 out_dir = Path("data/scores") / a.model.replace("/", "__")
 out_dir.mkdir(parents=True, exist_ok=True)
+import subprocess  # noqa: E402
+
+
+def wait_if_busy():
+    global eng, tmap
+    if not a.pause_cmd or subprocess.call(a.pause_cmd, shell=True) != 0:
+        return
+    eng.close()
+    print("paused: machine busy", flush=True)
+    while subprocess.call(a.pause_cmd, shell=True) == 0:
+        time.sleep(120)
+    eng = LlamaEngine(shlex.split(a.engine))
+    tmap = TokenMap(eng)
+    print("resumed", flush=True)
+
+
 eng = LlamaEngine(shlex.split(a.engine))
 meta = eng.meta
 fmt = ChatFormat(kind=a.chat, template=meta.get("chat_template", ""), template_kwargs=json.loads(a.template_kwargs),
@@ -43,6 +61,7 @@ for f in sorted(raw.glob("*.jsonl.gz")):
     out = out_dir / f"{stem}.json.gz"
     if out.exists() or (a.only and stem not in a.only):
         continue
+    wait_if_busy()
     t0 = time.time()
     scored, errors = [], 0
     for rec in load(f):
@@ -59,6 +78,8 @@ for f in sorted(raw.glob("*.jsonl.gz")):
                 continue
             if s:
                 scored.append(s)
+    if errors > 5:  # the referee probably died: don't write a partial file that a rerun would skip
+        sys.exit(f"{stem}: {errors} errors, stopping without writing")
     with gzip.open(out, "wt") as fh:
         json.dump(scored, fh)
     print(f"{stem:32} {len(scored):4} segments, {sum(s['inserted'] for s in scored)} inserted, "

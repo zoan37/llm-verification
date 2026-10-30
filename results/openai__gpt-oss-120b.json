@@ -1117,6 +1117,154 @@
     "drops tokens from its output (54 re-inserted)"
    ]
   },
+  "digitalocean": {
+   "greedy": {
+    "replies": 20,
+    "regret": {
+     "mean": 0.22024472416632357,
+     "lo": 0.14622615690607735,
+     "hi": 0.31443914917127075,
+     "n_tokens": 4858,
+     "n_replies": 20
+    },
+    "disagree": {
+     "mean": 0.09057225195553731,
+     "lo": 0.0736268017140631,
+     "hi": 0.10769968817462217,
+     "n_tokens": 4858,
+     "n_replies": 20
+    },
+    "wgap": {
+     "mean": 0.1154572438007461,
+     "lo": 0.07218120657374662,
+     "hi": 0.17413690199120765,
+     "n_tokens": 4557,
+     "n_replies": 19
+    },
+    "topk": {
+     "mean": 0.49517810401579987,
+     "lo": 0.4570249675,
+     "hi": 0.5442221762095922,
+     "n_tokens": 4557,
+     "n_replies": 19
+    },
+    "big_miss_per_1k": 24.083985179086042,
+    "first_token_match": 0.9
+   },
+   "integrity": {
+    "stop_replies_checked": 7,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0818611568689815,
+    "inserted_tokens": 21,
+    "scored_tokens": 4858,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.0,
+     "mean_distinct": 3.0
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.012100512,
+    "logprob_self_consistency": {
+     "ks": 0.008570528798508226,
+     "p": 0.33931745021878496,
+     "mean": 0.4958496331556046,
+     "n_tokens": 12015
+    },
+    "logprob_alignment": {
+     "bad_share": 0.00011473591616629058,
+     "n_tokens": 26147
+    }
+   },
+   "tag": "digitalocean",
+   "provider": "DigitalOcean",
+   "quantization": "unknown",
+   "local": false,
+   "reference": null,
+   "label": "unknown",
+   "pricing": {
+    "prompt": "0.00000006",
+    "completion": "0.00000042",
+    "input_cache_read": "0.000000012",
+    "discount": 0
+   },
+   "peer_agreement": 0.1462140088593577,
+   "x_honest": 13.56,
+   "fidelity": null,
+   "flags": [
+    "samples at temperature 0 (8.2% of tokens not its own top choice)",
+    "non-deterministic at temperature 0",
+    "drops tokens from its output (21 re-inserted)"
+   ]
+  },
+  "google-vertex__global": {
+   "greedy": {
+    "replies": 0,
+    "regret": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "disagree": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": null,
+    "first_token_match": null
+   },
+   "integrity": {
+    "stop_replies_checked": 0,
+    "early_stop_share": null,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 0,
+    "prompt_tokens_delta_median": null,
+    "prompt_tokens_mismatch_share": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.0,
+     "mean_distinct": 2.75
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.01086174,
+    "logprob_self_consistency": null,
+    "logprob_alignment": null
+   },
+   "tag": "google-vertex/global",
+   "provider": "Google",
+   "quantization": "unknown",
+   "local": false,
+   "reference": null,
+   "label": "unknown",
+   "pricing": {
+    "prompt": "0.00000009",
+    "completion": "0.00000036",
+    "discount": 0
+   },
+   "peer_agreement": 0.3614880952380952,
+   "x_honest": null,
+   "fidelity": null,
+   "flags": [
+    "non-deterministic at temperature 0",
+    "no logprobs (text-only checks)"
+   ]
+  },
   "groq": {
    "greedy": {
     "replies": 48,
@@ -1323,8 +1471,887 @@
    "peer_agreement": 0.2979731912144703,
    "x_honest": 1.0,
    "fidelity": null,
+   "flags": []
+  },
+  "local__substitute-gpt-oss-20b": {
+   "greedy": {
+    "replies": 0,
+    "regret": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "disagree": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": null,
+    "first_token_match": null
+   },
+   "integrity": {
+    "stop_replies_checked": 0,
+    "early_stop_share": null,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 0,
+    "prompt_tokens_delta_median": null,
+    "prompt_tokens_mismatch_share": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 1.0,
+     "mean_distinct": 1.0
+    },
+    "max_completion_tokens": 325,
+    "cost_usd": 0,
+    "logprob_self_consistency": {
+     "ks": 0.012580308670664953,
+     "p": 0.0497001981075234,
+     "mean": 0.5063743913376132,
+     "n_tokens": 11647
+    },
+    "logprob_alignment": {
+     "bad_share": 0.001339320885527456,
+     "n_tokens": 25386
+    }
+   },
+   "tag": "local/substitute-gpt-oss-20b",
+   "provider": "substitute-gpt-oss-20b",
+   "quantization": "cheat: gpt-oss-20b served as 120b",
+   "local": true,
+   "reference": "cheat",
+   "label": "cheat: gpt-oss-20b served as 120b",
+   "pricing": null,
+   "peer_agreement": 0.05412790697674419,
+   "x_honest": null,
+   "fidelity": null,
    "flags": [
-    "prompt token count differs from the reference template (median +3)"
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "mancer__fp8": {
+   "greedy": {
+    "replies": 0,
+    "regret": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "disagree": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": null,
+    "first_token_match": null
+   },
+   "integrity": {
+    "stop_replies_checked": 0,
+    "early_stop_share": null,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 0,
+    "prompt_tokens_delta_median": null,
+    "prompt_tokens_mismatch_share": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.0,
+     "mean_distinct": 3.0
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.00721,
+    "logprob_self_consistency": {
+     "ks": 0.00668208775782575,
+     "p": 0.6456205376766432,
+     "mean": 0.4982881893753062,
+     "n_tokens": 12206
+    },
+    "logprob_alignment": {
+     "bad_share": 0.00048776827254990243,
+     "n_tokens": 26652
+    }
+   },
+   "tag": "mancer/fp8",
+   "provider": "Mancer 2",
+   "quantization": "fp8",
+   "local": false,
+   "reference": null,
+   "label": "fp8",
+   "pricing": {
+    "prompt": "0.00000005",
+    "completion": "0.00000025",
+    "discount": 0
+   },
+   "peer_agreement": 0.3675099206349206,
+   "x_honest": null,
+   "fidelity": null,
+   "flags": [
+    "non-deterministic at temperature 0",
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "mara": {
+   "greedy": {
+    "replies": 0,
+    "regret": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "disagree": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": null,
+    "first_token_match": null
+   },
+   "integrity": {
+    "stop_replies_checked": 0,
+    "early_stop_share": null,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 0,
+    "prompt_tokens_delta_median": null,
+    "prompt_tokens_mismatch_share": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 1.0,
+     "mean_distinct": 1.0
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.0220659,
+    "logprob_self_consistency": {
+     "ks": 0.008118264666503006,
+     "p": 0.41231670565731826,
+     "mean": 0.49813824347348695,
+     "n_tokens": 11885
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0003872366790582404,
+     "n_tokens": 25824
+    }
+   },
+   "tag": "mara",
+   "provider": "Mara",
+   "quantization": "unknown",
+   "local": false,
+   "reference": null,
+   "label": "unknown",
+   "pricing": {
+    "prompt": "0.00000015",
+    "completion": "0.00000075",
+    "discount": 0
+   },
+   "peer_agreement": 0.36656976744186043,
+   "x_honest": null,
+   "fidelity": null,
+   "flags": [
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "near-ai__fp4": {
+   "greedy": {
+    "replies": 0,
+    "regret": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "disagree": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": null,
+    "first_token_match": null
+   },
+   "integrity": {
+    "stop_replies_checked": 0,
+    "early_stop_share": null,
+    "requests": 104,
+    "errors": 3,
+    "empty": 3,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 0,
+    "prompt_tokens_delta_median": null,
+    "prompt_tokens_mismatch_share": null,
+    "determinism": {
+     "prompts": 3,
+     "identical_share": 0.0,
+     "mean_distinct": 2.3333333333333335
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.00261249,
+    "logprob_self_consistency": {
+     "ks": 0.007824228344906481,
+     "p": 0.5974316793623758,
+     "mean": 0.49652655722366784,
+     "n_tokens": 9604
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0010332179573280984,
+     "n_tokens": 19357
+    }
+   },
+   "tag": "near-ai/fp4",
+   "provider": "Near AI",
+   "quantization": "fp4",
+   "local": false,
+   "reference": null,
+   "label": "fp4",
+   "pricing": {
+    "prompt": "0.00000003",
+    "completion": "0.00000015",
+    "input_cache_read": "0.000000015",
+    "discount": 0
+   },
+   "peer_agreement": 0.33381944444444445,
+   "x_honest": null,
+   "fidelity": null,
+   "flags": [
+    "non-deterministic at temperature 0",
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "nebius__fp4": {
+   "greedy": {
+    "replies": 0,
+    "regret": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "disagree": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": null,
+    "first_token_match": null
+   },
+   "integrity": {
+    "stop_replies_checked": 0,
+    "early_stop_share": null,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 0,
+    "prompt_tokens_delta_median": null,
+    "prompt_tokens_mismatch_share": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.25,
+     "mean_distinct": 2.25
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.0176127,
+    "logprob_self_consistency": null,
+    "logprob_alignment": null
+   },
+   "tag": "nebius/fp4",
+   "provider": "Nebius",
+   "quantization": "fp4",
+   "local": false,
+   "reference": null,
+   "label": "fp4",
+   "pricing": {
+    "prompt": "0.00000015",
+    "completion": "0.0000006",
+    "input_cache_read": "0.0000001",
+    "discount": 0
+   },
+   "peer_agreement": 0.38141196013289036,
+   "x_honest": null,
+   "fidelity": null,
+   "flags": [
+    "non-deterministic at temperature 0",
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "novita__fp4": {
+   "greedy": {
+    "replies": 0,
+    "regret": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "disagree": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": null,
+    "first_token_match": null
+   },
+   "integrity": {
+    "stop_replies_checked": 0,
+    "early_stop_share": null,
+    "requests": 104,
+    "errors": 0,
+    "empty": 1,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 0,
+    "prompt_tokens_delta_median": null,
+    "prompt_tokens_mismatch_share": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.0,
+     "mean_distinct": 2.25
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.00774795,
+    "logprob_self_consistency": {
+     "ks": 0.008272185747138838,
+     "p": 0.6282616653670243,
+     "mean": 0.49888954076675934,
+     "n_tokens": 8184
+    },
+    "logprob_alignment": {
+     "bad_share": 0.00044533511467379205,
+     "n_tokens": 17964
+    }
+   },
+   "tag": "novita/fp4",
+   "provider": "Novita",
+   "quantization": "fp4",
+   "local": false,
+   "reference": null,
+   "label": "fp4",
+   "pricing": {
+    "prompt": "0.00000005",
+    "completion": "0.00000025",
+    "discount": 0
+   },
+   "peer_agreement": 0.005595238095238095,
+   "x_honest": null,
+   "fidelity": null,
+   "flags": [
+    "non-deterministic at temperature 0",
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "parasail__fp4": {
+   "greedy": {
+    "replies": 0,
+    "regret": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "disagree": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": null,
+    "first_token_match": null
+   },
+   "integrity": {
+    "stop_replies_checked": 0,
+    "early_stop_share": null,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 0,
+    "prompt_tokens_delta_median": null,
+    "prompt_tokens_mismatch_share": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.0,
+     "mean_distinct": 2.0
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.021249479999999998,
+    "logprob_self_consistency": {
+     "ks": 0.005893893538332584,
+     "p": 0.8062482596535969,
+     "mean": 0.4984683750021929,
+     "n_tokens": 11791
+    },
+    "logprob_alignment": {
+     "bad_share": 0.00031047463810299995,
+     "n_tokens": 25767
+    }
+   },
+   "tag": "parasail/fp4",
+   "provider": "Parasail",
+   "quantization": "fp4",
+   "local": false,
+   "reference": null,
+   "label": "fp4",
+   "pricing": {
+    "prompt": "0.0000001",
+    "completion": "0.00000075",
+    "input_cache_read": "0.000000055",
+    "discount": 0
+   },
+   "peer_agreement": 0.3425595238095238,
+   "x_honest": null,
+   "fidelity": null,
+   "flags": [
+    "non-deterministic at temperature 0",
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "phala": {
+   "greedy": {
+    "replies": 0,
+    "regret": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "disagree": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": null,
+    "first_token_match": null
+   },
+   "integrity": {
+    "stop_replies_checked": 0,
+    "early_stop_share": null,
+    "requests": 104,
+    "errors": 0,
+    "empty": 1,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 0,
+    "prompt_tokens_delta_median": null,
+    "prompt_tokens_mismatch_share": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.25,
+     "mean_distinct": 2.25
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.0189639,
+    "logprob_self_consistency": {
+     "ks": 0.009438201899669041,
+     "p": 0.45364377417475177,
+     "mean": 0.496817420328205,
+     "n_tokens": 8237
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0002764263600176913,
+     "n_tokens": 18088
+    }
+   },
+   "tag": "phala",
+   "provider": "Phala",
+   "quantization": "unknown",
+   "local": false,
+   "reference": null,
+   "label": "unknown",
+   "pricing": {
+    "prompt": "0.00000015",
+    "completion": "0.0000006",
+    "discount": 0
+   },
+   "peer_agreement": 0.005595238095238095,
+   "x_honest": null,
+   "fidelity": null,
+   "flags": [
+    "non-deterministic at temperature 0",
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "sail-research__fp4": {
+   "greedy": {
+    "replies": 0,
+    "regret": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "disagree": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": null,
+    "first_token_match": null
+   },
+   "integrity": {
+    "stop_replies_checked": 0,
+    "early_stop_share": null,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 0,
+    "prompt_tokens_delta_median": null,
+    "prompt_tokens_mismatch_share": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.5,
+     "mean_distinct": 1.75
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.01143772,
+    "logprob_self_consistency": {
+     "ks": 0.005277542704449079,
+     "p": 0.8948208142325632,
+     "mean": 0.4997686592268123,
+     "n_tokens": 11870
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0009237875288683603,
+     "n_tokens": 25980
+    }
+   },
+   "tag": "sail-research/fp4",
+   "provider": "Sail Research",
+   "quantization": "fp4",
+   "local": false,
+   "reference": null,
+   "label": "fp4",
+   "pricing": {
+    "prompt": "0.00000006",
+    "completion": "0.0000004",
+    "input_cache_read": "0.00000003",
+    "discount": 0
+   },
+   "peer_agreement": 0.40160714285714283,
+   "x_honest": null,
+   "fidelity": null,
+   "flags": [
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "sambanova": {
+   "greedy": {
+    "replies": 0,
+    "regret": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "disagree": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": null,
+    "first_token_match": null
+   },
+   "integrity": {
+    "stop_replies_checked": 0,
+    "early_stop_share": null,
+    "requests": 104,
+    "errors": 1,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 0,
+    "prompt_tokens_delta_median": null,
+    "prompt_tokens_mismatch_share": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 1.0,
+     "mean_distinct": 1.0
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.02731139,
+    "logprob_self_consistency": null,
+    "logprob_alignment": null
+   },
+   "tag": "sambanova",
+   "provider": "SambaNova",
+   "quantization": "unknown",
+   "local": false,
+   "reference": null,
+   "label": "unknown",
+   "pricing": {
+    "prompt": "0.00000014",
+    "completion": "0.00000095",
+    "discount": 0
+   },
+   "peer_agreement": 0.37470238095238095,
+   "x_honest": null,
+   "fidelity": null,
+   "flags": [
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "siliconflow__fp8": {
+   "greedy": {
+    "replies": 0,
+    "regret": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "disagree": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": null,
+    "first_token_match": null
+   },
+   "integrity": {
+    "stop_replies_checked": 0,
+    "early_stop_share": null,
+    "requests": 104,
+    "errors": 10,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 0,
+    "prompt_tokens_delta_median": null,
+    "prompt_tokens_mismatch_share": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.0,
+     "mean_distinct": 2.25
+    },
+    "max_completion_tokens": 4957,
+    "cost_usd": 0.06129525,
+    "logprob_self_consistency": null,
+    "logprob_alignment": null
+   },
+   "tag": "siliconflow/fp8",
+   "provider": "SiliconFlow",
+   "quantization": "fp8",
+   "local": false,
+   "reference": null,
+   "label": "fp8",
+   "pricing": {
+    "prompt": "0.00000015",
+    "completion": "0.0000006",
+    "input_cache_read": "0.000000075",
+    "discount": 0
+   },
+   "peer_agreement": 0.011152935606060605,
+   "x_honest": null,
+   "fidelity": null,
+   "flags": [
+    "non-deterministic at temperature 0",
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "together": {
+   "greedy": {
+    "replies": 0,
+    "regret": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "disagree": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": null,
+    "first_token_match": null
+   },
+   "integrity": {
+    "stop_replies_checked": 0,
+    "early_stop_share": null,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 0,
+    "prompt_tokens_delta_median": null,
+    "prompt_tokens_mismatch_share": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.25,
+     "mean_distinct": 2.25
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.0179187,
+    "logprob_self_consistency": null,
+    "logprob_alignment": null
+   },
+   "tag": "together",
+   "provider": "Together",
+   "quantization": "unknown",
+   "local": false,
+   "reference": null,
+   "label": "unknown",
+   "pricing": {
+    "prompt": "0.00000015",
+    "completion": "0.0000006",
+    "discount": 0
+   },
+   "peer_agreement": 0.18048611111111112,
+   "x_honest": null,
+   "fidelity": null,
+   "flags": [
+    "non-deterministic at temperature 0",
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "venice__int4": {
+   "greedy": {
+    "replies": 0,
+    "regret": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "disagree": {
+     "mean": null,
+     "lo": null,
+     "hi": null,
+     "n_tokens": 0,
+     "n_replies": 0
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": null,
+    "first_token_match": null
+   },
+   "integrity": {
+    "stop_replies_checked": 0,
+    "early_stop_share": null,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 0,
+    "prompt_tokens_delta_median": null,
+    "prompt_tokens_mismatch_share": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.0,
+     "mean_distinct": 2.0
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0.00450483,
+    "logprob_self_consistency": null,
+    "logprob_alignment": null
+   },
+   "tag": "venice/int4",
+   "provider": "Venice",
+   "quantization": "int4",
+   "local": false,
+   "reference": null,
+   "label": "int4",
+   "pricing": {
+    "prompt": "0.00000003",
+    "completion": "0.00000015",
+    "input_cache_read": "0.00000003",
+    "discount": 0
+   },
+   "peer_agreement": 0.28564784053156145,
+   "x_honest": null,
+   "fidelity": null,
+   "flags": [
+    "non-deterministic at temperature 0",
+    "no logprobs (text-only checks)"
    ]
   }
  },
