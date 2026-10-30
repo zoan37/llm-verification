@@ -1,0 +1,122 @@
+"""Is the reasoning-effort setting honoured? Same problems at effort low / medium / high on every endpoint.
+
+Per endpoint and effort: accuracy, median reasoning length (characters of returned reasoning), median billed
+reasoning tokens (usage.completion_tokens_details.reasoning_tokens) and billed completion tokens. Flags:
+  * effort ignored: reasoning length does not grow from low to high
+  * hidden reasoning billed: reasoning tokens billed with little or no reasoning text returned
+  * billing mismatch: billed reasoning tokens far above what the returned reasoning text could contain
+
+    python experiments/reasoning_effort.py --model openai/gpt-oss-120b --budget-usd 9
+"""
+import argparse
+import gzip
+import importlib.util
+import json
+import statistics as st
+import sys
+import time
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from llmverify import openrouter  # noqa: E402
+
+spec = importlib.util.spec_from_file_location("rc", Path(__file__).resolve().parents[1] / "prompts" / "reasoning_cases.py")
+rc = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(rc)
+
+ap = argparse.ArgumentParser()
+ap.add_argument("--model", required=True)
+ap.add_argument("--budget-usd", type=float, required=True)
+ap.add_argument("--efforts", default="low,medium,high")
+ap.add_argument("--max-tokens", type=int, default=6000)
+ap.add_argument("--workers", type=int, default=10)
+a = ap.parse_args()
+efforts = a.efforts.split(",")
+key = a.model.replace("/", "__")
+raw_dir = Path("data/raw-reason") / key
+raw_dir.mkdir(parents=True, exist_ok=True)
+eps = [e for e in openrouter.endpoints(a.model) if "reasoning" in (e.get("supported_parameters") or [])]
+print(f"{a.model}: {len(eps)} endpoints support reasoning")
+
+
+def run(e):
+    tag = openrouter.endpoint_tag(e)
+    out = raw_dir / f"{tag.replace('/', '__')}.jsonl.gz"
+    if out.exists():
+        return
+    recs, errors = [], 0
+    for eff in efforts:
+        for i, case in enumerate(rc.CASES):
+            if errors >= 6 and not any("content" in r for r in recs):
+                break
+            body = {"model": a.model, "messages": [{"role": "user", "content": case["q"] + rc.SUFFIX}],
+                    "temperature": 0, "max_tokens": a.max_tokens, "reasoning": {"effort": eff},
+                    "provider": {"order": [tag], "allow_fallbacks": False}, "usage": {"include": True}}
+            t0 = time.time()
+            r = openrouter.call("/chat/completions", body, timeout=300)
+            if "error" in r and r["error"]["status"] == 429:
+                time.sleep(15)
+                r = openrouter.call("/chat/completions", body, timeout=300)
+            if "error" in r:
+                errors += 1
+                recs.append({"effort": eff, "case": i, "error": r["error"]})
+                continue
+            ch = (r.get("choices") or [{}])[0]
+            msg = ch.get("message") or {}
+            recs.append({"effort": eff, "case": i, "content": msg.get("content"), "reasoning": msg.get("reasoning"),
+                         "finish_reason": ch.get("finish_reason"), "usage": r.get("usage"),
+                         "latency_s": round(time.time() - t0, 2)})
+    with gzip.open(out, "wt") as f:
+        for x in recs:
+            f.write(json.dumps(x) + "\n")
+
+
+start = openrouter.usage_usd()
+if start < a.budget_usd:
+    with ThreadPoolExecutor(a.workers) as pool:
+        list(pool.map(run, eps))
+print(f"spent ${openrouter.usage_usd() - start:.4f}")
+
+summary = {}
+for f in sorted(raw_dir.glob("*.jsonl.gz")):
+    recs = [json.loads(x) for x in gzip.open(f, "rt")]
+    row = {}
+    for eff in efforts:
+        rs = [r for r in recs if r["effort"] == eff and "error" not in r]
+        if not rs:
+            continue
+        det = [((r.get("usage") or {}).get("completion_tokens_details") or {}).get("reasoning_tokens") for r in rs]
+        det = [d for d in det if d is not None]
+        rlen = [len(r.get("reasoning") or "") for r in rs]
+        row[eff] = {"n": len(rs), "accuracy": sum(rc.grade(rc.CASES[r["case"]], r.get("content")) for r in rs) / len(rs),
+                    "reasoning_chars_median": st.median(rlen),
+                    "reasoning_returned_share": sum(1 for x in rlen if x > 0) / len(rs),
+                    "billed_reasoning_tokens_median": st.median(det) if det else None,
+                    "billed_completion_tokens_median": st.median([(r.get("usage") or {}).get("completion_tokens") or 0 for r in rs]),
+                    "truncated": sum(1 for r in rs if r.get("finish_reason") == "length")}
+    flags = []
+    if "low" in row and "high" in row:
+        lo, hi = row["low"], row["high"]
+        if hi["billed_completion_tokens_median"] <= 1.2 * lo["billed_completion_tokens_median"]:
+            flags.append("effort setting has little effect on how much it reasons")
+    for eff, v in row.items():
+        if v["billed_reasoning_tokens_median"] and v["reasoning_chars_median"] == 0:
+            flags.append(f"{eff}: bills reasoning tokens but returns no reasoning")
+        elif v["billed_reasoning_tokens_median"] and v["reasoning_chars_median"] > 0:
+            chars_per_tok = v["reasoning_chars_median"] / max(1, v["billed_reasoning_tokens_median"])
+            v["reasoning_chars_per_billed_token"] = round(chars_per_tok, 2)
+            if chars_per_tok < 1.5:
+                flags.append(f"{eff}: billed reasoning tokens exceed the returned reasoning ({chars_per_tok:.2f} chars per token)")
+    summary[f.name[: -len(".jsonl.gz")]] = {"efforts": row, "errors": sum(1 for r in recs if "error" in r), "flags": flags}
+dest = Path("results/reasoning") / f"{key}.json"
+dest.parent.mkdir(parents=True, exist_ok=True)
+dest.write_text(json.dumps({"model": a.model, "cases": len(rc.CASES), "endpoints": summary}, indent=1))
+print(f"{'endpoint':30}" + "".join(f" {e:>26}" for e in efforts) + "  flags")
+for k, s in summary.items():
+    cells = []
+    for e in efforts:
+        v = s["efforts"].get(e)
+        cells.append("-" if not v else f"acc {v['accuracy']:.0%} tok {v['billed_completion_tokens_median']:.0f} rc {v['reasoning_chars_median']:.0f}")
+    print(f"{k:30}" + "".join(f" {c:>26}" for c in cells) + "  " + "; ".join(s["flags"]) + (f" (errors {s['errors']})" if s["errors"] else ""))
+print("wrote", dest)
