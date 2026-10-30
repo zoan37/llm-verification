@@ -116,4 +116,6 @@ Their temperature-1 samples also fit the referee worse (PIT mean 0.52, like the 
 
 ## gpt-oss-120b (26 endpoints)
 
-Scoring in progress (one CUDA referee for every row).
+Deferred: the largest and slowest model to score (reasoning text plus 63 GB of weights). Replies from all 26 endpoints
+and two references (honest CUDA run, gpt-oss-20b substitute) are collected; referee-free checks are in the findings
+above (prompt-size differences, dropped tokens, temperature-0 sampling).
