@@ -40,7 +40,10 @@ class App:
         messages = body.get("messages")
         if not isinstance(messages, list) or not messages:
             raise ValueError("messages required")
-        max_tokens = max(1, min(int(body.get("max_tokens") or 512), MAX_TOKENS_CAP))
+        max_tokens = body.get("max_tokens", 512)
+        if type(max_tokens) is not int or not 1 <= max_tokens <= MAX_TOKENS_CAP:
+            # reject rather than clamp: a clamped value would not match what the client asked for and signed against
+            raise ValueError(f"max_tokens must be an integer in [1, {MAX_TOKENS_CAP}]")
         spec = SamplingSpec.from_request(body, default_seed=secrets.randbelow(2 ** 31))
         nonce = ((body.get("verification") or {}).get("nonce")) or new_nonce()
         with self.lock:

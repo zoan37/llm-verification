@@ -33,6 +33,17 @@ class SamplingSpec:
     seed: int = 0
 
     def __post_init__(self):
+        # Strict types: a seed of 1234.0 compares equal to 1234 but would hash differently in the noise, giving a
+        # provider a second valid sample to choose from (found in red-team review).
+        for name in ("seed", "top_k"):
+            v = getattr(self, name)
+            if type(v) is not int:
+                raise ValueError(f"{name} must be an int, got {type(v).__name__}")
+        for name in ("temperature", "top_p", "min_p"):
+            v = getattr(self, name)
+            if type(v) not in (int, float) or not math.isfinite(v):
+                raise ValueError(f"{name} must be a finite number")
+            object.__setattr__(self, name, float(v))
         if self.mode not in ("greedy", "gumbel"):
             raise ValueError(f"unknown mode {self.mode!r}")
         if self.mode == "gumbel" and not self.temperature > 0:
@@ -64,7 +75,7 @@ class SamplingSpec:
 
 def gumbel_noise(seed: int, key: str, step: int, token_id: int) -> float:
     """Public pseudo-random standard Gumbel noise for (seed, request key, step, token)."""
-    h = hashlib.sha256(f"{NOISE_DOMAIN}:{seed}:{key}:{step}:{token_id}".encode()).digest()
+    h = hashlib.sha256(f"{NOISE_DOMAIN}:{int(seed)}:{key}:{int(step)}:{int(token_id)}".encode()).digest()
     u = (int.from_bytes(h[:8], "big") + 0.5) / float(1 << 64)
     return -math.log(-math.log(u))
 

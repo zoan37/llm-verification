@@ -35,10 +35,17 @@ class VerifiedReply:
     audit: Optional[dict] = None
 
 
+MAX_TOKENS_CAP = 4096  # must match the server's
+
+
 class VerifyingClient:
     def __init__(self, base_url: str, pinned_key: Optional[str] = None, tokenizer=None, template: Optional[str] = None,
                  bos: Optional[int] = None, referee=None, expected_model: Optional[dict] = None, timeout: float = 600,
                  template_kwargs: Optional[dict] = None):
+        if tokenizer is None or template is None:
+            # Without the model's tokenizer and template the client cannot check its own prompt, the returned text,
+            # or end-of-sequence handling, so a reply could be fabricated or truncated and still "pass".
+            raise ValueError("VerifyingClient needs the model's tokenizer and chat template")
         self.base = base_url.rstrip("/")
         self.pinned_key, self.tokenizer, self.template, self.bos = pinned_key, tokenizer, template, bos
         self.referee, self.expected_model, self.timeout = referee, expected_model, timeout
@@ -53,26 +60,32 @@ class VerifyingClient:
 
     def chat(self, messages: List[dict], max_tokens: int = 256, temperature: float = 0.0, top_p: float = 1.0,
              top_k: int = 20, min_p: float = 0.0, seed: Optional[int] = None, audit: bool = True) -> VerifiedReply:
+        if not 1 <= int(max_tokens) <= MAX_TOKENS_CAP:
+            raise ValueError(f"max_tokens must be in [1, {MAX_TOKENS_CAP}]")
         seed = secrets.randbelow(2 ** 31) if seed is None else seed
         nonce = new_nonce()
         body = {"messages": messages, "max_tokens": max_tokens, "temperature": temperature, "top_p": top_p,
                 "top_k": top_k, "min_p": min_p, "seed": seed, "verification": {"nonce": nonce}}
         spec = SamplingSpec.from_request(body)
         resp = self._post(body)
-        v = resp["verification"]
-        receipt, trace = Receipt.from_dict(v["receipt"]), Trace.from_dict(v["trace"])
-        expected_ids = None
-        if self.tokenizer is not None and self.template is not None:
+        try:
+            v = resp["verification"]
+            receipt, trace = Receipt.from_dict(v["receipt"]), Trace.from_dict(v["trace"])
+            text = resp["choices"][0]["message"]["content"]
             expected_ids = ([self.bos] if self.bos is not None else []) + self.tokenizer.tokenize(
                 render_chat(self.template, messages, True, **self.template_kwargs), special=True)
-        eos = self.tokenizer.eos_ids if self.tokenizer is not None else ()
-        chk = check_receipt(receipt, trace, expected_prompt_ids=expected_ids, expected_spec=spec,
-                            expected_nonce=nonce, expected_max_tokens=max_tokens, pinned_key=self.pinned_key,
-                            expected_model=self.expected_model, eos_ids=eos)
-        text = resp["choices"][0]["message"]["content"]
-        if self.tokenizer is not None and text != self.tokenizer.detokenize([t for t in trace.tokens if t not in set(eos)]):
-            chk.problems.append("returned text does not match the committed tokens")
-            chk.ok = False
+            eos = list(self.tokenizer.eos_ids)
+            chk = check_receipt(receipt, trace, expected_prompt_ids=expected_ids, expected_spec=spec,
+                                expected_nonce=nonce, expected_max_tokens=max_tokens, pinned_key=self.pinned_key,
+                                expected_model=self.expected_model, eos_ids=eos)
+            if text != self.tokenizer.detokenize([t for t in trace.tokens if t not in set(eos)]):
+                chk.problems.append("returned text does not match the committed tokens")
+                chk.ok = False
+        except (KeyError, TypeError, ValueError, OverflowError) as e:
+            # A malformed reply is evidence too: record it rather than crash (found in red-team review).
+            self.ledger.add_failure(f"malformed verification data: {e}")
+            return VerifiedReply(str((resp.get("choices") or [{}])[0].get("message", {}).get("content", "")),
+                                 None, None, ReceiptCheck(False, [f"malformed verification data: {e}"]))
         out = VerifiedReply(text, receipt, trace, chk)
         if not chk.ok:
             for p in chk.problems:

@@ -63,7 +63,8 @@ def test_editing_logprobs_either_keeps_the_choice_or_is_caught(seed):
     r.steps_sha256 = t.steps_digest()
     SIGNER.sign(r)
     ok = check_receipt(r, t).ok
-    assert ok == (choose(t.tops[step], spec, "n", step) == t.tokens[step])
+    from llmverify.receipt import top_problem
+    assert ok == (top_problem(t.tops[step]) is None and choose(t.tops[step], spec, "n", step) == t.tokens[step])
 
 
 def test_every_receipt_field_is_covered_by_the_signature():

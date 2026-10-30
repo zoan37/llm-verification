@@ -65,6 +65,19 @@ distribution, and it is stable: a small change in logprobs flips the choice only
 Logprobs inside hashes are the integers `q` (units of 1e-4 nats), so implementations never disagree about float
 formatting. `canonical(x)` = JSON with sorted keys, no whitespace (`separators=(",", ":")`), UTF-8, no NaN.
 
+## Validity of a committed step
+
+Each `top[s]` must contain exactly 20 distinct token ids within the vocabulary, with finite logprobs that are
+non-positive multiples of 1e-4, ordered by (logprob descending, token id ascending), and with probabilities summing to
+at most 1 + 0.002. Verifiers canonicalise every logprob to `round(x * 10000) / 10000` before any check, since the
+signed integers are the commitment. `seed` and `top_k` are JSON integers.
+
+## Challenges (`llmverify-challenge-v2`)
+
+`d = HMAC-SHA256(secret, "llmverify-challenge-v2" || receipt_digest)`; audit if `uint64(d[0:8]) / 2^64 < p`;
+span start `s = uint64(d[8:16]) mod (n + span - 1) - (span - 1)`, span `[max(0, s), min(n, s + span))`, so every
+position is equally likely to be covered.
+
 ## Client checks
 
 See `receipt.check_receipt`: signature and key pin; prompt ids equal the client's own rendering; nonce, seed,

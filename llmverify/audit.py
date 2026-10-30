@@ -38,21 +38,28 @@ def new_auditor_secret() -> bytes:
 
 def derive_challenge(receipt_digest: bytes, secret: bytes, n_tokens: int, span: int = 16,
                      audit_probability: float = 1.0) -> Challenge:
-    d = hmac.new(secret, b"llmverify-challenge-v1" + receipt_digest, hashlib.sha256).digest()
+    """The span starts uniformly in [-(span-1), n-1] and is clipped to the reply, so every token, including the
+    first and last (a yes/no answer, a tool name), is audited with the same probability. A start uniform over
+    [0, n-span] would audit the edges ~span times less often than the middle (found in red-team review)."""
+    d = hmac.new(secret, b"llmverify-challenge-v2" + receipt_digest, hashlib.sha256).digest()
     audit = int.from_bytes(d[:8], "big") / float(1 << 64) < audit_probability
     if n_tokens <= span:
         return Challenge(audit, 0, n_tokens)
-    start = int.from_bytes(d[8:16], "big") % (n_tokens - span + 1)
-    return Challenge(audit, start, start + span)
+    s = int.from_bytes(d[8:16], "big") % (n_tokens + span - 1) - (span - 1)
+    return Challenge(audit, max(0, s), min(n_tokens, s + span))
 
 
 def audit_trace(referee: Model, trace: Trace, spec: SamplingSpec, key: str, start: int = 0,
                 end: Optional[int] = None) -> List[Optional[TokenScore]]:
     """Score tokens [start, end) of a trace on the referee, against the provider's committed logprobs. The
     referee sees the prompt plus the reply up to the span (logprobs depend on the whole context)."""
+    from .receipt import top_problem
     end = len(trace.tokens) if end is None else end
     if not 0 <= start < end <= len(trace.tokens):
         raise ValueError("bad span")
+    bad = next((top_problem(t) for t in trace.tops[start:end] if top_problem(t)), None)
+    if bad:  # never score unvalidated commitments (duplicate ids would show the audit different numbers)
+        raise ValueError(f"malformed committed logprobs: {bad}")
     context = list(trace.prompt_ids) + list(trace.tokens[:start])
     span_tokens = trace.tokens[start:end]
     temp = spec.temperature if not spec.greedy else 1.0

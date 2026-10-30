@@ -32,7 +32,7 @@ from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey, Ed25519PublicKey
 from cryptography.hazmat.primitives.serialization import Encoding, PrivateFormat, PublicFormat, NoEncryption
 
-from .sampling import SamplingSpec, TopK, choose
+from .sampling import COMMIT_K, SamplingSpec, TopK, choose
 
 VERSION = "llmverify-receipt-v1"
 LOGPROB_DECIMALS = 4
@@ -56,7 +56,32 @@ def lp_units(lp: float) -> int:
 
 
 def round_top(top: Sequence) -> TopK:
-    return [(int(i), round_lp(lp)) for i, lp in top]
+    """Quantize and put in canonical order (logprob descending, then token id): rounding can create ties."""
+    return sorted(((int(i), round_lp(lp)) for i, lp in top), key=lambda x: (-x[1], x[0]))
+
+
+def top_problem(top: Sequence, vocab: Optional[int] = None) -> Optional[str]:
+    """Why a committed top list is not well formed, or None. Exactly COMMIT_K distinct, in-vocabulary ids; finite,
+    canonical (multiples of 1e-4), non-positive logprobs in canonical order, summing to at most 1. Without these
+    checks a provider could commit a duplicate id: an inflated copy that wins the rule and a true copy that the audit
+    reads (found in red-team review), or a value inside a rounding bucket that the hash cannot see."""
+    if len(top) != COMMIT_K:
+        return f"{len(top)} candidates instead of {COMMIT_K}"
+    ids = [i for i, _ in top]
+    if len(set(ids)) != len(ids):
+        return "duplicate token ids"
+    if any(type(i) is not int or i < 0 or (vocab is not None and i >= vocab) for i in ids):
+        return "token id out of range"
+    lps = [lp for _, lp in top]
+    if any(type(lp) not in (int, float) or not math.isfinite(lp) for lp in lps):
+        return "non-finite logprob"
+    if any(lp > 0 or lp_units(lp) / 10 ** LOGPROB_DECIMALS != lp for lp in lps):
+        return "logprob not a canonical non-positive multiple of 1e-4"
+    if list(top) != sorted(top, key=lambda x: (-x[1], x[0])):
+        return "candidates not in canonical order"
+    if sum(math.exp(lp) for lp in lps) > 1.0 + COMMIT_K * 1e-4:
+        return "probabilities sum to more than 1"
+    return None
 
 
 @dataclass
@@ -80,8 +105,18 @@ class Trace:
 
     @classmethod
     def from_dict(cls, d: dict) -> "Trace":
-        return cls(prompt_ids=[int(x) for x in d["prompt_ids"]], tokens=[int(x) for x in d["tokens"]],
-                   tops=[[(int(i), float(lp)) for i, lp in top] for top in d["tops"]],
+        """Parse without coercing values: validation (top_problem) must see exactly what was sent."""
+        def num(x):
+            if type(x) is bool or type(x) not in (int, float):
+                raise ValueError("non-numeric value in trace")
+            return x
+
+        def tok(x):
+            if type(x) is not int:
+                raise ValueError("non-integer token id in trace")
+            return x
+        return cls(prompt_ids=[tok(x) for x in d["prompt_ids"]], tokens=[tok(x) for x in d["tokens"]],
+                   tops=[[(tok(i), float(num(lp))) for i, lp in top] for top in d["tops"]],
                    finish_reason=str(d["finish_reason"]))
 
 
@@ -178,11 +213,21 @@ class ReceiptCheck:
 def check_receipt(receipt: Receipt, trace: Trace, *, expected_prompt_ids: Optional[Sequence[int]] = None,
                   expected_spec: Optional[SamplingSpec] = None, expected_nonce: Optional[str] = None,
                   expected_max_tokens: Optional[int] = None, pinned_key: Optional[str] = None,
-                  expected_model: Optional[dict] = None, eos_ids: Sequence[int] = ()) -> ReceiptCheck:
+                  expected_model: Optional[dict] = None, eos_ids: Sequence[int] = (),
+                  vocab: Optional[int] = None) -> ReceiptCheck:
     """Everything a client can check without a referee. Each failed check is a reason to distrust the reply;
     signature, hash and rule failures are cryptographic or exact, not statistical, so they never fire on an
     honest provider."""
     p: List[str] = []
+    # The commitment is the integer 1e-4-nat units (that is what the hash covers), so every check runs on values
+    # canonicalised to those units. Perturbing floats inside a rounding bucket can then neither frame an honest
+    # provider nor let a provider pick a different winner (found in red-team review).
+    try:
+        trace = Trace(list(trace.prompt_ids), list(trace.tokens),
+                      [[(i, lp_units(lp) / 10 ** LOGPROB_DECIMALS) for i, lp in top] for top in trace.tops],
+                      trace.finish_reason)
+    except (TypeError, ValueError, OverflowError):
+        return ReceiptCheck(False, ["non-finite or non-numeric committed logprob"])
     if receipt.version != VERSION:
         p.append(f"unknown receipt version {receipt.version!r}")
     if not signature_ok(receipt):
@@ -199,6 +244,8 @@ def check_receipt(receipt: Receipt, trace: Trace, *, expected_prompt_ids: Option
         p.append("prompt tokens differ from the client's own rendering of its request (added or altered input)")
     if expected_nonce is not None and receipt.client_nonce != expected_nonce:
         p.append("receipt is for a different request nonce (replayed or swapped reply)")
+    if any(type(t) is not int or t < 0 or (vocab is not None and t >= vocab) for t in trace.tokens):
+        p.append("output token id out of range")
     try:
         spec = SamplingSpec(**receipt.sampling)
     except (TypeError, ValueError) as e:
@@ -212,10 +259,12 @@ def check_receipt(receipt: Receipt, trace: Trace, *, expected_prompt_ids: Option
         p.append("receipt names a different model or weights hash")
     if len(trace.tops) != len(trace.tokens):
         p.append("trace has a different number of steps and tokens")
-    elif any(len(top) < spec.top_k for top in trace.tops):
-        p.append("trace commits fewer candidates than the sampling rule needs")
+    elif any(top_problem(top, vocab) for top in trace.tops):
+        step = next(s for s, top in enumerate(trace.tops) if top_problem(top, vocab))
+        p.append(f"malformed committed logprobs at step {step}: {top_problem(trace.tops[step], vocab)}")
     else:
-        bad = check_rule(trace, spec, receipt.client_nonce)
+        # The rule runs with the client's own spec when it has one, never with values only the provider supplied.
+        bad = check_rule(trace, expected_spec or spec, receipt.client_nonce)
         if bad:
             p.append(f"{len(bad)} of {len(trace.tokens)} tokens do not follow the sampling rule (first at step {bad[0]})")
     eos = {int(x) for x in eos_ids}

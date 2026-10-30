@@ -143,6 +143,20 @@ Thresholds come from honest machines (same weights, different hardware/engine/ke
   machines (100) to a smaller sibling model (0); it does not declare FP8 dishonest.
 - A single prompt set and one snapshot in time. Providers change deployments without notice.
 
+## Red-team log
+
+Findings from adversarial reviews, each now a regression test in `tests/test_redteam.py`.
+
+| Date | Finding | Severity | Fix |
+|---|---|---|---|
+| 2026-10-30 | Duplicate token ids in a committed top list: an inflated copy wins the sampling rule while the audit reads the true copy, so laundering passed the "exact" check and erased the wgap fingerprint | high | top lists must have exactly 20 distinct in-vocabulary ids, canonical non-positive values in canonical order, summing to ≤ 1; the audit refuses unvalidated lists |
+| 2026-10-30 | A client without the model's tokenizer accepted fabricated text and truncation | medium | the client requires tokenizer and template |
+| 2026-10-30 | Seed `1234.0` equals `1234` but hashes to different noise: two valid samples per request | medium | strict integer seed/top_k; the rule runs on the client's own spec |
+| 2026-10-30 | Floats inside a 1e-4 rounding bucket share one signature but can flip near-ties: framing an honest provider, or invisible steering | medium | every check runs on values canonicalised to the signed integer units |
+| 2026-10-30 | Challenge spans rarely covered the first and last tokens (~19× less than the middle) | low-medium | span start uniform over [-(span-1), n-1], clipped |
+| 2026-10-30 | Server clamped max_tokens, so an honest server "failed" the client's check | low | server and client reject out-of-range values |
+| 2026-10-30 | A malformed trace crashed the client instead of being recorded | low | parse/validation errors are recorded as failures |
+
 ## Open problems
 
 1. **Black-box audit stealth.** A provider can route traffic it recognises as an audit (account, IP, prompt
