@@ -64,6 +64,13 @@ with known variance. The catch: honest providers are not bit-exact M either (FP8
 with enough tokens these tests reject *everyone*. They are reported as effect sizes (excess cross-entropy in
 nats/token, with CI) and compared to honest references, not used as pass/fail on their own.
 
+A measured subtlety: with top_p = 1, about 1% of honest temperature-1 samples are long-tail tokens (individually
+p < 1e-4, collectively a few percent of the mass over a ~200k-token vocabulary). They make the likelihood
+statistic heavy-tailed, and known-honest runs scattered by up to +-0.02 nats/token over ~10k tokens. The PIT
+test is bounded and unaffected, so it is the primary calibration-free check. A planned refinement compares the
+observed rate of tail tokens with the rate the referee predicts, which also detects endpoints that silently
+truncate the tail (an undisclosed top-k/top-p).
+
 ### 3. Referee-free checks: black-box mode
 
 These need no reference weights, so they work for models too large to self-host:

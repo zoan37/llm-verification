@@ -8,7 +8,11 @@ Three kinds of test, from most to least assumption-free:
    null. Valid only for sampled replies whose sampler is known (temperature 1, no top-p/top-k truncation).
 2. Likelihood (`likelihood_test`). Under the same null, sum(log p(x_t) + H_t) is a martingale with known
    conditional variance; its z-score is asymptotically normal. The mean `-ce_dev` is the excess cross-entropy
-   in nats per token, an effect size.
+   in nats per token, an effect size. Caveat, measured: at temperature 1 / top_p 1 about 1% of honest samples
+   come from the vocabulary's long tail (each token p < 1e-4, but there are ~10^5 of them), contributing rare
+   terms of -10 to -20 nats. The sum converges slowly and is left-skewed, so at ~10^4 tokens its z-score and the
+   reply-bootstrap CI overstate significance; known-honest runs scatter by about +-0.02 nats/token. Treat the
+   PIT test (bounded, robust) as primary and excess CE as an effect size compared against honest references.
 3. Tolerance tests (`tolerance_eprocess`, `Calibration`). Honest providers never match a reference exactly
    (different hardware, kernels, FP8 weights), so with enough tokens tests 1-2 reject everyone. The question
    that matters is "is the gap bigger than honest noise?". That needs a tolerance measured on honest machines,
