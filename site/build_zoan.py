@@ -23,7 +23,7 @@ nav = """<header class="lv-top"><nav>
   <a class="home" href="/">zoan.space</a>
   <a href="./"><span class="long">LLM Verification</span><span class="short">Overview</span></a>
   <a href="results.html" aria-current="page"><span class="long">Results</span><span class="short">Results</span></a>
-  <a href="venice.html"><span class="long">Venice case study</span><span class="short">Venice</span></a>
+  <a href="case-studies.html"><span class="long">Case studies</span><span class="short">Cases</span></a>
   <a href="method.html"><span class="long">Method &amp; limits</span><span class="short">Method</span></a>
 </nav></header>
 """
@@ -59,7 +59,7 @@ header.lv-top { display: block; max-width: none; gap: 0; position: sticky; top: 
 """
 pager = """<nav class="pager" aria-label="Previous and next page">
   <a class="prev" href="./"><span class="dir">← Previous</span><span class="t">Overview</span></a>
-  <a class="next" href="venice.html"><span class="dir">Next →</span><span class="t">Venice case study</span></a>
+  <a class="next" href="case-studies.html"><span class="dir">Next →</span><span class="t">Case studies</span></a>
 </nav>
 """
 
