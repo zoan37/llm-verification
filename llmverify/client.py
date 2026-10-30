@@ -37,10 +37,12 @@ class VerifiedReply:
 
 class VerifyingClient:
     def __init__(self, base_url: str, pinned_key: Optional[str] = None, tokenizer=None, template: Optional[str] = None,
-                 bos: Optional[int] = None, referee=None, expected_model: Optional[dict] = None, timeout: float = 600):
+                 bos: Optional[int] = None, referee=None, expected_model: Optional[dict] = None, timeout: float = 600,
+                 template_kwargs: Optional[dict] = None):
         self.base = base_url.rstrip("/")
         self.pinned_key, self.tokenizer, self.template, self.bos = pinned_key, tokenizer, template, bos
         self.referee, self.expected_model, self.timeout = referee, expected_model, timeout
+        self.template_kwargs = template_kwargs or {}
         self.ledger = Ledger(provider_key=pinned_key or "unpinned")
 
     def _post(self, body: dict) -> dict:
@@ -62,7 +64,7 @@ class VerifyingClient:
         expected_ids = None
         if self.tokenizer is not None and self.template is not None:
             expected_ids = ([self.bos] if self.bos is not None else []) + self.tokenizer.tokenize(
-                render_chat(self.template, messages, True), special=True)
+                render_chat(self.template, messages, True, **self.template_kwargs), special=True)
         eos = self.tokenizer.eos_ids if self.tokenizer is not None else ()
         chk = check_receipt(receipt, trace, expected_prompt_ids=expected_ids, expected_spec=spec,
                             expected_nonce=nonce, expected_max_tokens=max_tokens, pinned_key=self.pinned_key,
