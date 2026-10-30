@@ -2,3 +2,16 @@ akashml__bf16                     152 segments, 0 inserted, 0 errors, 353s
 amazon-bedrock                    152 segments, 0 inserted, 0 errors, 99s
 amazon-bedrock__eu-west-1         152 segments, 0 inserted, 0 errors, 95s
 akashml__bf16                     152 segments, 0 inserted, 0 errors, 288s
+amazon-bedrock                    152 segments, 0 inserted, 0 errors, 93s
+amazon-bedrock__eu-west-1         152 segments, 0 inserted, 0 errors, 92s
+baseten__fp4                      152 segments, 1 inserted, 0 errors, 114s
+baseten__fp4__us                  152 segments, 0 inserted, 0 errors, 115s
+cerebras__fp16                    152 segments, 1 inserted, 0 errors, 240s
+coreweave__fp4                    152 segments, 0 inserted, 0 errors, 125s
+crusoe__bf16                      152 segments, 0 inserted, 0 errors, 121s
+deepinfra__bf16                   148 segments, 2 inserted, 0 errors, 161s
+deepinfra__fp8                      0 segments, 0 inserted, 0 errors, 0s
+dekallm__bf16                     152 segments, 75 inserted, 0 errors, 372s
+digitalocean                      152 segments, 76 inserted, 0 errors, 659s
+groq                              152 segments, 0 inserted, 0 errors, 89s
+local__cuda-rtxpro6000            152 segments, 0 inserted, 0 errors, 104s

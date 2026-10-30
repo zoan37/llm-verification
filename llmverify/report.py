@@ -188,3 +188,59 @@ def model_report(model: str, root: Path = Path("data")) -> dict:
         s["fidelity"] = fidelity(r, h_reg, c_reg)
         s["flags"] = flags(s, h_reg)
     return {"model": model, "honest_regret": h_reg, "cheat_regret": c_reg, "endpoints": eps}
+
+
+def _own_top_miss_raw(raw: List[dict]) -> Optional[float]:
+    """At temperature 0, share of tokens that are not the endpoint's own top choice (from its reported logprobs)."""
+    n = bad = 0
+    for r in raw:
+        if r.get("mode") not in ("greedy", "repeat"):
+            continue
+        for x in r.get("logprobs") or []:
+            top = x.get("top_logprobs") or []
+            if not top or x.get("logprob") is None:
+                continue
+            n += 1
+            bad += max(c["logprob"] for c in top) - x["logprob"] > 1e-3
+    return bad / n if n else None
+
+
+def referee_free_report(model: str, root: Path = Path("data")) -> dict:
+    """Everything that can be said about a model's endpoints without running its weights."""
+    key = model.replace("/", "__")
+    ep_meta = {}
+    ep_file = root / "raw" / key / "endpoints.json"
+    if ep_file.exists():
+        for e in json.loads(ep_file.read_text()):
+            ep_meta[(e.get("tag") or e["provider_name"].lower()).replace("/", "__")] = e
+    raws = {f.name[: -len(".jsonl.gz")]: load(f) for f in sorted((root / "raw" / key).glob("*.jsonl.gz"))}
+    peers = prefix_agreement({k: greedy_texts(v) for k, v in raws.items()})
+    counts = {}
+    for k, raw in raws.items():
+        c = [((r.get("usage") or {}).get("prompt_tokens")) for r in raw if r.get("mode") == "greedy" and r.get("usage")]
+        counts[k] = _median([x for x in c if x is not None])
+    consensus = _median([v for k, v in counts.items() if v is not None and not k.startswith("local")])
+    eps = {}
+    for k, raw in raws.items():
+        label = next((r.get("quantization") for r in raw if r.get("quantization") is not None), None)
+        e = ep_meta.get(k, {})
+        integ = {
+            "requests": len(raw), "errors": sum(1 for r in raw if "error" in r),
+            "logprobs": any(r.get("logprobs") for r in raw),
+            "own_top_miss": _own_top_miss_raw(raw), "determinism": _determinism(raw),
+            "logprob_self_consistency": self_consistency(raw), "logprob_alignment": logprob_alignment(raw),
+            "prompt_tokens_median": counts.get(k), "prompt_tokens_consensus": consensus,
+            "inserted_tokens": 0, "prompt_tokens_mismatch_share": None,
+            "cost_usd": sum(((r.get("usage") or {}).get("cost") or 0) for r in raw),
+        }
+        s = {"tag": k.replace("__", "/"), "provider": e.get("provider_name") or k.split("__")[-1],
+             "quantization": e.get("quantization") if e else label, "local": k.startswith("local"), "label": label,
+             "reference": ("honest" if (label or "").startswith("honest") else
+                           "cheat" if (label or "").startswith("cheat") else None),
+             "peer_agreement": (peers.get(k) or {}).get("median_peer_agreement"), "integrity": integ}
+        f = flags(s, None)
+        if counts.get(k) is not None and consensus is not None and counts[k] != consensus and not s["local"]:
+            f.append(f"prompt token count {counts[k]} vs {consensus} at most endpoints (different template or added text)")
+        s["flags"] = f
+        eps[k] = s
+    return {"model": model, "referee_free": True, "endpoints": eps}

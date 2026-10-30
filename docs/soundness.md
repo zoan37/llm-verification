@@ -73,6 +73,12 @@ These need no reference weights, so they work for models too large to self-host:
 | Logprob self-consistency (`peer.self_consistency`) | at temperature 1, an endpoint's samples must be distributed like its *own* reported logprobs: self-PIT values are uniform | logprobs computed by something other than the sampler, samplers that ignore the requested temperature, post-processed probabilities |
 | Logprob alignment (`peer.logprob_alignment`) | the chosen token's logprob must match its entry in the top-k list | top-k lists attached to the wrong position (found in the wild, see results) |
 | Peer prefix agreement (`peer.prefix_agreement`) | honest deployments of the same weights share long greedy prefixes | a different model or heavy quantization among mostly honest peers (honest-majority assumption) |
+| Prompt-size consensus | the prompt token count an endpoint bills should equal the published template's (and its peers') | added system prompts, edited templates, a different tokenizer |
+
+Peer agreement measures "like the crowd", not "correct": on gpt-oss-120b our known-honest llama.cpp run agreed
+with the providers *less* than they agree with each other, because many providers share serving stacks and
+therefore rounding behaviour. It also breaks when endpoints use different system prompts (any change to the
+prompt changes the greedy output from the first token).
 
 ### 4. Integrity signals: black-box mode
 
