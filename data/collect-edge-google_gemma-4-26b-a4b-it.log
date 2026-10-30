@@ -1,0 +1,17 @@
+google/gemma-4-26b-a4b-it: 15 endpoints; key usage $3.5109
+makora                         quant=unknown  ok=56/56 logprobs=56 errors=0
+io-net/bf16                    quant=bf16     ok=56/56 logprobs=56 errors=0
+primeintellect/bf16            quant=bf16     ok=56/56 logprobs=0 errors=0
+darkbloom                      quant=unknown  ok=56/56 logprobs=56 errors=0
+akashml/fp4                    quant=fp4      ok=56/56 logprobs=56 errors=0
+deepinfra/fp8                  quant=fp8      ok=56/56 logprobs=0 errors=0
+parasail/bf16                  quant=bf16     ok=56/56 logprobs=56 errors=0
+venice/bf16                    quant=bf16     ok=56/56 logprobs=0 errors=0
+dekallm/bf16                   quant=bf16     ok=56/56 logprobs=56 errors=0
+cloudflare                     quant=unknown  ok=53/56 logprobs=53 errors=3
+siliconflow/fp8                quant=fp8      ok=56/56 logprobs=0 errors=0
+nextbit/bf16                   quant=bf16     ok=56/56 logprobs=56 errors=0
+coreweave/bf16                 quant=bf16     ok=54/56 logprobs=54 errors=2
+google-vertex/global           quant=unknown  ok=48/56 logprobs=48 errors=8
+novita/bf16                    quant=bf16     ok=18/56 logprobs=16 errors=38
+google/gemma-4-26b-a4b-it: spent $0.2717

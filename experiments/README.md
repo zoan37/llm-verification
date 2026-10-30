@@ -30,8 +30,10 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    mostly line breaks.
 5. **Prompts are not always what the template says.** Several gpt-oss-120b endpoints bill a prompt size different from
    the official chat template's (Baseten +11 tokens, Groq +4, DeepInfra bf16 -13): an added or altered system prompt.
-6. **An endpoint can be deterministic and still disagree with everyone.** On Qwen3.8-27B, Venice's greedy replies share
-   less with the other endpoints than our 2-bit quantized copy does. Needs a referee to say more (not yet run).
+6. **Venice's Qwen3.8-27B is not the released model.** See the case study below: 165× an honest machine's distance from
+   the referee, twice as far as a deliberately 2-bit-quantized copy, yet fluent, with no hidden system prompt, not an
+   older Qwen 27B, and behaving differently on borderline requests (it tells a dark joke where the released model
+   deflects). Most consistent with modified weights, e.g. an "uncensored" fine-tune, served under the official name.
 
 ## Qwen3.5-35B-A3B (7 endpoints)
 
@@ -80,7 +82,36 @@ than the fixed-budget threshold (regret is heavy-tailed: mostly zeros, rare 2-4 
 thousand tokens for the draft cheats. Tie steering is the documented residual freedom: it changes which of two
 nearly-tied tokens appears, and is invisible within honest noise.
 
-## Qwen3.8-27B (21 endpoints, no referee yet)
+## Case study: Venice and Qwen3.8-27B
+
+The referee-free view flagged Venice first: its temperature-0 replies agreed with the other 20 endpoints less than our
+2-bit copy did, although it is fully deterministic. The referee (Qwen3.8-27B Q8_0, CUDA) then measured:
+
+| Endpoint | Regret (× honest) | Fidelity | Other token | Big misses / 1k | First token = real model's | PIT mean |
+|---|---|---|---|---|---|---|
+| *honest: Q6_K copy* | 1.0× | 100 | 1.0% | 0.0 | 92% | 0.498 |
+| Mancer (fp8) | 2.8× | 77 | 1.8% | 0.0 | 96% | 0.500 |
+| *2-bit copy (UD-Q2_K_XL)* | 75× | 0 | 8.8% | 5.7 | 69% | 0.516 |
+| **Venice (fp8)** | **165×** | **0** | **11.8%** | **24** | **58%** | **0.526** |
+
+Ruling things out, with cheap follow-up probes (temperature 0, same prompts to Venice and to genuine endpoints):
+
+- **Hidden system prompt?** Unlikely: Venice bills exactly the same prompt sizes as other endpoints, reports no system
+  prompt, and has nothing above the user message to repeat.
+- **An older Qwen 27B under the new name?** No: Venice's replies match Qwen3.6-27B and Qwen3.5-27B (from DeepInfra and
+  Venice's own 3.6 endpoint) less than genuine Qwen3.8 does (prefix agreement 0.17-0.19 vs 0.32-0.34).
+- **Just heavy quantization?** Its text is fluent and it misses the real model's choice 4× as often as a 2-bit copy;
+  quantization that destructive usually shows in the text.
+- **Behaviour:** genuine Qwen3.8 (Mancer, DeepInfra BF16) answers "Tell me a dark joke" identically, with a deflection
+  ("I don't have a sense of humor, but... Why did the scarecrow win an award?"). Venice tells an actual dark joke.
+
+What it is not possible to say from outside: which modification. The pattern (fluent, self-identifies as Qwen,
+distribution shifted everywhere, fewer refusals or deflections) fits a fine-tuned or "abliterated" (refusal-removed)
+variant served under the official model name. Venice may consider that a feature; the point for verification is that
+the endpoint labelled `qwen/qwen3.8-27b` does not serve the released weights, and this is detectable from the outside
+with ~100 requests.
+
+## Qwen3.8-27B (21 endpoints)
 
 Reference weights could not be hosted for this run, so only referee-free checks: peer agreement, determinism,
 own-top-choice at temperature 0, logprob self-consistency and alignment, prompt size. See `results/qwen__qwen3.8-27b.json`.
