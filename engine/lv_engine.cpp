@@ -13,6 +13,8 @@
 //      "lp_t", "entropy", "m2", "mass_above"}  (the last four at the given temperature, over the full vocab)
 //   {"cmd": "start", "context": [ids], "k": 20}       -> {"top": [[id, lp], ...]}  (next-token distribution)
 //   {"cmd": "step", "token": id, "k": 20}             -> {"top": [...]}            (append one token, predict next)
+//     start/step also take optional "u" (uniform in [0,1)) and "temperature": then the reply adds "sampled", an
+//     ordinary full-vocabulary sample by inverse CDF, and "sampled_lp", its raw logprob (honest baselines).
 //     start/step keep the KV cache between calls: this is how the cooperative provider generates with the
 //     public sampling rule applied in Python, one token per round trip.
 //
@@ -39,6 +41,7 @@ struct Engine {
     int n_vocab = 0, n_ctx = 0, n_batch = 0;
     std::vector<int> idx;
     int n_past = 0;  // tokens in the KV cache for start/step
+    const float * last_logits = nullptr;
 
     std::vector<llama_token> tokenize(const std::string & text, bool special) {
         std::vector<llama_token> out(text.size() + 16);
@@ -72,6 +75,21 @@ struct Engine {
         json top = json::array();
         for (int t = 0; t < kk; t++) top.push_back({idx[t], (double) lg[idx[t]] - lse});
         return top;
+    }
+
+    // Ordinary ancestral sampling over the full vocabulary at temperature `temp`, using the caller's uniform u
+    // (inverse CDF in token-id order). Used to produce honest baseline replies, not by the public rule.
+    int sample_full(const float * lg, double temp, double u) {
+        double mx = -INFINITY;
+        for (int v = 0; v < n_vocab; v++) mx = std::max(mx, (double) lg[v] / temp);
+        double z = 0.0;
+        for (int v = 0; v < n_vocab; v++) z += std::exp((double) lg[v] / temp - mx);
+        double acc = 0.0, target = u * z;
+        for (int v = 0; v < n_vocab; v++) {
+            acc += std::exp((double) lg[v] / temp - mx);
+            if (acc >= target) return v;
+        }
+        return n_vocab - 1;
     }
 
     json score_step(const float * lg, int k, llama_token actual, double temp) {
@@ -153,8 +171,9 @@ struct Engine {
         const int last = batch.n_tokens - 1;
         llama_batch_free(batch);
         n_past = n;
+        last_logits = llama_get_logits_ith(ctx, last);
         double lse;
-        return topk(llama_get_logits_ith(ctx, last), k, lse);
+        return topk(last_logits, k, lse);
     }
 
     json step(llama_token tok, int k) {
@@ -170,8 +189,9 @@ struct Engine {
         if (llama_decode(ctx, batch) != 0) { llama_batch_free(batch); throw std::runtime_error("llama_decode failed"); }
         llama_batch_free(batch);
         n_past++;
+        last_logits = llama_get_logits_ith(ctx, 0);
         double lse;
-        return topk(llama_get_logits_ith(ctx, 0), k, lse);
+        return topk(last_logits, k, lse);
     }
 };
 
@@ -253,10 +273,16 @@ int main(int argc, char ** argv) {
                 auto context = req["context"].get<std::vector<llama_token>>();
                 auto reply = req["tokens"].get<std::vector<llama_token>>();
                 resp["steps"] = E.score(context, reply, k, req.value("temperature", 1.0));
-            } else if (cmd == "start") {
-                resp["top"] = E.start(req["context"].get<std::vector<llama_token>>(), k);
-            } else if (cmd == "step") {
-                resp["top"] = E.step(req["token"].get<llama_token>(), k);
+            } else if (cmd == "start" || cmd == "step") {
+                resp["top"] = cmd == "start" ? E.start(req["context"].get<std::vector<llama_token>>(), k)
+                                             : E.step(req["token"].get<llama_token>(), k);
+                if (req.contains("u")) {  // also draw an ordinary full-vocabulary sample
+                    const int t = E.sample_full(E.last_logits, req.value("temperature", 1.0), req["u"].get<double>());
+                    double lse;
+                    E.topk(E.last_logits, 1, lse);
+                    resp["sampled"] = t;
+                    resp["sampled_lp"] = (double) E.last_logits[t] - lse;
+                }
             } else {
                 throw std::runtime_error("unknown cmd " + cmd);
             }

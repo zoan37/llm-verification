@@ -48,7 +48,11 @@ def sha256_hex(data: bytes) -> str:
 
 def round_lp(x: float) -> float:
     """Committed logprobs are rounded to 4 decimals. The sampling rule is applied to the rounded values."""
-    return round(float(x), LOGPROB_DECIMALS) if math.isfinite(x) else -1e4
+    return lp_units(x) / 10 ** LOGPROB_DECIMALS if math.isfinite(x) else -1e4
+
+
+def lp_units(lp: float) -> int:
+    return int(round(float(lp) * 10 ** LOGPROB_DECIMALS))
 
 
 def round_top(top: Sequence) -> TopK:
@@ -63,7 +67,8 @@ class Trace:
     finish_reason: str        # "stop" (an EOS token ended it) or "length" (max_tokens reached)
 
     def steps_digest(self) -> str:
-        return sha256_hex(canonical([[int(t), [[int(i), float(lp)] for i, lp in top]]
+        """Logprobs are hashed as integers in units of 1e-4 nats, so every language hashes the same bytes."""
+        return sha256_hex(canonical([[int(t), [[int(i), lp_units(lp)] for i, lp in top]]
                                      for t, top in zip(self.tokens, self.tops)]))
 
     def prompt_digest(self) -> str:

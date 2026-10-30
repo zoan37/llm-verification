@@ -1,0 +1,82 @@
+"""Client side of the cooperative mode: send a request with your own seed and nonce, check the signed receipt,
+and (optionally) audit the reply on a referee you trust.
+
+    client = VerifyingClient("http://provider:8090", pinned_key="ab12...", tokenizer=local_engine,
+                             template=chat_template, referee=local_engine)
+    reply = client.chat([{"role": "user", "content": "hi"}], temperature=0.7)
+    reply.check.ok, reply.audit, client.ledger.verdict()
+
+Without a referee the client still gets every exact check (signature, its own prompt, the sampling rule, no
+truncation): those catch tampering and laundering outright. Model identity needs the referee (or a third-party
+auditor given the receipt and trace).
+"""
+
+from __future__ import annotations
+
+import json
+import secrets
+import urllib.request
+from dataclasses import dataclass
+from typing import List, Optional
+
+from .audit import Ledger, audit_trace
+from .metrics import TokenScore, means
+from .receipt import Receipt, ReceiptCheck, Trace, check_receipt, new_nonce
+from .sampling import SamplingSpec
+from .templates import render_chat
+
+
+@dataclass
+class VerifiedReply:
+    text: str
+    receipt: Receipt
+    trace: Trace
+    check: ReceiptCheck
+    audit: Optional[dict] = None
+
+
+class VerifyingClient:
+    def __init__(self, base_url: str, pinned_key: Optional[str] = None, tokenizer=None, template: Optional[str] = None,
+                 bos: Optional[int] = None, referee=None, expected_model: Optional[dict] = None, timeout: float = 600):
+        self.base = base_url.rstrip("/")
+        self.pinned_key, self.tokenizer, self.template, self.bos = pinned_key, tokenizer, template, bos
+        self.referee, self.expected_model, self.timeout = referee, expected_model, timeout
+        self.ledger = Ledger(provider_key=pinned_key or "unpinned")
+
+    def _post(self, body: dict) -> dict:
+        req = urllib.request.Request(self.base + "/v1/chat/completions", data=json.dumps(body).encode(),
+                                     headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=self.timeout) as r:
+            return json.load(r)
+
+    def chat(self, messages: List[dict], max_tokens: int = 256, temperature: float = 0.0, top_p: float = 1.0,
+             top_k: int = 20, min_p: float = 0.0, seed: Optional[int] = None, audit: bool = True) -> VerifiedReply:
+        seed = secrets.randbelow(2 ** 31) if seed is None else seed
+        nonce = new_nonce()
+        body = {"messages": messages, "max_tokens": max_tokens, "temperature": temperature, "top_p": top_p,
+                "top_k": top_k, "min_p": min_p, "seed": seed, "verification": {"nonce": nonce}}
+        spec = SamplingSpec.from_request(body)
+        resp = self._post(body)
+        v = resp["verification"]
+        receipt, trace = Receipt.from_dict(v["receipt"]), Trace.from_dict(v["trace"])
+        expected_ids = None
+        if self.tokenizer is not None and self.template is not None:
+            expected_ids = ([self.bos] if self.bos is not None else []) + self.tokenizer.tokenize(
+                render_chat(self.template, messages, True), special=True)
+        eos = self.tokenizer.eos_ids if self.tokenizer is not None else ()
+        chk = check_receipt(receipt, trace, expected_prompt_ids=expected_ids, expected_spec=spec,
+                            expected_nonce=nonce, expected_max_tokens=max_tokens, pinned_key=self.pinned_key,
+                            expected_model=self.expected_model, eos_ids=eos)
+        text = resp["choices"][0]["message"]["content"]
+        if self.tokenizer is not None and text != self.tokenizer.detokenize([t for t in trace.tokens if t not in set(eos)]):
+            chk.problems.append("returned text does not match the committed tokens")
+            chk.ok = False
+        out = VerifiedReply(text, receipt, trace, chk)
+        if not chk.ok:
+            for p in chk.problems:
+                self.ledger.add_failure(p)
+        elif audit and self.referee is not None and trace.tokens:
+            scores: List[Optional[TokenScore]] = audit_trace(self.referee, trace, spec, receipt.client_nonce)
+            self.ledger.add(scores)
+            out.audit = {"tokens": sum(1 for s in scores if s), **means(scores, ("regret", "agree", "wgap", "topk"))}
+        return out

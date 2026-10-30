@@ -87,3 +87,37 @@ def test_truncation_and_eos_padding(setup):
     signer.sign(r)
     probs = check_receipt(r, t, eos_ids=model.eos_ids).problems
     assert g.trace.finish_reason == "length" and any("truncated" in p for p in probs) or g.trace.finish_reason == "stop"
+
+
+def test_http_roundtrip_with_client_checks():
+    import threading
+
+    from llmverify.client import VerifyingClient
+    from llmverify.server import App, serve
+
+    template = "{% for m in messages %}{{ m['content'] }} {% endfor %}"
+    model = ToyLM(weights_seed=1)
+    signer = Signer()
+    app = App(VerifiableProvider(model, signer, INFO), template)
+    srv = serve(app, port=0)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    try:
+        url = f"http://127.0.0.1:{srv.server_address[1]}"
+        c = VerifyingClient(url, pinned_key=signer.public_hex, tokenizer=model, template=template,
+                            referee=ToyLM(weights_seed=1, machine=3, hw_noise=0.02), expected_model=INFO)
+        for t in (0.0, 0.9):
+            r = c.chat([{"role": "user", "content": "5 6 7 8"}], max_tokens=24, temperature=t)
+            assert r.check.ok, r.check.problems
+            assert r.audit["tokens"] > 0
+        assert c.ledger.verdict()["status"] in ("INSUFFICIENT_EVIDENCE", "PASS")
+        # a provider that injects a hidden prompt is caught by the client's own rendering
+        app2 = App(PromptInjection(model, signer, INFO, hidden=[1, 2]), template)
+        srv2 = serve(app2, port=0)
+        threading.Thread(target=srv2.serve_forever, daemon=True).start()
+        c2 = VerifyingClient(f"http://127.0.0.1:{srv2.server_address[1]}", pinned_key=signer.public_hex,
+                             tokenizer=model, template=template)
+        r = c2.chat([{"role": "user", "content": "5 6 7 8"}], max_tokens=8)
+        assert not r.check.ok and c2.ledger.verdict()["status"] == "FAIL"
+        srv2.shutdown()
+    finally:
+        srv.shutdown()
