@@ -127,7 +127,10 @@ def flags(s: dict, ref_regret: Optional[float]) -> List[str]:
     broken_lp = bool(al0 and al0["bad_share"] > 0.1)  # then checks computed from its logprobs mean nothing
     if not broken_lp and i["own_top_miss"] is not None and i["own_top_miss"] > 0.01:
         f.append(f"samples at temperature 0 ({i['own_top_miss']:.1%} of tokens not its own top choice)")
-    if i["inserted_tokens"] >= 3:
+    # The repair can misfire on a lossy model's legitimately different text, so dropped tokens are reported only
+    # when insertions are frequent or the endpoint is otherwise close to the model (as with real line-break drops).
+    rate = 1000 * i["inserted_tokens"] / max(1, i.get("scored_tokens") or 1)
+    if i["inserted_tokens"] >= 3 and (rate >= 1.0 or (s.get("x_honest") is not None and s["x_honest"] < 4)):
         f.append(f"drops tokens from its output ({i['inserted_tokens']} re-inserted)")
     if i["prompt_tokens_mismatch_share"] and i["prompt_tokens_mismatch_share"] > 0.5 and not s.get("local"):
         f.append(f"prompt token count differs from the reference template (median {i['prompt_tokens_delta_median']:+d})")

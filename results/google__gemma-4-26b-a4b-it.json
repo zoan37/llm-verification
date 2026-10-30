@@ -107,12 +107,10 @@
    "peer_agreement": 0.32902173913043475,
    "x_honest": 53.03,
    "fidelity": 0.0,
-   "flags": [
-    "drops tokens from its output (12 re-inserted)"
-   ],
+   "flags": [],
    "verdict": {
     "level": "far",
-    "text": "about as far from the real model as the substitute (a heavily quantized copy), or further; output-path problem: drops tokens from its output"
+    "text": "about as far from the real model as the substitute (a heavily quantized copy), or further"
    }
   },
   "cloudflare": {
@@ -1066,7 +1064,9 @@
    "peer_agreement": 0.6661413043478261,
    "x_honest": 1.0,
    "fidelity": 100.0,
-   "flags": [],
+   "flags": [
+    "samples hotter than requested at temperature 1: 5 long-tail tokens vs 0.8 expected, while its temperature-0 output matches the model"
+   ],
    "verdict": {
     "level": "reference",
     "text": "reference run"

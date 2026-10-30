@@ -1264,9 +1264,7 @@
    "peer_agreement": 0.08046511627906977,
    "x_honest": 6.18,
    "fidelity": 0.0,
-   "flags": [
-    "drops tokens from its output (3 re-inserted)"
-   ],
+   "flags": [],
    "verdict": {
     "level": "reference",
     "text": "reference run"
