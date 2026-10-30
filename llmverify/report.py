@@ -125,7 +125,7 @@ def flags(s: dict, ref_regret: Optional[float]) -> List[str]:
         f.append("non-deterministic at temperature 0")
     if i["inserted_tokens"] >= 3:
         f.append(f"drops tokens from its output ({i['inserted_tokens']} re-inserted)")
-    if i["prompt_tokens_mismatch_share"] and i["prompt_tokens_mismatch_share"] > 0.5:
+    if i["prompt_tokens_mismatch_share"] and i["prompt_tokens_mismatch_share"] > 0.5 and not s.get("local"):
         f.append(f"prompt token count differs from the reference template (median {i['prompt_tokens_delta_median']:+d})")
     if i.get("early_stop_share") and i["early_stop_share"] > 0.1:
         f.append(f"ends {i['early_stop_share']:.0%} of 'stop' replies where the model would continue (truncation?)")

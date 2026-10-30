@@ -1,0 +1,776 @@
+{
+ "model": "qwen/qwen3.8-27b",
+ "referee_free": true,
+ "endpoints": {
+  "akashml__fp8": {
+   "tag": "akashml/fp8",
+   "provider": "AkashML",
+   "quantization": "fp8",
+   "local": false,
+   "label": "fp8",
+   "reference": null,
+   "peer_agreement": 0.6473809523809524,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.5,
+     "mean_distinct": 2.0
+    },
+    "logprob_self_consistency": {
+     "ks": 0.007334340157781921,
+     "p": 0.6656526470874365,
+     "mean": 0.49837091471716016,
+     "n_tokens": 9806
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0,
+     "n_tokens": 21191
+    },
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.04269348
+   },
+   "flags": []
+  },
+  "alibaba": {
+   "tag": "alibaba",
+   "provider": "Alibaba",
+   "quantization": "unknown",
+   "local": false,
+   "label": "unknown",
+   "reference": null,
+   "peer_agreement": 0.33732142857142855,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.25,
+     "mean_distinct": 2.0
+    },
+    "logprob_self_consistency": {
+     "ks": 0.016678892508482313,
+     "p": 0.010388196894319208,
+     "mean": 0.5059802205731647,
+     "n_tokens": 9431
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0010143947444691333,
+     "n_tokens": 20702
+    },
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.0539886
+   },
+   "flags": [
+    "non-deterministic at temperature 0"
+   ]
+  },
+  "cerebras__fp16": {
+   "tag": "cerebras/fp16",
+   "provider": "Cerebras",
+   "quantization": "fp16",
+   "local": false,
+   "label": "fp16",
+   "reference": null,
+   "peer_agreement": 0.5045833333333334,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 1.0,
+     "mean_distinct": 1.0
+    },
+    "logprob_self_consistency": {
+     "ks": 0.013390000776966948,
+     "p": 0.05829887510863714,
+     "mean": 0.5046948544167665,
+     "n_tokens": 9835
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0,
+     "n_tokens": 21108
+    },
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.03421453
+   },
+   "flags": []
+  },
+  "chutes__fp8": {
+   "tag": "chutes/fp8",
+   "provider": "Chutes",
+   "quantization": "fp8",
+   "local": false,
+   "label": "fp8",
+   "reference": null,
+   "peer_agreement": 0.6245238095238095,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.25,
+     "mean_distinct": 2.25
+    },
+    "logprob_self_consistency": null,
+    "logprob_alignment": null,
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.026692326
+   },
+   "flags": [
+    "non-deterministic at temperature 0",
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "cloudflare": {
+   "tag": "cloudflare",
+   "provider": "Cloudflare",
+   "quantization": "unknown",
+   "local": false,
+   "label": "unknown",
+   "reference": null,
+   "peer_agreement": 0.621804587688734,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.5,
+     "mean_distinct": 1.75
+    },
+    "logprob_self_consistency": {
+     "ks": 0.003878969455010227,
+     "p": 0.9984921128858172,
+     "mean": 0.5002685553340781,
+     "n_tokens": 9768
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0,
+     "n_tokens": 21156
+    },
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.0691344
+   },
+   "flags": []
+  },
+  "coreweave__fp8": {
+   "tag": "coreweave/fp8",
+   "provider": "CoreWeave",
+   "quantization": "fp8",
+   "local": false,
+   "label": "fp8",
+   "reference": null,
+   "peer_agreement": 0.654602206736353,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.5,
+     "mean_distinct": 2.0
+    },
+    "logprob_self_consistency": {
+     "ks": 0.011698584248640564,
+     "p": 0.12535194170115033,
+     "mean": 0.495453938151276,
+     "n_tokens": 10094
+    },
+    "logprob_alignment": {
+     "bad_share": 0.002094094653078319,
+     "n_tokens": 21489
+    },
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.0656226
+   },
+   "flags": []
+  },
+  "darkbloom__fp4": {
+   "tag": "darkbloom/fp4",
+   "provider": "Darkbloom",
+   "quantization": "fp4",
+   "local": false,
+   "label": "fp4",
+   "reference": null,
+   "peer_agreement": 0.3424404761904762,
+   "integrity": {
+    "requests": 104,
+    "errors": 1,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 1.0,
+     "mean_distinct": 1.0
+    },
+    "logprob_self_consistency": {
+     "ks": 0.01058001002827369,
+     "p": 0.23699530526594215,
+     "mean": 0.4973300336292851,
+     "n_tokens": 9496
+    },
+    "logprob_alignment": {
+     "bad_share": 0.000991501416430595,
+     "n_tokens": 21180
+    },
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.0319161
+   },
+   "flags": []
+  },
+  "deepinfra__bf16": {
+   "tag": "deepinfra/bf16",
+   "provider": "DeepInfra",
+   "quantization": "bf16",
+   "local": false,
+   "label": "bf16",
+   "reference": null,
+   "peer_agreement": 0.5554166666666667,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.5,
+     "mean_distinct": 1.75
+    },
+    "logprob_self_consistency": null,
+    "logprob_alignment": null,
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.04044135
+   },
+   "flags": [
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "dekallm": {
+   "tag": "dekallm",
+   "provider": "DekaLLM",
+   "quantization": "unknown",
+   "local": false,
+   "label": "unknown",
+   "reference": null,
+   "peer_agreement": 0.6188690476190477,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": true,
+    "own_top_miss": 0.31485548625142756,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.5,
+     "mean_distinct": 1.5
+    },
+    "logprob_self_consistency": {
+     "ks": 0.13802175180881826,
+     "p": 7.422262366551497e-167,
+     "mean": 0.5767074593647196,
+     "n_tokens": 10034
+    },
+    "logprob_alignment": {
+     "bad_share": 0.7316253674926502,
+     "n_tokens": 21429
+    },
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.05369136
+   },
+   "flags": [
+    "samples at temperature 0 (31.5% of tokens not its own top choice)",
+    "top_logprobs disagree with the chosen token's logprob at 73% of positions (misaligned logprob output)",
+    "reported logprobs don't match its own samples (self-PIT mean 0.577)"
+   ]
+  },
+  "ionstream__fp8": {
+   "tag": "ionstream/fp8",
+   "provider": "Ionstream",
+   "quantization": "fp8",
+   "local": false,
+   "label": "fp8",
+   "reference": null,
+   "peer_agreement": 0.6273214285714286,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.5,
+     "mean_distinct": 2.0
+    },
+    "logprob_self_consistency": {
+     "ks": 0.006140006465292197,
+     "p": 0.8539198126529904,
+     "mean": 0.49883763378107143,
+     "n_tokens": 9772
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0012728644163680935,
+     "n_tokens": 21212
+    },
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.04149426
+   },
+   "flags": []
+  },
+  "local__substitute-q2_k_xl": {
+   "tag": "local/substitute-q2_k_xl",
+   "provider": "substitute-q2_k_xl",
+   "quantization": "cheat: 2-bit quant (UD-Q2_K_XL) served as BF16",
+   "local": true,
+   "label": "cheat: 2-bit quant (UD-Q2_K_XL) served as BF16",
+   "reference": "cheat",
+   "peer_agreement": 0.15398809523809523,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 1.0,
+     "mean_distinct": 1.0
+    },
+    "logprob_self_consistency": {
+     "ks": 0.008408305231973556,
+     "p": 0.47128725495990126,
+     "mean": 0.5025985815336236,
+     "n_tokens": 10101
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0005053289231900037,
+     "n_tokens": 21768
+    },
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0
+   },
+   "flags": []
+  },
+  "mancer__fp8": {
+   "tag": "mancer/fp8",
+   "provider": "Mancer 2",
+   "quantization": "fp8",
+   "local": false,
+   "label": "fp8",
+   "reference": null,
+   "peer_agreement": 0.6671849593495935,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.5,
+     "mean_distinct": 1.75
+    },
+    "logprob_self_consistency": {
+     "ks": 0.005121560236642231,
+     "p": 0.9587288772192342,
+     "mean": 0.49887932192511825,
+     "n_tokens": 9807
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0007073469772705838,
+     "n_tokens": 21206
+    },
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.0534075
+   },
+   "flags": []
+  },
+  "modal": {
+   "tag": "modal",
+   "provider": "Modal",
+   "quantization": "unknown",
+   "local": false,
+   "label": "unknown",
+   "reference": null,
+   "peer_agreement": 0.6272314169570268,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.75,
+     "mean_distinct": 1.25
+    },
+    "logprob_self_consistency": {
+     "ks": 0.007799337528391237,
+     "p": 0.5832643700309563,
+     "mean": 0.4973436355272274,
+     "n_tokens": 9881
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0010326699211415697,
+     "n_tokens": 21304
+    },
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.04911516
+   },
+   "flags": []
+  },
+  "modelrun__fp4": {
+   "tag": "modelrun/fp4",
+   "provider": "ModelRun",
+   "quantization": "fp4",
+   "local": false,
+   "label": "fp4",
+   "reference": null,
+   "peer_agreement": 0.25985060975609753,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.75,
+     "mean_distinct": 1.25
+    },
+    "logprob_self_consistency": null,
+    "logprob_alignment": null,
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.0536718
+   },
+   "flags": [
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "near-ai__fp8": {
+   "tag": "near-ai/fp8",
+   "provider": "Near AI",
+   "quantization": "fp8",
+   "local": false,
+   "label": "fp8",
+   "reference": null,
+   "peer_agreement": 0.6080487804878049,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.5,
+     "mean_distinct": 2.0
+    },
+    "logprob_self_consistency": {
+     "ks": 0.014203730580816615,
+     "p": 0.05449721985528507,
+     "mean": 0.4960746203653834,
+     "n_tokens": 8906
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0008640845786316967,
+     "n_tokens": 19674
+    },
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.02506503
+   },
+   "flags": []
+  },
+  "novita": {
+   "tag": "novita",
+   "provider": "Novita",
+   "quantization": "unknown",
+   "local": false,
+   "label": null,
+   "reference": null,
+   "peer_agreement": null,
+   "integrity": {
+    "requests": 4,
+    "errors": 4,
+    "logprobs": false,
+    "own_top_miss": null,
+    "determinism": null,
+    "logprob_self_consistency": null,
+    "logprob_alignment": null,
+    "prompt_tokens_median": null,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0
+   },
+   "flags": [
+    "no logprobs (text-only checks)",
+    "4 of 4 requests failed"
+   ]
+  },
+  "parasail__fp8": {
+   "tag": "parasail/fp8",
+   "provider": "Parasail",
+   "quantization": "fp8",
+   "local": false,
+   "label": "fp8",
+   "reference": null,
+   "peer_agreement": 0.6444642857142857,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.25,
+     "mean_distinct": 2.0
+    },
+    "logprob_self_consistency": {
+     "ks": 0.008300834178297106,
+     "p": 0.5150947232876343,
+     "mean": 0.49884749830649316,
+     "n_tokens": 9688
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0,
+     "n_tokens": 21173
+    },
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.04736756
+   },
+   "flags": [
+    "non-deterministic at temperature 0"
+   ]
+  },
+  "phala": {
+   "tag": "phala",
+   "provider": "Phala",
+   "quantization": "unknown",
+   "local": false,
+   "label": "unknown",
+   "reference": null,
+   "peer_agreement": 0.5552380952380953,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.25,
+     "mean_distinct": 2.0
+    },
+    "logprob_self_consistency": null,
+    "logprob_alignment": null,
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.0534718
+   },
+   "flags": [
+    "non-deterministic at temperature 0",
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "reka__fp8": {
+   "tag": "reka/fp8",
+   "provider": "Reka",
+   "quantization": "fp8",
+   "local": false,
+   "label": "fp8",
+   "reference": null,
+   "peer_agreement": 0.6313690476190477,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.5,
+     "mean_distinct": 1.75
+    },
+    "logprob_self_consistency": {
+     "ks": 0.011305673544294015,
+     "p": 0.154656453407452,
+     "mean": 0.49643474908391066,
+     "n_tokens": 9987
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0,
+     "n_tokens": 21401
+    },
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.04731896
+   },
+   "flags": []
+  },
+  "tenstorrent__fp4": {
+   "tag": "tenstorrent/fp4",
+   "provider": "Tenstorrent",
+   "quantization": "fp4",
+   "local": false,
+   "label": "fp4",
+   "reference": null,
+   "peer_agreement": 0.44511904761904764,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": true,
+    "own_top_miss": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 1.0,
+     "mean_distinct": 1.0
+    },
+    "logprob_self_consistency": {
+     "ks": 0.010137506677202812,
+     "p": 0.2812337444172525,
+     "mean": 0.49636566213369393,
+     "n_tokens": 9507
+    },
+    "logprob_alignment": {
+     "bad_share": 0.0009516106009420945,
+     "n_tokens": 21017
+    },
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.0424696
+   },
+   "flags": []
+  },
+  "venice__fp8": {
+   "tag": "venice/fp8",
+   "provider": "Venice",
+   "quantization": "fp8",
+   "local": false,
+   "label": "fp8",
+   "reference": null,
+   "peer_agreement": 0.12101190476190476,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 1.0,
+     "mean_distinct": 1.0
+    },
+    "logprob_self_consistency": null,
+    "logprob_alignment": null,
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.0673264
+   },
+   "flags": [
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "wafer__fp8": {
+   "tag": "wafer/fp8",
+   "provider": "Wafer",
+   "quantization": "fp8",
+   "local": false,
+   "label": "fp8",
+   "reference": null,
+   "peer_agreement": 0.6331794425087108,
+   "integrity": {
+    "requests": 104,
+    "errors": 0,
+    "logprobs": true,
+    "own_top_miss": 0.2761838318653527,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.25,
+     "mean_distinct": 2.0
+    },
+    "logprob_self_consistency": {
+     "ks": 0.15486301634737354,
+     "p": 2.4348507261249375e-205,
+     "mean": 0.5906364696945265,
+     "n_tokens": 9813
+    },
+    "logprob_alignment": {
+     "bad_share": 0.6420385157350869,
+     "n_tokens": 21290
+    },
+    "prompt_tokens_median": 25,
+    "prompt_tokens_consensus": 25,
+    "inserted_tokens": 0,
+    "prompt_tokens_mismatch_share": null,
+    "cost_usd": 0.04916164
+   },
+   "flags": [
+    "samples at temperature 0 (27.6% of tokens not its own top choice)",
+    "non-deterministic at temperature 0",
+    "top_logprobs disagree with the chosen token's logprob at 64% of positions (misaligned logprob output)",
+    "reported logprobs don't match its own samples (self-PIT mean 0.591)"
+   ]
+  }
+ },
+ "notes": "No referee yet: the reference weights could not be hosted for this run. Shown: checks that need no weights. The 2-bit substitute row shows how far a heavily quantized copy lands on peer agreement.",
+ "built": "2026-10-30"
+}

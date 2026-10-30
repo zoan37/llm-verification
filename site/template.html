@@ -81,6 +81,11 @@ code { font: 13px var(--mono); }
       its own first choice, in nats per token. 0 means the same token. Bar: 95% interval, ticks at the honest and substitute levels.</p></div>
     <div><h3>Sampled-text fit</h3><p>At temperature 1, excess cross-entropy: how much worse (positive) or better (negative) the
       text fits the referee than the referee's own samples would. Needs no calibration; honest FP8 serving shows a small positive value.</p></div>
+    <div><h3>Peer agreement</h3><p>How long an endpoint's temperature-0 replies stay identical to the other endpoints', as a
+      share of the first 200 characters (median over peers). Needs no reference weights, but it rewards being like the
+      crowd, not being correct.</p></div>
+    <div><h3>Self-PIT</h3><p>Referee-free check that an endpoint's reported logprobs describe its own temperature-1 samples:
+      0.500 when they do. Far from 0.5 means the logprobs and the sampler disagree.</p></div>
     <div><h3>Flags</h3><p>Integrity findings that are not about model identity: sampling when asked for temperature 0, dropped
       output tokens, prompt token counts that disagree with the published template, no logprobs.</p></div>
   </section>
@@ -119,36 +124,72 @@ function verdict(r) {
   return '<span class="pill bad">far from referee</span>';
 }
 
+function flagCell(r) {
+  return r.flags.filter(f => !f.startsWith('no logprobs')).map(f => `<div class="flag">${esc(f)}</div>`).join('') || '<span class="sub">none</span>';
+}
+
+function head(m, providers) {
+  return `<div class="model-head"><h2>${esc(m.model)}</h2>
+      <div class="facts"><span><b>${providers}</b> endpoints</span>
+        ${m.referee_free ? '<span><b>no referee</b>: checks that need no reference weights</span>'
+          : `<span>referee <b>${esc(m.referee)}</b></span><span>0 = <b>${esc(m.anchor)}</b></span>`}
+        <span>collected <b>${esc(m.built)}</b></span></div>
+      ${m.notes ? `<p class="lede" style="font-size:14px;max-width:80ch">${esc(m.notes)}</p>` : ''}</div>`;
+}
+
+function renderRefereeFree(m) {
+  const rows = Object.values(m.endpoints).sort((a, b) => (b.peer_agreement ?? -1) - (a.peer_agreement ?? -1));
+  const body = rows.map(r => {
+    const i = r.integrity, sc = i.logprob_self_consistency, al = i.logprob_alignment, det = i.determinism;
+    return `<tr class="${r.local ? 'ref' : ''}">
+      <td><div class="name">${esc(r.local ? (r.label || r.tag) : r.provider)}</div>
+        <div class="sub">${esc(r.tag)}${r.quantization && !r.local ? ' · ' + esc(r.quantization) : ''}</div></td>
+      <td class="num">${r.peer_agreement == null ? '–' : r.peer_agreement.toFixed(2)}</td>
+      <td class="num">${det ? Math.round(100 * det.identical_share) + '%' : '–'}</td>
+      <td class="num">${i.own_top_miss == null ? '–' : (100 * i.own_top_miss).toFixed(1) + '%'}</td>
+      <td class="num">${sc ? sc.mean.toFixed(3) : '–'}<div class="sub">${sc ? 'p ' + (sc.p < 1e-4 ? '<1e-4' : sc.p.toFixed(2)) : ''}</div></td>
+      <td class="num">${al ? (100 * al.bad_share).toFixed(1) + '%' : '–'}</td>
+      <td class="num">${i.prompt_tokens_median ?? '–'}</td>
+      <td class="flags">${flagCell(r)}</td></tr>`;
+  }).join('');
+  return `<div class="ledger"><table>
+      <thead><tr><th>Endpoint</th><th>Peer agreement</th><th>Same reply at T=0</th><th>Sampled at T=0</th>
+        <th>Self-PIT mean</th><th>Misaligned logprobs</th><th>Prompt tokens</th><th>Flags</th></tr></thead>
+      <tbody>${body}</tbody></table></div>`;
+}
+
 function render(key) {
   const m = DATA.models[key];
   document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', t.dataset.key === key));
+  const providers = Object.values(m.endpoints).filter(r => !r.local).length;
+  if (m.referee_free) {
+    document.getElementById('model').innerHTML = head(m, providers) + renderRefereeFree(m);
+    try { localStorage.setItem('lv-model', key); } catch (e) {}
+    return;
+  }
   const rows = Object.values(m.endpoints).sort((a, b) => (b.fidelity ?? -1) - (a.fidelity ?? -1) ||
     (a.greedy.regret.mean ?? 9) - (b.greedy.regret.mean ?? 9));
-  const providers = rows.filter(r => !r.local).length;
   const body = rows.map(r => {
-    const g = r.greedy, sa = (r.sample_answer || {}).likelihood || {}, pit = (r.sample_answer || {}).pit || {};
+    const g = r.greedy, sa = (r.sample_answer || {}).likelihood || {};
     const ece = sa.excess_ce == null ? '–' : `${sa.excess_ce >= 0 ? '+' : ''}${fmt(sa.excess_ce, 3)}`;
     const det = r.integrity.determinism;
     return `<tr class="${r.local ? 'ref' : ''}">
       <td><div class="name">${esc(r.local ? (r.label || r.tag) : r.provider)}</div>
-        <div class="sub">${esc(r.local ? r.tag : r.tag)}${r.quantization && !r.local ? ' · ' + esc(r.quantization) : ''}</div></td>
+        <div class="sub">${esc(r.tag)}${r.quantization && !r.local ? ' · ' + esc(r.quantization) : ''}</div></td>
       <td><div class="score">${r.fidelity == null ? '–' : Math.round(r.fidelity)}</div>${verdict(r)}</td>
       <td class="num">${fmt(g.regret.mean)}<div class="sub">[${fmt(g.regret.lo)}, ${fmt(g.regret.hi)}]</div>${scaleBar(r, m)}</td>
       <td class="num">${r.x_honest == null ? '–' : r.x_honest.toFixed(1) + '×'}</td>
       <td class="num">${g.disagree.mean == null ? '–' : (100 * g.disagree.mean).toFixed(1) + '%'}<div class="sub">${g.big_miss_per_1k == null ? '' : g.big_miss_per_1k.toFixed(1) + ' big/1k'}</div></td>
       <td class="num">${ece}<div class="sub">${sa.excess_ce_lo == null ? '' : `[${fmt(sa.excess_ce_lo, 3)}, ${fmt(sa.excess_ce_hi, 3)}]`}</div></td>
+      <td class="num">${r.peer_agreement == null ? '–' : r.peer_agreement.toFixed(2)}</td>
       <td class="num">${det ? Math.round(100 * det.identical_share) + '%' : '–'}<div class="sub">${r.integrity.logprobs ? 'logprobs' : 'text only'}</div></td>
-      <td class="flags">${r.flags.filter(f => !f.startsWith('no logprobs')).map(f => `<div class="flag">${esc(f)}</div>`).join('') || '<span class="sub">none</span>'}</td>
+      <td class="flags">${flagCell(r)}</td>
     </tr>`;
   }).join('');
-  document.getElementById('model').innerHTML = `
-    <div class="model-head"><h2>${esc(m.model)}</h2>
-      <div class="facts"><span><b>${providers}</b> endpoints</span><span>referee <b>${esc(m.referee)}</b></span>
-        <span>0 = <b>${esc(m.anchor)}</b></span><span>collected <b>${esc(m.built)}</b></span></div>
-      ${m.notes ? `<p class="lede" style="font-size:14px;max-width:80ch">${esc(m.notes)}</p>` : ''}</div>
+  document.getElementById('model').innerHTML = head(m, providers) + `
     <div class="ledger"><table>
       <thead><tr><th>Endpoint</th><th>Fidelity</th><th>Regret (nats/token)</th><th>× honest</th><th>Other token</th>
-        <th>Sampled fit</th><th>Same reply at T=0</th><th>Flags</th></tr></thead>
+        <th>Sampled fit</th><th>Peer agreement</th><th>Same reply at T=0</th><th>Flags</th></tr></thead>
       <tbody>${body}</tbody></table></div>`;
   try { localStorage.setItem('lv-model', key); } catch (e) {}
 }

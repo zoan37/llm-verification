@@ -3,6 +3,7 @@
   serve     run the cooperative provider (OpenAI-compatible, signed receipts) on a GGUF model
   keygen    create a provider signing key
   verify    check a saved reply (receipt + trace JSON) offline, optionally auditing it on a referee
+  audit     black-box audit of any OpenAI-compatible endpoint against a referee you run
 """
 
 from __future__ import annotations
@@ -66,6 +67,49 @@ def cmd_verify(a):
     sys.exit(0 if chk.ok else 1)
 
 
+def cmd_audit(a):
+    import os
+    os.environ["LLMVERIFY_API_BASE"] = a.base_url.rstrip("/")
+    if a.api_key:
+        os.environ["LLMVERIFY_API_KEY"] = a.api_key
+    import importlib
+    from . import openrouter
+    importlib.reload(openrouter)
+    from .blackbox import ChatFormat, TokenMap, score_record
+    from .engine import LlamaEngine
+    from .peer import logprob_alignment, self_consistency
+    from .report import endpoint_summary
+    prompts = json.loads(Path(a.prompts).read_text())[: a.n]
+    out_dir = Path(a.out)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    ep = {"tag": "endpoint", "provider_name": a.base_url, "supported_parameters": ["top_logprobs"] if a.logprobs else []}
+    orig = openrouter._request
+    openrouter._request = lambda model, tag, prompt, mode, mt, reasoning, top_n: orig(a.model, tag, prompt, mode, mt,
+                                                                                     reasoning, top_n)
+    raw_path = openrouter.collect_endpoint(a.model, ep, prompts, out_dir, max_tokens=a.max_tokens,
+                                           reasoning={"effort": a.reasoning_effort} if a.reasoning_effort else {"enabled": False})
+    raw = openrouter.load(raw_path)
+    eng = LlamaEngine(shlex.split(a.referee))
+    meta = eng.meta
+    fmt = ChatFormat(kind=a.chat, template=meta.get("chat_template", ""), template_kwargs=json.loads(a.template_kwargs),
+                     add_bos=bool(meta.get("add_bos")), bos=int(meta.get("bos", -1)))
+    tmap = TokenMap(eng)
+    scored = []
+    for rec in raw:
+        if rec.get("content"):
+            s = score_record(eng, fmt, tmap, prompts[rec["prompt_idx"]], rec, "answer", repair=rec["mode"] != "sample")
+            if s:
+                scored.append(s)
+    summ = endpoint_summary(scored, raw)
+    g = summ["greedy"]
+    print(json.dumps({"greedy_regret": g["regret"], "other_token_share": g["disagree"]["mean"],
+                      "sampled_fit": (summ.get("sample_answer") or {}).get("likelihood"),
+                      "pit": (summ.get("sample_answer") or {}).get("pit"),
+                      "logprob_self_consistency": self_consistency(raw), "logprob_alignment": logprob_alignment(raw),
+                      "integrity": summ["integrity"]}, indent=1, default=float))
+    print("Compare greedy_regret with an honest machine scored the same way (see docs/black-box.md).")
+
+
 def main():
     ap = argparse.ArgumentParser(prog="llmverify")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -89,6 +133,20 @@ def main():
     v.add_argument("--key", help="pinned provider public key (hex)")
     v.add_argument("--referee", help="lv-engine command line to audit the reply on")
     v.set_defaults(fn=cmd_verify)
+    au = sub.add_parser("audit")
+    au.add_argument("--base-url", required=True, help="OpenAI-compatible base, e.g. https://host/v1")
+    au.add_argument("--model", required=True, help="model name the endpoint expects")
+    au.add_argument("--api-key")
+    au.add_argument("--referee", required=True, help="lv-engine command line running the true weights")
+    au.add_argument("--chat", default="jinja", choices=["jinja", "harmony"])
+    au.add_argument("--template-kwargs", default="{}")
+    au.add_argument("--reasoning-effort")
+    au.add_argument("--logprobs", action="store_true", help="the endpoint supports top_logprobs")
+    au.add_argument("--prompts", default=str(Path(__file__).resolve().parents[1] / "prompts" / "general.json"))
+    au.add_argument("--n", type=int, default=24)
+    au.add_argument("--max-tokens", type=int, default=256)
+    au.add_argument("--out", default="audit-out")
+    au.set_defaults(fn=cmd_audit)
     a = ap.parse_args()
     a.fn(a)
 

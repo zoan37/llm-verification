@@ -27,7 +27,8 @@ def test_repair_reinserts_a_dropped_confident_token():
     assert cands, "toy model produced no confident position"
     t = cands[0]
     dropped = reply[:t] + reply[t + 1:]
-    fixed, inserted = repair_dropped(REF, ctx, list(dropped))
+    fixed, inserted = repair_dropped(REF, ctx, list(dropped), may_insert=lambda e, t: True)
+    assert repair_dropped(REF, ctx, list(dropped))[1] == []  # toy tokens are not whitespace: never inserted
     assert fixed == reply and inserted == [t]
 
 

@@ -9,14 +9,23 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from llmverify.report import model_report  # noqa: E402
+from llmverify.report import model_report, referee_free_report  # noqa: E402
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--model", required=True)
-ap.add_argument("--referee", required=True, help="what the referee ran, e.g. 'gpt-oss-120b MXFP4 (original release format), llama.cpp Metal'")
+ap.add_argument("--referee", default="", help="what the referee ran, e.g. 'gpt-oss-120b MXFP4 (original release format), llama.cpp Metal'")
 ap.add_argument("--anchor", default="", help="what fidelity 0 means for this model")
 ap.add_argument("--notes", default="")
+ap.add_argument("--referee-free", action="store_true", help="no referee scores: referee-free checks only")
 a = ap.parse_args()
+if a.referee_free:
+    r = referee_free_report(a.model)
+    r.update({"notes": a.notes, "built": dt.date.today().isoformat()})
+    out = Path("results") / f"{a.model.replace('/', '__')}.json"
+    out.parent.mkdir(exist_ok=True)
+    out.write_text(json.dumps(r, indent=1, default=float))
+    print("wrote", out)
+    sys.exit(0)
 r = model_report(a.model)
 r.update({"referee": a.referee, "anchor": a.anchor, "notes": a.notes, "built": dt.date.today().isoformat()})
 out = Path("results") / f"{a.model.replace('/', '__')}.json"

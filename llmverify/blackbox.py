@@ -17,6 +17,7 @@ Besides model distance, several cheap integrity checks fall out:
 from __future__ import annotations
 
 import math
+import re
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Sequence, Tuple
 
@@ -93,8 +94,20 @@ def has_repair_candidate(ids: Sequence[int], ref: Sequence[RefStep], confident: 
     return any(s.top and s.top[0][0] != tok and s.top[0][1] > confident for tok, s in zip(ids, ref))
 
 
-def repair_dropped(engine, context: Sequence[int], ids: List[int], max_insertions: int = 32, max_gap: int = 2,
-                   confident: float = math.log(0.9)) -> Tuple[List[int], List[int]]:
+_DROPPABLE = re.compile(r"^[\s.,;:!?\-\u2013\u2014'\"`*#|()\[\]{}]*$")
+
+
+def droppable(engine, tok: int) -> bool:
+    """Only whitespace/punctuation tokens may be re-inserted: that is what the observed output-path bug drops,
+    and it keeps the repair from 'fixing' a different model's content words into the claimed model's."""
+    try:
+        return bool(_DROPPABLE.match(engine.detokenize([tok])))
+    except Exception:  # noqa: BLE001 - engines without detokenize: allow (tests)
+        return True
+
+
+def repair_dropped(engine, context: Sequence[int], ids: List[int], max_insertions: int = 8, max_gap: int = 2,
+                   confident: float = math.log(0.9), may_insert=droppable) -> Tuple[List[int], List[int]]:
     """Re-insert tokens a provider generated but dropped from its returned text (seen in the wild: line breaks
     vanishing from both text and logprobs). A gap of up to `max_gap` tokens is filled only where every inserted
     token is the referee's >= 90% choice, the provider's own next token then becomes the referee's top choice,
@@ -107,7 +120,9 @@ def repair_dropped(engine, context: Sequence[int], ids: List[int], max_insertion
 
     inserted: List[int] = []
     rejected = set()
-    while len(inserted) < max_insertions:
+    for _ in range(4 * max_insertions):  # bounded work per reply
+        if len(inserted) >= max_insertions:
+            break
         steps = engine.score(context, ids, k=5, stats=False)
         cand = next((t for t, (tok, s) in enumerate(zip(ids, steps)) if t not in inserted and t not in rejected
                      and s.top and s.top[0][0] != tok and s.top[0][1] > confident), None)
@@ -117,7 +132,7 @@ def repair_dropped(engine, context: Sequence[int], ids: List[int], max_insertion
         for _ in range(max_gap):
             pos = cand + len(gap)
             top = engine.score(context, trial[:pos + 1], k=1, stats=False)[pos].top
-            if not top or top[0][1] <= confident:
+            if not top or top[0][1] <= confident or not may_insert(engine, top[0][0]):
                 break
             trial.insert(pos, top[0][0])
             gap.append(pos)
