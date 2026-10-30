@@ -45,3 +45,13 @@ def test_compact_roundtrip():
     back = expand([_compact(s) for s in sc])
     assert [b.agree for b in back] == [s.agree for s in sc]
     assert all(abs(b.regret - s.regret) < 1e-4 for b, s in zip(back, sc))
+
+
+def test_peer_agreement_separates_a_different_model():
+    from llmverify.peer import prefix_agreement
+    base = {i: ("The answer is " + "x" * 300 + str(i)) for i in range(8)}
+    near = {i: ("The answer is " + "x" * 250 + "y" * 60) for i in range(8)}
+    other = {i: ("Sure! " + "z" * 300) for i in range(8)}
+    res = prefix_agreement({"a": base, "b": dict(base), "c": near, "d": other})
+    assert res["a"]["median_peer_agreement"] > 0.9
+    assert res["d"]["median_peer_agreement"] < 0.1

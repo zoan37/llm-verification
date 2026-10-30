@@ -20,6 +20,7 @@ from typing import Dict, List, Optional
 
 from .blackbox import expand
 from .openrouter import load
+from .peer import greedy_texts, prefix_agreement
 from .stats import cluster_bootstrap_mean, likelihood_test, pit_test
 
 
@@ -137,6 +138,10 @@ def model_report(model: str, root: Path = Path("data")) -> dict:
         for e in json.loads(ep_file.read_text()):
             tag = e.get("tag") or e["provider_name"].lower()
             ep_meta[tag.replace("/", "__")] = e
+    texts = {}
+    for rf in sorted((root / "raw" / key).glob("*.jsonl.gz")):
+        texts[rf.name[: -len(".jsonl.gz")]] = greedy_texts(load(rf))
+    peers = prefix_agreement(texts)
     for sf in sorted((root / "scores" / key).glob("*.json.gz")):
         stem = sf.name[: -len(".json.gz")]
         raw_f = root / "raw" / key / f"{stem}.jsonl.gz"
@@ -148,7 +153,8 @@ def model_report(model: str, root: Path = Path("data")) -> dict:
                      "quantization": e.get("quantization") if e else label, "local": stem.startswith("local"),
                      "reference": ("honest" if (label or "").startswith("honest") else
                                    "cheat" if (label or "").startswith("cheat") else None),
-                     "label": label, "pricing": e.get("pricing")})
+                     "label": label, "pricing": e.get("pricing"),
+                     "peer_agreement": (peers.get(stem) or {}).get("median_peer_agreement")})
         eps[stem] = summ
 
     def reg(s):
