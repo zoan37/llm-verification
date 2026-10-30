@@ -1,0 +1,3 @@
+openai/gpt-oss-20b: 1 endpoints; key usage $4.0907
+amazon-bedrock                 quant=unknown  ok=96/96 logprobs=0 errors=0
+openai/gpt-oss-20b: spent $0.0040

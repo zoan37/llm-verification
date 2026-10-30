@@ -1,0 +1,782 @@
+[
+ {
+  "name": "Darkbloom | openai/gpt-oss-20b",
+  "model_id": "openai/gpt-oss-20b",
+  "model_name": "OpenAI: gpt-oss-20b",
+  "context_length": 131072,
+  "pricing": {
+   "prompt": "0.000000018",
+   "completion": "0.00000009",
+   "input_cache_read": "0.000000009",
+   "discount": 0
+  },
+  "provider_name": "Darkbloom",
+  "tag": "darkbloom/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 32768,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "top_k",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "stop",
+   "seed",
+   "max_tokens",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 789,
+   "p75": 1792,
+   "p90": 3494.4000000000033,
+   "p99": 14787.360000000015
+  },
+  "throughput_last_30m": {
+   "p50": 64,
+   "p75": 40,
+   "p90": 23,
+   "p99": 10
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 789,
+     "p75": 1792,
+     "p90": 3494.4000000000033,
+     "p99": 14787.360000000015
+    },
+    "throughput": {
+     "p50": 64,
+     "p75": 40,
+     "p90": 23,
+     "p99": 10
+    },
+    "request_count": 8345
+   }
+  }
+ },
+ {
+  "name": "AkashML | openai/gpt-oss-20b",
+  "model_id": "openai/gpt-oss-20b",
+  "model_name": "OpenAI: gpt-oss-20b",
+  "context_length": 131072,
+  "pricing": {
+   "prompt": "0.00000002",
+   "completion": "0.0000001",
+   "discount": 0
+  },
+  "provider_name": "AkashML",
+  "tag": "akashml/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 117964,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "top_k",
+   "stop",
+   "seed",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "max_tokens",
+   "structured_outputs",
+   "response_format",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": false,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 469,
+   "p75": 878.75,
+   "p90": 1595,
+   "p99": 3418.7799999999934
+  },
+  "throughput_last_30m": {
+   "p50": 134,
+   "p75": 104,
+   "p90": 79,
+   "p99": 47
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 469,
+     "p75": 878.75,
+     "p90": 1595,
+     "p99": 3418.7799999999934
+    },
+    "throughput": {
+     "p50": 134,
+     "p75": 104,
+     "p90": 79,
+     "p99": 47
+    },
+    "request_count": 5148
+   }
+  }
+ },
+ {
+  "name": "DekaLLM | openai/gpt-oss-20b",
+  "model_id": "openai/gpt-oss-20b",
+  "model_name": "OpenAI: gpt-oss-20b",
+  "context_length": 131072,
+  "pricing": {
+   "prompt": "0.000000029",
+   "completion": "0.00000014",
+   "input_cache_read": "0.000000029",
+   "discount": 0
+  },
+  "provider_name": "DekaLLM",
+  "tag": "dekallm/bf16",
+  "service_tier": null,
+  "quantization": "bf16",
+  "max_completion_tokens": 117964,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "frequency_penalty",
+   "logit_bias",
+   "max_tokens",
+   "presence_penalty",
+   "seed",
+   "stop",
+   "temperature",
+   "top_p",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.93055555555556,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 382,
+   "p75": 626,
+   "p90": 962,
+   "p99": 2674.8200000000033
+  },
+  "throughput_last_30m": {
+   "p50": 61,
+   "p75": 53,
+   "p90": 45.70000000000002,
+   "p99": 31
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 382,
+     "p75": 626,
+     "p90": 962,
+     "p99": 2674.8200000000033
+    },
+    "throughput": {
+     "p50": 61,
+     "p75": 53,
+     "p90": 45.70000000000002,
+     "p99": 31
+    },
+    "request_count": 2667
+   }
+  }
+ },
+ {
+  "name": "CoreWeave | openai/gpt-oss-20b",
+  "model_id": "openai/gpt-oss-20b",
+  "model_name": "OpenAI: gpt-oss-20b",
+  "context_length": 131072,
+  "pricing": {
+   "prompt": "0.00000003",
+   "completion": "0.00000013",
+   "input_cache_read": "0.00000003",
+   "discount": 0
+  },
+  "provider_name": "CoreWeave",
+  "tag": "coreweave/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 117964,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "structured_outputs",
+   "response_format",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "top_k",
+   "repetition_penalty",
+   "frequency_penalty",
+   "presence_penalty",
+   "stop",
+   "seed",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.65277777777779,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 466,
+   "p75": 986.25,
+   "p90": 14473.200000000004,
+   "p99": 26019
+  },
+  "throughput_last_30m": {
+   "p50": 18,
+   "p75": 15,
+   "p90": 12,
+   "p99": 7
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 466,
+     "p75": 986.25,
+     "p90": 14473.200000000004,
+     "p99": 26019
+    },
+    "throughput": {
+     "p50": 18,
+     "p75": 15,
+     "p90": 12,
+     "p99": 7
+    },
+    "request_count": 53912
+   }
+  }
+ },
+ {
+  "name": "DeepInfra | openai/gpt-oss-20b",
+  "model_id": "openai/gpt-oss-20b",
+  "model_name": "OpenAI: gpt-oss-20b",
+  "context_length": 131072,
+  "pricing": {
+   "prompt": "0.00000003",
+   "completion": "0.00000014",
+   "discount": 0
+  },
+  "provider_name": "DeepInfra",
+  "tag": "deepinfra/bf16",
+  "service_tier": null,
+  "quantization": "bf16",
+  "max_completion_tokens": 117964,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "top_k",
+   "seed",
+   "min_p",
+   "tools",
+   "tool_choice",
+   "structured_outputs",
+   "logit_bias",
+   "response_format",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.51124144672532,
+  "supports_implicit_caching": false,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 584.5,
+   "p75": 1493.75,
+   "p90": 3506.1999999999966,
+   "p99": 15352.58999999989
+  },
+  "throughput_last_30m": {
+   "p50": 82,
+   "p75": 49,
+   "p90": 28,
+   "p99": 8
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 584.5,
+     "p75": 1493.75,
+     "p90": 3506.1999999999966,
+     "p99": 15352.58999999989
+    },
+    "throughput": {
+     "p50": 82,
+     "p75": 49,
+     "p90": 28,
+     "p99": 8
+    },
+    "request_count": 1768
+   }
+  }
+ },
+ {
+  "name": "Parasail | openai/gpt-oss-20b",
+  "model_id": "openai/gpt-oss-20b",
+  "model_name": "OpenAI: gpt-oss-20b",
+  "context_length": 131072,
+  "pricing": {
+   "prompt": "0.00000003",
+   "completion": "0.00000015",
+   "input_cache_read": "0.00000002",
+   "discount": 0
+  },
+  "provider_name": "Parasail",
+  "tag": "parasail/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 117964,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "seed",
+   "stop",
+   "top_k",
+   "logit_bias",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": false,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.93045897079277,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1323,
+   "p75": 2483,
+   "p90": 3203,
+   "p99": 4389.639999999999
+  },
+  "throughput_last_30m": {
+   "p50": 90,
+   "p75": 64,
+   "p90": 43,
+   "p99": 19
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1323,
+     "p75": 2483,
+     "p90": 3203,
+     "p99": 4389.639999999999
+    },
+    "throughput": {
+     "p50": 90,
+     "p75": 64,
+     "p90": 43,
+     "p99": 19
+    },
+    "request_count": 5185
+   }
+  }
+ },
+ {
+  "name": "SiliconFlow | openai/gpt-oss-20b",
+  "model_id": "openai/gpt-oss-20b",
+  "model_name": "OpenAI: gpt-oss-20b",
+  "context_length": 131072,
+  "pricing": {
+   "prompt": "0.00000004",
+   "completion": "0.00000018",
+   "discount": 0
+  },
+  "provider_name": "SiliconFlow",
+  "tag": "siliconflow/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 8192,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "structured_outputs",
+   "response_format",
+   "temperature",
+   "top_p",
+   "top_k",
+   "frequency_penalty",
+   "max_tokens",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": -2,
+  "uptime_last_30m": 75,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 84.67274233637116,
+  "supports_implicit_caching": false,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1040,
+   "p75": 1174.25,
+   "p90": 1512.1,
+   "p99": 2994.500000000001
+  },
+  "throughput_last_30m": {
+   "p50": 43.5,
+   "p75": 28,
+   "p90": 18.300000000000004,
+   "p99": 11.33
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1040,
+     "p75": 1174.25,
+     "p90": 1512.1,
+     "p99": 2994.500000000001
+    },
+    "throughput": {
+     "p50": 43.5,
+     "p75": 28,
+     "p90": 18.300000000000004,
+     "p99": 11.33
+    },
+    "request_count": 802
+   }
+  }
+ },
+ {
+  "name": "Amazon Bedrock | openai/gpt-oss-20b",
+  "model_id": "openai/gpt-oss-20b",
+  "model_name": "OpenAI: gpt-oss-20b",
+  "context_length": 131072,
+  "pricing": {
+   "prompt": "0.00000007",
+   "completion": "0.00000015",
+   "discount": 0
+  },
+  "provider_name": "Amazon Bedrock",
+  "tag": "amazon-bedrock/eu-west-1",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 117964,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "top_k",
+   "stop",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": null,
+  "uptime_last_5m": null,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": false,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": null,
+  "throughput_last_30m": null,
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 563,
+     "p75": 563,
+     "p90": 563,
+     "p99": 563
+    },
+    "throughput": null,
+    "request_count": 1
+   }
+  }
+ },
+ {
+  "name": "Amazon Bedrock | openai/gpt-oss-20b",
+  "model_id": "openai/gpt-oss-20b",
+  "model_name": "OpenAI: gpt-oss-20b",
+  "context_length": 131072,
+  "pricing": {
+   "prompt": "0.00000007",
+   "completion": "0.00000015",
+   "discount": 0
+  },
+  "provider_name": "Amazon Bedrock",
+  "tag": "amazon-bedrock",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 117964,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "top_k",
+   "stop",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": false,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 376,
+   "p75": 425,
+   "p90": 559,
+   "p99": 2023.5400000000009
+  },
+  "throughput_last_30m": {
+   "p50": 444,
+   "p75": 352,
+   "p90": 270,
+   "p99": 146
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 376,
+     "p75": 425,
+     "p90": 559,
+     "p99": 2023.5400000000009
+    },
+    "throughput": {
+     "p50": 444,
+     "p75": 352,
+     "p90": 270,
+     "p99": 146
+    },
+    "request_count": 21639
+   }
+  }
+ },
+ {
+  "name": "Groq | openai/gpt-oss-20b",
+  "model_id": "openai/gpt-oss-20b",
+  "model_name": "OpenAI: gpt-oss-20b",
+  "context_length": 131072,
+  "pricing": {
+   "prompt": "0.000000075",
+   "completion": "0.0000003",
+   "input_cache_read": "0.0000000375",
+   "discount": 0
+  },
+  "provider_name": "Groq",
+  "tag": "groq",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 65536,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "seed",
+   "response_format",
+   "tools",
+   "tool_choice",
+   "structured_outputs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 311.5,
+   "p75": 696,
+   "p90": 1383,
+   "p99": 3351.430000000004
+  },
+  "throughput_last_30m": {
+   "p50": 519,
+   "p75": 349,
+   "p90": 214,
+   "p99": 82
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 311.5,
+     "p75": 696,
+     "p90": 1383,
+     "p99": 3351.430000000004
+    },
+    "throughput": {
+     "p50": 519,
+     "p75": 349,
+     "p90": 214,
+     "p99": 82
+    },
+    "request_count": 29057
+   }
+  }
+ }
+]

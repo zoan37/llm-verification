@@ -21,20 +21,31 @@ head_bits = (head_bits.replace("<title>Provider Fidelity Audit</title>", "<title
              .replace('<meta name="claude:viewport-fit-sides" content="cover">\n', ""))
 nav = """<header class="lv-top"><nav>
   <a class="home" href="/">zoan.space</a>
-  <a href="./">LLM verification</a>
-  <a href="results.html" aria-current="page">Results</a>
-  <a href="venice.html">Venice case study</a>
-  <a href="method.html">Method &amp; limits</a>
+  <a href="./"><span class="long">LLM verification</span><span class="short">Overview</span></a>
+  <a href="results.html" aria-current="page"><span class="long">Results</span><span class="short">Results</span></a>
+  <a href="venice.html"><span class="long">Venice case study</span><span class="short">Venice</span></a>
+  <a href="method.html"><span class="long">Method &amp; limits</span><span class="short">Method</span></a>
 </nav></header>
 """
+# Same bar as the other pages (llm-verification/style.css). The template styles bare `header` elements for its hero,
+# so the bar resets those properties.
 nav_css = """<style>
-.lv-top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 92%, transparent);
-  backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); }
-.lv-top nav { max-width: 1120px; margin: 0 auto; padding: 0.6rem 16px; display: flex; gap: 1.1rem; flex-wrap: wrap;
-  font: 14px/1.4 var(--body); }
+body { margin: 0; }
+.lv-top, .lv-top *, .wrap { box-sizing: border-box; }
+header.lv-top { display: block; max-width: none; gap: 0; position: sticky; top: 0; z-index: 10;
+  background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); }
+.lv-top nav { max-width: 1120px; margin: 0 auto; padding: 0.65rem 16px; display: flex; align-items: center; gap: 1.1rem;
+  flex-wrap: nowrap; overflow-x: auto; white-space: nowrap; scrollbar-width: none; font: 14px/1.4 var(--body); }
+.lv-top nav::-webkit-scrollbar { display: none; }
 .lv-top nav a { color: var(--muted); text-decoration: none; }
 .lv-top nav a:hover, .lv-top nav a[aria-current] { color: var(--ink); }
-.lv-top nav .home { color: var(--ink); font-weight: 600; margin-right: auto; }
+.lv-top nav .home { color: var(--ink); font-weight: 600; margin-right: auto; padding-right: 0.6rem; }
+.lv-top nav .short { display: none; }
+@media (max-width: 560px) {
+  .lv-top nav { gap: 0.9rem; font-size: 13.5px; }
+  .lv-top nav .long { display: none; }
+  .lv-top nav .short { display: inline; }
+}
 </style>
 """
 doc = ("<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"
