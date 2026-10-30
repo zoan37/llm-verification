@@ -20,11 +20,23 @@ ap.add_argument("--label", required=True)
 ap.add_argument("--prompts", default="prompts/general.json")
 ap.add_argument("--max-tokens", type=int, default=256)
 ap.add_argument("--reasoning", default='{"enabled": false}')
+ap.add_argument("--extra-body", default="{}", help='e.g. {"chat_template_kwargs": {"enable_thinking": false}}')
 a = ap.parse_args()
 prompts = json.loads(Path(a.prompts).read_text())
 out_dir = Path("data/raw") / a.model.replace("/", "__")
 out_dir.mkdir(parents=True, exist_ok=True)
 ep = {"tag": a.tag, "provider_name": a.tag, "quantization": a.label, "supported_parameters": ["top_logprobs"]}
+orig_call = openrouter.call
+extra = json.loads(a.extra_body)
+
+
+def call(path, payload=None, timeout=180):
+    if payload is not None and path == "/chat/completions":
+        payload = {**payload, "model": a.served_name, **extra}
+    return orig_call(path, payload, timeout)
+
+
+openrouter.call = call
 orig = openrouter._request
 
 

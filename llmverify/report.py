@@ -66,7 +66,10 @@ def endpoint_summary(scores: List[dict], raw: List[dict]) -> dict:
               if s.get("prompt_tokens_reported") is not None and s["segment"] == "answer"]
     ok_raw = [r for r in raw if r.get("content") is not None or r.get("reasoning")]
     lengths = [((r.get("usage") or {}).get("completion_tokens") or 0) for r in ok_raw]
+    ends = [s["end_prob"] for s in scores if s.get("end_prob") is not None]
     out["integrity"] = {
+        "stop_replies_checked": len(ends),
+        "early_stop_share": sum(1 for e in ends if e < 0.01) / len(ends) if ends else None,
         "requests": len(raw), "errors": sum(1 for r in raw if "error" in r),
         "empty": sum(1 for r in raw if "error" not in r and not r.get("content")),
         "logprobs": any(s["aligned"] for s in scores),
@@ -122,6 +125,8 @@ def flags(s: dict, ref_regret: Optional[float]) -> List[str]:
         f.append(f"drops tokens from its output ({i['inserted_tokens']} re-inserted)")
     if i["prompt_tokens_mismatch_share"] and i["prompt_tokens_mismatch_share"] > 0.5:
         f.append(f"prompt token count differs from the reference template (median {i['prompt_tokens_delta_median']:+d})")
+    if i.get("early_stop_share") and i["early_stop_share"] > 0.1:
+        f.append(f"ends {i['early_stop_share']:.0%} of 'stop' replies where the model would continue (truncation?)")
     if not i["logprobs"]:
         f.append("no logprobs (text-only checks)")
     if i["requests"] and i["errors"] / i["requests"] > 0.2:

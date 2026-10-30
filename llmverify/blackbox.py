@@ -156,6 +156,12 @@ def score_record(engine, fmt: ChatFormat, tmap: TokenMap, prompt: str, rec: dict
             ref = engine.score(context, ids, k=50, temperature=temp)
     scores = score_reply(ids, ref, GREEDY, f"{rec.get('tag')}:{rec.get('prompt_idx')}:{rec.get('mode')}",
                          reported_tops=tops, reported_lps=lps, skip=inserted)
+    end_prob = None
+    eos = getattr(engine, "eos_ids", None)
+    if eos and ids and segment == "answer" and rec.get("finish_reason") == "stop" and not max_tokens:
+        # Did the model want to stop here? Score one more position and sum the end-of-generation probability.
+        last = engine.score(context, list(ids) + [int(eos[0])], k=50, stats=False)[-1]
+        end_prob = sum(math.exp(lp) for i, lp in last.top if i in set(eos))
     own_miss = None
     if aligned and rec.get("mode") in ("greedy", "repeat"):
         kept = [(i, t, l) for i, t, l in zip(ids, tops, lps) if t]
@@ -169,7 +175,7 @@ def score_record(engine, fmt: ChatFormat, tmap: TokenMap, prompt: str, rec: dict
         "first_token_match": bool(keep) and scores[keep[0]].agree == 1.0,
         "prompt_tokens_reported": usage.get("prompt_tokens"), "prompt_tokens_ours": prompt_n,
         "completion_tokens_reported": usage.get("completion_tokens"),
-        "finish_reason": rec.get("finish_reason"), "cost": usage.get("cost"),
+        "finish_reason": rec.get("finish_reason"), "cost": usage.get("cost"), "end_prob": end_prob,
         "tokens": [_compact(scores[t]) for t in keep],
     }
 
