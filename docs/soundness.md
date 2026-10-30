@@ -173,7 +173,9 @@ Findings from adversarial reviews, each now a regression test in `tests/test_red
 4. **Long context.** Most measurements use short prompts. KV-cache compression and attention approximations grow
    with length; long-context audits need their own calibration.
 5. **Calibration coverage.** Every new hardware platform and engine needs an honest baseline before its
-   providers can be judged in a strict tier.
+   providers can be judged in a strict tier. Measured so far: Apple Metal, NVIDIA CUDA (GB10, RTX PRO 6000), ARM and
+   x86 CPUs, vLLM BF16. Next: AMD ROCm (R9700) and Intel (Arc B70) baselines; llama.cpp Vulkan was 5-10x noisier
+   than CUDA in an earlier experiment and would fail a strict tier on noise alone.
 6. **Privacy.** Audits need the prompt and the reply. Self-audits keep data with the user; third-party referees
    see it unless they run in a TEE.
 7. **Tool/agent traces.** Multi-turn and tool-call formats add template surface where honest providers differ.
