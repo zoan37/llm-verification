@@ -21,7 +21,7 @@ head_bits = (head_bits.replace("<title>Provider Fidelity Audit</title>", "<title
              .replace('<meta name="claude:viewport-fit-sides" content="cover">\n', ""))
 nav = """<header class="lv-top"><nav>
   <a class="home" href="/">zoan.space</a>
-  <a href="./"><span class="long">LLM verification</span><span class="short">Overview</span></a>
+  <a href="./"><span class="long">LLM Verification</span><span class="short">Overview</span></a>
   <a href="results.html" aria-current="page"><span class="long">Results</span><span class="short">Results</span></a>
   <a href="venice.html"><span class="long">Venice case study</span><span class="short">Venice</span></a>
   <a href="method.html"><span class="long">Method &amp; limits</span><span class="short">Method</span></a>
