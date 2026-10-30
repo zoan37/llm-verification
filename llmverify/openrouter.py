@@ -72,6 +72,8 @@ def _request(model, tag, prompt, mode, max_tokens, reasoning, top_n):
                "reasoning": reasoning}
     if mode == "sample":
         payload.update({"temperature": 1.0, "top_p": 1.0})
+    elif mode.startswith("temp"):  # "temp0.5": sampled at that temperature, top_p 1
+        payload.update({"temperature": float(mode[4:]), "top_p": 1.0})
     else:
         payload["temperature"] = 0
     if top_n:
@@ -107,7 +109,8 @@ def collect_endpoint(model: str, e: dict, prompts: List[str], out_dir: Path, mod
         if len(recs) % 16 == 0 and usage_usd() >= budget_usd:
             log(f"{tag}: budget ${budget_usd} reached")
             break
-        r, lat = _request(model, tag, prompt, "sample" if mode == "sample" else "greedy", max_tokens, reasoning, top_n)
+        r, lat = _request(model, tag, prompt, mode if mode in ("sample",) or mode.startswith("temp") else "greedy",
+                          max_tokens, reasoning, top_n)
         if top_n and "error" in r and "logprob" in (r["error"]["body"] or "").lower() and top_n > 5:
             top_n = 5
             r, lat = _request(model, tag, prompt, mode, max_tokens, reasoning, top_n)

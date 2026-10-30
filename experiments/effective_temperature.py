@@ -30,6 +30,9 @@ ap.add_argument("--template-kwargs", default="{}")
 ap.add_argument("--prompts", default="prompts/general.json")
 ap.add_argument("--only", nargs="+", required=True)
 ap.add_argument("--temps", default="0.8,0.9,1.0,1.1,1.2,1.3,1.5")
+ap.add_argument("--raw-root", default="data/raw")
+ap.add_argument("--mode", default="sample", help="which sampled replies: 'sample' (T=1) or e.g. 'temp0.5'")
+ap.add_argument("--tag", default="", help="suffix for the output file")
 a = ap.parse_args()
 
 prompts = [p["prompt"] if isinstance(p, dict) else p for p in json.loads(Path(a.prompts).read_text())]
@@ -41,8 +44,8 @@ tmap = TokenMap(eng)
 temps = [float(t) for t in a.temps.split(",")]
 out = {}
 for stem in a.only:
-    recs = [r for r in load(Path("data/raw") / a.model.replace("/", "__") / f"{stem}.jsonl.gz")
-            if r.get("mode") == "sample" and r.get("content")]
+    recs = [r for r in load(Path(a.raw_root) / a.model.replace("/", "__") / f"{stem}.jsonl.gz")
+            if r.get("mode") == a.mode and r.get("content")]
     prepared = []
     for r in recs:
         ctx = fmt.context(eng, prompts[r["prompt_idx"]], r, "answer")
@@ -59,7 +62,7 @@ for stem in a.only:
                         "tail_exp": tl["expected"]}
         print(f"{stem:28} T={t:4.2f}  PIT mean {p['mean']:.4f} (p {p['p']:.3g})  tail {tl['observed']}/{tl['expected']:.1f}",
               flush=True)
-dest = Path("experiments/results") / f"effective-temperature-{a.model.replace('/', '__')}.json"
+dest = Path("experiments/results") / f"effective-temperature-{a.model.replace('/', '__')}{a.tag}.json"
 dest.parent.mkdir(parents=True, exist_ok=True)
 dest.write_text(json.dumps(out, indent=1))
 print("wrote", dest)
