@@ -183,6 +183,8 @@ def score_record(engine, fmt: ChatFormat, tmap: TokenMap, prompt: str, rec: dict
         kept = [(i, t, l) for i, t, l in zip(ids, tops, lps) if t]
         own_miss = sum(1 for i, t, l in kept if t[0][0] != i and (l is None or t[0][1] - l > 1e-6)) / max(1, len(kept))
     keep = [t for t in range(len(ids)) if t not in set(inserted)]
+    sampler = sampler_counts([ref[t] for t in keep], (getattr(engine, "meta", None) or {}).get("trunc_grid")) \
+        if stats else None
     usage = rec.get("usage") or {}
     prompt_n = len(fmt.prompt_only(engine, prompt, rec))
     return {
@@ -193,7 +195,35 @@ def score_record(engine, fmt: ChatFormat, tmap: TokenMap, prompt: str, rec: dict
         "completion_tokens_reported": usage.get("completion_tokens"),
         "finish_reason": rec.get("finish_reason"), "cost": usage.get("cost"), "end_prob": end_prob,
         "tokens": [_compact(scores[t]) for t in keep],
+        **({"sampler": sampler} if sampler else {}),
     }
+
+
+def sampler_counts(steps: Sequence[RefStep], grid: Optional[dict]) -> Optional[dict]:
+    """Per sampler setting: how many of these tokens that setting would have removed (observed) and how many an
+    untruncated sampler is expected to draw from the removed set (the sum of the removed mass), with its variance.
+    An endpoint that applies the setting (or a tighter one) draws none of them."""
+    if not grid or not steps or any(s.ex_k is None or s.rank is None for s in steps):
+        return None
+    out = {}
+    for fam, ex_name in (("top_k", "ex_k"), ("top_p", "ex_p"), ("min_p", "ex_minp")):
+        g = grid[fam]
+        hits, exp, var = [0] * len(g), [0.0] * len(g), [0.0] * len(g)
+        for s in steps:
+            lp_x = s.lp if s.lp_t is None else s.lp_t
+            ex = getattr(s, ex_name)
+            for i, v in enumerate(g):
+                if fam == "top_k":
+                    hit = s.rank >= v
+                elif fam == "top_p":
+                    hit = (s.mass_above or 0.0) >= v
+                else:
+                    hit = lp_x < s.lp_max + math.log(v)
+                hits[i] += int(hit)
+                exp[i] += ex[i]
+                var[i] += ex[i] * (1 - ex[i])
+        out[fam] = {"grid": list(g), "hits": hits, "exp": [round(x, 6) for x in exp], "var": [round(x, 6) for x in var]}
+    return out
 
 
 def _compact(s: TokenScore) -> list:

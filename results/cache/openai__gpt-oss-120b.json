@@ -1,0 +1,187 @@
+{
+ "model": "openai/gpt-oss-120b",
+ "endpoints": {
+  "akashml__bf16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "amazon-bedrock": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "amazon-bedrock__eu-west-1": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "baseten__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "baseten__fp4__us": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "cerebras__fp16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "coreweave__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "crusoe__bf16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "deepinfra__bf16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "deepinfra__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "dekallm__bf16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "digitalocean": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 1,
+   "flags": []
+  },
+  "google-vertex__global": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "groq": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "mancer__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "mara": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "near-ai__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "nebius__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "novita__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 3,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "parasail__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "phala": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "sail-research__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 0,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "sambanova": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "siliconflow__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "together": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "venice__int4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  }
+ }
+}

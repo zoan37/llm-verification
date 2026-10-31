@@ -49,6 +49,13 @@ class RefStep:
     m2: Optional[float] = None        # E_{p_T}[(log p_T)^2]
     mass_above: Optional[float] = None  # total p_T of tokens strictly more likely than x
     tail_mass: Optional[float] = None   # total p_T of long-tail tokens (p_T < 1e-4)
+    # Sampler truncation (engine grids TOPK_GRID / TOPP_GRID / MINP_GRID): rank of x (tokens strictly likelier),
+    # log p_T of the likeliest token, and the mass each top_k / top_p / min_p setting would remove here.
+    rank: Optional[int] = None
+    lp_max: Optional[float] = None
+    ex_k: Optional[List[float]] = None
+    ex_p: Optional[List[float]] = None
+    ex_minp: Optional[List[float]] = None
 
 
 @dataclass

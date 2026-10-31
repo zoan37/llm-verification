@@ -24,6 +24,11 @@ from .metrics import RefStep
 from .sampling import TopK
 
 
+
+# Same settings as the engine's TOPK_GRID / TOPP_GRID / MINP_GRID (engine/lv_engine.cpp).
+TRUNC_GRID = {"top_k": [10, 20, 40, 50, 64, 100, 200], "top_p": [0.8, 0.9, 0.95, 0.98, 0.99],
+              "min_p": [0.01, 0.02, 0.05, 0.1, 0.2]}
+
 class ToyLM:
     def __init__(self, vocab: int = 64, states: int = 4096, weights_seed: int = 0, quant_noise: float = 0.0,
                  machine: int = 0, hw_noise: float = 0.0, sharpen: float = 1.0, eos: int = 0):
@@ -78,9 +83,16 @@ class ToyLM:
             lpt = self.logprobs(seq, temperature) if temperature != 1.0 else lp
             p = np.exp(lpt)
             ent = float(-(p * lpt).sum())
+            srt = np.sort(p)[::-1]
+            cum = np.cumsum(srt)
             out.append(RefStep(top=self._top(lp, k), lp=float(lp[tok]), lp_t=float(lpt[tok]), entropy=ent,
                                m2=float((p * lpt * lpt).sum()), mass_above=float(p[lpt > lpt[tok]].sum()),
-                               tail_mass=float(p[lpt < np.log(1e-4)].sum())))
+                               tail_mass=float(p[lpt < np.log(1e-4)].sum()),
+                               rank=int((lpt > lpt[tok]).sum()), lp_max=float(lpt.max()),
+                               ex_k=[float(max(0.0, 1 - cum[min(K, len(cum)) - 1])) for K in TRUNC_GRID["top_k"]],
+                               ex_p=[float(max(0.0, 1 - cum[min(int(np.searchsorted(cum, P)), len(cum) - 1)]))
+                                     for P in TRUNC_GRID["top_p"]],
+                               ex_minp=[float(p[lpt < lpt.max() + np.log(m)].sum()) for m in TRUNC_GRID["min_p"]]))
             seq.append(int(tok))
         return out
 

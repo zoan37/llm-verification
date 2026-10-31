@@ -1,0 +1,36 @@
+{
+ "model_key": "openai__gpt-oss-120b",
+ "endpoints": 26,
+ "pairs": 323,
+ "groups": [
+  [
+   "deepinfra__fp8",
+   "mara",
+   "sambanova"
+  ]
+ ],
+ "max_other_share": 0.14285714285714285,
+ "same_pairs": [
+  {
+   "a": "deepinfra__fp8",
+   "b": "mara",
+   "identical": 36,
+   "compared": 36,
+   "share": 1.0
+  },
+  {
+   "a": "deepinfra__fp8",
+   "b": "sambanova",
+   "identical": 36,
+   "compared": 36,
+   "share": 1.0
+  },
+  {
+   "a": "mara",
+   "b": "sambanova",
+   "identical": 83,
+   "compared": 83,
+   "share": 1.0
+  }
+ ]
+}

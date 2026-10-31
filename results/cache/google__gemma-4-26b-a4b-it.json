@@ -1,0 +1,110 @@
+{
+ "model": "google/gemma-4-26b-a4b-it",
+ "endpoints": {
+  "akashml__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "cloudflare": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "coreweave__bf16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "darkbloom": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "deepinfra__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "dekallm__bf16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "google-vertex__global": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "io-net__bf16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "makora": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "nextbit__bf16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "novita__bf16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 2,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "parasail__bf16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "primeintellect__bf16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "siliconflow__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "venice__bf16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  }
+ }
+}

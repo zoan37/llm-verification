@@ -42,6 +42,16 @@ For each reply:
    actual token's logprob, and full-vocabulary entropy, second moment and probability mass above the token
    (for PIT and the likelihood test).
 5. **Metrics** per token (`metrics.py`): regret, agreement, wgap/topk against reported logprobs, PIT, ce_dev.
+6. **Sampler fingerprint** (temperature-1 replies, `blackbox.sampler_counts`, `stats.sampler_test`). For a grid of
+   common sampler settings (top_k 10-200, top_p 0.8-0.99, min_p 0.01-0.2) the engine reports, at every position,
+   how much probability that setting would remove, and whether the sampled token is in the removed set (its rank,
+   the mass above it, its probability relative to the top token). Summed over replies: how many removed-set tokens
+   the endpoint drew vs how many an untruncated sampler draws. A sampler using the setting (or a tighter one) draws
+   almost none; the referee is not the endpoint's exact model, so a few draws just past a cutoff are expected,
+   and a setting counts as applied when the endpoint draws under 30% of the expected number with exact Poisson
+   p < 0.001. The pattern across the grid gives the setting: top_k = 20 shows a shortfall at every K ≥ 20 and none
+   at K = 10. On ordinary prompts the expected counts are 10-50 per setting per endpoint, far more than the
+   fixed p < 1e-4 tail count (often under 1).
 
 ## 4. Summaries (`llmverify/report.py`)
 
@@ -54,6 +64,19 @@ greedy prefix with the other endpoints, `peer.py`); and the fidelity score:
 
 where `honest` is the largest regret among honest references on other machines and `substitute` the smallest
 among substitute references.
+
+## 5. Checks that need no referee
+
+- **Shared deployments** (`experiments/shared_backends.py`). Independent deployments of the same weights drift
+  apart within a few hundred greedy tokens (different kernels, batch shapes, quantization), so endpoints whose
+  temperature-0 replies are byte-identical on nearly every prompt are one serving stack behind several names. Then
+  at least one label (provider, quantization) is not what runs, and choosing between them is no choice.
+- **Reasoning effort** (`experiments/reasoning_effort.py`). The same 12 problems at effort low/medium/high: does
+  reasoning length grow with effort, and does each level spend what the other endpoints spend at that level?
+- **Repeated replies** (`experiments/response_cache.py`). The same long creative prompt three times at temperature
+  1: honest sampling never repeats a 100-word reply byte for byte. Identical replies mean a response cache or a
+  fixed sampling seed; either way, retries and best-of-n get the same text. Near-duplicate prompt pairs (17×23 vs
+  17×24) test for a semantic cache that answers the second with the first's answer.
 
 ## Known weaknesses
 

@@ -1,0 +1,154 @@
+{
+ "model": "qwen/qwen3.8-27b",
+ "endpoints": {
+  "akashml__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "alibaba": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "cerebras__fp16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "chutes__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "cloudflare": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "coreweave__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "darkbloom__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "deepinfra__bf16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "dekallm": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "ionstream__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "mancer__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "modal": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "modelrun__fp4": {
+   "identical_sampled": 4,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": [
+    "identical temperature-1 replies for 4 of 4 prompts (response cache or ignored temperature)"
+   ]
+  },
+  "near-ai__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "novita": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "parasail__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "phala": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "reka__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "tenstorrent__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "venice__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "wafer__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  }
+ }
+}

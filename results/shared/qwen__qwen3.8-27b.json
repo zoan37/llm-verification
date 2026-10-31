@@ -1,0 +1,8 @@
+{
+ "model_key": "qwen__qwen3.8-27b",
+ "endpoints": 20,
+ "pairs": 190,
+ "groups": [],
+ "max_other_share": 0.2916666666666667,
+ "same_pairs": []
+}

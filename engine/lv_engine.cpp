@@ -2,7 +2,7 @@
 // on stdin, one JSON reply per line on stdout. Python drives it (llmverify/engine.py).
 //
 //   {"cmd": "meta"}
-//     -> {"n_vocab", "n_ctx", "bos", "eos": [ids], "add_bos", "chat_template", "desc"}
+//     -> {"n_vocab", "n_ctx", "bos", "eos": [ids], "add_bos", "chat_template", "desc", "trunc_grid"}
 //   {"cmd": "tokenize", "text": "...", "special": false}
 //     -> {"tokens": [ids], "pieces": ["..."]}          (pieces are UTF-8 with invalid bytes replaced)
 //   {"cmd": "detokenize", "tokens": [ids]}
@@ -12,6 +12,9 @@
 //     {"top": [[id, lp], ...], "lp": raw logprob of the actual token,
 //      "lp_t", "entropy", "m2", "mass_above", "tail_mass"}  (at the given temperature, over the full vocab;
 //      left out with "stats": false)
+//     plus the sampler-truncation statistics: "rank" (tokens strictly likelier than the actual one), "lp_max", and
+//     "ex_k" / "ex_p" / "ex_minp": the probability mass a top_k / top_p / min_p sampler would remove here, one
+//     entry per setting in TOPK_GRID / TOPP_GRID / MINP_GRID (also listed by "meta").
 //   {"cmd": "start", "context": [ids], "k": 20}       -> {"top": [[id, lp], ...]}  (next-token distribution)
 //   {"cmd": "step", "token": id, "k": 20}             -> {"top": [...]}            (append one token, predict next)
 //     start/step also take optional "u" (uniform in [0,1)) and "temperature": then the reply adds "sampled", an
@@ -28,11 +31,18 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
+#include <functional>
 #include <iostream>
 #include <stdexcept>
 #include <string>
 #include <thread>
 #include <vector>
+
+// Sampler settings the truncation statistics are reported for (common provider defaults and their neighbours).
+static const int TOPK_GRID[] = {10, 20, 40, 50, 64, 100, 200};
+static const double TOPP_GRID[] = {0.8, 0.9, 0.95, 0.98, 0.99};
+static const double MINP_GRID[] = {0.01, 0.02, 0.05, 0.1, 0.2};
+static const int TOPK_MAX = 200;
 
 using json = nlohmann::json;
 
@@ -120,20 +130,54 @@ struct Engine {
         const double lse_t = mx + std::log(z);
         const double lp_x = (double) lg[actual] / temp - lse_t;
         double ent = 0.0, m2 = 0.0, above = 0.0, tail = 0.0;
-        const double tail_lp = std::log(1e-4);
+        const double tail_lp = std::log(1e-4), lp_max = mx - lse_t;
+        constexpr int NM = sizeof(MINP_GRID) / sizeof(MINP_GRID[0]);
+        double ex_minp[NM] = {0};
+        double minp_lp[NM];
+        for (int m = 0; m < NM; m++) minp_lp[m] = lp_max + std::log(MINP_GRID[m]);
+        std::vector<double> probs(n_vocab);
+        int rank = 0;
         for (int v = 0; v < n_vocab; v++) {
             const double lp = (double) lg[v] / temp - lse_t;
             const double p = std::exp(lp);
+            probs[v] = p;
             ent -= p * lp;
             m2 += p * lp * lp;
-            if (lp > lp_x) above += p;
+            if (lp > lp_x) { above += p; rank++; }
             if (lp < tail_lp) tail += p;
+            for (int m = 0; m < NM; m++) if (lp < minp_lp[m]) ex_minp[m] += p;
         }
         step["lp_t"] = lp_x;
         step["entropy"] = ent;
         step["m2"] = m2;
         step["mass_above"] = above;
         step["tail_mass"] = tail;  // total probability of tokens with p < 1e-4 (the long tail)
+        step["rank"] = rank;
+        step["lp_max"] = lp_max;
+        // top_k removes everything past the K most likely tokens; top_p keeps the shortest likeliest prefix whose
+        // mass reaches P (the token that crosses P stays), so it removes the tokens whose mass_above is >= P.
+        const int kmax = std::min(TOPK_MAX, n_vocab);
+        std::partial_sort(probs.begin(), probs.begin() + kmax, probs.end(), std::greater<double>());
+        std::vector<double> cum(kmax);
+        for (int i = 0; i < kmax; i++) cum[i] = (i ? cum[i - 1] : 0.0) + probs[i];
+        json ex_k = json::array(), ex_p = json::array(), ex_mp = json::array();
+        for (int K : TOPK_GRID) ex_k.push_back(std::max(0.0, 1.0 - cum[std::min(K, kmax) - 1]));
+        bool sorted_all = false;
+        for (double P : TOPP_GRID) {
+            int j = (int) (std::lower_bound(cum.begin(), cum.end(), P) - cum.begin());
+            if (j == kmax && !sorted_all) {  // a flat distribution: the nucleus is longer than TOPK_MAX
+                std::sort(probs.begin() + kmax, probs.end(), std::greater<double>());
+                cum.resize(n_vocab);
+                for (int i = kmax; i < n_vocab; i++) cum[i] = cum[i - 1] + probs[i];
+                sorted_all = true;
+                j = (int) (std::lower_bound(cum.begin(), cum.end(), P) - cum.begin());
+            }
+            ex_p.push_back(j >= (int) cum.size() ? 0.0 : std::max(0.0, 1.0 - cum[j]));
+        }
+        for (int m = 0; m < NM; m++) ex_mp.push_back(ex_minp[m]);
+        step["ex_k"] = ex_k;
+        step["ex_p"] = ex_p;
+        step["ex_minp"] = ex_mp;
         return step;
     }
 
@@ -301,6 +345,9 @@ int main(int argc, char ** argv) {
                 resp["eos"] = eos;
                 resp["chat_template"] = meta_str(E.model, "tokenizer.chat_template");
                 resp["desc"] = desc;
+                resp["trunc_grid"] = {{"top_k", std::vector<int>(std::begin(TOPK_GRID), std::end(TOPK_GRID))},
+                                      {"top_p", std::vector<double>(std::begin(TOPP_GRID), std::end(TOPP_GRID))},
+                                      {"min_p", std::vector<double>(std::begin(MINP_GRID), std::end(MINP_GRID))}};
             } else if (cmd == "tokenize") {
                 auto ids = E.tokenize(req.value("text", ""), req.value("special", false));
                 json pieces = json::array();

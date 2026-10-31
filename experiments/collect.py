@@ -20,9 +20,10 @@ ap.add_argument("--workers", type=int, default=8)
 ap.add_argument("--only", nargs="*")
 ap.add_argument("--modes", default="greedy,sample,repeat")
 ap.add_argument("--root", default="data/raw", help="e.g. data/raw-long for a separate prompt set")
+ap.add_argument("--extra-body", default="{}", help='extra sampling parameters for sampled modes, e.g. \'{"top_k": 0}\'')
 a = ap.parse_args()
 prompts = [p["prompt"] if isinstance(p, dict) else p for p in json.loads(Path(a.prompts).read_text())]
 openrouter.collect(a.model, prompts, Path(a.root), workers=a.workers, only=a.only, max_tokens=a.max_tokens,
                    modes=tuple(a.modes.split(",")),
                    reasoning={"effort": a.reasoning_effort} if a.reasoning_effort else {"enabled": False},
-                   budget_usd=a.budget_usd)
+                   budget_usd=a.budget_usd, extra=json.loads(a.extra_body))

@@ -1,0 +1,880 @@
+{
+ "model": "openai/gpt-oss-120b",
+ "cases": 12,
+ "crowd_tokens": {
+  "low": 265.75,
+  "medium": 357.0,
+  "high": 645.0
+ },
+ "endpoints": {
+  "akashml__bf16": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 255.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 30.5,
+     "billed_completion_tokens_median": 271.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 8.36
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 461.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 0.0,
+     "billed_completion_tokens_median": 328.0,
+     "truncated": 0
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1425.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 0.0,
+     "billed_completion_tokens_median": 799.0,
+     "truncated": 0
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "amazon-bedrock": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 227.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 59.5,
+     "billed_completion_tokens_median": 265.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.82
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 458.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 118.0,
+     "billed_completion_tokens_median": 291.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.89
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1188.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 306.0,
+     "billed_completion_tokens_median": 632.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.88
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "amazon-bedrock__eu-west-1": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 222.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 58.5,
+     "billed_completion_tokens_median": 264.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.8
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 469.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 121.0,
+     "billed_completion_tokens_median": 395.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.88
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1383.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 356.0,
+     "billed_completion_tokens_median": 718.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.88
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "baseten__fp4": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 227.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 0.0,
+     "billed_completion_tokens_median": 264.5,
+     "truncated": 0
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 590.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 0.0,
+     "billed_completion_tokens_median": 339.5,
+     "truncated": 0
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1876.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 0.0,
+     "billed_completion_tokens_median": 865.5,
+     "truncated": 0
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "baseten__fp4__us": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 220.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 0.0,
+     "billed_completion_tokens_median": 281.5,
+     "truncated": 0
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 584.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 0.0,
+     "billed_completion_tokens_median": 349.5,
+     "truncated": 0
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1296.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 0.0,
+     "billed_completion_tokens_median": 697.5,
+     "truncated": 0
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "cerebras__fp16": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 318.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 119.0,
+     "billed_completion_tokens_median": 270.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.67
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 405.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 149.5,
+     "billed_completion_tokens_median": 258.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.71
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.8333333333333334,
+     "reasoning_chars_median": 1580.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 414.5,
+     "billed_completion_tokens_median": 616.0,
+     "truncated": 1,
+     "reasoning_chars_per_billed_token": 3.81
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "coreweave__fp4": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 229.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 101.0,
+     "billed_completion_tokens_median": 264.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.27
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 457.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 197.5,
+     "billed_completion_tokens_median": 421.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.31
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1413.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 504.5,
+     "billed_completion_tokens_median": 734.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.8
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "crusoe__bf16": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 258.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 119.0,
+     "billed_completion_tokens_median": 245.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.17
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 479.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 187.5,
+     "billed_completion_tokens_median": 286.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.55
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1308.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 444.5,
+     "billed_completion_tokens_median": 745.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.94
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "deepinfra__bf16": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 278.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 70.0,
+     "billed_completion_tokens_median": 266.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.97
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 470.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 121.5,
+     "billed_completion_tokens_median": 390.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.87
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 1206.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 305.5,
+     "billed_completion_tokens_median": 675.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.95
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "deepinfra__fp8": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 281.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 121.5,
+     "billed_completion_tokens_median": 279.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.31
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 481.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 186.5,
+     "billed_completion_tokens_median": 321.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.58
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 1091.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 400.0,
+     "billed_completion_tokens_median": 645.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.73
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "dekallm__bf16": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 257.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 112.0,
+     "billed_completion_tokens_median": 265.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.3
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 475.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 194.5,
+     "billed_completion_tokens_median": 402.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.44
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1557.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 546.5,
+     "billed_completion_tokens_median": 751.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.85
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "digitalocean": {
+   "efforts": {},
+   "errors": 6,
+   "flags": []
+  },
+  "google-vertex__global": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 238.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 62.5,
+     "billed_completion_tokens_median": 286.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.81
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 453.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 117.0,
+     "billed_completion_tokens_median": 360.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.87
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1158.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 292.0,
+     "billed_completion_tokens_median": 614.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.97
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "groq": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 283.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 113.5,
+     "billed_completion_tokens_median": 260.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.5
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 463.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 191.5,
+     "billed_completion_tokens_median": 370.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.42
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1585.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 398.0,
+     "billed_completion_tokens_median": 637.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.98
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "mancer__fp8": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 301.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 76.0,
+     "billed_completion_tokens_median": 262.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.96
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 468.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 122.0,
+     "billed_completion_tokens_median": 380.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.84
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 1195.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 304.5,
+     "billed_completion_tokens_median": 809.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.92
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "mara": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 281.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 121.5,
+     "billed_completion_tokens_median": 279.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.31
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 481.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 186.5,
+     "billed_completion_tokens_median": 321.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.58
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 1091.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 400.0,
+     "billed_completion_tokens_median": 645.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.73
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "near-ai__fp4": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 263.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 117.0,
+     "billed_completion_tokens_median": 261.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.25
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 489.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 206.0,
+     "billed_completion_tokens_median": 400.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.38
+    },
+    "high": {
+     "n": 11,
+     "accuracy": 0.9090909090909091,
+     "reasoning_chars_median": 1254,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 406,
+     "billed_completion_tokens_median": 582,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.09
+    }
+   },
+   "errors": 1,
+   "flags": []
+  },
+  "nebius__fp4": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 230.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 60.5,
+     "billed_completion_tokens_median": 260.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.8
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 471.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 121.5,
+     "billed_completion_tokens_median": 363.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.88
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1257.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 320.5,
+     "billed_completion_tokens_median": 707.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.92
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "novita__fp4": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 455.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 117.0,
+     "billed_completion_tokens_median": 306.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.89
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 455.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 117.0,
+     "billed_completion_tokens_median": 314.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.89
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1439.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 366.0,
+     "billed_completion_tokens_median": 610.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.93
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "parasail__fp4": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 255.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 116.0,
+     "billed_completion_tokens_median": 242.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.2
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 467.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 188.5,
+     "billed_completion_tokens_median": 365.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.48
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.8333333333333334,
+     "reasoning_chars_median": 1501.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 640.5,
+     "billed_completion_tokens_median": 855.0,
+     "truncated": 1,
+     "reasoning_chars_per_billed_token": 2.34
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "phala": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 535.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 136.0,
+     "billed_completion_tokens_median": 278.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.94
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 459.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 118.5,
+     "billed_completion_tokens_median": 279.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.87
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1303.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 331.0,
+     "billed_completion_tokens_median": 638.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.94
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "sail-research__fp4": {
+   "efforts": {},
+   "errors": 6,
+   "flags": []
+  },
+  "sambanova": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 281.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 121.5,
+     "billed_completion_tokens_median": 279.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.31
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 481.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 186.5,
+     "billed_completion_tokens_median": 321.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.58
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 1091.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 400.0,
+     "billed_completion_tokens_median": 645.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.73
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "siliconflow__fp8": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 485.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 195.0,
+     "billed_completion_tokens_median": 325.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.49
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 485.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 224.0,
+     "billed_completion_tokens_median": 353.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.17
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 457.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 175.0,
+     "billed_completion_tokens_median": 318.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.61
+    }
+   },
+   "errors": 0,
+   "flags": [
+    "effort setting has little effect on how much it reasons",
+    "'high' reasons like everyone else's 'medium' (318 vs 357 median tokens)"
+   ]
+  },
+  "together": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 285.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 108.5,
+     "billed_completion_tokens_median": 260.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.63
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 506.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 210.5,
+     "billed_completion_tokens_median": 366.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.41
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1084.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 338.0,
+     "billed_completion_tokens_median": 621.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.21
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "venice__int4": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 249.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 116.0,
+     "billed_completion_tokens_median": 274.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.15
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 448.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 185.5,
+     "billed_completion_tokens_median": 361.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.42
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 1213.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 424.5,
+     "billed_completion_tokens_median": 630.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.86
+    }
+   },
+   "errors": 0,
+   "flags": []
+  }
+ }
+}

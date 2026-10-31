@@ -1,5 +1,5 @@
 """Re-score only the temperature-1 (sample-mode) segments of existing score files, e.g. after the engine gained a
-new full-vocabulary statistic (tail_mass). Greedy segments (and their dropped-token repairs) are kept as they are.
+new full-vocabulary statistic (tail_mass, then the sampler-truncation counts). Greedy segments (and their dropped-token repairs) are kept as they are.
 
     python experiments/refresh_sample_stats.py --model qwen/qwen3.5-35b-a3b --engine "lv-engine -m Q8.gguf -c 8192"
 """
@@ -35,8 +35,8 @@ tmap = TokenMap(eng)
 for sf in sorted((Path("data/scores") / key).glob("*.json.gz")):
     stem = sf.name[: -len(".json.gz")]
     scores = json.load(gzip.open(sf, "rt"))
-    if all(len(t) >= 10 and t[9] is not None for s in scores if s["mode"] == "sample" for t in s["tokens"][:1]):
-        continue  # already has tail statistics
+    if all(s.get("sampler") for s in scores if s["mode"] == "sample"):
+        continue  # already has the latest full-vocabulary statistics (tail mass, sampler truncation)
     raw = load(Path("data/raw") / key / f"{stem}.jsonl.gz")
     t0 = time.time()
     fresh = []

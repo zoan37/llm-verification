@@ -3,6 +3,8 @@
 Per endpoint and effort: accuracy, median reasoning length (characters of returned reasoning), median billed
 reasoning tokens (usage.completion_tokens_details.reasoning_tokens) and billed completion tokens. Flags:
   * effort ignored: reasoning length does not grow from low to high
+  * effort remapped: an effort level spends what the other endpoints spend at a different level (e.g. "high"
+    reasons as long as everyone else's "medium"); the levels are placed by the cross-endpoint median
   * hidden reasoning billed: reasoning tokens billed with little or no reasoning text returned
   * billing mismatch: billed reasoning tokens far above what the returned reasoning text could contain
 
@@ -12,6 +14,7 @@ import argparse
 import gzip
 import importlib.util
 import json
+import math
 import statistics as st
 import sys
 import time
@@ -78,6 +81,26 @@ if start < a.budget_usd:
         list(pool.map(run, eps))
 print(f"spent ${openrouter.usage_usd() - start:.4f}")
 
+def crowd_levels(summary):
+    """Cross-endpoint median of each effort level's median billed completion tokens."""
+    return {e: st.median(v) for e in efforts
+            if (v := [s["efforts"][e]["billed_completion_tokens_median"] for s in summary.values()
+                      if e in s["efforts"] and s["efforts"][e]["billed_completion_tokens_median"]])}
+
+
+def remap_flags(row, crowd, factor=1.4):
+    """Effort levels that sit nearer another level of the crowd than their own, and more than `factor` off it."""
+    out = []
+    for eff, v in row.items():
+        tok = v["billed_completion_tokens_median"]
+        if not tok or eff not in crowd or len(crowd) < 2:
+            continue
+        near = min(crowd, key=lambda e: abs(math.log(tok / crowd[e])))
+        if near != eff and abs(math.log(tok / crowd[eff])) > math.log(factor):
+            out.append(f"'{eff}' reasons like everyone else's '{near}' ({tok:.0f} vs {crowd[near]:.0f} median tokens)")
+    return out
+
+
 summary = {}
 for f in sorted(raw_dir.glob("*.jsonl.gz")):
     recs = [json.loads(x) for x in gzip.open(f, "rt")]
@@ -109,9 +132,12 @@ for f in sorted(raw_dir.glob("*.jsonl.gz")):
             if chars_per_tok < 1.5:
                 flags.append(f"{eff}: billed reasoning tokens exceed the returned reasoning ({chars_per_tok:.2f} chars per token)")
     summary[f.name[: -len(".jsonl.gz")]] = {"efforts": row, "errors": sum(1 for r in recs if "error" in r), "flags": flags}
+crowd = crowd_levels(summary)
+for s in summary.values():
+    s["flags"] += remap_flags(s["efforts"], crowd)
 dest = Path("results/reasoning") / f"{key}.json"
 dest.parent.mkdir(parents=True, exist_ok=True)
-dest.write_text(json.dumps({"model": a.model, "cases": len(rc.CASES), "endpoints": summary}, indent=1))
+dest.write_text(json.dumps({"model": a.model, "cases": len(rc.CASES), "crowd_tokens": crowd, "endpoints": summary}, indent=1))
 print(f"{'endpoint':30}" + "".join(f" {e:>26}" for e in efforts) + "  flags")
 for k, s in summary.items():
     cells = []

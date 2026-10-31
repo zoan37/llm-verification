@@ -66,7 +66,7 @@ def endpoint_tag(e: dict) -> str:
     return e.get("tag") or e["provider_name"].lower()
 
 
-def _request(model, tag, prompt, mode, max_tokens, reasoning, top_n):
+def _request(model, tag, prompt, mode, max_tokens, reasoning, top_n, extra=None):
     payload = {"model": model, "messages": [{"role": "user", "content": prompt}], "max_tokens": max_tokens,
                "provider": {"order": [tag], "allow_fallbacks": False}, "usage": {"include": True},
                "reasoning": reasoning}
@@ -78,6 +78,8 @@ def _request(model, tag, prompt, mode, max_tokens, reasoning, top_n):
         payload["temperature"] = 0
     if top_n:
         payload.update({"logprobs": True, "top_logprobs": top_n})
+    if extra and mode != "greedy":  # extra sampling parameters, e.g. {"top_k": 0}
+        payload.update(extra)
     t0 = time.time()
     r = call("/chat/completions", payload)
     if "error" in r and r["error"]["status"] == 429:
@@ -88,7 +90,7 @@ def _request(model, tag, prompt, mode, max_tokens, reasoning, top_n):
 
 def collect_endpoint(model: str, e: dict, prompts: List[str], out_dir: Path, modes=("greedy", "sample", "repeat"),
                      max_tokens: int = 160, reasoning: Optional[dict] = None, n_repeat: int = 4,
-                     budget_usd: float = 5.0, log=print) -> Optional[Path]:
+                     budget_usd: float = 5.0, log=print, extra: Optional[dict] = None) -> Optional[Path]:
     tag = endpoint_tag(e)
     out = out_dir / f"{tag.replace('/', '__')}.jsonl.gz"
     if out.exists():
@@ -110,10 +112,10 @@ def collect_endpoint(model: str, e: dict, prompts: List[str], out_dir: Path, mod
             log(f"{tag}: budget ${budget_usd} reached")
             break
         r, lat = _request(model, tag, prompt, mode if mode in ("sample",) or mode.startswith("temp") else "greedy",
-                          max_tokens, reasoning, top_n)
+                          max_tokens, reasoning, top_n, extra)
         if top_n and "error" in r and "logprob" in (r["error"]["body"] or "").lower() and top_n > 5:
             top_n = 5
-            r, lat = _request(model, tag, prompt, mode, max_tokens, reasoning, top_n)
+            r, lat = _request(model, tag, prompt, mode, max_tokens, reasoning, top_n, extra)
         if "error" in r:
             errors += 1
             recs.append({"mode": mode, "prompt_idx": i, "error": r["error"]})
@@ -122,6 +124,7 @@ def collect_endpoint(model: str, e: dict, prompts: List[str], out_dir: Path, mod
         msg = ch.get("message") or {}
         recs.append({
             "mode": mode, "prompt_idx": i, "date": date, "provider": r.get("provider"), "tag": tag,
+            **({"extra_body": extra} if extra and mode != "greedy" else {}),
             "quantization": e.get("quantization"), "model_returned": r.get("model"),
             "content": msg.get("content"), "reasoning": msg.get("reasoning"),
             "logprobs": (ch.get("logprobs") or {}).get("content"), "finish_reason": ch.get("finish_reason"),

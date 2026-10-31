@@ -1,0 +1,8 @@
+{
+ "model_key": "google__gemma-4-26b-a4b-it",
+ "endpoints": 15,
+ "pairs": 105,
+ "groups": [],
+ "max_other_share": 0.2708333333333333,
+ "same_pairs": []
+}

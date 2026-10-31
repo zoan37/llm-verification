@@ -21,7 +21,7 @@ from typing import Dict, List, Optional
 from .blackbox import expand
 from .openrouter import load
 from .peer import greedy_texts, logprob_alignment, prefix_agreement, self_consistency
-from .stats import cluster_bootstrap_mean, likelihood_test, pit_test, tail_test
+from .stats import cluster_bootstrap_mean, likelihood_test, pit_test, sampler_test, tail_test
 
 
 def _load_scores(path: Path) -> List[dict]:
@@ -61,7 +61,8 @@ def endpoint_summary(scores: List[dict], raw: List[dict]) -> dict:
         reps = [expand(s["tokens"]) for s in sample if s["segment"] == seg]
         if reps:
             out[f"sample_{seg}"] = {"replies": len(reps), "likelihood": likelihood_test(reps), "pit": pit_test(reps),
-                                    "tail": tail_test(reps)}
+                                    "tail": tail_test(reps),
+                                    "sampler": sampler_test([s for s in sample if s["segment"] == seg])}
     misses = [s["own_top_miss"] for s in scores if s.get("own_top_miss") is not None]
     deltas = [s["prompt_tokens_reported"] - s["prompt_tokens_ours"] for s in scores
               if s.get("prompt_tokens_reported") is not None and s["segment"] == "answer"]
@@ -120,6 +121,36 @@ def fidelity(d: Optional[float], honest: Optional[float], cheat: Optional[float]
     return round(100 * min(1.0, max(0.0, 1 - x)), 1)
 
 
+
+def sampler_flags(sm: Optional[dict]) -> List[str]:
+    """Plain-language flags from stats.sampler_test: which truncation the endpoint's temperature-1 sampling shows."""
+    if not sm:
+        return []
+    out = []
+    for fam, unit in (("top_k", "rank"), ("top_p", "cumulative probability"), ("min_p", "relative probability")):
+        b = sm[fam]["bound"]
+        if b is None:
+            continue
+        rows = sm[fam]["rows"]
+        r = next(x for x in rows if x["setting"] == b)
+        i = rows.index(r)
+        if fam == "top_k":
+            lo = rows[i - 1]["setting"] if i > 0 and not rows[i - 1]["deficit"] else None
+            rng = f"top_k between {lo + 1} and {b}" if lo is not None else f"top_k <= {b}"
+            what = f"{r['observed']} draws past rank {b}"
+        elif fam == "top_p":
+            lo = rows[i - 1]["setting"] if i > 0 and not rows[i - 1]["deficit"] else None
+            rng = f"top_p between {lo} and {b}" if lo is not None else f"top_p <= {b}"
+            what = f"{r['observed']} draws outside the top-{b} probability nucleus"
+        else:
+            hi = rows[i + 1]["setting"] if i + 1 < len(rows) and not rows[i + 1]["deficit"] else None
+            rng = f"min_p between {b} and {hi}" if hi is not None else f"min_p >= {b}"
+            what = f"{r['observed']} draws below {b} x the top token's probability"
+        out.append(f"truncates sampling at top_p=1 (behaves like {rng}): {what} where an untruncated sampler "
+                   f"makes {r['expected']:.0f}")
+    return out
+
+
 def flags(s: dict, ref_regret: Optional[float]) -> List[str]:
     f = []
     i = s["integrity"]
@@ -140,10 +171,13 @@ def flags(s: dict, ref_regret: Optional[float]) -> List[str]:
     if bm is not None and bm > 2:
         f.append(f"bills a median {bm} more completion tokens than it returns")
     tail = (s.get("sample_answer") or {}).get("tail") or {}
-    if tail.get("z") is not None and tail["z"] < -2.5 and (tail.get("ratio") or 0) < 0.5:
+    trunc = sampler_flags((s.get("sample_answer") or {}).get("sampler"))
+    f.extend(trunc)
+    # exact Poisson tails; thresholds leave well under one false flag across ~100 endpoints
+    if not trunc and tail.get("p_low") is not None and tail["p_low"] < 1e-3 and (tail.get("ratio") or 0) < 0.5:
         f.append(f"truncates sampling at top_p=1: {tail['observed']:.0f} long-tail tokens vs {tail['expected']:.1f} "
                  "expected (likely an unrequested default top_k/min_p)")
-    if tail.get("z") is not None and tail["z"] > 4 and (tail.get("ratio") or 0) > 2 and \
+    if tail.get("p_high") is not None and tail["p_high"] < 1e-5 and (tail.get("ratio") or 0) > 2 and \
             (s.get("x_honest") is None or s["x_honest"] < 2):
         f.append(f"too many long-tail tokens at temperature 1: {tail['observed']:.0f} vs {tail['expected']:.1f} expected, "
                  "while its temperature-0 output matches the model (junk tokens or a hotter sampler)")

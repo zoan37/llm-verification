@@ -1,0 +1,342 @@
+{
+ "model": "openai/gpt-oss-20b",
+ "cases": 12,
+ "crowd_tokens": {
+  "low": 129.5,
+  "medium": 233.0,
+  "high": 538.0
+ },
+ "endpoints": {
+  "akashml__fp4": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 257.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 0.0,
+     "billed_completion_tokens_median": 155.5,
+     "truncated": 0
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 615.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 0.0,
+     "billed_completion_tokens_median": 233.0,
+     "truncated": 0
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.8333333333333334,
+     "reasoning_chars_median": 1647.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 0.0,
+     "billed_completion_tokens_median": 722.5,
+     "truncated": 2
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "amazon-bedrock": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 252.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 63.5,
+     "billed_completion_tokens_median": 129.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.98
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 567.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 142.5,
+     "billed_completion_tokens_median": 244.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.98
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1158.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 290.0,
+     "billed_completion_tokens_median": 424.5,
+     "truncated": 1,
+     "reasoning_chars_per_billed_token": 3.99
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "amazon-bedrock__eu-west-1": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 260.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 65.5,
+     "billed_completion_tokens_median": 113.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.97
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 569.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 143.0,
+     "billed_completion_tokens_median": 225.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.98
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1546.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 396.0,
+     "billed_completion_tokens_median": 538.0,
+     "truncated": 1,
+     "reasoning_chars_per_billed_token": 3.91
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "coreweave__fp4": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 245.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 62.0,
+     "billed_completion_tokens_median": 140.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.96
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 570.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 143.0,
+     "billed_completion_tokens_median": 228.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.99
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1047.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 266.5,
+     "billed_completion_tokens_median": 466.0,
+     "truncated": 1,
+     "reasoning_chars_per_billed_token": 3.93
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "darkbloom__fp8": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 245.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 100.0,
+     "billed_completion_tokens_median": 130.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.45
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 607.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 213.0,
+     "billed_completion_tokens_median": 227.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.85
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 597.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 205.0,
+     "billed_completion_tokens_median": 219.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.91
+    }
+   },
+   "errors": 0,
+   "flags": [
+    "'high' reasons like everyone else's 'medium' (219 vs 233 median tokens)"
+   ]
+  },
+  "deepinfra__bf16": {
+   "efforts": {},
+   "errors": 6,
+   "flags": []
+  },
+  "dekallm__bf16": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 258.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 102.5,
+     "billed_completion_tokens_median": 128.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.52
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 707.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 252.0,
+     "billed_completion_tokens_median": 262.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.81
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1649.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 533.5,
+     "billed_completion_tokens_median": 594.0,
+     "truncated": 1,
+     "reasoning_chars_per_billed_token": 3.09
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "groq": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 162.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 89.0,
+     "billed_completion_tokens_median": 104.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 1.82
+    },
+    "medium": {
+     "n": 11,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 392,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 194,
+     "billed_completion_tokens_median": 207,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.02
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.8333333333333334,
+     "reasoning_chars_median": 1784.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 591.0,
+     "billed_completion_tokens_median": 625.5,
+     "truncated": 2,
+     "reasoning_chars_per_billed_token": 3.02
+    }
+   },
+   "errors": 1,
+   "flags": []
+  },
+  "parasail__fp4": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 268.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 102.0,
+     "billed_completion_tokens_median": 116.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.63
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 734.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 254.0,
+     "billed_completion_tokens_median": 268.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.89
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 1601.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 471.5,
+     "billed_completion_tokens_median": 540.5,
+     "truncated": 1,
+     "reasoning_chars_per_billed_token": 3.4
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "siliconflow__fp8": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 551.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 204.0,
+     "billed_completion_tokens_median": 208.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.7
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 660.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 296.5,
+     "billed_completion_tokens_median": 301.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.23
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 660.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 302.5,
+     "billed_completion_tokens_median": 306.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.18
+    }
+   },
+   "errors": 0,
+   "flags": [
+    "'low' reasons like everyone else's 'medium' (208 vs 233 median tokens)",
+    "'high' reasons like everyone else's 'medium' (306 vs 233 median tokens)"
+   ]
+  }
+ }
+}

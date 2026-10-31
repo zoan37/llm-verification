@@ -1,0 +1,75 @@
+{
+ "model": "openai/gpt-oss-20b",
+ "endpoints": {
+  "akashml__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "amazon-bedrock": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "amazon-bedrock__eu-west-1": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 1,
+   "flags": []
+  },
+  "coreweave__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 1,
+   "flags": []
+  },
+  "darkbloom__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 1,
+   "flags": []
+  },
+  "deepinfra__bf16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 0,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "dekallm__bf16": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "groq": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "parasail__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "siliconflow__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  }
+ }
+}

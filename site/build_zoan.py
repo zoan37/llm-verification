@@ -93,8 +93,101 @@ tools_html = f"""<section class="coop" aria-label="Tool calling">
       <tbody>{''.join(rows)}</tbody></table></div>
   </section>
 """ if rows else ""
+
+
+# Serving behaviour: sampler truncation (results/<model>.json), shared deployments (results/shared), reasoning
+# effort (results/reasoning), repeated replies (results/cache).
+def ep_name(k):
+    return k.split("__")[0]
+
+
+trunc_rows = []
+for rf in sorted((root / "results").glob("*.json")):
+    r = json.loads(rf.read_text())
+    eps = {k: v for k, v in r["endpoints"].items() if not k.startswith("local__")}
+    with_fp = {k: v for k, v in eps.items() if (v.get("sample_answer") or {}).get("sampler")}
+    if not with_fp:
+        continue
+    hits, flagged = [], set()
+    for k, v in sorted(with_fp.items()):
+        sm = v["sample_answer"]["sampler"]
+        if any(sm[f]["bound"] is not None for f in ("top_k", "top_p", "min_p")):
+            flagged.add(k)
+        if sm["top_k"]["bound"] is not None:
+            b = sm["top_k"]["bound"]
+            row = next(x for x in sm["top_k"]["rows"] if x["setting"] == b)
+            hits.append((b, f"<b>{ep_name(k)}</b> ≤{b} <span class=sub>({row['observed']} vs {row['expected']:.0f})</span>"))
+        for fam, lab in (("top_p", "top_p"), ("min_p", "min_p")):
+            if sm[fam]["bound"] is not None:
+                hits.append((999, f"<b>{ep_name(k)}</b> {lab} {sm[fam]['bound']}"))
+    hits.sort(key=lambda h: h[0])
+    trunc_rows.append(f"<tr><td>{r['model']}</td><td class='num'>{len(with_fp)}</td>"
+                      f"<td class='num'>{len(flagged)}</td>"
+                      f"<td>{', '.join(h[1] for h in hits) or '<span class=sub>none</span>'}</td></tr>")
+
+shared_rows = []
+for sf in sorted((root / "results" / "shared").glob("*.json")):
+    sh = json.loads(sf.read_text())
+    for g in sh["groups"]:
+        ev = [p for p in sh["same_pairs"] if p["a"] in g]
+        tot_i, tot_c = sum(p["identical"] for p in ev), sum(p["compared"] for p in ev)
+        shared_rows.append(f"<tr><td>{sh['model_key'].replace('__', '/')}</td><td>{', '.join(g)}</td>"
+                           f"<td class='num'>{tot_i} / {tot_c}</td><td class='num'>{sh['max_other_share']:.0%}</td></tr>")
+
+effort_rows = []
+for ef in sorted((root / "results" / "reasoning").glob("*.json")):
+    e = json.loads(ef.read_text())
+    crowd = e.get("crowd_tokens") or {}
+    bad = [f"<b>{ep_name(k)}</b>: " + "; ".join(f for f in v["flags"]) for k, v in sorted(e["endpoints"].items()) if v["flags"]]
+    ok = sum(1 for v in e["endpoints"].values() if v["efforts"] and not v["flags"])
+    effort_rows.append(f"<tr><td>{e['model']}</td><td class='num'>{' / '.join(f'{crowd[x]:.0f}' for x in ('low', 'medium', 'high') if x in crowd)}</td>"
+                       f"<td class='num'>{ok}</td><td>{'<br>'.join(bad) or '<span class=sub>none</span>'}</td></tr>")
+
+cache_rows = []
+for cf in sorted((root / "results" / "cache").glob("*.json")):
+    c = json.loads(cf.read_text())
+    tested = {k: v for k, v in c["endpoints"].items() if v["sampled_prompts"]}
+    bad = [f"<b>{ep_name(k)}</b>: identical temperature-1 replies on {v['identical_sampled']} of {v['sampled_prompts']} prompts"
+           for k, v in sorted(tested.items()) if v["identical_sampled"] or v["stale"]]
+    cache_rows.append(f"<tr><td>{c['model']}</td><td class='num'>{len(tested)}</td>"
+                      f"<td>{'<br>'.join(bad) or '<span class=sub>none</span>'}</td></tr>")
+
+serving_html = f"""<section class="coop" aria-label="Serving behaviour">
+    <h2>How endpoints sample, share and cache</h2>
+    <p class="lede" style="font-size:14px;max-width:80ch"><b>Hidden truncation.</b> Every request asked for
+      temperature 1 and top_p 1, which should sample from the model's whole distribution. For a grid of common sampler
+      settings the referee knows how much probability each setting would remove at every position, so it can count how
+      often an untruncated sampler would draw from the removed tokens, and compare that with what the endpoint drew.
+      Honest references draw about the expected number at every setting. Most likely cause: the serving stack applies the
+      model's recommended defaults (Qwen's is top_k = 20) to requests that do not set top_k. The listed value is the
+      loosest setting the endpoint's draws still respect (observed vs expected draws past it).</p>
+    <div class="ledger"><table class="small">
+      <thead><tr><th>Model</th><th>Endpoints</th><th>Truncating</th><th>Behaves like top_k ≤</th></tr></thead>
+      <tbody>{''.join(trunc_rows)}</tbody></table></div>
+    <p class="lede" style="font-size:14px;max-width:80ch"><b>One deployment, several names.</b> Independent deployments of
+      the same weights drift apart within a few hundred greedy (temperature 0) tokens: different hardware, kernels and
+      batch sizes round differently. Endpoints whose greedy replies are byte-identical on nearly every prompt are one
+      serving stack sold under several names, so at least one label is not what runs.</p>
+    <div class="ledger"><table class="small">
+      <thead><tr><th>Model</th><th>Endpoints that are one deployment</th><th>Identical replies</th><th>Most similar other pair</th></tr></thead>
+      <tbody>{''.join(shared_rows) or '<tr><td colspan=4>none found</td></tr>'}</tbody></table></div>
+    <p class="lede" style="font-size:14px;max-width:80ch"><b>Reasoning effort.</b> 12 maths problems at effort low,
+      medium and high (temperature 0). Honest endpoints reason roughly twice as long at each step up; the medians of all
+      endpoints are shown. Flagged: a level that spends what everyone else spends at another level.</p>
+    <div class="ledger"><table class="small">
+      <thead><tr><th>Model</th><th>Median tokens low / medium / high</th><th>Effort honoured</th><th>Problems</th></tr></thead>
+      <tbody>{''.join(effort_rows)}</tbody></table></div>
+    <p class="lede" style="font-size:14px;max-width:80ch"><b>Repeated replies.</b> The same 100-word creative prompt three
+      times at temperature 1. Honest sampling never repeats such a reply byte for byte; an endpoint that does returns the
+      same text to retries and best-of-n (a response cache or a fixed sampling seed). Near-duplicate prompts (17×23 then
+      17×24) found no endpoint answering with the other prompt's answer.</p>
+    <div class="ledger"><table class="small">
+      <thead><tr><th>Model</th><th>Endpoints</th><th>Repeats at temperature 1</th></tr></thead>
+      <tbody>{''.join(cache_rows)}</tbody></table></div>
+  </section>
+"""
 i = rest.rfind("</div>", 0, rest.index('<script id="data"'))
-rest = rest[:i] + tools_html + pager + rest[i:]
+rest = rest[:i] + tools_html + serving_html + pager + rest[i:]
 doc = ("<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"
        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
        "<meta name=\"description\" content=\"Per-provider audit of OpenRouter endpoints: how close each one's outputs "

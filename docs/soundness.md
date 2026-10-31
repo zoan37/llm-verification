@@ -156,6 +156,7 @@ Findings from adversarial reviews, each now a regression test in `tests/test_red
 | 2026-10-30 | Challenge spans rarely covered the first and last tokens (~19× less than the middle) | low-medium | span start uniform over [-(span-1), n-1], clipped |
 | 2026-10-30 | Server clamped max_tokens, so an honest server "failed" the client's check | low | server and client reject out-of-range values |
 | 2026-10-30 | A malformed trace crashed the client instead of being recorded | low | parse/validation errors are recorded as failures |
+| 2026-10-30 | The long-tail test used a normal z-score where only ~0.8 long-tail tokens are expected (Gemma-4): our own honest BF16 reference drew 5, a 1-in-1000 event that z called 4.8σ, and was flagged for "junk tokens" | medium (false flag on an honest endpoint) | exact Poisson tails (conservative for a Poisson-binomial) with family-wise thresholds: under one expected false flag across ~100 endpoints; three weakly supported truncation flags (p 2-4e-3) were withdrawn until the sampler fingerprint confirmed them |
 
 ## Open problems
 

@@ -59,8 +59,11 @@
      "ratio": 0.07931518948140992,
      "z": -3.284667134776867,
      "p": 0.0010210291998737487,
+     "p_low": 4.55238988868675e-05,
+     "p_high": 0.999996654604046,
      "n_tokens": 9813
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -172,8 +175,11 @@
      "ratio": 0.1594835628784241,
      "z": -2.9907714691680996,
      "p": 0.002782736625171034,
+     "p_low": 0.000329867977251793,
+     "p_high": 0.9999515410631779,
      "n_tokens": 9415
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -286,8 +292,11 @@
      "ratio": 0.5459303954031912,
      "z": -1.6327741615997575,
      "p": 0.10251650324929665,
+     "p_low": 0.059243245444189165,
+     "p_high": 0.9712853593889248,
      "n_tokens": 9823
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -385,8 +394,11 @@
      "ratio": 0.17068684831547956,
      "z": -2.85031146648663,
      "p": 0.00436764353654353,
+     "p_low": 0.0006632153200456681,
+     "p_high": 0.9998963401886224,
      "n_tokens": 9839
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -491,8 +503,11 @@
      "ratio": 0.15635056150528942,
      "z": -3.0317761839667927,
      "p": 0.0024311939727351154,
+     "p_low": 0.00026612956005359707,
+     "p_high": 0.9999616093054967,
      "n_tokens": 9780
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -604,8 +619,11 @@
      "ratio": 0.25329299040186737,
      "z": -2.582063156650288,
      "p": 0.009821161017042645,
+     "p_low": 0.002584627267767061,
+     "p_high": 0.9994040435049635,
      "n_tokens": 10088
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -653,9 +671,7 @@
    "peer_agreement": 0.6586904761904762,
    "x_honest": 2.27,
    "fidelity": 81.0,
-   "flags": [
-    "truncates sampling at top_p=1: 3 long-tail tokens vs 11.8 expected (likely an unrequested default top_k/min_p)"
-   ],
+   "flags": [],
    "verdict": {
     "level": "ok",
     "text": "consistent with the real model"
@@ -717,8 +733,11 @@
      "ratio": 0.07369455421637239,
      "z": -3.4285738487868254,
      "p": 0.0006067614355483828,
+     "p_low": 1.8632712773250263e-05,
+     "p_high": 0.9999987211172332,
      "n_tokens": 9496
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -818,8 +837,11 @@
      "ratio": 0.1479623687899306,
      "z": -3.150747285336686,
      "p": 0.001628533320810054,
+     "p_low": 0.00014270517893524693,
+     "p_high": 0.9999804323612452,
      "n_tokens": 9907
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -924,8 +946,11 @@
      "ratio": 0.07939380543012503,
      "z": -3.2818123852892787,
      "p": 0.0010314220666129302,
+     "p_low": 4.605350999905564e-05,
+     "p_high": 0.9999966125769925,
      "n_tokens": 10031
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -1038,8 +1063,11 @@
      "ratio": 0.15964532938191986,
      "z": -2.988000110048645,
      "p": 0.0028080945328980513,
+     "p_low": 0.000333463033211697,
+     "p_high": 0.999950967419644,
      "n_tokens": 9764
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -1151,8 +1179,11 @@
      "ratio": 0.8273006071664449,
      "z": -0.6334733168045446,
      "p": 0.5264246003485256,
+     "p_low": 0.3238022771206161,
+     "p_high": 0.7728866590049668,
      "n_tokens": 9598
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -1257,8 +1288,11 @@
      "ratio": 1.3585945113347824,
      "z": 1.5168054985189217,
      "p": 0.129315798391762,
+     "p_low": 0.9421289583964768,
+     "p_high": 0.08712999369970911,
      "n_tokens": 10101
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -1363,8 +1397,11 @@
      "ratio": 0.1667444585147124,
      "z": -2.8988365172370045,
      "p": 0.003745501329571719,
+     "p_low": 0.000524740474627101,
+     "p_high": 0.9999197114053602,
      "n_tokens": 9797
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -1475,8 +1512,11 @@
      "ratio": 0.2639272705122031,
      "z": -2.4937594699310757,
      "p": 0.012639816461828563,
+     "p_low": 0.00372374235898598,
+     "p_high": 0.9991091833259786,
      "n_tokens": 9867
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -1574,8 +1614,11 @@
      "ratio": 1.1460673101376186,
      "z": 0.5484880137796434,
      "p": 0.5833568572697657,
+     "p_low": 0.7593024734077801,
+     "p_high": 0.32676637217745136,
      "n_tokens": 9810
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -1679,8 +1722,11 @@
      "ratio": 0.2629125903712733,
      "z": -2.5023500231641487,
      "p": 0.012337188434305667,
+     "p_low": 0.003601451552882332,
+     "p_high": 0.999141397416077,
      "n_tokens": 8895
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -1728,9 +1774,7 @@
    "peer_agreement": 0.5995121951219512,
    "x_honest": 4.08,
    "fidelity": 67.4,
-   "flags": [
-    "truncates sampling at top_p=1: 3 long-tail tokens vs 11.4 expected (likely an unrequested default top_k/min_p)"
-   ],
+   "flags": [],
    "verdict": {
     "level": "lossy",
     "text": "measurably further from the real model than the honest reference"
@@ -1857,8 +1901,11 @@
      "ratio": 0.15903002751704517,
      "z": -2.995862008033086,
      "p": 0.002736702468168462,
+     "p_low": 0.0003199534543570757,
+     "p_high": 0.9999531200274515,
      "n_tokens": 9693
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -1958,8 +2005,11 @@
      "ratio": 0.16570462016379156,
      "z": -2.9129602699535844,
      "p": 0.0035802014903710045,
+     "p_low": 0.0004923153824158242,
+     "p_high": 0.9999251013925402,
      "n_tokens": 9770
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -2064,8 +2114,11 @@
      "ratio": 0.1651444954470282,
      "z": -2.9194306067164866,
      "p": 0.003506714583226035,
+     "p_low": 0.00047551616613483277,
+     "p_high": 0.9999278804169454,
      "n_tokens": 9998
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -2177,8 +2230,11 @@
      "ratio": 0.07765986473422208,
      "z": -3.330493979966354,
      "p": 0.0008669203815335848,
+     "p_low": 3.548304414801441e-05,
+     "p_high": 0.9999974429701821,
      "n_tokens": 9492
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -2278,8 +2334,11 @@
      "ratio": 1.1290721453488544,
      "z": 0.5862714749715635,
      "p": 0.5576930967901375,
+     "p_low": 0.7620306558185471,
+     "p_high": 0.30839978163213716,
      "n_tokens": 9354
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -2382,8 +2441,11 @@
      "ratio": 0.07539584761440639,
      "z": -3.383636149457131,
      "p": 0.000715327311724479,
+     "p_low": 2.4775928554629884e-05,
+     "p_high": 0.9999982629632285,
      "n_tokens": 9814
-    }
+    },
+    "sampler": null
    },
    "integrity": {
     "billed_minus_returned_median": 0,
