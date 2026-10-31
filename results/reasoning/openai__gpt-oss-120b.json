@@ -2,9 +2,12 @@
  "model": "openai/gpt-oss-120b",
  "cases": 12,
  "crowd_tokens": {
-  "low": 265.75,
-  "medium": 357.0,
-  "high": 645.0
+  "chars": {
+   "low": 260.75,
+   "medium": 469.75,
+   "high": 1276.75
+  },
+  "tokens": {}
  },
  "endpoints": {
   "akashml__bf16": {
@@ -650,7 +653,9 @@
     }
    },
    "errors": 0,
-   "flags": []
+   "flags": [
+    "'low' reasons like everyone else's 'medium' (456 vs 470 median chars)"
+   ]
   },
   "parasail__fp4": {
    "efforts": {
@@ -722,7 +727,9 @@
     }
    },
    "errors": 0,
-   "flags": []
+   "flags": [
+    "'low' reasons like everyone else's 'medium' (536 vs 470 median chars)"
+   ]
   },
   "sail-research__fp4": {
    "efforts": {},
@@ -801,7 +808,8 @@
    "errors": 0,
    "flags": [
     "effort setting has little effect on how much it reasons",
-    "'high' reasons like everyone else's 'medium' (318 vs 357 median tokens)"
+    "'low' reasons like everyone else's 'medium' (486 vs 470 median chars)",
+    "'high' reasons like everyone else's 'medium' (458 vs 470 median chars)"
    ]
   },
   "together": {

@@ -1,0 +1,13 @@
+spent $0.2709
+endpoint                       36px   24px   16px   12px    9px    7px  prompt_tok  flags
+baseten__fp4                   100%   100%   100%   100%    83%    17%        2379  
+coreweave__nvfp4               100%   100%   100%   100%    83%    17%        2379  
+crusoe__bf16                   100%   100%   100%   100%    83%    17%        2379  
+darkbloom__nvfp4               100%   100%   100%   100%    83%    17%        2379  
+deepinfra__fp4                 100%   100%   100%   100%    75%    17%        2379  
+io-net__nvfp4                  100%   100%   100%   100%    83%    17%        2379  
+nebius__bf16                   100%   100%   100%   100%    83%    17%        2379  
+primeintellect__nvfp4          100%   100%   100%   100%    83%    17%        2379  
+together                       100%   100%   100%   100%    83%    17%        2379  
+venice__fp4                    100%   100%   100%   100%    83%    17%        2379  
+wrote results/vision/nvidia__nemotron-3.5-super-vl.json

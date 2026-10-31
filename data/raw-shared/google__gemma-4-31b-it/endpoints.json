@@ -1,0 +1,1274 @@
+[
+ {
+  "name": "CoreWeave | google/gemma-4-31b-it-20260402",
+  "model_id": "google/gemma-4-31b-it",
+  "model_name": "Google: Gemma 4 31B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.0000001",
+   "completion": "0.00000034",
+   "input_cache_read": "0.0000001",
+   "discount": 0
+  },
+  "provider_name": "CoreWeave",
+  "tag": "coreweave/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "top_k",
+   "repetition_penalty",
+   "frequency_penalty",
+   "presence_penalty",
+   "stop",
+   "seed",
+   "response_format",
+   "structured_outputs",
+   "logprobs",
+   "top_logprobs",
+   "tools",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": false,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 502.5,
+   "p75": 1138.25,
+   "p90": 2396.9000000000005,
+   "p99": 8212.24000000002
+  },
+  "throughput_last_30m": {
+   "p50": 56,
+   "p75": 44,
+   "p90": 33,
+   "p99": 14
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 502.5,
+     "p75": 1138.25,
+     "p90": 2396.9000000000005,
+     "p99": 8212.24000000002
+    },
+    "throughput": {
+     "p50": 56,
+     "p75": 44,
+     "p90": 33,
+     "p99": 14
+    },
+    "request_count": 18242
+   }
+  }
+ },
+ {
+  "name": "Venice | google/gemma-4-31b-it-20260402",
+  "model_id": "google/gemma-4-31b-it",
+  "model_name": "Google: Gemma 4 31B",
+  "context_length": 256000,
+  "pricing": {
+   "prompt": "0.00000012",
+   "completion": "0.00000036",
+   "input_cache_read": "0.00000009",
+   "discount": 0
+  },
+  "provider_name": "Venice",
+  "tag": "venice/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 8192,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "top_k",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 613,
+   "p75": 892,
+   "p90": 1450,
+   "p99": 3906
+  },
+  "throughput_last_30m": {
+   "p50": 42,
+   "p75": 33,
+   "p90": 26,
+   "p99": 9.04
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 613,
+     "p75": 892,
+     "p90": 1450,
+     "p99": 3906
+    },
+    "throughput": {
+     "p50": 42,
+     "p75": 33,
+     "p90": 26,
+     "p99": 9.04
+    },
+    "request_count": 5901
+   }
+  }
+ },
+ {
+  "name": "Chutes | google/gemma-4-31b-it-20260402",
+  "model_id": "google/gemma-4-31b-it",
+  "model_name": "Google: Gemma 4 31B",
+  "context_length": 131072,
+  "pricing": {
+   "prompt": "0.00000012",
+   "completion": "0.00000037",
+   "input_cache_read": "0.000000012",
+   "discount": 0
+  },
+  "provider_name": "Chutes",
+  "tag": "chutes/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 65536,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "seed",
+   "top_k",
+   "repetition_penalty",
+   "response_format",
+   "tools",
+   "tool_choice",
+   "structured_outputs"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 95.75844716031632,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 3811.5,
+   "p75": 5435.75,
+   "p90": 7485.700000000003,
+   "p99": 15351.130000000036
+  },
+  "throughput_last_30m": {
+   "p50": 13,
+   "p75": 10,
+   "p90": 8,
+   "p99": 3.789999999999999
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 3811.5,
+     "p75": 5435.75,
+     "p90": 7485.700000000003,
+     "p99": 15351.130000000036
+    },
+    "throughput": {
+     "p50": 13,
+     "p75": 10,
+     "p90": 8,
+     "p99": 3.789999999999999
+    },
+    "request_count": 5450
+   }
+  }
+ },
+ {
+  "name": "DeepInfra | google/gemma-4-31b-it-20260402",
+  "model_id": "google/gemma-4-31b-it",
+  "model_name": "Google: Gemma 4 31B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.000000135",
+   "completion": "0.00000051",
+   "input_cache_read": "0.000000075",
+   "discount": 0
+  },
+  "provider_name": "DeepInfra",
+  "tag": "deepinfra/turbo",
+  "service_tier": "priority",
+  "quantization": "fp4",
+  "max_completion_tokens": 16384,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "top_k",
+   "seed",
+   "min_p",
+   "structured_outputs",
+   "logit_bias",
+   "response_format",
+   "tools",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.93055555555556,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 510,
+   "p75": 914.25,
+   "p90": 1530.9000000000005,
+   "p99": 4272.540000000001
+  },
+  "throughput_last_30m": {
+   "p50": 49,
+   "p75": 37,
+   "p90": 27,
+   "p99": 11
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 510,
+     "p75": 914.25,
+     "p90": 1530.9000000000005,
+     "p99": 4272.540000000001
+    },
+    "throughput": {
+     "p50": 49,
+     "p75": 37,
+     "p90": 27,
+     "p99": 11
+    },
+    "request_count": 89944
+   }
+  }
+ },
+ {
+  "name": "DekaLLM | google/gemma-4-31b-it-20260402",
+  "model_id": "google/gemma-4-31b-it",
+  "model_name": "Google: Gemma 4 31B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.00000014",
+   "completion": "0.0000004",
+   "input_cache_read": "0.00000005",
+   "discount": 0
+  },
+  "provider_name": "DekaLLM",
+  "tag": "dekallm",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "frequency_penalty",
+   "logit_bias",
+   "max_tokens",
+   "presence_penalty",
+   "seed",
+   "stop",
+   "temperature",
+   "top_p",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 98.4102952308857,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 2268,
+   "p75": 2856,
+   "p90": 3800.800000000001,
+   "p99": 6090.879999999999
+  },
+  "throughput_last_30m": {
+   "p50": 26,
+   "p75": 20,
+   "p90": 14,
+   "p99": 7.88
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 2268,
+     "p75": 2856,
+     "p90": 3800.800000000001,
+     "p99": 6090.879999999999
+    },
+    "throughput": {
+     "p50": 26,
+     "p75": 20,
+     "p90": 14,
+     "p99": 7.88
+    },
+    "request_count": 393
+   }
+  }
+ },
+ {
+  "name": "Crusoe | google/gemma-4-31b-it-20260402",
+  "model_id": "google/gemma-4-31b-it",
+  "model_name": "Google: Gemma 4 31B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.00000014",
+   "completion": "0.0000004",
+   "input_cache_read": "0.00000014",
+   "discount": 0
+  },
+  "provider_name": "Crusoe",
+  "tag": "crusoe/bf16",
+  "service_tier": null,
+  "quantization": "bf16",
+  "max_completion_tokens": 262141,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "seed",
+   "min_p",
+   "repetition_penalty",
+   "top_k",
+   "logit_bias",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": false,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 327,
+   "p75": 459,
+   "p90": 730.8000000000011,
+   "p99": 1648.1800000000003
+  },
+  "throughput_last_30m": {
+   "p50": 75,
+   "p75": 55,
+   "p90": 41,
+   "p99": 22
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 327,
+     "p75": 459,
+     "p90": 730.8000000000011,
+     "p99": 1648.1800000000003
+    },
+    "throughput": {
+     "p50": 75,
+     "p75": 55,
+     "p90": 41,
+     "p99": 22
+    },
+    "request_count": 9600
+   }
+  }
+ },
+ {
+  "name": "Friendli | google/gemma-4-31b-it-20260402",
+  "model_id": "google/gemma-4-31b-it",
+  "model_name": "Google: Gemma 4 31B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.00000014",
+   "completion": "0.0000004",
+   "discount": 0
+  },
+  "provider_name": "Friendli",
+  "tag": "friendli",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 8192,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "seed",
+   "top_k",
+   "min_p",
+   "repetition_penalty",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.93055555555556,
+  "supports_implicit_caching": false,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 371,
+   "p75": 1116,
+   "p90": 2016.800000000001,
+   "p99": 4396.510000000006
+  },
+  "throughput_last_30m": {
+   "p50": 84,
+   "p75": 62,
+   "p90": 44,
+   "p99": 21
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 371,
+     "p75": 1116,
+     "p90": 2016.800000000001,
+     "p99": 4396.510000000006
+    },
+    "throughput": {
+     "p50": 84,
+     "p75": 62,
+     "p90": 44,
+     "p99": 21
+    },
+    "request_count": 21751
+   }
+  }
+ },
+ {
+  "name": "Novita | google/gemma-4-31b-it-20260402",
+  "model_id": "google/gemma-4-31b-it",
+  "model_name": "Google: Gemma 4 31B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.00000014",
+   "completion": "0.0000004",
+   "discount": 0
+  },
+  "provider_name": "Novita",
+  "tag": "novita/bf16",
+  "service_tier": null,
+  "quantization": "bf16",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "seed",
+   "top_k",
+   "repetition_penalty",
+   "tools",
+   "tool_choice",
+   "response_format",
+   "logprobs",
+   "top_logprobs",
+   "structured_outputs"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 94.78804725503822,
+  "supports_implicit_caching": false,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1057,
+   "p75": 1716.5,
+   "p90": 3203.6000000000004,
+   "p99": 9800.300000000003
+  },
+  "throughput_last_30m": {
+   "p50": 17,
+   "p75": 12,
+   "p90": 9,
+   "p99": 7
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1057,
+     "p75": 1716.5,
+     "p90": 3203.6000000000004,
+     "p99": 9800.300000000003
+    },
+    "throughput": {
+     "p50": 17,
+     "p75": 12,
+     "p90": 9,
+     "p99": 7
+    },
+    "request_count": 5695
+   }
+  }
+ },
+ {
+  "name": "Parasail | google/gemma-4-31b-it-20260402",
+  "model_id": "google/gemma-4-31b-it",
+  "model_name": "Google: Gemma 4 31B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.00000015",
+   "completion": "0.0000004",
+   "input_cache_read": "0.00000006",
+   "discount": 0
+  },
+  "provider_name": "Parasail",
+  "tag": "parasail/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "seed",
+   "stop",
+   "top_k",
+   "logit_bias",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 866,
+   "p75": 1455,
+   "p90": 2126,
+   "p99": 4238.970000000005
+  },
+  "throughput_last_30m": {
+   "p50": 24,
+   "p75": 19,
+   "p90": 16,
+   "p99": 10
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 866,
+     "p75": 1455,
+     "p90": 2126,
+     "p99": 4238.970000000005
+    },
+    "throughput": {
+     "p50": 24,
+     "p75": 19,
+     "p90": 16,
+     "p99": 10
+    },
+    "request_count": 15617
+   }
+  }
+ },
+ {
+  "name": "DeepInfra | google/gemma-4-31b-it-20260402",
+  "model_id": "google/gemma-4-31b-it",
+  "model_name": "Google: Gemma 4 31B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.00000016",
+   "completion": "0.00000032",
+   "discount": 0
+  },
+  "provider_name": "DeepInfra",
+  "tag": "deepinfra/fp8/flex",
+  "service_tier": "flex",
+  "quantization": "fp8",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "top_k",
+   "seed",
+   "min_p",
+   "logit_bias",
+   "response_format",
+   "structured_outputs"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": null,
+  "uptime_last_5m": null,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": false,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1372,
+   "p75": 1838.25,
+   "p90": 3485.3999999999996,
+   "p99": 5210.339999999999
+  },
+  "throughput_last_30m": {
+   "p50": 32,
+   "p75": 28.5,
+   "p90": 24,
+   "p99": 17.7
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1372,
+     "p75": 1838.25,
+     "p90": 3485.3999999999996,
+     "p99": 5210.339999999999
+    },
+    "throughput": {
+     "p50": 32,
+     "p75": 28.5,
+     "p90": 24,
+     "p99": 17.7
+    },
+    "request_count": 8
+   }
+  }
+ },
+ {
+  "name": "DeepInfra | google/gemma-4-31b-it-20260402",
+  "model_id": "google/gemma-4-31b-it",
+  "model_name": "Google: Gemma 4 31B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.0000002",
+   "completion": "0.0000004",
+   "discount": 0
+  },
+  "provider_name": "DeepInfra",
+  "tag": "deepinfra/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 16384,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "top_k",
+   "seed",
+   "min_p",
+   "tool_choice",
+   "tools",
+   "response_format",
+   "structured_outputs",
+   "logit_bias"
+  ],
+  "supports_tool_choice": {
+   "none": false,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.370188943317,
+  "supports_implicit_caching": false,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 564,
+   "p75": 1202,
+   "p90": 2047.9000000000005,
+   "p99": 5427.710000000003
+  },
+  "throughput_last_30m": {
+   "p50": 34,
+   "p75": 27,
+   "p90": 20,
+   "p99": 8
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 564,
+     "p75": 1202,
+     "p90": 2047.9000000000005,
+     "p99": 5427.710000000003
+    },
+    "throughput": {
+     "p50": 34,
+     "p75": 27,
+     "p90": 20,
+     "p99": 8
+    },
+    "request_count": 14305
+   }
+  }
+ },
+ {
+  "name": "DeepInfra | google/gemma-4-31b-it-20260402",
+  "model_id": "google/gemma-4-31b-it",
+  "model_name": "Google: Gemma 4 31B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.0000003",
+   "completion": "0.0000006",
+   "discount": 0
+  },
+  "provider_name": "DeepInfra",
+  "tag": "deepinfra/fp8/priority",
+  "service_tier": "priority",
+  "quantization": "fp8",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "top_k",
+   "seed",
+   "min_p",
+   "logit_bias",
+   "response_format",
+   "structured_outputs"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 98.9766081871345,
+  "supports_implicit_caching": false,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 535,
+   "p75": 1216,
+   "p90": 1703,
+   "p99": 3845.2700000000004
+  },
+  "throughput_last_30m": {
+   "p50": 32,
+   "p75": 26,
+   "p90": 21,
+   "p99": 12
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 535,
+     "p75": 1216,
+     "p90": 1703,
+     "p99": 3845.2700000000004
+    },
+    "throughput": {
+     "p50": 32,
+     "p75": 26,
+     "p90": 21,
+     "p99": 12
+    },
+    "request_count": 17050
+   }
+  }
+ },
+ {
+  "name": "Io Net | google/gemma-4-31b-it-20260402",
+  "model_id": "google/gemma-4-31b-it",
+  "model_name": "Google: Gemma 4 31B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.000000361",
+   "completion": "0.0000010925",
+   "input_cache_read": "0.0000001805",
+   "discount": 0.05
+  },
+  "provider_name": "Io Net",
+  "tag": "io-net",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 16384,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "response_format",
+   "logprobs",
+   "top_logprobs",
+   "tools",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": false,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 97.87878787878788,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 881,
+   "p75": 1142.75,
+   "p90": 1849.9999999999995,
+   "p99": 10291.669999999987
+  },
+  "throughput_last_30m": {
+   "p50": 33,
+   "p75": 31,
+   "p90": 27.8,
+   "p99": 8.940000000000001
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 881,
+     "p75": 1142.75,
+     "p90": 1849.9999999999995,
+     "p99": 10291.669999999987
+    },
+    "throughput": {
+     "p50": 33,
+     "p75": 31,
+     "p90": 27.8,
+     "p99": 8.940000000000001
+    },
+    "request_count": 150
+   }
+  }
+ },
+ {
+  "name": "SambaNova | google/gemma-4-31b-it-20260402",
+  "model_id": "google/gemma-4-31b-it",
+  "model_name": "Google: Gemma 4 31B",
+  "context_length": 131072,
+  "pricing": {
+   "prompt": "0.00000038",
+   "completion": "0.00000115",
+   "discount": 0
+  },
+  "provider_name": "SambaNova",
+  "tag": "sambanova",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 117964,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "top_k",
+   "stop",
+   "tools",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": false,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": -5,
+  "uptime_last_30m": 57.89473684210527,
+  "uptime_last_5m": 80,
+  "uptime_last_1d": 85.81016299137104,
+  "supports_implicit_caching": false,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 2279,
+   "p75": 7269.5,
+   "p90": 12302.199999999999,
+   "p99": 17541.559999999998
+  },
+  "throughput_last_30m": {
+   "p50": 158,
+   "p75": 96,
+   "p90": 42,
+   "p99": 12.879999999999999
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 2279,
+     "p75": 7269.5,
+     "p90": 12302.199999999999,
+     "p99": 17541.559999999998
+    },
+    "throughput": {
+     "p50": 158,
+     "p75": 96,
+     "p90": 42,
+     "p99": 12.879999999999999
+    },
+    "request_count": 263
+   }
+  }
+ },
+ {
+  "name": "ModelRun | google/gemma-4-31b-it-20260402",
+  "model_id": "google/gemma-4-31b-it",
+  "model_name": "Google: Gemma 4 31B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.00000075",
+   "completion": "0.000001",
+   "input_cache_read": "0.0000002",
+   "discount": 0
+  },
+  "provider_name": "ModelRun",
+  "tag": "modelrun/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "presence_penalty",
+   "repetition_penalty",
+   "frequency_penalty",
+   "top_p",
+   "top_k",
+   "stop",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 289.5,
+   "p75": 491,
+   "p90": 771,
+   "p99": 2214.040000000008
+  },
+  "throughput_last_30m": {
+   "p50": 72,
+   "p75": 58,
+   "p90": 45,
+   "p99": 23
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 289.5,
+     "p75": 491,
+     "p90": 771,
+     "p99": 2214.040000000008
+    },
+    "throughput": {
+     "p50": 72,
+     "p75": 58,
+     "p90": 45,
+     "p99": 23
+    },
+    "request_count": 58678
+   }
+  }
+ },
+ {
+  "name": "SiliconFlow | google/gemma-4-31b-it-20260402",
+  "model_id": "google/gemma-4-31b-it",
+  "model_name": "Google: Gemma 4 31B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.00000075",
+   "completion": "0.000001",
+   "input_cache_read": "0.00000025",
+   "discount": 0
+  },
+  "provider_name": "SiliconFlow",
+  "tag": "siliconflow/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "top_k",
+   "frequency_penalty",
+   "max_tokens",
+   "response_format",
+   "structured_outputs",
+   "tool_choice",
+   "tools"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 95.7405614714424,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 3486,
+   "p75": 5412,
+   "p90": 7073.800000000001,
+   "p99": 13731.000000000005
+  },
+  "throughput_last_30m": {
+   "p50": 29,
+   "p75": 22,
+   "p90": 15,
+   "p99": 7
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 3486,
+     "p75": 5412,
+     "p90": 7073.800000000001,
+     "p99": 13731.000000000005
+    },
+    "throughput": {
+     "p50": 29,
+     "p75": 22,
+     "p90": 15,
+     "p99": 7
+    },
+    "request_count": 2155
+   }
+  }
+ }
+]

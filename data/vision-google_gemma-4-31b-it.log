@@ -1,0 +1,19 @@
+spent $0.3256
+endpoint                       36px   24px   16px   12px    9px    7px  prompt_tok  flags
+chutes__fp4                    100%   100%   100%   100%     0%     0%         328  
+coreweave__fp4                 100%   100%   100%   100%     0%     0%         330  
+crusoe__bf16                   100%   100%   100%   100%     0%     0%         328  
+deepinfra__fp8                 100%   100%   100%   100%     0%     0%         328  
+deepinfra__fp8__flex           100%   100%   100%   100%     0%     0%         328  
+deepinfra__fp8__priority       100%   100%   100%   100%     0%     0%         328  
+deepinfra__turbo               100%   100%   100%   100%     0%     0%         328  
+dekallm                        100%   100%   100%    92%     0%     0%         328  
+friendli                       100%   100%   100%   100%     0%     0%         328  
+io-net                         100%   100%   100%   100%     0%     0%         328  
+modelrun__fp4                  100%   100%   100%    92%     0%     0%         328  
+novita__bf16                   100%   100%    50%     0%     0%     0%         193  bills 193 prompt tokens for the image where its peers bill 328 (image downscaled?); reads codes down to 24 px where its peers read 12 px
+parasail__fp8                  100%   100%   100%   100%     0%     0%         328  
+sambanova                      100%   100%   100%   100%     0%     0%         328  
+siliconflow__fp8               100%   100%   100%   100%     0%     0%         328  
+venice__fp4                  error: {"error":{"message":"No endpoints found for google/gemma-4-31b-it. Every candidate endpoin
+wrote results/vision/google__gemma-4-31b-it.json

@@ -1,0 +1,23 @@
+{
+ "model_key": "minimax__minimax-m3",
+ "endpoints": 12,
+ "pairs": 66,
+ "groups": [],
+ "max_other_share": 0.16666666666666666,
+ "same_pairs": [],
+ "self_repeat": {
+  "coreweave__fp4": 0.8333333333333334,
+  "deepinfra__fp8": 0.0,
+  "deepinfra__fp8__flex": 0.0,
+  "gmicloud__fp8": 0.0,
+  "mara": 1.0,
+  "minimax": 0.0,
+  "modelrun__fp8": 0.3333333333333333,
+  "novita__fp8": 0.0,
+  "parasail__fp8": 1.0,
+  "streamlake__fp8": 0.0,
+  "together": 0.0,
+  "venice__fp8": 0.0
+ },
+ "near_pairs": []
+}

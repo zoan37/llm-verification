@@ -1,0 +1,767 @@
+{
+ "model": "qwen/qwen3.8-27b",
+ "cases": 8,
+ "crowd_tokens": {
+  "chars": {
+   "low": 464.5,
+   "medium": 533.5,
+   "high": 531.0
+  },
+  "tokens": {}
+ },
+ "endpoints": {
+  "akashml__fp8": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 0.875,
+     "reasoning_chars_median": 409.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 205.0,
+     "billed_completion_tokens_median": 429.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.0
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 730.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 246.0,
+     "billed_completion_tokens_median": 475.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.97
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 730.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 246.0,
+     "billed_completion_tokens_median": 475.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.97
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "alibaba": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 531.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 227.0,
+     "billed_completion_tokens_median": 399.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.34
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 498.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 208.5,
+     "billed_completion_tokens_median": 459.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.39
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 392.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 218.5,
+     "billed_completion_tokens_median": 466.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 1.79
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "cerebras__fp16": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 545.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 239.5,
+     "billed_completion_tokens_median": 428.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.28
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 522.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 274.5,
+     "billed_completion_tokens_median": 534.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 1.9
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 522.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 274.5,
+     "billed_completion_tokens_median": 534.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 1.9
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "chutes__fp8": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 464.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 0.0,
+     "billed_completion_tokens_median": 406.0,
+     "truncated": 0
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 561.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 0.0,
+     "billed_completion_tokens_median": 484.0,
+     "truncated": 0
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 517.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 0.0,
+     "billed_completion_tokens_median": 486.0,
+     "truncated": 0
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "cloudflare": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 446.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 122.5,
+     "billed_completion_tokens_median": 395.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.64
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 531.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 143.5,
+     "billed_completion_tokens_median": 449.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.7
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 531.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 143.5,
+     "billed_completion_tokens_median": 449.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.7
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "coreweave__fp8": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 0.875,
+     "reasoning_chars_median": 461.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 197.0,
+     "billed_completion_tokens_median": 405.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.34
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 557.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 229.5,
+     "billed_completion_tokens_median": 443.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.43
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 543.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 240.0,
+     "billed_completion_tokens_median": 475.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.26
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "darkbloom__fp4": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 496.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 231.5,
+     "billed_completion_tokens_median": 460.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.14
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 588.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 301.5,
+     "billed_completion_tokens_median": 580.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 1.95
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 0.75,
+     "reasoning_chars_median": 672.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 284.0,
+     "billed_completion_tokens_median": 534.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.37
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "deepinfra__bf16": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 0.875,
+     "reasoning_chars_median": 453.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 128.0,
+     "billed_completion_tokens_median": 437.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.54
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 0.875,
+     "reasoning_chars_median": 520.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 138.5,
+     "billed_completion_tokens_median": 509.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.75
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 515.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 142.0,
+     "billed_completion_tokens_median": 479.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.63
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "dekallm": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 518.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 235.5,
+     "billed_completion_tokens_median": 406.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.2
+    },
+    "medium": {
+     "n": 7,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 485,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 215,
+     "billed_completion_tokens_median": 458,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.26
+    },
+    "high": {
+     "n": 4,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 788.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 273.0,
+     "billed_completion_tokens_median": 552.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.89
+    }
+   },
+   "errors": 5,
+   "flags": []
+  },
+  "ionstream__fp8": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 489.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 208.5,
+     "billed_completion_tokens_median": 405.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.35
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 517.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 228.0,
+     "billed_completion_tokens_median": 438.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.27
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 531.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 233.0,
+     "billed_completion_tokens_median": 450.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.28
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "mancer__fp8": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 446.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 122.5,
+     "billed_completion_tokens_median": 441.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.64
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 536.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 145.5,
+     "billed_completion_tokens_median": 520.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.69
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 522.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 144.0,
+     "billed_completion_tokens_median": 552.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.63
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "modal": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 446.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 122.5,
+     "billed_completion_tokens_median": 397.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.64
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 531.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 143.5,
+     "billed_completion_tokens_median": 449.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.7
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 531.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 143.5,
+     "billed_completion_tokens_median": 449.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.7
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "modelrun__fp4": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 387.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 203.5,
+     "billed_completion_tokens_median": 353.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 1.9
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 0.875,
+     "reasoning_chars_median": 519.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 232.5,
+     "billed_completion_tokens_median": 415.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.23
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 519.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 232.5,
+     "billed_completion_tokens_median": 410.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.23
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "near-ai__fp8": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 477.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 208.0,
+     "billed_completion_tokens_median": 413.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.3
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 601.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 288.5,
+     "billed_completion_tokens_median": 532.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.08
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 512.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 269.5,
+     "billed_completion_tokens_median": 477.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 1.9
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "novita": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 490.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 210.0,
+     "billed_completion_tokens_median": 402.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.33
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 448.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 204.0,
+     "billed_completion_tokens_median": 458.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.2
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 517.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 218.0,
+     "billed_completion_tokens_median": 430.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.37
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "parasail__fp8": {
+   "efforts": {
+    "low": {
+     "n": 3,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 359,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 206,
+     "billed_completion_tokens_median": 432,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 1.74
+    },
+    "medium": {
+     "n": 3,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 485,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 214,
+     "billed_completion_tokens_median": 458,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.27
+    },
+    "high": {
+     "n": 1,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 721,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 273,
+     "billed_completion_tokens_median": 545,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.64
+    }
+   },
+   "errors": 17,
+   "flags": []
+  },
+  "phala": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 89.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 30.0,
+     "billed_completion_tokens_median": 225.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.97
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 637.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 219.0,
+     "billed_completion_tokens_median": 353.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.91
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 734.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 337.0,
+     "billed_completion_tokens_median": 483.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.18
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "reka__fp8": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 475.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 216.0,
+     "billed_completion_tokens_median": 412.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.2
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 632.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 290.5,
+     "billed_completion_tokens_median": 545.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.18
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 673.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 313.5,
+     "billed_completion_tokens_median": 546.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.15
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "tenstorrent__fp4": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 462.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 204.0,
+     "billed_completion_tokens_median": 417.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.27
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 533.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 268.0,
+     "billed_completion_tokens_median": 536.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 1.99
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 519.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 276.0,
+     "billed_completion_tokens_median": 554.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 1.88
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "venice__fp8": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 531.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 172.0,
+     "billed_completion_tokens_median": 260.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.09
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 646.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 203.5,
+     "billed_completion_tokens_median": 272.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.17
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 557.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 169.5,
+     "billed_completion_tokens_median": 273.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 3.29
+    }
+   },
+   "errors": 0,
+   "flags": []
+  },
+  "wafer__fp8": {
+   "efforts": {
+    "low": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 510.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 223.0,
+     "billed_completion_tokens_median": 414.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.29
+    },
+    "medium": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 542.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 277.5,
+     "billed_completion_tokens_median": 527.5,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 1.95
+    },
+    "high": {
+     "n": 8,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 541.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 260.0,
+     "billed_completion_tokens_median": 496.0,
+     "truncated": 0,
+     "reasoning_chars_per_billed_token": 2.08
+    }
+   },
+   "errors": 0,
+   "flags": []
+  }
+ }
+}

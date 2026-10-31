@@ -83,23 +83,46 @@ if start < a.budget_usd:
         list(pool.map(run, eps))
 print(f"spent ${openrouter.usage_usd() - start:.4f}")
 
+def measure(v):
+    """How much an endpoint reasoned at one level: returned reasoning characters when it returns reasoning (billing
+    can differ from what was generated), else billed completion tokens. -> (value, unit)"""
+    if v["reasoning_returned_share"] >= 0.5 and v["reasoning_chars_median"]:
+        return v["reasoning_chars_median"], "chars"
+    return v["billed_completion_tokens_median"], "tokens"
+
+
 def crowd_levels(summary):
-    """Cross-endpoint median of each effort level's median billed completion tokens."""
-    return {e: st.median(v) for e in efforts
-            if (v := [s["efforts"][e]["billed_completion_tokens_median"] for s in summary.values()
-                      if e in s["efforts"] and s["efforts"][e]["billed_completion_tokens_median"]])}
+    """Cross-endpoint median of each effort level's median, per unit."""
+    out = {"chars": {}, "tokens": {}}
+    for unit in out:
+        for e in efforts:
+            vals = [m for s in summary.values() if e in s["efforts"]
+                    for m, u in [measure(s["efforts"][e])] if u == unit and m]
+            if len(vals) >= 3:
+                out[unit][e] = st.median(vals)
+    return out
 
 
-def remap_flags(row, crowd, factor=1.4):
-    """Effort levels that sit nearer another level of the crowd than their own, and more than `factor` off it."""
+def effort_flags(row, crowds, factor=1.4):
+    """Effort ignored (when the crowd itself scales), or a level that sits nearer another level of the crowd."""
     out = []
+    if "low" in row and "high" in row:
+        (lo, ul), (hi, uh) = measure(row["low"]), measure(row["high"])
+        c = crowds[ul]
+        if ul == uh and "low" in c and "high" in c and c["high"] >= 1.5 * c["low"] and hi <= 1.2 * lo:
+            out.append("effort setting has little effect on how much it reasons")
     for eff, v in row.items():
-        tok = v["billed_completion_tokens_median"]
-        if not tok or eff not in crowd or len(crowd) < 2:
+        val, unit = measure(v)
+        crowd = crowds[unit]
+        if not val or eff not in crowd or len(crowd) < 2:
             continue
-        near = min(crowd, key=lambda e: abs(math.log(tok / crowd[e])))
-        if near != eff and abs(math.log(tok / crowd[eff])) > math.log(factor):
-            out.append(f"'{eff}' reasons like everyone else's '{near}' ({tok:.0f} vs {crowd[near]:.0f} median tokens)")
+        levels = [crowd[e] for e in efforts if e in crowd]
+        if any(b < factor * a for a, b in zip(levels, levels[1:])):
+            continue  # the crowd itself does not separate the levels (e.g. Qwen3.8): nothing to be mistaken for
+        near = min(crowd, key=lambda e: abs(math.log(val / crowd[e])))
+        d_own, d_near = abs(math.log(val / crowd[eff])), abs(math.log(val / crowd[near]))
+        if near != eff and d_own > max(math.log(factor), 2 * d_near):
+            out.append(f"'{eff}' reasons like everyone else's '{near}' ({val:.0f} vs {crowd[near]:.0f} median {unit})")
     return out
 
 
@@ -121,10 +144,6 @@ for f in sorted(raw_dir.glob("*.jsonl.gz")):
                     "billed_completion_tokens_median": st.median([(r.get("usage") or {}).get("completion_tokens") or 0 for r in rs]),
                     "truncated": sum(1 for r in rs if r.get("finish_reason") == "length")}
     flags = []
-    if "low" in row and "high" in row:
-        lo, hi = row["low"], row["high"]
-        if hi["billed_completion_tokens_median"] <= 1.2 * lo["billed_completion_tokens_median"]:
-            flags.append("effort setting has little effect on how much it reasons")
     for eff, v in row.items():
         if v["billed_reasoning_tokens_median"] and v["reasoning_chars_median"] == 0:
             flags.append(f"{eff}: bills reasoning tokens but returns no reasoning")
@@ -136,7 +155,7 @@ for f in sorted(raw_dir.glob("*.jsonl.gz")):
     summary[f.name[: -len(".jsonl.gz")]] = {"efforts": row, "errors": sum(1 for r in recs if "error" in r), "flags": flags}
 crowd = crowd_levels(summary)
 for s in summary.values():
-    s["flags"] += remap_flags(s["efforts"], crowd)
+    s["flags"] += effort_flags(s["efforts"], crowd)
 dest = Path("results/reasoning") / f"{key}.json"
 dest.parent.mkdir(parents=True, exist_ok=True)
 dest.write_text(json.dumps({"model": a.model, "cases": len(CASES), "crowd_tokens": crowd, "endpoints": summary}, indent=1))

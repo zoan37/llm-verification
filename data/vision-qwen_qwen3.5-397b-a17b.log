@@ -1,0 +1,13 @@
+spent $0.3522
+endpoint                       36px   24px   16px   12px    9px    7px  prompt_tok  flags
+alibaba                        100%   100%   100%   100%    92%    17%        2375  
+atlas-cloud__fp8               100%   100%   100%   100%    92%    17%        2375  
+deepinfra__fp8                 100%   100%   100%   100%    17%     8%        1032  bills 1032 prompt tokens for the image where its peers bill 2375 (image downscaled?); reads codes down to 12 px where its peers read 9.0 px
+digitalocean                   100%   100%   100%   100%    83%    25%        2375  
+gmicloud__fp8                  100%   100%   100%   100%    92%    25%        2373  
+novita                         100%   100%   100%   100%    92%    17%        2375  
+parasail__fp8                  100%   100%   100%   100%    92%    17%        2375  
+phala                          100%   100%   100%   100%    83%    17%        2375  
+streamlake                     100%   100%   100%   100%    83%    17%        2375  
+venice                         100%   100%   100%   100%    92%    17%        2375  
+wrote results/vision/qwen__qwen3.5-397b-a17b.json

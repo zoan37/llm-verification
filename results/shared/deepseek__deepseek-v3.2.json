@@ -1,0 +1,32 @@
+{
+ "model_key": "deepseek__deepseek-v3.2",
+ "endpoints": 8,
+ "pairs": 21,
+ "groups": [
+  [
+   "mara",
+   "sambanova"
+  ]
+ ],
+ "max_other_share": 0.2,
+ "same_pairs": [
+  {
+   "a": "mara",
+   "b": "sambanova",
+   "identical": 6,
+   "compared": 6,
+   "share": 1.0
+  }
+ ],
+ "self_repeat": {
+  "atlas-cloud__fp8": 0.0,
+  "deepinfra__fp4": 0.0,
+  "digitalocean": 0.0,
+  "gmicloud__fp8": 0.0,
+  "mara": 1.0,
+  "phala": 0.3333333333333333,
+  "sambanova": 1.0,
+  "siliconflow__fp8": 0.0
+ },
+ "near_pairs": []
+}

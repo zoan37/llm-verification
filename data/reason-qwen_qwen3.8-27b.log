@@ -1,0 +1,25 @@
+qwen/qwen3.8-27b: 21 endpoints support reasoning
+spent $1.8637
+endpoint                                              low                     medium                       high  flags
+akashml__fp8                       acc 88% tok 430 rc 409    acc 100% tok 475 rc 730    acc 100% tok 475 rc 730  effort setting has little effect on how much it reasons
+alibaba                           acc 100% tok 399 rc 532    acc 100% tok 460 rc 498    acc 100% tok 466 rc 392  effort setting has little effect on how much it reasons
+cerebras__fp16                    acc 100% tok 428 rc 546    acc 100% tok 534 rc 522    acc 100% tok 534 rc 522  
+chutes__fp8                       acc 100% tok 406 rc 464    acc 100% tok 484 rc 561    acc 100% tok 486 rc 517  effort setting has little effect on how much it reasons
+cloudflare                        acc 100% tok 395 rc 446    acc 100% tok 449 rc 531    acc 100% tok 449 rc 531  effort setting has little effect on how much it reasons
+coreweave__fp8                     acc 88% tok 406 rc 461    acc 100% tok 443 rc 557    acc 100% tok 476 rc 543  effort setting has little effect on how much it reasons
+darkbloom__fp4                    acc 100% tok 460 rc 496    acc 100% tok 580 rc 588     acc 75% tok 534 rc 672  effort setting has little effect on how much it reasons
+deepinfra__bf16                    acc 88% tok 438 rc 453     acc 88% tok 510 rc 520    acc 100% tok 479 rc 516  effort setting has little effect on how much it reasons
+dekallm                           acc 100% tok 406 rc 518    acc 100% tok 458 rc 485    acc 100% tok 552 rc 788   (errors 5)
+ionstream__fp8                    acc 100% tok 406 rc 489    acc 100% tok 438 rc 517    acc 100% tok 450 rc 531  effort setting has little effect on how much it reasons
+mancer__fp8                       acc 100% tok 441 rc 446    acc 100% tok 520 rc 536    acc 100% tok 552 rc 522  
+modal                             acc 100% tok 398 rc 446    acc 100% tok 450 rc 531    acc 100% tok 450 rc 531  effort setting has little effect on how much it reasons
+modelrun__fp4                     acc 100% tok 353 rc 388     acc 88% tok 415 rc 520    acc 100% tok 410 rc 520  effort setting has little effect on how much it reasons
+near-ai__fp8                      acc 100% tok 414 rc 478    acc 100% tok 532 rc 602    acc 100% tok 478 rc 512  effort setting has little effect on how much it reasons
+novita                            acc 100% tok 402 rc 490    acc 100% tok 458 rc 448    acc 100% tok 430 rc 518  effort setting has little effect on how much it reasons
+parasail__fp8                     acc 100% tok 432 rc 359    acc 100% tok 458 rc 485    acc 100% tok 545 rc 721   (errors 17)
+phala                              acc 100% tok 226 rc 89    acc 100% tok 354 rc 638    acc 100% tok 483 rc 734  
+reka__fp8                         acc 100% tok 412 rc 476    acc 100% tok 546 rc 632    acc 100% tok 546 rc 673  
+tenstorrent__fp4                  acc 100% tok 418 rc 462    acc 100% tok 536 rc 534    acc 100% tok 554 rc 520  
+venice__fp8                       acc 100% tok 260 rc 531    acc 100% tok 272 rc 646    acc 100% tok 273 rc 557  effort setting has little effect on how much it reasons; 'medium' reasons like everyone else's 'low' (272 vs 406 median tokens); 'high' reasons like everyone else's 'low' (273 vs 406 median tokens)
+wafer__fp8                        acc 100% tok 414 rc 510    acc 100% tok 528 rc 542    acc 100% tok 496 rc 542  effort setting has little effect on how much it reasons
+wrote results/reasoning/qwen__qwen3.8-27b.json

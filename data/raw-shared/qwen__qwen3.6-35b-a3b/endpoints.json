@@ -1,0 +1,805 @@
+[
+ {
+  "name": "Darkbloom | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.00000005",
+   "completion": "0.0000007",
+   "input_cache_read": "0.000000025",
+   "discount": 0
+  },
+  "provider_name": "Darkbloom",
+  "tag": "darkbloom/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 32768,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "top_k",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "stop",
+   "seed",
+   "max_tokens",
+   "response_format",
+   "structured_outputs",
+   "logprobs",
+   "top_logprobs",
+   "tools",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 98.57142857142858,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 728.5,
+   "p75": 1209,
+   "p90": 2153.7000000000016,
+   "p99": 4921.320000000018
+  },
+  "throughput_last_30m": {
+   "p50": 70,
+   "p75": 57,
+   "p90": 45,
+   "p99": 23.89
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 728.5,
+     "p75": 1209,
+     "p90": 2153.7000000000016,
+     "p99": 4921.320000000018
+    },
+    "throughput": {
+     "p50": 70,
+     "p75": 57,
+     "p90": 45,
+     "p99": 23.89
+    },
+    "request_count": 2738
+   }
+  }
+ },
+ {
+  "name": "AkashML | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.0000001",
+   "completion": "0.0000009",
+   "input_cache_read": "0.00000005",
+   "discount": 0
+  },
+  "provider_name": "AkashML",
+  "tag": "akashml/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "top_k",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "seed",
+   "max_tokens",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 667,
+   "p75": 850,
+   "p90": 1077,
+   "p99": 1811.5400000000009
+  },
+  "throughput_last_30m": {
+   "p50": 68,
+   "p75": 52,
+   "p90": 38,
+   "p99": 23
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 667,
+     "p75": 850,
+     "p90": 1077,
+     "p99": 1811.5400000000009
+    },
+    "throughput": {
+     "p50": 68,
+     "p75": 52,
+     "p90": 38,
+     "p99": 23
+    },
+    "request_count": 22254
+   }
+  }
+ },
+ {
+  "name": "Parasail | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.0000001",
+   "completion": "0.0000009",
+   "input_cache_read": "0.000000025",
+   "discount": 0
+  },
+  "provider_name": "Parasail",
+  "tag": "parasail/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "seed",
+   "stop",
+   "top_k",
+   "logit_bias",
+   "structured_outputs",
+   "response_format",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs"
+  ],
+  "supports_tool_choice": {
+   "none": false,
+   "auto": true,
+   "required": false,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 535,
+   "p75": 715,
+   "p90": 940.9000000000005,
+   "p99": 1835
+  },
+  "throughput_last_30m": {
+   "p50": 60,
+   "p75": 42,
+   "p90": 31,
+   "p99": 18
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 535,
+     "p75": 715,
+     "p90": 940.9000000000005,
+     "p99": 1835
+    },
+    "throughput": {
+     "p50": 60,
+     "p75": 42,
+     "p90": 31,
+     "p99": 18
+    },
+    "request_count": 50551
+   }
+  }
+ },
+ {
+  "name": "DeepInfra | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.0000001",
+   "completion": "0.00000095",
+   "input_cache_read": "0.0000001",
+   "discount": 0
+  },
+  "provider_name": "DeepInfra",
+  "tag": "deepinfra/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 65536,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "top_k",
+   "seed",
+   "min_p",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "response_format",
+   "logit_bias"
+  ],
+  "supports_tool_choice": {
+   "none": false,
+   "auto": true,
+   "required": false,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 96.70619235836627,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1254,
+   "p75": 2215.5,
+   "p90": 4831,
+   "p99": 9523.380000000008
+  },
+  "throughput_last_30m": {
+   "p50": 16,
+   "p75": 9,
+   "p90": 7,
+   "p99": 6
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1254,
+     "p75": 2215.5,
+     "p90": 4831,
+     "p99": 9523.380000000008
+    },
+    "throughput": {
+     "p50": 16,
+     "p75": 9,
+     "p90": 7,
+     "p99": 6
+    },
+    "request_count": 155
+   }
+  }
+ },
+ {
+  "name": "CoreWeave | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.0000001",
+   "completion": "0.00000095",
+   "input_cache_read": "0.00000005",
+   "discount": 0
+  },
+  "provider_name": "CoreWeave",
+  "tag": "coreweave/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "top_k",
+   "repetition_penalty",
+   "frequency_penalty",
+   "presence_penalty",
+   "stop",
+   "seed",
+   "response_format",
+   "structured_outputs",
+   "logprobs",
+   "top_logprobs"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 714,
+   "p75": 2516.5,
+   "p90": 3869.9999999999995,
+   "p99": 7054.619999999984
+  },
+  "throughput_last_30m": {
+   "p50": 130,
+   "p75": 107,
+   "p90": 86,
+   "p99": 50
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 714,
+     "p75": 2516.5,
+     "p90": 3869.9999999999995,
+     "p99": 7054.619999999984
+    },
+    "throughput": {
+     "p50": 130,
+     "p75": 107,
+     "p90": 86,
+     "p99": 50
+    },
+    "request_count": 2635
+   }
+  }
+ },
+ {
+  "name": "DekaLLM | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.0000001",
+   "completion": "0.000001",
+   "input_cache_read": "0.00000005",
+   "discount": 0
+  },
+  "provider_name": "DekaLLM",
+  "tag": "dekallm",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "frequency_penalty",
+   "logit_bias",
+   "max_tokens",
+   "presence_penalty",
+   "seed",
+   "stop",
+   "temperature",
+   "top_p",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "structured_outputs",
+   "response_format"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.93041057759221,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 722.5,
+   "p75": 1855.5,
+   "p90": 3176.800000000001,
+   "p99": 6569.420000000002
+  },
+  "throughput_last_30m": {
+   "p50": 134,
+   "p75": 98,
+   "p90": 69,
+   "p99": 26.560000000000002
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 722.5,
+     "p75": 1855.5,
+     "p90": 3176.800000000001,
+     "p99": 6569.420000000002
+    },
+    "throughput": {
+     "p50": 134,
+     "p75": 98,
+     "p90": 69,
+     "p99": 26.560000000000002
+    },
+    "request_count": 4334
+   }
+  }
+ },
+ {
+  "name": "Venice | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 256000,
+  "pricing": {
+   "prompt": "0.0000001",
+   "completion": "0.000001",
+   "discount": 0
+  },
+  "provider_name": "Venice",
+  "tag": "venice/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 65536,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "top_k",
+   "tools",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 98.91598915989161,
+  "supports_implicit_caching": false,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1189,
+   "p75": 1511,
+   "p90": 5590.000000000002,
+   "p99": 14863.39999999995
+  },
+  "throughput_last_30m": {
+   "p50": 8,
+   "p75": 7,
+   "p90": 5,
+   "p99": 4
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1189,
+     "p75": 1511,
+     "p90": 5590.000000000002,
+     "p99": 14863.39999999995
+    },
+    "throughput": {
+     "p50": 8,
+     "p75": 7,
+     "p90": 5,
+     "p99": 4
+    },
+    "request_count": 273
+   }
+  }
+ },
+ {
+  "name": "Phala | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.0000002",
+   "completion": "0.00000127",
+   "input_cache_read": "0.000000056",
+   "discount": 0
+  },
+  "provider_name": "Phala",
+  "tag": "phala",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "seed",
+   "top_k",
+   "min_p",
+   "repetition_penalty",
+   "structured_outputs",
+   "tools",
+   "logprobs",
+   "top_logprobs",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 956.5,
+   "p75": 1139.5,
+   "p90": 13775.5,
+   "p99": 19035.75
+  },
+  "throughput_last_30m": {
+   "p50": 139.5,
+   "p75": 90,
+   "p90": 63,
+   "p99": 40.66
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 956.5,
+     "p75": 1139.5,
+     "p90": 13775.5,
+     "p99": 19035.75
+    },
+    "throughput": {
+     "p50": 139.5,
+     "p75": 90,
+     "p90": 63,
+     "p99": 40.66
+    },
+    "request_count": 356
+   }
+  }
+ },
+ {
+  "name": "SiliconFlow | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.00000024",
+   "completion": "0.0000018",
+   "input_cache_read": "0.00000015",
+   "discount": 0
+  },
+  "provider_name": "SiliconFlow",
+  "tag": "siliconflow/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "top_k",
+   "frequency_penalty",
+   "repetition_penalty",
+   "presence_penalty",
+   "max_tokens",
+   "structured_outputs",
+   "response_format"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": null,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1473,
+   "p75": 2234.75,
+   "p90": 3177.3000000000006,
+   "p99": 5039.370000000001
+  },
+  "throughput_last_30m": {
+   "p50": 33,
+   "p75": 27,
+   "p90": 20.700000000000003,
+   "p99": 13.91
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1473,
+     "p75": 2234.75,
+     "p90": 3177.3000000000006,
+     "p99": 5039.370000000001
+    },
+    "throughput": {
+     "p50": 33,
+     "p75": 27,
+     "p90": 20.700000000000003,
+     "p99": 13.91
+    },
+    "request_count": 110
+   }
+  }
+ },
+ {
+  "name": "AtlasCloud | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.00000025",
+   "completion": "0.00000125",
+   "input_cache_read": "0.00000025",
+   "discount": 0
+  },
+  "provider_name": "AtlasCloud",
+  "tag": "atlas-cloud/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 65536,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "top_k",
+   "min_p",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "seed",
+   "logit_bias",
+   "response_format",
+   "tools",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": null,
+  "uptime_last_5m": null,
+  "uptime_last_1d": 99.70845481049562,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 503,
+   "p75": 4299,
+   "p90": 18722,
+   "p99": 21964.27999999999
+  },
+  "throughput_last_30m": {
+   "p50": 53,
+   "p75": 17.5,
+   "p90": 13.600000000000001,
+   "p99": 11.139999999999999
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 503,
+     "p75": 4299,
+     "p90": 18722,
+     "p99": 21964.27999999999
+    },
+    "throughput": {
+     "p50": 53,
+     "p75": 17.5,
+     "p90": 13.600000000000001,
+     "p99": 11.139999999999999
+    },
+    "request_count": 25
+   }
+  }
+ }
+]

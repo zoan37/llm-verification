@@ -1,0 +1,24 @@
+spent $0.4517
+endpoint                       36px   24px   16px   12px    9px    7px  prompt_tok  flags
+akashml__fp8                   100%   100%   100%   100%    83%    17%        2375  
+alibaba                        100%   100%   100%    92%    75%    17%        2375  
+cerebras__fp16                 100%   100%   100%   100%    92%    17%        2375  
+chutes__fp8                    100%   100%   100%   100%    83%    17%        2375  
+cloudflare                     100%   100%   100%   100%    92%    17%        2375  
+coreweave__fp8                 100%   100%   100%   100%    92%    17%        2375  
+darkbloom__fp4                 100%   100%   100%   100%    83%    17%        2375  
+deepinfra__bf16                100%   100%   100%   100%    92%    17%        2375  
+dekallm                        100%   100%   100%   100%    92%    17%        2375  
+ionstream__fp8                 100%   100%    83%    67%    25%     0%        1095  bills 1095 prompt tokens for the image where its peers bill 2375 (image downscaled?); reads codes down to 16 px where its peers read 9 px
+mancer__fp8                    100%   100%   100%   100%    92%    17%        2375  
+modal                          100%   100%   100%   100%    83%    17%        2375  
+modelrun__fp4                  100%   100%   100%   100%    75%    25%        2375  
+near-ai__fp8                   100%   100%   100%   100%    83%    17%        2375  
+novita                         100%   100%   100%    92%    75%    25%        2375  
+parasail__fp8                  100%   100%   100%   100%    88%    12%        2375  
+phala                          100%   100%   100%   100%    92%    17%        2375  
+reka__fp8                      100%   100%   100%   100%    92%    17%        2375  
+tenstorrent__fp4               100%   100%    83%    67%    42%     0%        1095  bills 1095 prompt tokens for the image where its peers bill 2375 (image downscaled?); reads codes down to 16 px where its peers read 9 px
+venice__fp8                    100%   100%   100%   100%    83%     8%        2375  
+wafer__fp8                     100%   100%   100%   100%    92%    17%        2375  
+wrote results/vision/qwen__qwen3.8-27b.json

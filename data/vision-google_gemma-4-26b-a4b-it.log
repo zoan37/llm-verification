@@ -1,0 +1,18 @@
+spent $0.0317
+endpoint                       36px   24px   16px   12px    9px    7px  prompt_tok  flags
+akashml__fp4                   100%   100%   100%    92%     0%     0%         328  
+cloudflare                   error: {"error":{"message":"No endpoints found for google/gemma-4-26b-a4b-it. Every candidate end
+coreweave__bf16                100%   100%   100%    92%     8%     0%         328  
+darkbloom                      100%   100%   100%    58%     0%     0%         352  reads codes down to 16 px where its peers read 12 px
+deepinfra__fp8               error: {"error":{"message":"No endpoints found for google/gemma-4-26b-a4b-it. Every candidate end
+dekallm__bf16                  100%   100%   100%    92%     8%     0%         328  
+google-vertex__global        error: {"error":{"message":"Provider returned error","code":502,"metadata":{"raw":"error code: 50
+io-net__bf16                   100%   100%   100%   100%     8%     0%         328  
+makora                         100%   100%   100%    83%     8%     0%         328  
+nextbit__bf16                  100%   100%   100%   100%     8%     0%         328  
+novita__bf16                 error: {"error":{"message":"Provider returned error","code":400,"metadata":{"raw":"{\"message\":\
+parasail__bf16                 100%   100%   100%    83%     8%     0%         328  
+primeintellect__bf16           100%   100%   100%    83%     8%     0%         328  
+siliconflow__fp8               100%   100%   100%    83%     0%     0%         328  
+venice__bf16                   100%   100%   100%    92%     8%     0%         328  
+wrote results/vision/google__gemma-4-26b-a4b-it.json

@@ -44,12 +44,15 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
 7. **Three gpt-oss-120b endpoints are one deployment.** Mara and SambaNova return byte-identical greedy replies on
    83 of 83 prompts, and DeepInfra (fp8, which failed during the first collection) matches both on 36 of 36
    (reasoning included, often 1,000+ characters), while no other pair of the 26 endpoints matches on more than 14%;
-   their latencies differ (SambaNova fastest). Independent deployments of the same
+   their latencies differ (SambaNova fastest). Mara and SambaNova are identical again on DeepSeek V3.2 (6 of 6 in a
+   scan of 10 more models, `experiments/shared_scan.py`). Independent deployments of the same
    weights drift apart within a few hundred greedy tokens, so these are one serving stack under three names, and
    the labels (DeepInfra says fp8) cannot all describe what runs.
 8. **Reasoning effort is not always honoured.** SiliconFlow reasons about the same amount at low, medium and high on
-   both gpt-oss models (gpt-oss-120b: 326 / 354 / 318 median tokens; everyone else: 266 / 357 / 645). Darkbloom's
-   gpt-oss-20b "high" reasons like everyone else's "medium" (219 vs 233 tokens). All 30 other endpoints scale.
+   both gpt-oss models (gpt-oss-120b: 486 / 470 / 458 characters of reasoning; all endpoints: 261 / 470 / 1,277).
+   Darkbloom's gpt-oss-20b "high" reasons like everyone else's "medium" (598 vs 607 characters), and Novita's and
+   Phala's gpt-oss-120b "low" like "medium" (456 and 536). On Qwen3.8 the setting barely changes reasoning on any
+   endpoint (465 / 534 / 531), so it is a property of the model there, not of a provider.
 9. **One endpoint repeats itself at temperature 1.** ModelRun (Qwen3.8, fp4) returns the same reply to the same
    prompt on repeated calls, across seeds and whitespace changes (7 of 9 identical), while honouring other
    temperatures; its single samples are statistically honest, so retries and best-of-n silently get one sample.
@@ -124,15 +127,23 @@ expected, a 1-in-1000 event). It now uses exact Poisson tails; see the red-team 
 ## Shared deployments, reasoning effort, repeated replies
 
 `experiments/shared_backends.py`, `experiments/reasoning_effort.py`, `experiments/response_cache.py`; no referee
-needed. Results in `results/shared/`, `results/reasoning/`, `results/cache/`; findings 7-9 above.
+needed.
 
-Reasoning effort, median billed completion tokens on 12 problems at temperature 0 (the 12 have one ill-posed case,
-"1/n" with n = 7.5, on which honest high-effort runs reason past the 6,000-token cap):
+The shared-deployment test only has power where an endpoint is deterministic at temperature 0. In the 10-model scan
+(6 prompts, each asked twice) most endpoints did not repeat their own reply (median self-repeat 0-17% per model;
+SambaNova, Mara and a few others: 100%), and a nondeterministic deployment cannot match anyone byte for byte. So
+"no shared deployment found" means little for those models. Shared-prefix length was too noisy on 250-token replies
+to replace it; longer replies and more prompts are the next step. GLM-5.3 could not be scanned (reasoning cannot be
+disabled at temperature 0 there). Results in `results/shared/`, `results/reasoning/`, `results/cache/`; findings 7-9 above.
+
+Reasoning effort, median characters of returned reasoning on 12 problems at temperature 0 (8 for Qwen3.8; the set
+has one ill-posed case, "1/n" with n = 7.5, on which honest high-effort runs reason past the token cap):
 
 | Model | All endpoints low / medium / high | Not honoured |
 |---|---|---|
-| gpt-oss-120b (24 answering) | 266 / 357 / 645 | SiliconFlow (326 / 354 / 318) |
-| gpt-oss-20b (9 answering) | 130 / 233 / 538 | SiliconFlow (208 / 302 / 306), Darkbloom high (219) |
+| gpt-oss-120b (24 answering) | 261 / 470 / 1,277 | SiliconFlow (486 / 470 / 458); Novita and Phala "low" (456, 536) |
+| gpt-oss-20b (9 answering) | 258 / 607 / 1,547 | SiliconFlow (551 / 660 / 660); Darkbloom "high" (598) |
+| Qwen3.8-27B (21 answering) | 465 / 534 / 531 | the model barely responds to the setting anywhere |
 
 ## Qwen3.5-35B-A3B (7 endpoints)
 

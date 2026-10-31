@@ -1,0 +1,26 @@
+{
+ "model_key": "google__gemma-4-31b-it",
+ "endpoints": 15,
+ "pairs": 105,
+ "groups": [],
+ "max_other_share": 0.16666666666666666,
+ "same_pairs": [],
+ "self_repeat": {
+  "chutes__fp4": 0.16666666666666666,
+  "coreweave__fp4": 0.16666666666666666,
+  "crusoe__bf16": 0.3333333333333333,
+  "deepinfra__fp8": 0.0,
+  "deepinfra__fp8__flex": 0.16666666666666666,
+  "deepinfra__fp8__priority": 0.0,
+  "deepinfra__turbo": 0.0,
+  "dekallm": 0.0,
+  "friendli": 0.0,
+  "io-net": 0.5,
+  "modelrun__fp4": 0.6666666666666666,
+  "parasail__fp8": 0.3333333333333333,
+  "sambanova": 1.0,
+  "siliconflow__fp8": 0.16666666666666666,
+  "venice__fp4": 0.0
+ },
+ "near_pairs": []
+}

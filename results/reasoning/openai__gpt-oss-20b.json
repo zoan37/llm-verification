@@ -2,9 +2,12 @@
  "model": "openai/gpt-oss-20b",
  "cases": 12,
  "crowd_tokens": {
-  "low": 129.5,
-  "medium": 233.0,
-  "high": 538.0
+  "chars": {
+   "low": 257.5,
+   "medium": 607.0,
+   "high": 1546.5
+  },
+  "tokens": {}
  },
  "endpoints": {
   "akashml__fp4": {
@@ -183,7 +186,7 @@
    },
    "errors": 0,
    "flags": [
-    "'high' reasons like everyone else's 'medium' (219 vs 233 median tokens)"
+    "'high' reasons like everyone else's 'medium' (598 vs 607 median chars)"
    ]
   },
   "deepinfra__bf16": {
@@ -334,8 +337,9 @@
    },
    "errors": 0,
    "flags": [
-    "'low' reasons like everyone else's 'medium' (208 vs 233 median tokens)",
-    "'high' reasons like everyone else's 'medium' (306 vs 233 median tokens)"
+    "effort setting has little effect on how much it reasons",
+    "'low' reasons like everyone else's 'medium' (551 vs 607 median chars)",
+    "'high' reasons like everyone else's 'medium' (660 vs 607 median chars)"
    ]
   }
  }

@@ -160,10 +160,12 @@ for sf in sorted((root / "results" / "shared").glob("*.json")):
 effort_rows = []
 for ef in sorted((root / "results" / "reasoning").glob("*.json")):
     e = json.loads(ef.read_text())
-    crowd = e.get("crowd_tokens") or {}
+    cu = e.get("crowd_tokens") or {}
+    unit = "chars" if (cu.get("chars") or {}) else "tokens"
+    crowd = cu.get(unit) or {}
     bad = [f"<b>{ep_name(k)}</b>: " + "; ".join(f for f in v["flags"]) for k, v in sorted(e["endpoints"].items()) if v["flags"]]
     ok = sum(1 for v in e["endpoints"].values() if v["efforts"] and not v["flags"])
-    effort_rows.append(f"<tr><td>{e['model']}</td><td class='num'>{' / '.join(f'{crowd[x]:.0f}' for x in ('low', 'medium', 'high') if x in crowd)}</td>"
+    effort_rows.append(f"<tr><td>{e['model']}</td><td class='num'>{' / '.join(f'{crowd[x]:.0f}' for x in ('low', 'medium', 'high') if x in crowd)} {unit}</td>"
                        f"<td class='num'>{ok}</td><td>{'<br>'.join(bad) or '<span class=sub>none</span>'}</td></tr>")
 
 cache_rows = []
@@ -220,15 +222,18 @@ serving_html = f"""<section class="coop" aria-label="Serving behaviour">
     <p class="lede" style="font-size:14px;max-width:80ch"><b>One deployment, several names.</b> Independent deployments of
       the same weights drift apart within a few hundred greedy (temperature 0) tokens: different hardware, kernels and
       batch sizes round differently. Endpoints whose greedy replies are byte-identical on nearly every prompt are one
-      serving stack sold under several names, so at least one label is not what runs.</p>
+      serving stack sold under several names, so at least one label is not what runs. The test only works for
+      endpoints that repeat themselves at temperature 0; most do not (batching changes the arithmetic), so finding
+      no match for them proves nothing.</p>
     <div class="ledger"><table class="small">
       <thead><tr><th>Model</th><th>Endpoints that are one deployment</th><th>Identical greedy replies (per pair)</th><th>Most similar other pair</th></tr></thead>
       <tbody>{''.join(shared_rows) or '<tr><td colspan=4>none found</td></tr>'}</tbody></table></div>
     <p class="lede" style="font-size:14px;max-width:80ch"><b>Reasoning effort.</b> 12 maths problems at effort low,
-      medium and high (temperature 0). Honest endpoints reason roughly twice as long at each step up; the medians of all
-      endpoints are shown. Flagged: a level that spends what everyone else spends at another level.</p>
+      medium and high (temperature 0), measured by the reasoning each endpoint returns. On gpt-oss, endpoints reason
+      roughly twice as long at each step up; Qwen3.8 barely changes on any endpoint, so nothing can be flagged there.
+      Flagged: a level that reasons like everyone else's other level.</p>
     <div class="ledger"><table class="small">
-      <thead><tr><th>Model</th><th>Median tokens low / medium / high</th><th>Effort honoured</th><th>Problems</th></tr></thead>
+      <thead><tr><th>Model</th><th>Median reasoning low / medium / high</th><th>Not flagged</th><th>Problems</th></tr></thead>
       <tbody>{''.join(effort_rows)}</tbody></table></div>
     <p class="lede" style="font-size:14px;max-width:80ch"><b>Repeated replies.</b> The same 100-word creative prompt three
       times at temperature 1. Honest sampling never repeats such a reply byte for byte; an endpoint that does returns the

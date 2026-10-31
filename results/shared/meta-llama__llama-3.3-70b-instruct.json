@@ -1,0 +1,19 @@
+{
+ "model_key": "meta-llama__llama-3.3-70b-instruct",
+ "endpoints": 8,
+ "pairs": 28,
+ "groups": [],
+ "max_other_share": 0.16666666666666666,
+ "same_pairs": [],
+ "self_repeat": {
+  "akashml__fp8": 0.0,
+  "cloudflare__fp8": 0.0,
+  "coreweave__fp16": 0.6666666666666666,
+  "deepinfra__turbo": 0.0,
+  "groq": 0.16666666666666666,
+  "novita__bf16": 0.0,
+  "parasail__fp8": 0.16666666666666666,
+  "sambanova-turbo": 1.0
+ },
+ "near_pairs": []
+}

@@ -1,9 +1,9 @@
 {
  "model_key": "qwen__qwen3.8-27b",
- "endpoints": 20,
- "pairs": 190,
+ "endpoints": 21,
+ "pairs": 210,
  "groups": [],
- "max_other_share": 0.2916666666666667,
+ "max_other_share": 0.4166666666666667,
  "same_pairs": [],
  "self_repeat": {},
  "near_pairs": []

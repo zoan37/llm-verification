@@ -36,4 +36,7 @@ Open work, roughly in priority order. Each item says what it would establish.
 - [ ] Alibaba and SiliconFlow on Qwen3.5: distance grows at 32k (second long-context batch in progress).
 - [x] Silent top-k defaults: confirmed with the sampler fingerprint and explicit `top_k` 0 / -1 / 1000
       (`experiments/sampler_control.py`). Next: the same on Qwen3.8 and Gemma endpoints.
-- [ ] DeepInfra fp8 / Mara / SambaNova serve byte-identical gpt-oss-120b output: check other models they share.
+- [x] DeepInfra fp8 / Mara / SambaNova serve byte-identical gpt-oss-120b output; Mara = SambaNova on DeepSeek V3.2 too.
+- [ ] Shared deployments among nondeterministic endpoints: longer replies, more prompts, prefix-length statistics.
+- [ ] Lead (unconfirmed): Venice's Qwen3.6 bills exactly DeepInfra's downscaled image-token count (1,032), and its
+      greedy text leans towards DeepInfra's on Qwen3.6 and MiniMax M3. Test whether Venice resells DeepInfra there.

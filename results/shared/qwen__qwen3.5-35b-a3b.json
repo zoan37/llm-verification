@@ -3,7 +3,7 @@
  "endpoints": 7,
  "pairs": 21,
  "groups": [],
- "max_other_share": 0.14583333333333334,
+ "max_other_share": 0.12345679012345678,
  "same_pairs": [],
  "self_repeat": {},
  "near_pairs": []

@@ -1,0 +1,3860 @@
+[
+ {
+  "name": "Wafer | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000000699",
+   "completion": "0.0000014",
+   "input_cache_read": "0.0000000689",
+   "discount": 0
+  },
+  "provider_name": "Wafer",
+  "tag": "wafer/us",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "top_k",
+   "min_p",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "stop",
+   "seed",
+   "max_tokens",
+   "logit_bias",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 356,
+   "p75": 560,
+   "p90": 874,
+   "p99": 4729.050000000007
+  },
+  "throughput_last_30m": {
+   "p50": 120,
+   "p75": 94,
+   "p90": 72,
+   "p99": 29
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 356,
+     "p75": 560,
+     "p90": 874,
+     "p99": 4729.050000000007
+    },
+    "throughput": {
+     "p50": 120,
+     "p75": 94,
+     "p90": 72,
+     "p99": 29
+    },
+    "request_count": 28321
+   }
+  }
+ },
+ {
+  "name": "Relace | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000000703",
+   "completion": "0.0000043843",
+   "input_cache_read": "0.0000000703",
+   "discount": 0
+  },
+  "provider_name": "Relace",
+  "tag": "relace/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "seed",
+   "top_k",
+   "repetition_penalty",
+   "tools",
+   "tool_choice",
+   "response_format",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1943,
+   "p75": 3390,
+   "p90": 5352,
+   "p99": 20268.799999999952
+  },
+  "throughput_last_30m": {
+   "p50": 63,
+   "p75": 42,
+   "p90": 26,
+   "p99": 11
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1943,
+     "p75": 3390,
+     "p90": 5352,
+     "p99": 20268.799999999952
+    },
+    "throughput": {
+     "p50": 63,
+     "p75": 42,
+     "p90": 26,
+     "p99": 11
+    },
+    "request_count": 1021
+   }
+  }
+ },
+ {
+  "name": "Morph | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.000000086",
+   "completion": "0.0000014",
+   "input_cache_read": "0.000000069",
+   "discount": 0
+  },
+  "provider_name": "Morph",
+  "tag": "morph/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "stop",
+   "top_p",
+   "top_k",
+   "min_p",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "seed",
+   "logit_bias",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.09154437456324,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1534,
+   "p75": 2676.5,
+   "p90": 5972.5,
+   "p99": 13248.100000000026
+  },
+  "throughput_last_30m": {
+   "p50": 31,
+   "p75": 23,
+   "p90": 17,
+   "p99": 11
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1534,
+     "p75": 2676.5,
+     "p90": 5972.5,
+     "p99": 13248.100000000026
+    },
+    "throughput": {
+     "p50": 31,
+     "p75": 23,
+     "p90": 17,
+     "p99": 11
+    },
+    "request_count": 2546
+   }
+  }
+ },
+ {
+  "name": "InferenceNet | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.000000104",
+   "completion": "0.000002769",
+   "input_cache_read": "0.000000099",
+   "discount": 0
+  },
+  "provider_name": "InferenceNet",
+  "tag": "inference-net/us",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "seed",
+   "top_k",
+   "min_p",
+   "logit_bias",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "repetition_penalty",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 300,
+   "p75": 519,
+   "p90": 1077.800000000001,
+   "p99": 3451.3600000000006
+  },
+  "throughput_last_30m": {
+   "p50": 140,
+   "p75": 101,
+   "p90": 74,
+   "p99": 24
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 300,
+     "p75": 519,
+     "p90": 1077.800000000001,
+     "p99": 3451.3600000000006
+    },
+    "throughput": {
+     "p50": 140,
+     "p75": 101,
+     "p90": 74,
+     "p99": 24
+    },
+    "request_count": 18766
+   }
+  }
+ },
+ {
+  "name": "InferenceNet | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.000000104",
+   "completion": "0.000002769",
+   "input_cache_read": "0.000000099",
+   "discount": 0
+  },
+  "provider_name": "InferenceNet",
+  "tag": "inference-net/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "seed",
+   "top_k",
+   "min_p",
+   "logit_bias",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "repetition_penalty",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 383,
+   "p75": 598,
+   "p90": 929.9000000000005,
+   "p99": 4874.30000000001
+  },
+  "throughput_last_30m": {
+   "p50": 137,
+   "p75": 94,
+   "p90": 72,
+   "p99": 19
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 383,
+     "p75": 598,
+     "p90": 929.9000000000005,
+     "p99": 4874.30000000001
+    },
+    "throughput": {
+     "p50": 137,
+     "p75": 94,
+     "p90": 72,
+     "p99": 19
+    },
+    "request_count": 13095
+   }
+  }
+ },
+ {
+  "name": "Reka | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.00000014",
+   "completion": "0.0000021",
+   "input_cache_read": "0.000000105",
+   "discount": 0.3
+  },
+  "provider_name": "Reka",
+  "tag": "reka",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 262144,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "temperature",
+   "top_p",
+   "top_k",
+   "max_tokens",
+   "stop",
+   "seed",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.22041105598865,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1386.5,
+   "p75": 2111,
+   "p90": 3301,
+   "p99": 5561.25
+  },
+  "throughput_last_30m": {
+   "p50": 45,
+   "p75": 36,
+   "p90": 28,
+   "p99": 15
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1386.5,
+     "p75": 2111,
+     "p90": 3301,
+     "p99": 5561.25
+    },
+    "throughput": {
+     "p50": 45,
+     "p75": 36,
+     "p90": 28,
+     "p99": 15
+    },
+    "request_count": 1126
+   }
+  }
+ },
+ {
+  "name": "Makora | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.00000014",
+   "completion": "0.000003",
+   "input_cache_read": "0.0000001",
+   "discount": 0
+  },
+  "provider_name": "Makora",
+  "tag": "makora/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 128000,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "top_k",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "stop",
+   "max_tokens",
+   "seed",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.63689179375453,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 831.5,
+   "p75": 1481.25,
+   "p90": 2713.5,
+   "p99": 11615.660000000003
+  },
+  "throughput_last_30m": {
+   "p50": 99,
+   "p75": 73,
+   "p90": 50,
+   "p99": 13.690000000000001
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 831.5,
+     "p75": 1481.25,
+     "p90": 2713.5,
+     "p99": 11615.660000000003
+    },
+    "throughput": {
+     "p50": 99,
+     "p75": 73,
+     "p90": 50,
+     "p99": 13.690000000000001
+    },
+    "request_count": 902
+   }
+  }
+ },
+ {
+  "name": "Wafer | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.000000179",
+   "completion": "0.0000014",
+   "input_cache_read": "0.000000178",
+   "discount": 0
+  },
+  "provider_name": "Wafer",
+  "tag": "wafer/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "top_k",
+   "min_p",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "stop",
+   "seed",
+   "max_tokens",
+   "logit_bias",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.9260901699926,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 291,
+   "p75": 441,
+   "p90": 687,
+   "p99": 2098.3300000000054
+  },
+  "throughput_last_30m": {
+   "p50": 113,
+   "p75": 92,
+   "p90": 72,
+   "p99": 32
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 291,
+     "p75": 441,
+     "p90": 687,
+     "p99": 2098.3300000000054
+    },
+    "throughput": {
+     "p50": 113,
+     "p75": 92,
+     "p90": 72,
+     "p99": 32
+    },
+    "request_count": 12616
+   }
+  }
+ },
+ {
+  "name": "DekaLLM | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.00000018",
+   "completion": "0.00000295",
+   "input_cache_read": "0.00000015",
+   "discount": 0
+  },
+  "provider_name": "DekaLLM",
+  "tag": "dekallm",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "frequency_penalty",
+   "logit_bias",
+   "max_tokens",
+   "presence_penalty",
+   "seed",
+   "stop",
+   "temperature",
+   "top_p",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1107.5,
+   "p75": 1386.75,
+   "p90": 1787.8000000000002,
+   "p99": 5164.720000000005
+  },
+  "throughput_last_30m": {
+   "p50": 80,
+   "p75": 51,
+   "p90": 39,
+   "p99": 26.279999999999998
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1107.5,
+     "p75": 1386.75,
+     "p90": 1787.8000000000002,
+     "p99": 5164.720000000005
+    },
+    "throughput": {
+     "p50": 80,
+     "p75": 51,
+     "p90": 39,
+     "p99": 26.279999999999998
+    },
+    "request_count": 252
+   }
+  }
+ },
+ {
+  "name": "AkashML | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.00000019",
+   "completion": "0.0000044",
+   "input_cache_read": "0.00000019",
+   "discount": 0
+  },
+  "provider_name": "AkashML",
+  "tag": "akashml/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "temperature",
+   "top_p",
+   "top_k",
+   "repetition_penalty",
+   "frequency_penalty",
+   "presence_penalty",
+   "stop",
+   "seed",
+   "max_tokens",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1223,
+   "p75": 1639,
+   "p90": 2104.400000000001,
+   "p99": 4368.830000000002
+  },
+  "throughput_last_30m": {
+   "p50": 62.5,
+   "p75": 47,
+   "p90": 40.5,
+   "p99": 25.95
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1223,
+     "p75": 1639,
+     "p90": 2104.400000000001,
+     "p99": 4368.830000000002
+    },
+    "throughput": {
+     "p50": 62.5,
+     "p75": 47,
+     "p90": 40.5,
+     "p99": 25.95
+    },
+    "request_count": 322
+   }
+  }
+ },
+ {
+  "name": "Baidu | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.00000028",
+   "completion": "0.00000088",
+   "input_cache_read": "0.000000052",
+   "discount": 0.8
+  },
+  "provider_name": "Baidu",
+  "tag": "baidu/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "max_tokens",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "stop",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 98.76722262509064,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1090.5,
+   "p75": 1807.75,
+   "p90": 2851.9000000000005,
+   "p99": 6140.439999999999
+  },
+  "throughput_last_30m": {
+   "p50": 84,
+   "p75": 60,
+   "p90": 43,
+   "p99": 26.26
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1090.5,
+     "p75": 1807.75,
+     "p90": 2851.9000000000005,
+     "p99": 6140.439999999999
+    },
+    "throughput": {
+     "p50": 84,
+     "p75": 60,
+     "p90": 43,
+     "p99": 26.26
+    },
+    "request_count": 924
+   }
+  }
+ },
+ {
+  "name": "Io Net | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 262124,
+  "pricing": {
+   "prompt": "0.00000033",
+   "completion": "0.0000032",
+   "input_cache_read": "0.00000031",
+   "discount": 0
+  },
+  "provider_name": "Io Net",
+  "tag": "io-net/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "response_format",
+   "logprobs",
+   "top_logprobs",
+   "seed",
+   "stop",
+   "min_p",
+   "top_k",
+   "top_p",
+   "presence_penalty",
+   "frequency_penalty",
+   "repetition_penalty",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.86486486486487,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1896.5,
+   "p75": 2335.25,
+   "p90": 2789.1000000000004,
+   "p99": 4854.0699999999715
+  },
+  "throughput_last_30m": {
+   "p50": 63,
+   "p75": 41,
+   "p90": 33,
+   "p99": 24
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1896.5,
+     "p75": 2335.25,
+     "p90": 2789.1000000000004,
+     "p99": 4854.0699999999715
+    },
+    "throughput": {
+     "p50": 63,
+     "p75": 41,
+     "p90": 33,
+     "p99": 24
+    },
+    "request_count": 392
+   }
+  }
+ },
+ {
+  "name": "Sail Research | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000005",
+   "completion": "0.000002",
+   "input_cache_read": "0.00000008",
+   "discount": 0
+  },
+  "provider_name": "Sail Research",
+  "tag": "sail-research/us",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "frequency_penalty",
+   "max_tokens",
+   "presence_penalty",
+   "seed",
+   "stop",
+   "temperature",
+   "top_k",
+   "top_p",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": null,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1761,
+   "p75": 2422.75,
+   "p90": 4944.1,
+   "p99": 16396.430000000008
+  },
+  "throughput_last_30m": {
+   "p50": 27,
+   "p75": 21,
+   "p90": 17,
+   "p99": 5.47
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1761,
+     "p75": 2422.75,
+     "p90": 4944.1,
+     "p99": 16396.430000000008
+    },
+    "throughput": {
+     "p50": 27,
+     "p75": 21,
+     "p90": 17,
+     "p99": 5.47
+    },
+    "request_count": 470
+   }
+  }
+ },
+ {
+  "name": "Sail Research | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000005",
+   "completion": "0.000002",
+   "input_cache_read": "0.00000008",
+   "discount": 0
+  },
+  "provider_name": "Sail Research",
+  "tag": "sail-research/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "top_k",
+   "frequency_penalty",
+   "presence_penalty",
+   "stop",
+   "seed",
+   "max_tokens",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": null,
+  "uptime_last_5m": null,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1612,
+   "p75": 3177.5,
+   "p90": 6324.600000000001,
+   "p99": 9065.679999999998
+  },
+  "throughput_last_30m": {
+   "p50": 28,
+   "p75": 22.25,
+   "p90": 20.7,
+   "p99": 11.219999999999999
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1612,
+     "p75": 3177.5,
+     "p90": 6324.600000000001,
+     "p99": 9065.679999999998
+    },
+    "throughput": {
+     "p50": 28,
+     "p75": 22.25,
+     "p90": 20.7,
+     "p99": 11.219999999999999
+    },
+    "request_count": 43
+   }
+  }
+ },
+ {
+  "name": "DeepInfra | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000005625",
+   "completion": "0.0000025",
+   "input_cache_read": "0.000000125",
+   "discount": 0.375
+  },
+  "provider_name": "DeepInfra",
+  "tag": "deepinfra/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "top_k",
+   "seed",
+   "min_p",
+   "logit_bias",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.12621359223301,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1566,
+   "p75": 3698.75,
+   "p90": 8508.399999999996,
+   "p99": 44718.64999999997
+  },
+  "throughput_last_30m": {
+   "p50": 31,
+   "p75": 17,
+   "p90": 9,
+   "p99": 2
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1566,
+     "p75": 3698.75,
+     "p90": 8508.399999999996,
+     "p99": 44718.64999999997
+    },
+    "throughput": {
+     "p50": 31,
+     "p75": 17,
+     "p90": 9,
+     "p99": 2
+    },
+    "request_count": 4594
+   }
+  }
+ },
+ {
+  "name": "Tenstorrent | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1044480,
+  "pricing": {
+   "prompt": "0.0000006",
+   "completion": "0.0000025",
+   "input_cache_read": "0.0000001",
+   "discount": 0
+  },
+  "provider_name": "Tenstorrent",
+  "tag": "tenstorrent/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "top_k",
+   "stop",
+   "seed",
+   "max_tokens",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.83779399837795,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 777.5,
+   "p75": 1168.75,
+   "p90": 2147.5,
+   "p99": 5230.399999999994
+  },
+  "throughput_last_30m": {
+   "p50": 74,
+   "p75": 55,
+   "p90": 42.900000000000006,
+   "p99": 27.590000000000003
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 777.5,
+     "p75": 1168.75,
+     "p90": 2147.5,
+     "p99": 5230.399999999994
+    },
+    "throughput": {
+     "p50": 74,
+     "p75": 55,
+     "p90": 42.900000000000006,
+     "p99": 27.590000000000003
+    },
+    "request_count": 206
+   }
+  }
+ },
+ {
+  "name": "Novita | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.00000063",
+   "completion": "0.00000198",
+   "input_cache_read": "0.000000117",
+   "discount": 0.55
+  },
+  "provider_name": "Novita",
+  "tag": "novita/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "seed",
+   "top_k",
+   "repetition_penalty",
+   "response_format",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 3064.5,
+   "p75": 4440.5,
+   "p90": 5819.6,
+   "p99": 8640.119999999999
+  },
+  "throughput_last_30m": {
+   "p50": 48,
+   "p75": 31,
+   "p90": 19.80000000000001,
+   "p99": 10
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 3064.5,
+     "p75": 4440.5,
+     "p90": 5819.6,
+     "p99": 8640.119999999999
+    },
+    "throughput": {
+     "p50": 48,
+     "p75": 31,
+     "p90": 19.80000000000001,
+     "p99": 10
+    },
+    "request_count": 3412
+   }
+  }
+ },
+ {
+  "name": "SiliconFlow | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000007",
+   "completion": "0.0000022",
+   "input_cache_read": "0.00000013",
+   "discount": 0.5
+  },
+  "provider_name": "SiliconFlow",
+  "tag": "siliconflow/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 262144,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "top_k",
+   "frequency_penalty",
+   "max_tokens",
+   "tools",
+   "tool_choice",
+   "response_format",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": false,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 2167,
+   "p75": 4019,
+   "p90": 5262.800000000002,
+   "p99": 10982.359999999999
+  },
+  "throughput_last_30m": {
+   "p50": 56,
+   "p75": 38,
+   "p90": 20,
+   "p99": 6.68
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 2167,
+     "p75": 4019,
+     "p90": 5262.800000000002,
+     "p99": 10982.359999999999
+    },
+    "throughput": {
+     "p50": 56,
+     "p75": 38,
+     "p90": 20,
+     "p99": 6.68
+    },
+    "request_count": 813
+   }
+  }
+ },
+ {
+  "name": "GMICloud | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000007",
+   "completion": "0.0000022",
+   "input_cache_read": "0.00000013",
+   "discount": 0.5
+  },
+  "provider_name": "GMICloud",
+  "tag": "gmicloud/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "seed",
+   "response_format",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 25612,
+   "p75": 26342,
+   "p90": 26975,
+   "p99": 30596.680000000004
+  },
+  "throughput_last_30m": {
+   "p50": 14,
+   "p75": 11,
+   "p90": 6.500000000000002,
+   "p99": 2
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 25612,
+     "p75": 26342,
+     "p90": 26975,
+     "p99": 30596.680000000004
+    },
+    "throughput": {
+     "p50": 14,
+     "p75": 11,
+     "p90": 6.500000000000002,
+     "p99": 2
+    },
+    "request_count": 45
+   }
+  }
+ },
+ {
+  "name": "Phala | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.00000084",
+   "completion": "0.00000264",
+   "input_cache_read": "0.000000156",
+   "discount": 0.4
+  },
+  "provider_name": "Phala",
+  "tag": "phala",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "seed",
+   "top_k",
+   "min_p",
+   "repetition_penalty",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 2960,
+   "p75": 3645,
+   "p90": 4288,
+   "p99": 6782.980000000007
+  },
+  "throughput_last_30m": {
+   "p50": 40,
+   "p75": 23,
+   "p90": 17,
+   "p99": 13
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 2960,
+     "p75": 3645,
+     "p90": 4288,
+     "p99": 6782.980000000007
+    },
+    "throughput": {
+     "p50": 40,
+     "p75": 23,
+     "p90": 17,
+     "p99": 13
+    },
+    "request_count": 255
+   }
+  }
+ },
+ {
+  "name": "Decart | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.00000084",
+   "completion": "0.00000269",
+   "input_cache_read": "0.00000019",
+   "discount": 0
+  },
+  "provider_name": "Decart",
+  "tag": "decart/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "top_k",
+   "min_p",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "stop",
+   "seed",
+   "max_tokens",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 868,
+   "p75": 1157,
+   "p90": 1469.800000000001,
+   "p99": 2545.919999999993
+  },
+  "throughput_last_30m": {
+   "p50": 119,
+   "p75": 95,
+   "p90": 74,
+   "p99": 39.64
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 868,
+     "p75": 1157,
+     "p90": 1469.800000000001,
+     "p99": 2545.919999999993
+    },
+    "throughput": {
+     "p50": 119,
+     "p75": 95,
+     "p90": 74,
+     "p99": 39.64
+    },
+    "request_count": 2329
+   }
+  }
+ },
+ {
+  "name": "DigitalOcean | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.00000091",
+   "completion": "0.00000286",
+   "input_cache_read": "0.000000169",
+   "discount": 0
+  },
+  "provider_name": "DigitalOcean",
+  "tag": "digitalocean",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 128000,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "max_tokens",
+   "response_format",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "structured_outputs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 532.5,
+   "p75": 752.5,
+   "p90": 1029.7000000000003,
+   "p99": 2212.690000000002
+  },
+  "throughput_last_30m": {
+   "p50": 81,
+   "p75": 67.25,
+   "p90": 61,
+   "p99": 43.19
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 532.5,
+     "p75": 752.5,
+     "p90": 1029.7000000000003,
+     "p99": 2212.690000000002
+    },
+    "throughput": {
+     "p50": 81,
+     "p75": 67.25,
+     "p90": 61,
+     "p99": 43.19
+    },
+    "request_count": 308
+   }
+  }
+ },
+ {
+  "name": "Fireworks | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.00000098",
+   "completion": "0.00000308",
+   "input_cache_read": "0.000000182",
+   "discount": 0
+  },
+  "provider_name": "Fireworks",
+  "tag": "fireworks/spot",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "top_k",
+   "repetition_penalty",
+   "logit_bias",
+   "logprobs",
+   "top_logprobs",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": -5,
+  "uptime_last_30m": 0,
+  "uptime_last_5m": 0,
+  "uptime_last_1d": 0,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": null,
+  "throughput_last_30m": null
+ },
+ {
+  "name": "PrimeIntellect | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.00000098",
+   "completion": "0.00000308",
+   "input_cache_read": "0.000000182",
+   "discount": 0
+  },
+  "provider_name": "PrimeIntellect",
+  "tag": "primeintellect",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.8426435877262,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 453,
+   "p75": 639,
+   "p90": 1038.2000000000003,
+   "p99": 2625.6899999999987
+  },
+  "throughput_last_30m": {
+   "p50": 110,
+   "p75": 88,
+   "p90": 74,
+   "p99": 40.69
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 453,
+     "p75": 639,
+     "p90": 1038.2000000000003,
+     "p99": 2625.6899999999987
+    },
+    "throughput": {
+     "p50": 110,
+     "p75": 88,
+     "p90": 74,
+     "p99": 40.69
+    },
+    "request_count": 1150
+   }
+  }
+ },
+ {
+  "name": "Alibaba | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1000000,
+  "pricing": {
+   "prompt": "0.00000119",
+   "completion": "0.00000374",
+   "input_cache_read": "0.000000238",
+   "discount": 0
+  },
+  "provider_name": "Alibaba",
+  "tag": "alibaba",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "seed",
+   "presence_penalty",
+   "response_format",
+   "top_k",
+   "frequency_penalty",
+   "stop",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": null,
+  "uptime_last_5m": null,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1895,
+   "p75": 2972,
+   "p90": 5302.4,
+   "p99": 11970.199999999999
+  },
+  "throughput_last_30m": {
+   "p50": 48,
+   "p75": 36,
+   "p90": 25,
+   "p99": 10
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1895,
+     "p75": 2972,
+     "p90": 5302.4,
+     "p99": 11970.199999999999
+    },
+    "throughput": {
+     "p50": 48,
+     "p75": 36,
+     "p90": 25,
+     "p99": 10
+    },
+    "request_count": 2637
+   }
+  }
+ },
+ {
+  "name": "CoreWeave | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000012",
+   "completion": "0.000004",
+   "input_cache_read": "0.00000019",
+   "discount": 0
+  },
+  "provider_name": "CoreWeave",
+  "tag": "coreweave/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "top_k",
+   "repetition_penalty",
+   "frequency_penalty",
+   "presence_penalty",
+   "stop",
+   "seed",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 96.55172413793103,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.77973568281938,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 602,
+   "p75": 874,
+   "p90": 1511.6,
+   "p99": 8978.699999999964
+  },
+  "throughput_last_30m": {
+   "p50": 106,
+   "p75": 85,
+   "p90": 67.1,
+   "p99": 17.240000000000002
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 602,
+     "p75": 874,
+     "p90": 1511.6,
+     "p99": 8978.699999999964
+    },
+    "throughput": {
+     "p50": 106,
+     "p75": 85,
+     "p90": 67.1,
+     "p99": 17.240000000000002
+    },
+    "request_count": 607
+   }
+  }
+ },
+ {
+  "name": "Friendli | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.00000126",
+   "completion": "0.00000396",
+   "input_cache_read": "0.000000234",
+   "discount": 0.1
+  },
+  "provider_name": "Friendli",
+  "tag": "friendli",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "seed",
+   "top_k",
+   "min_p",
+   "repetition_penalty",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 501,
+   "p75": 824,
+   "p90": 1384.8000000000002,
+   "p99": 2692.8400000000006
+  },
+  "throughput_last_30m": {
+   "p50": 105,
+   "p75": 90,
+   "p90": 78,
+   "p99": 51.29
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 501,
+     "p75": 824,
+     "p90": 1384.8000000000002,
+     "p99": 2692.8400000000006
+    },
+    "throughput": {
+     "p50": 105,
+     "p75": 90,
+     "p90": 78,
+     "p99": 51.29
+    },
+    "request_count": 1157
+   }
+  }
+ },
+ {
+  "name": "Inceptron | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000014",
+   "completion": "0.00000264",
+   "input_cache_read": "0.00000014",
+   "discount": 0
+  },
+  "provider_name": "Inceptron",
+  "tag": "inceptron/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "max_tokens",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "logit_bias",
+   "parallel_tool_calls",
+   "presence_penalty",
+   "seed",
+   "response_format",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.93021632937894,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 825,
+   "p75": 1406,
+   "p90": 2439,
+   "p99": 5773.250000000069
+  },
+  "throughput_last_30m": {
+   "p50": 111,
+   "p75": 78,
+   "p90": 51,
+   "p99": 14
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 825,
+     "p75": 1406,
+     "p90": 2439,
+     "p99": 5773.250000000069
+    },
+    "throughput": {
+     "p50": 111,
+     "p75": 78,
+     "p90": 51,
+     "p99": 14
+    },
+    "request_count": 2286
+   }
+  }
+ },
+ {
+  "name": "Mistral | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000014",
+   "completion": "0.0000044",
+   "input_cache_read": "0.00000014",
+   "discount": 0
+  },
+  "provider_name": "Mistral",
+  "tag": "mistral/zdr",
+  "service_tier": null,
+  "quantization": "nvfp4",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "seed",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "logprobs",
+   "top_logprobs",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.84484096198604,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 735,
+   "p75": 1244.5,
+   "p90": 1651,
+   "p99": 3405.3999999999924
+  },
+  "throughput_last_30m": {
+   "p50": 111.5,
+   "p75": 73,
+   "p90": 51,
+   "p99": 23.55
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 735,
+     "p75": 1244.5,
+     "p90": 1651,
+     "p99": 3405.3999999999924
+    },
+    "throughput": {
+     "p50": 111.5,
+     "p75": 73,
+     "p90": 51,
+     "p99": 23.55
+    },
+    "request_count": 611
+   }
+  }
+ },
+ {
+  "name": "BaseTen | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000014",
+   "completion": "0.0000044",
+   "input_cache_read": "0.00000014",
+   "discount": 0
+  },
+  "provider_name": "BaseTen",
+  "tag": "baseten/fp4/us",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 262144,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.24906132665832,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1267,
+   "p75": 1830,
+   "p90": 2834.2,
+   "p99": 10142.71999999995
+  },
+  "throughput_last_30m": {
+   "p50": 86,
+   "p75": 60,
+   "p90": 40,
+   "p99": 14.240000000000002
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1267,
+     "p75": 1830,
+     "p90": 2834.2,
+     "p99": 10142.71999999995
+    },
+    "throughput": {
+     "p50": 86,
+     "p75": 60,
+     "p90": 40,
+     "p99": 14.240000000000002
+    },
+    "request_count": 1589
+   }
+  }
+ },
+ {
+  "name": "Mistral | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000014",
+   "completion": "0.0000044",
+   "input_cache_read": "0.00000014",
+   "discount": 0
+  },
+  "provider_name": "Mistral",
+  "tag": "mistral/nvfp4",
+  "service_tier": null,
+  "quantization": "nvfp4",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "seed",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "logprobs",
+   "top_logprobs",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": null,
+  "uptime_last_5m": null,
+  "uptime_last_1d": 99.87699876998771,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 576,
+   "p75": 752,
+   "p90": 943.4000000000001,
+   "p99": 1208.48
+  },
+  "throughput_last_30m": {
+   "p50": 86,
+   "p75": 70,
+   "p90": 59,
+   "p99": 52.839999999999996
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 576,
+     "p75": 752,
+     "p90": 943.4000000000001,
+     "p99": 1208.48
+    },
+    "throughput": {
+     "p50": 86,
+     "p75": 70,
+     "p90": 59,
+     "p99": 52.839999999999996
+    },
+    "request_count": 17
+   }
+  }
+ },
+ {
+  "name": "Nebius | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000014",
+   "completion": "0.0000044",
+   "input_cache_read": "0.00000026",
+   "discount": 0
+  },
+  "provider_name": "Nebius",
+  "tag": "nebius/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "seed",
+   "top_k",
+   "logit_bias",
+   "logprobs",
+   "top_logprobs",
+   "repetition_penalty",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": null,
+  "uptime_last_1d": 94.3089430894309,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 564,
+   "p75": 738.5,
+   "p90": 1312.4000000000005,
+   "p99": 1965.1800000000014
+  },
+  "throughput_last_30m": {
+   "p50": 99,
+   "p75": 72,
+   "p90": 53.2,
+   "p99": 45
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 564,
+     "p75": 738.5,
+     "p90": 1312.4000000000005,
+     "p99": 1965.1800000000014
+    },
+    "throughput": {
+     "p50": 99,
+     "p75": 72,
+     "p90": 53.2,
+     "p99": 45
+    },
+    "request_count": 95
+   }
+  }
+ },
+ {
+  "name": "Crusoe | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000014",
+   "completion": "0.0000044",
+   "input_cache_read": "0.00000026",
+   "discount": 0
+  },
+  "provider_name": "Crusoe",
+  "tag": "crusoe/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "seed",
+   "min_p",
+   "repetition_penalty",
+   "top_k",
+   "logit_bias",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 368,
+   "p75": 461,
+   "p90": 711,
+   "p99": 2400.5999999999995
+  },
+  "throughput_last_30m": {
+   "p50": 123,
+   "p75": 89,
+   "p90": 78,
+   "p99": 48.42
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 368,
+     "p75": 461,
+     "p90": 711,
+     "p99": 2400.5999999999995
+    },
+    "throughput": {
+     "p50": 123,
+     "p75": 89,
+     "p90": 78,
+     "p99": 48.42
+    },
+    "request_count": 457
+   }
+  }
+ },
+ {
+  "name": "Venice | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1000000,
+  "pricing": {
+   "prompt": "0.0000014",
+   "completion": "0.0000044",
+   "input_cache_read": "0.00000026",
+   "discount": 0.2
+  },
+  "provider_name": "Venice",
+  "tag": "venice",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "top_k",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": null,
+  "uptime_last_5m": null,
+  "uptime_last_1d": 99.20318725099602,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 757,
+   "p75": 1295.5,
+   "p90": 2723,
+   "p99": 4010.000000000001
+  },
+  "throughput_last_30m": {
+   "p50": 96,
+   "p75": 90.5,
+   "p90": 76,
+   "p99": 67
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 757,
+     "p75": 1295.5,
+     "p90": 2723,
+     "p99": 4010.000000000001
+    },
+    "throughput": {
+     "p50": 96,
+     "p75": 90.5,
+     "p90": 76,
+     "p99": 67
+    },
+    "request_count": 11
+   }
+  }
+ },
+ {
+  "name": "Together | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048575,
+  "pricing": {
+   "prompt": "0.0000014",
+   "completion": "0.0000044",
+   "input_cache_read": "0.00000026",
+   "discount": 0
+  },
+  "provider_name": "Together",
+  "tag": "together",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 943717,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "top_k",
+   "repetition_penalty",
+   "logit_bias",
+   "min_p",
+   "response_format",
+   "structured_outputs",
+   "logprobs",
+   "top_logprobs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.92877492877493,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 571.5,
+   "p75": 981.75,
+   "p90": 1886,
+   "p99": 8910.56000000005
+  },
+  "throughput_last_30m": {
+   "p50": 111,
+   "p75": 84,
+   "p90": 67.5,
+   "p99": 33.55
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 571.5,
+     "p75": 981.75,
+     "p90": 1886,
+     "p99": 8910.56000000005
+    },
+    "throughput": {
+     "p50": 111,
+     "p75": 84,
+     "p90": 67.5,
+     "p99": 33.55
+    },
+    "request_count": 1410
+   }
+  }
+ },
+ {
+  "name": "Parasail | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000014",
+   "completion": "0.0000044",
+   "input_cache_read": "0.00000026",
+   "discount": 0
+  },
+  "provider_name": "Parasail",
+  "tag": "parasail/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "seed",
+   "stop",
+   "top_k",
+   "logit_bias",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.91438356164383,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1260,
+   "p75": 24061,
+   "p90": 43592.399999999994,
+   "p99": 81090.90000000001
+  },
+  "throughput_last_30m": {
+   "p50": 85,
+   "p75": 28,
+   "p90": 4,
+   "p99": 1
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1260,
+     "p75": 24061,
+     "p90": 43592.399999999994,
+     "p99": 81090.90000000001
+    },
+    "throughput": {
+     "p50": 85,
+     "p75": 28,
+     "p90": 4,
+     "p99": 1
+    },
+    "request_count": 195
+   }
+  }
+ },
+ {
+  "name": "Modal | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000014",
+   "completion": "0.0000044",
+   "input_cache_read": "0.00000026",
+   "discount": 0
+  },
+  "provider_name": "Modal",
+  "tag": "modal",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "stop",
+   "max_tokens",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 393,
+   "p75": 590,
+   "p90": 931,
+   "p99": 4571.00000000002
+  },
+  "throughput_last_30m": {
+   "p50": 134,
+   "p75": 103,
+   "p90": 82,
+   "p99": 41
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 393,
+     "p75": 590,
+     "p90": 931,
+     "p99": 4571.00000000002
+    },
+    "throughput": {
+     "p50": 134,
+     "p75": 103,
+     "p90": 82,
+     "p99": 41
+    },
+    "request_count": 2771
+   }
+  }
+ },
+ {
+  "name": "BaseTen | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000014",
+   "completion": "0.0000044",
+   "input_cache_read": "0.00000014",
+   "discount": 0
+  },
+  "provider_name": "BaseTen",
+  "tag": "baseten/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 262144,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": null,
+  "uptime_last_5m": null,
+  "uptime_last_1d": 98.73417721518987,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1622,
+   "p75": 2493,
+   "p90": 4100.7,
+   "p99": 4333.17
+  },
+  "throughput_last_30m": {
+   "p50": 34,
+   "p75": 32,
+   "p90": 30.8,
+   "p99": 30.08
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1622,
+     "p75": 2493,
+     "p90": 4100.7,
+     "p99": 4333.17
+    },
+    "throughput": {
+     "p50": 34,
+     "p75": 32,
+     "p90": 30.8,
+     "p99": 30.08
+    },
+    "request_count": 8
+   }
+  }
+ },
+ {
+  "name": "Fireworks | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000014",
+   "completion": "0.0000044",
+   "input_cache_read": "0.00000026",
+   "discount": 0
+  },
+  "provider_name": "Fireworks",
+  "tag": "fireworks",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "top_k",
+   "repetition_penalty",
+   "logit_bias",
+   "logprobs",
+   "top_logprobs",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.18896999188969,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 901,
+   "p75": 1224,
+   "p90": 1607,
+   "p99": 3443.3599999999824
+  },
+  "throughput_last_30m": {
+   "p50": 83,
+   "p75": 64,
+   "p90": 49,
+   "p99": 28
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 901,
+     "p75": 1224,
+     "p90": 1607,
+     "p99": 3443.3599999999824
+    },
+    "throughput": {
+     "p50": 83,
+     "p75": 64,
+     "p90": 49,
+     "p99": 28
+    },
+    "request_count": 7107
+   }
+  }
+ },
+ {
+  "name": "Cloudflare | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000014",
+   "completion": "0.0000044",
+   "input_cache_read": "0.00000026",
+   "discount": 0
+  },
+  "provider_name": "Cloudflare",
+  "tag": "cloudflare",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "top_k",
+   "seed",
+   "repetition_penalty",
+   "frequency_penalty",
+   "presence_penalty",
+   "min_p",
+   "stop",
+   "logit_bias",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.27272727272727,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 3979.5,
+   "p75": 8693.25,
+   "p90": 17121,
+   "p99": 39954.25
+  },
+  "throughput_last_30m": {
+   "p50": 29,
+   "p75": 15,
+   "p90": 8,
+   "p99": 3
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 3979.5,
+     "p75": 8693.25,
+     "p90": 17121,
+     "p99": 39954.25
+    },
+    "throughput": {
+     "p50": 29,
+     "p75": 15,
+     "p90": 8,
+     "p99": 3
+    },
+    "request_count": 1376
+   }
+  }
+ },
+ {
+  "name": "AtlasCloud | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000014",
+   "completion": "0.0000044",
+   "input_cache_read": "0.00000026",
+   "discount": 0
+  },
+  "provider_name": "AtlasCloud",
+  "tag": "atlas-cloud/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "top_k",
+   "min_p",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "stop",
+   "seed",
+   "logit_bias",
+   "response_format",
+   "tools",
+   "tool_choice",
+   "structured_outputs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 4564,
+   "p75": 5892.5,
+   "p90": 6747,
+   "p99": 8356.960000000001
+  },
+  "throughput_last_30m": {
+   "p50": 26,
+   "p75": 22,
+   "p90": 15.399999999999999,
+   "p99": 9.420000000000002
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 4564,
+     "p75": 5892.5,
+     "p90": 6747,
+     "p99": 8356.960000000001
+    },
+    "throughput": {
+     "p50": 26,
+     "p75": 22,
+     "p90": 15.399999999999999,
+     "p99": 9.420000000000002
+    },
+    "request_count": 87
+   }
+  }
+ },
+ {
+  "name": "Z.AI | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000014",
+   "completion": "0.0000044",
+   "input_cache_read": "0.00000026",
+   "discount": 0
+  },
+  "provider_name": "Z.AI",
+  "tag": "z-ai/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "tools",
+   "tool_choice",
+   "top_k",
+   "response_format",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": false,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1355,
+   "p75": 2056,
+   "p90": 3771.7000000000016,
+   "p99": 12625.250000000004
+  },
+  "throughput_last_30m": {
+   "p50": 57,
+   "p75": 41,
+   "p90": 29,
+   "p99": 13
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1355,
+     "p75": 2056,
+     "p90": 3771.7000000000016,
+     "p99": 12625.250000000004
+    },
+    "throughput": {
+     "p50": 57,
+     "p75": 41,
+     "p90": 29,
+     "p99": 13
+    },
+    "request_count": 16678
+   }
+  }
+ },
+ {
+  "name": "Mistral | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.00000154",
+   "completion": "0.00000484",
+   "input_cache_read": "0.000000154",
+   "discount": 0
+  },
+  "provider_name": "Mistral",
+  "tag": "mistral/nvfp4/eu",
+  "service_tier": null,
+  "quantization": "nvfp4",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "seed",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "logprobs",
+   "top_logprobs",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": null,
+  "uptime_last_5m": null,
+  "uptime_last_1d": 99.7289972899729,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 2276,
+   "p75": 2654,
+   "p90": 5345.6,
+   "p99": 6960.5599999999995
+  },
+  "throughput_last_30m": {
+   "p50": 54,
+   "p75": 47.5,
+   "p90": 43.60000000000001,
+   "p99": 41.26
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 2276,
+     "p75": 2654,
+     "p90": 5345.6,
+     "p99": 6960.5599999999995
+    },
+    "throughput": {
+     "p50": 54,
+     "p75": 47.5,
+     "p90": 43.60000000000001,
+     "p99": 41.26
+    },
+    "request_count": 5
+   }
+  }
+ },
+ {
+  "name": "Amazon Bedrock | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.00000168",
+   "completion": "0.00000528",
+   "input_cache_read": "0.000000312",
+   "input_cache_write": "0.0000021",
+   "discount": 0
+  },
+  "provider_name": "Amazon Bedrock",
+  "tag": "amazon-bedrock/us-east-1",
+  "service_tier": null,
+  "quantization": "unknown",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "top_k",
+   "stop",
+   "seed",
+   "tools",
+   "response_format",
+   "structured_outputs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": null,
+  "uptime_last_5m": null,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": false,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 995,
+   "p75": 1860.75,
+   "p90": 2988.1000000000004,
+   "p99": 4809.130000000003
+  },
+  "throughput_last_30m": {
+   "p50": 156.5,
+   "p75": 93,
+   "p90": 66.1,
+   "p99": 32.91
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 995,
+     "p75": 1860.75,
+     "p90": 2988.1000000000004,
+     "p99": 4809.130000000003
+    },
+    "throughput": {
+     "p50": 156.5,
+     "p75": 93,
+     "p90": 66.1,
+     "p99": 32.91
+    },
+    "request_count": 100
+   }
+  }
+ },
+ {
+  "name": "Fireworks | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000021",
+   "completion": "0.0000066",
+   "input_cache_read": "0.00000039",
+   "discount": 0
+  },
+  "provider_name": "Fireworks",
+  "tag": "fireworks/fast",
+  "service_tier": "priority",
+  "quantization": "unknown",
+  "max_completion_tokens": 943718,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "top_k",
+   "repetition_penalty",
+   "logit_bias",
+   "logprobs",
+   "top_logprobs",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.30264993026499,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 846,
+   "p75": 1378,
+   "p90": 2270,
+   "p99": 6507.990000000002
+  },
+  "throughput_last_30m": {
+   "p50": 133,
+   "p75": 84,
+   "p90": 51,
+   "p99": 18.909999999999997
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 846,
+     "p75": 1378,
+     "p90": 2270,
+     "p99": 6507.990000000002
+    },
+    "throughput": {
+     "p50": 133,
+     "p75": 84,
+     "p90": 51,
+     "p99": 18.909999999999997
+    },
+    "request_count": 26656
+   }
+  }
+ },
+ {
+  "name": "BaseTen | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000021",
+   "completion": "0.0000066",
+   "input_cache_read": "0.00000021",
+   "discount": 0
+  },
+  "provider_name": "BaseTen",
+  "tag": "baseten/us/fast",
+  "service_tier": "priority",
+  "quantization": "fp8",
+  "max_completion_tokens": 262144,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.68976215098242,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 513,
+   "p75": 785,
+   "p90": 1425.000000000001,
+   "p99": 12198.000000000007
+  },
+  "throughput_last_30m": {
+   "p50": 175,
+   "p75": 128,
+   "p90": 83,
+   "p99": 27.04
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 513,
+     "p75": 785,
+     "p90": 1425.000000000001,
+     "p99": 12198.000000000007
+    },
+    "throughput": {
+     "p50": 175,
+     "p75": 128,
+     "p90": 83,
+     "p99": 27.04
+    },
+    "request_count": 453
+   }
+  }
+ },
+ {
+  "name": "BaseTen | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1048576,
+  "pricing": {
+   "prompt": "0.0000021",
+   "completion": "0.0000066",
+   "input_cache_read": "0.00000021",
+   "discount": 0
+  },
+  "provider_name": "BaseTen",
+  "tag": "baseten/fast",
+  "service_tier": "priority",
+  "quantization": "fp8",
+  "max_completion_tokens": 262144,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "tools",
+   "tool_choice",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.63636363636364,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 539.5,
+   "p75": 869.25,
+   "p90": 1824.5000000000002,
+   "p99": 14196.059999999881
+  },
+  "throughput_last_30m": {
+   "p50": 172,
+   "p75": 122,
+   "p90": 76.4,
+   "p99": 25.84
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 539.5,
+     "p75": 869.25,
+     "p90": 1824.5000000000002,
+     "p99": 14196.059999999881
+    },
+    "throughput": {
+     "p50": 172,
+     "p75": 122,
+     "p90": 76.4,
+     "p99": 25.84
+    },
+    "request_count": 442
+   }
+  }
+ },
+ {
+  "name": "Alibaba | z-ai/glm-5.3-20260816",
+  "model_id": "z-ai/glm-5.3",
+  "model_name": "Z.ai: GLM 5.3",
+  "context_length": 1000000,
+  "pricing": {
+   "prompt": "0.0000028",
+   "completion": "0.0000088",
+   "input_cache_read": "0.00000056",
+   "discount": 0
+  },
+  "provider_name": "Alibaba",
+  "tag": "alibaba/prime",
+  "service_tier": "priority",
+  "quantization": "unknown",
+  "max_completion_tokens": 131072,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "seed",
+   "presence_penalty",
+   "response_format",
+   "top_k",
+   "frequency_penalty",
+   "stop",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs",
+   "reasoning_effort"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": false
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 694,
+   "p75": 858.75,
+   "p90": 1222.5,
+   "p99": 5072.589999999987
+  },
+  "throughput_last_30m": {
+   "p50": 118,
+   "p75": 91,
+   "p90": 67,
+   "p99": 26.299999999999997
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 694,
+     "p75": 858.75,
+     "p90": 1222.5,
+     "p99": 5072.589999999987
+    },
+    "throughput": {
+     "p50": 118,
+     "p75": 91,
+     "p90": 67,
+     "p99": 26.299999999999997
+    },
+    "request_count": 462
+   }
+  }
+ }
+]
