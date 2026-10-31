@@ -1,9 +1,12 @@
 """OpenAI-compatible HTTP front end for the cooperative provider (`python -m llmverify serve`).
 
 POST /v1/chat/completions accepts the usual fields (messages, max_tokens, temperature, top_p, top_k, min_p, seed)
-plus `verification: {"nonce": "<client-chosen hex>"}`. The reply is a normal chat completion with an extra
-`verification` object holding the signed receipt and the trace (prompt ids, output ids, committed top-20).
-GET /v1/verification/info returns the provider's public key and model claim, for pinning.
+plus `verification: {"nonce": "<client-chosen hex>", "trace": "inline" | "deferred"}`. The reply is a normal chat
+completion with an extra `verification` object holding the signed receipt and, inline, the trace (prompt ids, output
+ids, committed top-20). Deferred, the reply carries only the receipt (about 700 bytes) and a `trace_id`; the trace
+waits in a rolling in-memory buffer for `trace_window` seconds and is served once asked for:
+GET /v1/verification/trace/<trace_id>, where trace_id is the hex sha256 of the receipt body (the digest it signs).
+GET /v1/verification/info returns the provider's public key, model claim and trace window, for pinning.
 
 This is a reference implementation on top of lv-engine: one request at a time, no batching.
 """
@@ -14,23 +17,52 @@ import json
 import secrets
 import threading
 import time
+from collections import OrderedDict
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Optional
 
 from .provider import VerifiableProvider
-from .receipt import new_nonce
+from .receipt import VERSION as RECEIPT_VERSION, new_nonce
 from .sampling import SamplingSpec
 from .templates import render_chat
 
 MAX_TOKENS_CAP = 4096
 
 
+class TraceStore:
+    """Traces of deferred replies, kept for `window` seconds (and at most `max_entries`), then dropped. Memory is
+    rate x window, a fixed size: about 75 MB for a node producing 2,000 tokens/s with a five-minute window."""
+
+    def __init__(self, window: float = 300.0, max_entries: int = 100_000):
+        self.window, self.max_entries = window, max_entries
+        self.items: "OrderedDict[str, tuple]" = OrderedDict()
+        self.lock = threading.Lock()
+
+    def _expire(self, now: float):
+        while self.items and (len(self.items) > self.max_entries or next(iter(self.items.values()))[0] < now - self.window):
+            self.items.popitem(last=False)
+
+    def put(self, key: str, trace: dict, now: Optional[float] = None):
+        now = time.time() if now is None else now
+        with self.lock:
+            self.items[key] = (now, trace)
+            self._expire(now)
+
+    def get(self, key: str, now: Optional[float] = None) -> Optional[dict]:
+        now = time.time() if now is None else now
+        with self.lock:
+            self._expire(now)
+            item = self.items.get(key)
+            return item[1] if item else None
+
+
 class App:
     def __init__(self, provider: VerifiableProvider, template: str, bos: Optional[int] = None,
-                 template_kwargs: Optional[dict] = None):
+                 template_kwargs: Optional[dict] = None, trace_window: float = 300.0):
         self.provider, self.template, self.bos = provider, template, bos
         self.kw = template_kwargs or {}
         self.lock = threading.Lock()
+        self.traces = TraceStore(trace_window)
 
     def prompt_ids(self, messages):
         text = render_chat(self.template, messages, True, **self.kw)
@@ -46,12 +78,22 @@ class App:
             raise ValueError(f"max_tokens must be an integer in [1, {MAX_TOKENS_CAP}]")
         spec = SamplingSpec.from_request(body, default_seed=secrets.randbelow(2 ** 31))
         nonce = ((body.get("verification") or {}).get("nonce")) or new_nonce()
+        mode = (body.get("verification") or {}).get("trace", "inline")
+        if mode not in ("inline", "deferred"):
+            raise ValueError("verification.trace must be 'inline' or 'deferred'")
         with self.lock:
             ids = self.prompt_ids(messages)
             g = self.provider.generate(ids, spec, max_tokens, nonce)
             eos = self.provider.eos
-            out_ids = [t for t in g.trace.tokens if t not in eos]
-            text = self.provider.model.detokenize(out_ids)
+            text = g.text if g.text is not None else self.provider.model.detokenize(
+                [t for t in g.trace.tokens if t not in eos])
+        if mode == "deferred":
+            trace_id = g.receipt.digest().hex()
+            self.traces.put(trace_id, g.trace.to_dict())
+            verification = {"receipt": g.receipt.to_dict(), "trace_id": trace_id,
+                            "trace_until": int(time.time() + self.traces.window)}
+        else:
+            verification = {"receipt": g.receipt.to_dict(), "trace": g.trace.to_dict()}
         return {
             "id": "chatcmpl-" + nonce[:24], "object": "chat.completion", "created": int(time.time()),
             "model": self.provider.model_info.get("name"),
@@ -59,12 +101,16 @@ class App:
                          "finish_reason": g.trace.finish_reason}],
             "usage": {"prompt_tokens": len(ids), "completion_tokens": len(g.trace.tokens),
                       "total_tokens": len(ids) + len(g.trace.tokens)},
-            "verification": {"receipt": g.receipt.to_dict(), "trace": g.trace.to_dict()},
+            "verification": verification,
         }
 
     def info(self) -> dict:
         return {"provider_key": self.provider.signer.public_hex, "model": self.provider.model_info,
-                "receipt_version": "llmverify-receipt-v1", "sampling_rule": "llmverify-gumbel-v1"}
+                "receipt_version": RECEIPT_VERSION, "sampling_rule": "llmverify-gumbel-v1",
+                "trace_window_s": self.traces.window}
+
+    def trace(self, trace_id: str) -> Optional[dict]:
+        return self.traces.get(trace_id)
 
 
 def make_handler(app: App):
@@ -80,6 +126,9 @@ def make_handler(app: App):
         def do_GET(self):  # noqa: N802
             if self.path.rstrip("/") == "/v1/verification/info":
                 return self._send(200, app.info())
+            if self.path.startswith("/v1/verification/trace/"):
+                t = app.trace(self.path.rsplit("/", 1)[-1])
+                return self._send(200, t) if t is not None else self._send(404, {"error": "unknown or expired trace"})
             self._send(404, {"error": "not found"})
 
         def do_POST(self):  # noqa: N802

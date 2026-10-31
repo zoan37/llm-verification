@@ -34,7 +34,7 @@ from cryptography.hazmat.primitives.serialization import Encoding, PrivateFormat
 
 from .sampling import COMMIT_K, SamplingSpec, TopK, choose
 
-VERSION = "llmverify-receipt-v1"
+VERSION = "llmverify-receipt-v2"  # v2: optional text_sha256
 LOGPROB_DECIMALS = 4
 
 
@@ -133,6 +133,9 @@ class Receipt:
     n_tokens: int
     finish_reason: str
     created: int
+    # sha256 of the reply text as returned to the client (UTF-8), "" if not committed. Binds the text itself, so a
+    # client that does not fetch the trace (deferred mode) still knows the text is what the provider signed for.
+    text_sha256: str = ""
     version: str = VERSION
     signature: str = ""
 
@@ -183,12 +186,60 @@ def signature_ok(receipt: Receipt) -> bool:
 
 
 def make_receipt(signer: Signer, trace: Trace, model: dict, spec: SamplingSpec, client_nonce: str,
-                 max_tokens: int) -> Receipt:
+                 max_tokens: int, text: Optional[str] = None) -> Receipt:
     r = Receipt(provider_key="", model=dict(model), client_nonce=client_nonce, sampling=spec.to_dict(),
                 max_tokens=int(max_tokens), prompt_sha256=trace.prompt_digest(), n_prompt=len(trace.prompt_ids),
                 steps_sha256=trace.steps_digest(), n_tokens=len(trace.tokens), finish_reason=trace.finish_reason,
-                created=int(time.time()))
+                created=int(time.time()), text_sha256=text_digest(text) if text is not None else "")
     return signer.sign(r)
+
+
+def text_digest(text: str) -> str:
+    return sha256_hex(text.encode("utf-8"))
+
+
+def check_receipt_header(receipt: Receipt, *, text: Optional[str] = None,
+                         expected_prompt_ids: Optional[Sequence[int]] = None,
+                         expected_spec: Optional[SamplingSpec] = None, expected_nonce: Optional[str] = None,
+                         expected_max_tokens: Optional[int] = None, pinned_key: Optional[str] = None,
+                         expected_model: Optional[dict] = None) -> ReceiptCheck:
+    """The checks that need no trace (deferred mode, before or instead of a challenge): signature and key, that the
+    receipt is for this request (nonce, prompt, spec, max_tokens, model) and that the returned text is the text the
+    provider signed for. What it cannot check without the trace: that each token follows the sampling rule, and
+    model identity; a provider that cannot predict which replies get challenged risks every reply it fakes."""
+    p: List[str] = []
+    if receipt.version != VERSION:
+        p.append(f"unknown receipt version {receipt.version!r}")
+    if not signature_ok(receipt):
+        p.append("bad signature")
+    if pinned_key and receipt.provider_key != pinned_key:
+        p.append("signed by a different key than the pinned provider key")
+    if expected_prompt_ids is not None:
+        ids = [int(x) for x in expected_prompt_ids]
+        if receipt.prompt_sha256 != Trace(ids, [], [], "stop").prompt_digest() or receipt.n_prompt != len(ids):
+            p.append("prompt tokens differ from the client's own rendering of its request (added or altered input)")
+    if expected_nonce is not None and receipt.client_nonce != expected_nonce:
+        p.append("receipt is for a different request nonce (replayed or swapped reply)")
+    try:
+        spec = SamplingSpec(**receipt.sampling)
+        if expected_spec is not None and spec != expected_spec:
+            p.append("sampling spec differs from the request")
+    except (TypeError, ValueError) as e:
+        p.append(f"invalid sampling spec: {e}")
+    if expected_max_tokens is not None and receipt.max_tokens != expected_max_tokens:
+        p.append("max_tokens differs from the request")
+    if expected_model is not None and any(receipt.model.get(k) != v for k, v in expected_model.items()):
+        p.append("receipt names a different model or weights hash")
+    if text is not None:
+        if not receipt.text_sha256:
+            p.append("receipt does not commit to the reply text")
+        elif receipt.text_sha256 != text_digest(text):
+            p.append("returned text is not the text the provider signed for")
+    if receipt.finish_reason not in ("stop", "length"):
+        p.append(f"unknown finish reason {receipt.finish_reason!r}")
+    if receipt.finish_reason == "length" and receipt.n_tokens != receipt.max_tokens:
+        p.append("finish_reason 'length' but fewer than max_tokens tokens (truncated reply)")
+    return ReceiptCheck(not p, p)
 
 
 def new_nonce() -> str:

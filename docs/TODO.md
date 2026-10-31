@@ -26,8 +26,8 @@ Open work, roughly in priority order. Each item says what it would establish.
 - [ ] **Effective temperature** for every endpoint (Darkbloom first).
 
 ## Cooperative mode in production
-- [ ] **Challenge-only traces**: the server sends the receipt with every reply and the trace only when challenged,
-      from a rolling buffer (window configurable); client and auditor fetch by receipt digest.
+- [x] **Challenge-only traces** (receipt v2): `trace: "deferred"`, rolling buffer, private client challenges, text
+      hash in the receipt. Next: span reveals (Merkle commitment) so a challenge need not fetch the whole trace.
 - [ ] **llama.cpp server integration**: the threaded rule as a sampler plus receipts behind a flag (overhead measured
       with engine/bench_coop.cpp: within a few percent when threaded). Then vLLM (GPU-side top-20).
 - [ ] Single-request vocabulary pass split over cores or on the GPU (the last ~5% on fast models).

@@ -98,6 +98,7 @@ request (OpenAI-style JSON) about 1,800; the trace here 373 as JSON, roughly 120
 challenged: the receipt commits to the trace (`steps_sha256`), the challenge is derived from the receipt after it is
 signed (above), and the provider answers from a rolling buffer it keeps for the challenge window. Storage is then
 rate x window, a fixed size: a node producing 2,000 tokens/s with a five-minute window holds about 75 MB in memory.
-Old replies stay checkable without the provider: whoever fetched a trace can keep it with its signed receipt. (The
-reference server, `llmverify/server.py`, still returns the full trace with every reply; challenge-only replies are
-next in docs/TODO.md.)
+Old replies stay checkable without the provider: whoever fetched a trace can keep it with its signed receipt. The
+reference server and client implement this as `verification.trace = "deferred"` (`VerifyingClient.chat(...,
+trace="deferred", challenge_rate=p)`); the receipt also commits to a hash of the reply text, so even unchallenged
+replies cannot have their text altered. See docs/receipt-spec.md, "Deferred traces".

@@ -15,13 +15,14 @@ from __future__ import annotations
 
 import json
 import secrets
+import urllib.error
 import urllib.request
 from dataclasses import dataclass
 from typing import List, Optional
 
 from .audit import Ledger, audit_trace
 from .metrics import TokenScore, means
-from .receipt import Receipt, ReceiptCheck, Trace, check_receipt, new_nonce
+from .receipt import Receipt, ReceiptCheck, Trace, check_receipt, check_receipt_header, new_nonce, text_digest
 from .sampling import SamplingSpec
 from .templates import render_chat
 
@@ -30,7 +31,7 @@ from .templates import render_chat
 class VerifiedReply:
     text: str
     receipt: Receipt
-    trace: Trace
+    trace: Optional[Trace]   # None for an unchallenged deferred reply
     check: ReceiptCheck
     audit: Optional[dict] = None
 
@@ -58,40 +59,78 @@ class VerifyingClient:
         with urllib.request.urlopen(req, timeout=self.timeout) as r:
             return json.load(r)
 
+    def _get(self, path: str) -> dict:
+        with urllib.request.urlopen(self.base + path, timeout=self.timeout) as r:
+            return json.load(r)
+
+    def fetch_trace(self, trace_id: str) -> dict:
+        return self._get("/v1/verification/trace/" + trace_id)
+
     def chat(self, messages: List[dict], max_tokens: int = 256, temperature: float = 0.0, top_p: float = 1.0,
-             top_k: int = 20, min_p: float = 0.0, seed: Optional[int] = None, audit: bool = True) -> VerifiedReply:
+             top_k: int = 20, min_p: float = 0.0, seed: Optional[int] = None, audit: bool = True,
+             trace: str = "inline", challenge_rate: float = 1.0) -> VerifiedReply:
+        """trace="inline": the trace comes with every reply and every reply is fully checked. trace="deferred": only
+        the receipt comes back (it still binds the text, prompt, request and sampling spec); after it has arrived the
+        client privately decides, with probability `challenge_rate`, to fetch the trace and run the full checks. The
+        provider cannot know in advance which replies will be challenged, and a withheld trace counts as a failure."""
         if not 1 <= int(max_tokens) <= MAX_TOKENS_CAP:
             raise ValueError(f"max_tokens must be in [1, {MAX_TOKENS_CAP}]")
+        if trace not in ("inline", "deferred"):
+            raise ValueError("trace must be 'inline' or 'deferred'")
         seed = secrets.randbelow(2 ** 31) if seed is None else seed
         nonce = new_nonce()
         body = {"messages": messages, "max_tokens": max_tokens, "temperature": temperature, "top_p": top_p,
-                "top_k": top_k, "min_p": min_p, "seed": seed, "verification": {"nonce": nonce}}
+                "top_k": top_k, "min_p": min_p, "seed": seed, "verification": {"nonce": nonce, "trace": trace}}
         spec = SamplingSpec.from_request(body)
         resp = self._post(body)
         try:
             v = resp["verification"]
-            receipt, trace = Receipt.from_dict(v["receipt"]), Trace.from_dict(v["trace"])
+            receipt = Receipt.from_dict(v["receipt"])
             text = resp["choices"][0]["message"]["content"]
+            if type(text) is not str:
+                raise ValueError("reply text is not a string")
             expected_ids = ([self.bos] if self.bos is not None else []) + self.tokenizer.tokenize(
                 render_chat(self.template, messages, True, **self.template_kwargs), special=True)
+            expect = dict(expected_prompt_ids=expected_ids, expected_spec=spec, expected_nonce=nonce,
+                          expected_max_tokens=max_tokens, pinned_key=self.pinned_key,
+                          expected_model=self.expected_model)
+            if trace == "deferred":
+                hdr = check_receipt_header(receipt, text=text, **expect)
+                if v.get("trace_id") != receipt.digest().hex():
+                    hdr.problems.append("trace_id does not name this receipt")
+                    hdr.ok = False
+                challenged = secrets.randbelow(1 << 32) < challenge_rate * (1 << 32)
+                if not hdr.ok or not challenged:
+                    for p in hdr.problems:
+                        self.ledger.add_failure(p)
+                    return VerifiedReply(text, receipt, None, hdr)
+                try:
+                    tr = Trace.from_dict(self.fetch_trace(receipt.digest().hex()))
+                except (urllib.error.URLError, OSError) as e:
+                    msg = f"challenged trace not served ({e})"
+                    self.ledger.add_failure(msg)
+                    return VerifiedReply(text, receipt, None, ReceiptCheck(False, [msg]))
+            else:
+                tr = Trace.from_dict(v["trace"])
             eos = list(self.tokenizer.eos_ids)
-            chk = check_receipt(receipt, trace, expected_prompt_ids=expected_ids, expected_spec=spec,
-                                expected_nonce=nonce, expected_max_tokens=max_tokens, pinned_key=self.pinned_key,
-                                expected_model=self.expected_model, eos_ids=eos)
-            if text != self.tokenizer.detokenize([t for t in trace.tokens if t not in set(eos)]):
+            chk = check_receipt(receipt, tr, eos_ids=eos, **expect)
+            if text != self.tokenizer.detokenize([t for t in tr.tokens if t not in set(eos)]):
                 chk.problems.append("returned text does not match the committed tokens")
+                chk.ok = False
+            if receipt.text_sha256 and receipt.text_sha256 != text_digest(text):
+                chk.problems.append("returned text is not the text the provider signed for")
                 chk.ok = False
         except (KeyError, TypeError, ValueError, OverflowError) as e:
             # A malformed reply is evidence too: record it rather than crash (found in red-team review).
             self.ledger.add_failure(f"malformed verification data: {e}")
             return VerifiedReply(str((resp.get("choices") or [{}])[0].get("message", {}).get("content", "")),
                                  None, None, ReceiptCheck(False, [f"malformed verification data: {e}"]))
-        out = VerifiedReply(text, receipt, trace, chk)
+        out = VerifiedReply(text, receipt, tr, chk)
         if not chk.ok:
             for p in chk.problems:
                 self.ledger.add_failure(p)
-        elif audit and self.referee is not None and trace.tokens:
-            scores: List[Optional[TokenScore]] = audit_trace(self.referee, trace, spec, receipt.client_nonce)
+        elif audit and self.referee is not None and tr.tokens:
+            scores: List[Optional[TokenScore]] = audit_trace(self.referee, tr, spec, receipt.client_nonce)
             self.ledger.add(scores)
             out.audit = {"tokens": sum(1 for s in scores if s), **means(scores, ("regret", "agree", "wgap", "topk"))}
         return out

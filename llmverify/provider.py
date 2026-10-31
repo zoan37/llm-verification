@@ -18,6 +18,7 @@ from .sampling import COMMIT_K, SamplingSpec, choose
 class Generation:
     trace: Trace
     receipt: Receipt
+    text: Optional[str] = None
 
 
 class VerifiableProvider:
@@ -45,4 +46,5 @@ class VerifiableProvider:
             if step + 1 < max_tokens:
                 top = round_top(self.model.step(tok, COMMIT_K))
         trace = Trace(prompt_ids=[int(x) for x in prompt_ids], tokens=tokens, tops=tops, finish_reason=finish)
-        return Generation(trace, make_receipt(self.signer, trace, self.model_info, spec, nonce, max_tokens))
+        text = self.model.detokenize([t for t in tokens if t not in self.eos])
+        return Generation(trace, make_receipt(self.signer, trace, self.model_info, spec, nonce, max_tokens, text), text)

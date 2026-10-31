@@ -1,4 +1,4 @@
-# Receipt and sampling specification (v1)
+# Receipt and sampling specification (v2)
 
 What an inference engine must implement to give its users verifiable replies. The reference implementation is
 `llmverify/provider.py` + `engine/lv_engine.cpp` (llama.cpp); any engine (vLLM, SGLang, MLX, TensorRT-LLM) can
@@ -12,6 +12,7 @@ An OpenAI-style chat request plus:
 |---|---|
 | `seed` (int) | chosen by the client. Required for verifiability; a provider-chosen seed allows grinding. |
 | `verification.nonce` (hex string) | chosen by the client, fresh per request. Binds the receipt to this request and keys the noise. |
+| `verification.trace` | `"inline"` (default): the trace comes with the reply. `"deferred"`: only the receipt and a `trace_id`; the trace is served on request for the provider's trace window. |
 | `temperature`, `top_k` (≤ 20), `top_p`, `min_p` | the sampling spec. `temperature` 0 means greedy. |
 
 ## Generation
@@ -50,7 +51,7 @@ distribution, and it is stable: a small change in logprobs flips the choice only
 
 ```json
 {
-  "version": "llmverify-receipt-v1",
+  "version": "llmverify-receipt-v2",
   "provider_key": "<ed25519 public key, hex>",
   "model": {"name": "...", "weights_sha256": "..."},
   "client_nonce": "...", "sampling": {"mode", "temperature", "top_k", "top_p", "min_p", "seed"},
@@ -58,12 +59,27 @@ distribution, and it is stable: a small change in logprobs flips the choice only
   "prompt_sha256": "sha256(canonical(prompt_ids))", "n_prompt": 123,
   "steps_sha256": "sha256(canonical([[token, [[id, q], ...]], ...]))", "n_tokens": 87,
   "finish_reason": "stop", "created": 1793000000,
+  "text_sha256": "sha256(reply text as returned, UTF-8)",
   "signature": "<ed25519 signature over sha256(canonical(receipt without signature)), hex>"
 }
 ```
 
 Logprobs inside hashes are the integers `q` (units of 1e-4 nats), so implementations never disagree about float
 formatting. `canonical(x)` = JSON with sorted keys, no whitespace (`separators=(",", ":")`), UTF-8, no NaN.
+
+v2 adds `text_sha256` (v1 had none): it binds the returned text itself, so a client that does not fetch the trace
+still knows the text is what the provider signed for. An empty string means "not committed", which a deferred-mode
+client treats as a failure.
+
+## Deferred traces
+
+With `verification.trace = "deferred"` the reply carries `{"receipt": ..., "trace_id": hex(sha256(canonical(receipt
+without signature))), "trace_until": unix seconds}`. `GET /v1/verification/trace/<trace_id>` returns the trace until
+then (the provider keeps a rolling buffer; `GET /v1/verification/info` reports `trace_window_s`). The client checks the
+receipt alone at once (signature, key, nonce, prompt, spec, max_tokens, model, text hash), then decides privately,
+after the receipt has arrived, whether to challenge; a challenged trace must match the receipt exactly, and a trace
+that is not served counts as a failure. A provider cannot tell which replies will be challenged, so each faked
+reply is caught with the challenge probability.
 
 ## Validity of a committed step
 
@@ -82,5 +98,6 @@ position is equally likely to be covered.
 
 See `receipt.check_receipt`: signature and key pin; prompt ids equal the client's own rendering; nonce, seed,
 spec and max_tokens equal the request; trace hashes equal the receipt; every token equals the rule's choice on
-the committed logprobs; EOS and length consistent; returned text equals the detokenized tokens. Then, optionally,
+the committed logprobs; EOS and length consistent; returned text equals the detokenized tokens and the receipt's
+text hash. Deferred replies that are not challenged get the trace-free subset (`receipt.check_receipt_header`). Then, optionally,
 a referee audit of any span (`audit.audit_trace`).
