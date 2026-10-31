@@ -1,0 +1,76 @@
+{
+ "model": "qwen/qwen3.8-27b",
+ "honest": "local__vulkan-r9700-windows",
+ "positions": 9606,
+ "flip_curve": [
+  {
+   "margin_from": 0,
+   "margin_to": 0.01,
+   "positions": 14,
+   "flip_rate": 0.5714285714285714
+  },
+  {
+   "margin_from": 0.01,
+   "margin_to": 0.03,
+   "positions": 39,
+   "flip_rate": 0.46153846153846156
+  },
+  {
+   "margin_from": 0.03,
+   "margin_to": 0.05,
+   "positions": 44,
+   "flip_rate": 0.1590909090909091
+  },
+  {
+   "margin_from": 0.05,
+   "margin_to": 0.1,
+   "positions": 91,
+   "flip_rate": 0.07692307692307693
+  },
+  {
+   "margin_from": 0.1,
+   "margin_to": 0.2,
+   "positions": 174,
+   "flip_rate": 0.022988505747126436
+  },
+  {
+   "margin_from": 0.2,
+   "margin_to": 0.5,
+   "positions": 519,
+   "flip_rate": 0.0
+  },
+  {
+   "margin_from": 0.5,
+   "margin_to": 1000000000.0,
+   "positions": 8725,
+   "flip_rate": 0.0
+  }
+ ],
+ "detection": {
+  "0.01": {
+   "steerable_share": 0.0033312513012700396,
+   "excess_flips_per_token": -3.203126251221192e-05,
+   "tokens_for_z4": Infinity
+  },
+  "0.03": {
+   "steerable_share": 0.011971684363939205,
+   "excess_flips_per_token": 0.0024063485962299205,
+   "tokens_for_z4": 8450.165317634117
+  },
+  "0.05": {
+   "steerable_share": 0.019571101394961484,
+   "excess_flips_per_token": 0.005621486570893191,
+   "tokens_for_z4": 1548.3884885749512
+  },
+  "0.1": {
+   "steerable_share": 0.03768478034561732,
+   "excess_flips_per_token": 0.014261919633562357,
+   "tokens_for_z4": 240.5616086464147
+  },
+  "0.2": {
+   "steerable_share": 0.07328752862794087,
+   "excess_flips_per_token": 0.03206329377472413,
+   "tokens_for_z4": 47.595513921872964
+  }
+ }
+}

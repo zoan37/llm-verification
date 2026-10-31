@@ -142,6 +142,15 @@ lie slightly in its committed logprobs to keep the rule check passing.
   favourable near-tie while honest noise flips about half of them in random directions, so steering at that rate
   shows up as excess disagreement over enough tokens; the cooperative experiment found steering stays inside
   honest noise only at 2-13% of near-ties.
+
+  How fast that shows (`experiments/steering_detection.py`): an honest machine with the same weights (R9700 on
+  Vulkan vs the CUDA referee, Qwen3.8, 9,606 greedy positions) picks the referee's runner-up 57% of the time when
+  the referee's margin is under 0.01 nats, 46% at 0.01-0.03, 16% at 0.03-0.05, 8% at 0.05-0.1, 2% at 0.1-0.2 and
+  never above 0.2. A steerer that hides a bit in every position within 2δ flips about half of them, so its excess
+  flips are detected (z > 4) after roughly 50 audited tokens at δ = 0.2, 240 at 0.1, 1,500 at 0.05 and 8,500 at
+  0.03; at δ = 0.01 it is indistinguishable but has only ~3 positions per 1,000 tokens to use. In practice the
+  undetectable channel is the closest ~1% of ties, which honest machines cannot call either. (The closest-tie
+  buckets hold 14-44 positions, so their rates are rough.)
 - What it buys an attacker: picking among outputs M itself nearly produced. It cannot make M say something M
   gives low probability, so it cannot inject a malicious tool call; it can bias style or embed a covert watermark.
 - Mitigations: tighter tolerance on `wgap` (the lie is visible in committed logprobs), per-provider evidence

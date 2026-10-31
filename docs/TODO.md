@@ -14,7 +14,8 @@ Open work, roughly in priority order. Each item says what it would establish.
       OpenRouter) and DeepSeek V4.1 Flash (763B) are too big for a local referee: referee-free checks only.
 - [ ] **gpt-oss-120b** full rescore on one referee (deferred: slow).
 - [x] **Tie steering** on real weights (`experiments/tie_steering.py`): 2-4% of tokens steerable inside same-weights
-      honest noise (docs/soundness.md). Next: a near-tie flip-rate test that bounds steering statistically.
+      honest noise (docs/soundness.md); a near-tie flip-rate test detects steering beyond the closest ~1% of ties
+      (`experiments/steering_detection.py`). Next: build that test into the Ledger verdict.
 
 - [x] **Tool calling / structured output fidelity**: same tool-call prompts to every endpoint; check the call is
       well formed, arguments complete, and the referee agrees with the call tokens (verify-before-act).
