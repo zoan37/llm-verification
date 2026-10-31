@@ -51,7 +51,7 @@ verdict compares against measured honest noise and known cheats run through the 
 ## Quick start
 
 ```bash
-uv venv && uv pip install numpy cryptography jinja2 pytest
+uv venv && uv pip install -r requirements.txt
 .venv/bin/python -m pytest -q          # runs entirely on the toy model, no GPU needed
 
 # build the engine against a llama.cpp checkout
@@ -74,3 +74,7 @@ python -m llmverify audit --base-url https://host/v1 --model NAME --logprobs \
 Early and moving fast. Results are snapshots (providers change deployments without notice), prompt sets are small,
 and honest baselines cover a handful of machines. Contributions of honest baselines on more hardware, new attacks,
 and counterexamples to any claim are especially welcome.
+
+## License
+
+MIT; see [LICENSE](LICENSE).
