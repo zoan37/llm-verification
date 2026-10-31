@@ -17,7 +17,8 @@ Open work, roughly in priority order. Each item says what it would establish.
       reasoning models; a harder problem set (accuracy saturates).
 - [x] **Response caching** (`experiments/response_cache.py`): 76 endpoints, one repeats temperature-1 replies (ModelRun).
 - [x] **Image inputs on vision models** (`experiments/image_fidelity.py`): codes at 36-7 px + billed image tokens.
-- [ ] **Scheduled snapshots**: quality by time of day / load; detect quiet model swaps over time.
+- [x] **Scheduled snapshots** (`experiments/snapshot.py`): weekly Qwen3.8 snapshot on the Spark (systemd user timer
+      `lv-snapshot.timer`, ~$0.40 a run), each compared with the previous. Next: more models, time-of-day variation.
 - [ ] **Effective temperature** for every endpoint (Darkbloom first).
 
 ## Calibration
@@ -29,7 +30,6 @@ Open work, roughly in priority order. Each item says what it would establish.
 ## Pipeline
 - [ ] Full-vocabulary statistics only for sampled replies; multithread or move to GPU (scoring is CPU-bound).
 - [ ] Rotate audit prompts per snapshot (`prompts/generate.py`) and publish seeds after collection.
-- [ ] Scheduled snapshots so scores track providers over time.
 
 ## Findings to follow up
 - [ ] Venice / Qwen3.8-27B: fingerprint against public uncensored builds (in progress).
