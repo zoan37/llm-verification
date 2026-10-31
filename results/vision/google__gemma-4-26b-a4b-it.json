@@ -1,0 +1,179 @@
+{
+ "model": "google/gemma-4-26b-a4b-it",
+ "sizes": [
+  36,
+  24,
+  16,
+  12,
+  9,
+  7
+ ],
+ "endpoints": {
+  "akashml__fp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.9166666666666666,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "cloudflare": {
+   "error": "{\"error\":{\"message\":\"No endpoints found for google/gemma-4-26b-a4b-it. Every candidate endpoint was removed during routing: Filter by Image Support removed deep"
+  },
+  "coreweave__bf16": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.9166666666666666,
+    "9": 0.08333333333333333,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "darkbloom": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.5833333333333334,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 16,
+   "prompt_tokens_median": 352,
+   "flags": []
+  },
+  "deepinfra__fp8": {
+   "error": "{\"error\":{\"message\":\"No endpoints found for google/gemma-4-26b-a4b-it. Every candidate endpoint was removed during routing: Filter by Image Support removed deep"
+  },
+  "dekallm__bf16": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.9166666666666666,
+    "9": 0.08333333333333333,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "google-vertex__global": {
+   "error": "{\"error\":{\"message\":\"Provider returned error\",\"code\":502,\"metadata\":{\"raw\":\"error code: 502\\n\",\"provider_name\":\"Google\",\"is_byok\":false}},\"user_id\":\"(redacted)\""
+  },
+  "io-net__bf16": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.08333333333333333,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "makora": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.08333333333333333,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "nextbit__bf16": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.08333333333333333,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "novita__bf16": {
+   "error": "{\"error\":{\"message\":\"Provider returned error\",\"code\":400,\"metadata\":{\"raw\":\"{\\\"message\\\":\\\"vision type image_url is not supported trace_id: 718518684c75320a9d4d"
+  },
+  "parasail__bf16": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.08333333333333333,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "primeintellect__bf16": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.08333333333333333,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "siliconflow__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "venice__bf16": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.9166666666666666,
+    "9": 0.08333333333333333,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  }
+ }
+}

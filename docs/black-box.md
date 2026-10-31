@@ -78,6 +78,11 @@ among substitute references.
   fixed sampling seed; either way, retries and best-of-n get the same text. Near-duplicate prompt pairs (17×23 vs
   17×24) test for a semantic cache that answers the second with the first's answer.
 
+- **Image inputs** (`experiments/image_fidelity.py`, `prompts/vision_cases.py`). Pages of random codes printed at
+  36-7 px: the smallest size an endpoint still reads, and the prompt tokens it bills for the image, against the
+  other endpoints of the same model. Silent downscaling loses the small print and, where image tokens scale with
+  area (Qwen-VL: one token per 32 × 32 pixels), shows directly in the bill.
+
 ## Known weaknesses
 
 - **Template mismatch** inflates every metric for that endpoint. Guarded by the prompt token count check and

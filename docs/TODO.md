@@ -16,7 +16,7 @@ Open work, roughly in priority order. Each item says what it would establish.
 - [x] **Reasoning effort honesty** (`experiments/reasoning_effort.py`): gpt-oss-20b/120b done. Next: Qwen3.8 and other
       reasoning models; a harder problem set (accuracy saturates).
 - [x] **Response caching** (`experiments/response_cache.py`): 76 endpoints, one repeats temperature-1 replies (ModelRun).
-- [ ] **Image inputs on vision models**: fine-detail images to detect silent downscaling.
+- [x] **Image inputs on vision models** (`experiments/image_fidelity.py`): codes at 36-7 px + billed image tokens.
 - [ ] **Scheduled snapshots**: quality by time of day / load; detect quiet model swaps over time.
 - [ ] **Effective temperature** for every endpoint (Darkbloom first).
 
@@ -25,11 +25,6 @@ Open work, roughly in priority order. Each item says what it would establish.
 - [ ] Cross-machine referee in the cooperative attack run (provider and referee were on one machine, so `wgap`
       noise is underestimated there).
 - [ ] A BF16 referee where possible (Qwen3.5/3.8 used Q8_0, which cannot separate FP8-class providers).
-
-## Before making the repo public
-- [ ] Git history: five committed raw files (data/raw-edge, data/raw-kvprobe) held the OpenRouter account id from
-      error bodies before `openrouter.redact` existed. The files are scrubbed; purge the old blobs from history (or
-      publish a fresh single-commit repo).
 
 ## Pipeline
 - [ ] Full-vocabulary statistics only for sampled replies; multithread or move to GPU (scoring is CPU-bound).

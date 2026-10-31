@@ -34,7 +34,9 @@ ap.add_argument("--budget-usd", type=float, required=True)
 ap.add_argument("--efforts", default="low,medium,high")
 ap.add_argument("--max-tokens", type=int, default=6000)
 ap.add_argument("--workers", type=int, default=10)
+ap.add_argument("--cases", type=int, default=0, help="only the first N problems (cost control)")
 a = ap.parse_args()
+CASES = rc.CASES[:a.cases] if a.cases else rc.CASES
 efforts = a.efforts.split(",")
 key = a.model.replace("/", "__")
 raw_dir = Path("data/raw-reason") / key
@@ -50,7 +52,7 @@ def run(e):
         return
     recs, errors = [], 0
     for eff in efforts:
-        for i, case in enumerate(rc.CASES):
+        for i, case in enumerate(CASES):
             if errors >= 6 and not any("content" in r for r in recs):
                 break
             body = {"model": a.model, "messages": [{"role": "user", "content": case["q"] + rc.SUFFIX}],
@@ -137,7 +139,7 @@ for s in summary.values():
     s["flags"] += remap_flags(s["efforts"], crowd)
 dest = Path("results/reasoning") / f"{key}.json"
 dest.parent.mkdir(parents=True, exist_ok=True)
-dest.write_text(json.dumps({"model": a.model, "cases": len(rc.CASES), "crowd_tokens": crowd, "endpoints": summary}, indent=1))
+dest.write_text(json.dumps({"model": a.model, "cases": len(CASES), "crowd_tokens": crowd, "endpoints": summary}, indent=1))
 print(f"{'endpoint':30}" + "".join(f" {e:>26}" for e in efforts) + "  flags")
 for k, s in summary.items():
     cells = []

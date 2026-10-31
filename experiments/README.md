@@ -54,6 +54,31 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    prompt on repeated calls, across seeds and whitespace changes (7 of 9 identical), while honouring other
    temperatures; its single samples are statistically honest, so retries and best-of-n silently get one sample.
    None of the other 75 endpoints tested repeats, and none answered a near-duplicate prompt with the other's answer.
+10. **Some endpoints shrink images before the model sees them.** Codes printed from 36 px down to 7 px on a 1536 ×
+   1536 page: DeepInfra (Qwen3.5-35B, Qwen3.6-35B, Qwen3.5-397B), Darkbloom (Qwen3.5, Qwen3.6), Venice (Qwen3.6),
+   IonStream and Tenstorrent (Qwen3.8) and Novita (Gemma-4-31B) bill 40-60% of the image tokens every other endpoint
+   of the same model bills (Qwen: 1,032-1,296 vs 2,375, i.e. the image arrives at roughly 1000 × 1000 instead of 1536
+   × 1536) and read the small print their peers read (9 px codes: 17-42% vs 83-92%). The user pays less, but the
+   model sees less, and nothing in the response says so. The other 75 vision endpoints see the full image.
+
+## Image inputs (7 vision models, 84 answering endpoints)
+
+`experiments/image_fidelity.py` + `prompts/vision_cases.py`: three 1536 × 1536 pages, four random 5-character codes
+per size band (36, 24, 16, 12, 9, 7 px), temperature 0, "read every code". Share of codes read per band and the
+median prompt tokens billed. Qwen-VL bills one image token per 32 × 32 pixels (1536² → 2,304 tokens, plus the text),
+so a resized image shows directly in the bill; Gemma bills a near-fixed count, so there only reading reveals it.
+
+| Model | Endpoints | Full image (prompt tokens) | Downscaled (prompt tokens; 9 px codes read) |
+|---|---|---|---|
+| Qwen3.5-35B-A3B | 7 | 2,375 | DeepInfra (1,033; 42%), Darkbloom (1,296; 58%) |
+| Qwen3.6-35B-A3B | 10 | 2,375 | DeepInfra (1,032; 33%), Venice (1,032; 33%), Darkbloom (1,296; 33%) |
+| Qwen3.5-397B-A17B | 10 | 2,375 | DeepInfra (1,032; 17%) |
+| Qwen3.8-27B | 21 | 2,375 | IonStream (1,095; 25%), Tenstorrent (1,095; 42%) |
+| Gemma-4-31B | 15 | 328 | Novita (193; 16 px codes 50%, 12 px 0% vs 100%) |
+| Gemma-4-26B-A4B | 11 | 328 | none |
+| Nemotron-3.5-Super-VL | 10 | 2,379 | none |
+
+DeepInfra resizes on three Qwen models but not on Qwen3.8 (2,375), so it is a per-deployment setting.
 
 ## Sampler fingerprint (all models)
 

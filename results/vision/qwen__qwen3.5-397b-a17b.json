@@ -1,0 +1,156 @@
+{
+ "model": "qwen/qwen3.5-397b-a17b",
+ "sizes": [
+  36,
+  24,
+  16,
+  12,
+  9,
+  7
+ ],
+ "endpoints": {
+  "alibaba": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.9166666666666666,
+    "7": 0.16666666666666666
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 2375,
+   "flags": []
+  },
+  "atlas-cloud__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.9166666666666666,
+    "7": 0.16666666666666666
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 2375,
+   "flags": []
+  },
+  "deepinfra__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.16666666666666666,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 1032,
+   "flags": [
+    "bills 1032 prompt tokens for the image where its peers bill 2375 (image downscaled?)",
+    "reads 17% of the 9 px codes where its peers read 92% (smallest it reads: 12 px)"
+   ]
+  },
+  "digitalocean": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.8333333333333334,
+    "7": 0.25
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 2375,
+   "flags": []
+  },
+  "gmicloud__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.9166666666666666,
+    "7": 0.25
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 2373,
+   "flags": []
+  },
+  "novita": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.9166666666666666,
+    "7": 0.16666666666666666
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 2375,
+   "flags": []
+  },
+  "parasail__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.9166666666666666,
+    "7": 0.16666666666666666
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 2375,
+   "flags": []
+  },
+  "phala": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.8333333333333334,
+    "7": 0.16666666666666666
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 2375,
+   "flags": []
+  },
+  "streamlake": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.8333333333333334,
+    "7": 0.16666666666666666
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 2375,
+   "flags": []
+  },
+  "venice": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.9166666666666666,
+    "7": 0.16666666666666666
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 2375,
+   "flags": []
+  }
+ }
+}

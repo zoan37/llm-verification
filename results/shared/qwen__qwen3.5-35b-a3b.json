@@ -4,5 +4,7 @@
  "pairs": 21,
  "groups": [],
  "max_other_share": 0.14583333333333334,
- "same_pairs": []
+ "same_pairs": [],
+ "self_repeat": {},
+ "near_pairs": []
 }

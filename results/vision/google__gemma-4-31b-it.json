@@ -1,0 +1,229 @@
+{
+ "model": "google/gemma-4-31b-it",
+ "sizes": [
+  36,
+  24,
+  16,
+  12,
+  9,
+  7
+ ],
+ "endpoints": {
+  "chutes__fp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "coreweave__fp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 330,
+   "flags": []
+  },
+  "crusoe__bf16": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "deepinfra__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "deepinfra__fp8__flex": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "deepinfra__fp8__priority": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "deepinfra__turbo": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "dekallm": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.9166666666666666,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "friendli": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "io-net": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "modelrun__fp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.9166666666666666,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "novita__bf16": {
+   "images": 2,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 0.5,
+    "12": 0.0,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 24,
+   "prompt_tokens_median": 193.0,
+   "flags": [
+    "bills 193 prompt tokens for the image where its peers bill 328 (image downscaled?)",
+    "reads 0% of the 12 px codes where its peers read 100% (smallest it reads: 24 px)"
+   ]
+  },
+  "parasail__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "sambanova": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "siliconflow__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 328,
+   "flags": []
+  },
+  "venice__fp4": {
+   "error": "{\"error\":{\"message\":\"No endpoints found for google/gemma-4-31b-it. Every candidate endpoint was removed during routing: Filter by Image Support removed venice/f"
+  }
+ }
+}

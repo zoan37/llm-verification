@@ -175,6 +175,29 @@ for cf in sorted((root / "results" / "cache").glob("*.json")):
     cache_rows.append(f"<tr><td>{c['model']}</td><td class='num'>{len(tested)}</td>"
                       f"<td>{'<br>'.join(bad) or '<span class=sub>none</span>'}</td></tr>")
 
+vision_rows = []
+for vf in sorted((root / "results" / "vision").glob("*.json")):
+    v = json.loads(vf.read_text())
+    good = {k: x for k, x in v["endpoints"].items() if "error" not in x}
+    if not good:
+        continue
+    toks = sorted(x["prompt_tokens_median"] for x in good.values())
+    bad = [f"<b>{ep_name(k)}</b>: " + "; ".join(x["flags"]) for k, x in sorted(good.items()) if x.get("flags")]
+    vision_rows.append(f"<tr><td>{v['model']}</td><td class='num'>{len(good)}</td>"
+                       f"<td class='num'>{toks[len(toks) // 2]:.0f}</td>"
+                       f"<td>{'<br>'.join(bad) or '<span class=sub>none</span>'}</td></tr>")
+vision_html = f"""<section class="coop" aria-label="Image inputs">
+    <h2>Image inputs</h2>
+    <p class="lede" style="font-size:14px;max-width:80ch">Three 1536 × 1536 pages of random codes printed from 36 px
+      down to 7 px, sent to every endpoint of each vision model at temperature 0: which sizes can it still read, and
+      how many prompt tokens does it bill for the image? An endpoint that silently shrinks images loses the small
+      print its peers read, and on models that bill image tokens by area (Qwen) it bills fewer tokens.</p>
+    <div class="ledger"><table class="small">
+      <thead><tr><th>Model</th><th>Endpoints</th><th>Median prompt tokens</th><th>Problems</th></tr></thead>
+      <tbody>{''.join(vision_rows)}</tbody></table></div>
+  </section>
+""" if vision_rows else ""
+
 serving_html = f"""<section class="coop" aria-label="Serving behaviour">
     <h2>How endpoints sample, share and cache</h2>
     <p class="lede" style="font-size:14px;max-width:80ch"><b>Hidden truncation.</b> Every request asked for
@@ -217,7 +240,7 @@ serving_html = f"""<section class="coop" aria-label="Serving behaviour">
   </section>
 """
 i = rest.rfind("</div>", 0, rest.index('<script id="data"'))
-rest = rest[:i] + tools_html + serving_html + pager + rest[i:]
+rest = rest[:i] + tools_html + vision_html + serving_html + pager + rest[i:]
 doc = ("<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"
        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
        "<meta name=\"description\" content=\"Per-provider audit of OpenRouter endpoints: how close each one's outputs "

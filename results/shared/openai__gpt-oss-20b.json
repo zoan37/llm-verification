@@ -1,8 +1,10 @@
 {
  "model_key": "openai__gpt-oss-20b",
  "endpoints": 10,
- "pairs": 36,
+ "pairs": 44,
  "groups": [],
  "max_other_share": 0.20481927710843373,
- "same_pairs": []
+ "same_pairs": [],
+ "self_repeat": {},
+ "near_pairs": []
 }

@@ -21,7 +21,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from llmverify.openrouter import load  # noqa: E402
 
-MIN_PROMPTS = 10    # pairs compared on fewer prompts are not judged
+MIN_PROMPTS = 5     # pairs compared on fewer prompts are not judged
 SAME_SHARE = 0.9    # byte-identical on at least this share of shared prompts
 
 
@@ -33,6 +33,11 @@ def greedy_replies(model_key: str) -> dict:
             if r.get("mode") == "greedy" and r.get("content"):
                 out.setdefault(f.name[:-len(".jsonl.gz")], {})[("main", r["prompt_idx"], r.get("rep", 0))] = \
                     (r["content"], r.get("reasoning"))
+    for f in sorted((Path("data/raw-shared") / model_key).glob("*.jsonl.gz")):
+        for r in load(f):
+            if r.get("rep", 0) == 0 and (r.get("content") or r.get("reasoning")):
+                out.setdefault(f.name[:-len(".jsonl.gz")], {})[("scan", r["prompt_idx"])] = \
+                    (r.get("content"), r.get("reasoning"))
     for f in sorted((Path("data/raw-reason") / model_key).glob("*.jsonl.gz")):
         for line in gzip.open(f, "rt"):
             r = json.loads(line)
@@ -40,6 +45,20 @@ def greedy_replies(model_key: str) -> dict:
                 out.setdefault(f.name[:-len(".jsonl.gz")], {})[("reason", r["effort"], r["case"])] = \
                     (r["content"], r.get("reasoning"))
     return {k: v for k, v in out.items() if not k.startswith("local__")}
+
+
+def self_repeat(model_key: str) -> dict:
+    """endpoint -> share of scan prompts whose two temperature-0 replies are identical (its own determinism)."""
+    out = {}
+    for f in sorted((Path("data/raw-shared") / model_key).glob("*.jsonl.gz")):
+        by = {}
+        for r in load(f):
+            if r.get("content") or r.get("reasoning"):
+                by.setdefault(r["prompt_idx"], {})[r.get("rep", 0)] = (r.get("content"), r.get("reasoning"))
+        both = [v for v in by.values() if 0 in v and 1 in v]
+        if both:
+            out[f.name[:-len(".jsonl.gz")]] = sum(v[0] == v[1] for v in both) / len(both)
+    return out
 
 
 def groups(pairs):
@@ -60,10 +79,11 @@ def groups(pairs):
     return sorted(sorted(c) for c in comp.values())
 
 
-for model_dir in sorted(Path("data/raw").iterdir()):
-    if not model_dir.is_dir():
-        continue
+dirs = {d.name: d for root in ("data/raw", "data/raw-shared") if Path(root).is_dir()
+        for d in Path(root).iterdir() if d.is_dir()}
+for model_dir in [dirs[k] for k in sorted(dirs)]:
     reps = greedy_replies(model_dir.name)
+    selfrep = self_repeat(model_dir.name)
     rows, same_pairs = [], []
     for a, b in itertools.combinations(sorted(reps), 2):
         ks = set(reps[a]) & set(reps[b])
@@ -79,12 +99,16 @@ for model_dir in sorted(Path("data/raw").iterdir()):
     background = [r["share"] for r in rows if (r["a"], r["b"]) not in set(same_pairs)]
     res = {"model_key": model_dir.name, "endpoints": len(reps), "pairs": len(rows),
            "groups": groups(same_pairs), "max_other_share": max(background) if background else None,
-           "same_pairs": [r for r in rows if (r["a"], r["b"]) in set(same_pairs)]}
+           "same_pairs": [r for r in rows if (r["a"], r["b"]) in set(same_pairs)],
+           "self_repeat": selfrep,
+           "near_pairs": [r for r in rows if 0.5 <= r["share"] < SAME_SHARE]}
     dest = Path("results/shared") / f"{model_dir.name}.json"
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(json.dumps(res, indent=1))
     print(f"{model_dir.name}: {len(reps)} endpoints, {len(rows)} pairs; highest share among other pairs "
           f"{res['max_other_share']:.2f}")
+    for r in res["near_pairs"]:
+        print(f"   near: {r['a']}~{r['b']} {r['identical']}/{r['compared']}")
     for g in res["groups"]:
         ev = [f"{r['a']}~{r['b']} {r['identical']}/{r['compared']}" for r in res["same_pairs"] if r["a"] in g]
         print("   same deployment:", ", ".join(g), " (" + "; ".join(ev) + ")")
