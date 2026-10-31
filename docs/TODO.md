@@ -13,7 +13,8 @@ Open work, roughly in priority order. Each item says what it would establish.
       over home wifi; `~/lv/fetch_new.sh` on the Spark resumes it. Qwen3.8-Flash-Next (180B, Alibaba-only on
       OpenRouter) and DeepSeek V4.1 Flash (763B) are too big for a local referee: referee-free checks only.
 - [ ] **gpt-oss-120b** full rescore on one referee (deferred: slow).
-- [ ] **Tie steering**: quantify the steering capacity on real models (bits per 1k tokens at a given tolerance).
+- [x] **Tie steering** on real weights (`experiments/tie_steering.py`): 2-4% of tokens steerable inside same-weights
+      honest noise (docs/soundness.md). Next: a near-tie flip-rate test that bounds steering statistically.
 
 - [x] **Tool calling / structured output fidelity**: same tool-call prompts to every endpoint; check the call is
       well formed, arguments complete, and the referee agrees with the call tokens (verify-before-act).

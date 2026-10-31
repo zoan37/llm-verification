@@ -126,7 +126,22 @@ lie slightly in its committed logprobs to keep the rule check passing.
 
 - Capacity: roughly one choice per near-tie. On the toy model about 4% of positions are within 0.05 nats;
   steering all of them raised mean regret from 0.0008 to 0.0056 nats (7×) yet stays well within what a
-  quantization looks like. On real models the near-tie rate is measured in the experiments.
+  quantization looks like. On real weights (`experiments/tie_steering.py`, 32 replies × 256 tokens per setting,
+  native rule) the positions where the winner leads by less than 2δ, i.e. where nudging two committed values by δ
+  flips the choice:
+
+  | δ tolerated per token | 0.01 | 0.03 | 0.05 | 0.1 | 0.2 |
+  |---|---|---|---|---|---|
+  | gpt-oss-20b (greedy / T = 1), per 1,000 tokens | 7 / 9 | 26 / 24 | 42 / 40 | 80 / 76 | 151 / 147 |
+  | Qwen3.8-27B (greedy / T = 1), per 1,000 tokens | 5 / 5 | 12 / 15 | 21 / 23 | 43 / 45 | 75 / 87 |
+
+  Honest noise sets δ: the same Q8 weights on an AMD R9700 (Vulkan, Windows) vs the referee (CUDA) differ by
+  0.048 nats per token at the 99th percentile (0.088 at the 99.9th); an honest Q6_K copy by 0.128 (0.221). So a
+  verifier that accepts same-weights machines leaves room to steer 2-4% of tokens (at most ~20-40 bits per 1,000
+  tokens); one that also accepts honest quantization, 8-15%. These are per-token upper bounds: a steerer flips every
+  favourable near-tie while honest noise flips about half of them in random directions, so steering at that rate
+  shows up as excess disagreement over enough tokens; the cooperative experiment found steering stays inside
+  honest noise only at 2-13% of near-ties.
 - What it buys an attacker: picking among outputs M itself nearly produced. It cannot make M say something M
   gives low probability, so it cannot inject a malicious tool call; it can bias style or embed a covert watermark.
 - Mitigations: tighter tolerance on `wgap` (the lie is visible in committed logprobs), per-provider evidence
