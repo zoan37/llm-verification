@@ -12,6 +12,8 @@
     "top_k_bound": 20,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -54,6 +56,8 @@
     "top_k_bound": 20,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -96,6 +100,8 @@
     "top_k_bound": 20,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -138,6 +144,8 @@
     "top_k_bound": 20,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -182,6 +190,8 @@
     "top_k_bound": 20,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -224,6 +234,8 @@
     "top_k_bound": 20,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 47,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -266,6 +278,8 @@
     "top_k_bound": 20,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -308,6 +322,8 @@
     "top_k_bound": 20,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -352,6 +368,8 @@
     "top_k_bound": 40,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -394,6 +412,8 @@
     "top_k_bound": 20,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -436,6 +456,8 @@
     "top_k_bound": null,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -480,6 +502,8 @@
     "top_k_bound": 20,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 45,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -522,6 +546,8 @@
     "top_k_bound": null,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -566,6 +592,8 @@
     "top_k_bound": 20,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -608,6 +636,8 @@
     "top_k_bound": 20,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -650,6 +680,8 @@
     "top_k_bound": null,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -694,6 +726,8 @@
     "top_k_bound": 20,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 47,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -736,6 +770,8 @@
     "top_k_bound": 40,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -778,6 +814,8 @@
     "top_k_bound": 40,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -826,6 +864,8 @@
     "top_k_bound": 20,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -868,6 +908,8 @@
     "top_k_bound": 20,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,
@@ -910,6 +952,8 @@
     "top_k_bound": null,
     "top_p_bound": null,
     "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
     "top_k_rows": [
      {
       "setting": 10,

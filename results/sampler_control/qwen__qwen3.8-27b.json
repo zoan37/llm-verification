@@ -1,0 +1,2477 @@
+{
+ "model": "qwen/qwen3.8-27b",
+ "variants": [
+  "unset",
+  "0",
+  "-1",
+  "1000"
+ ],
+ "endpoints": {
+  "akashml__fp8": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 44,
+      "expected": 71.79
+     },
+     {
+      "setting": 20,
+      "observed": 1,
+      "expected": 33.05
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 17.38
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 14.45
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 11.9
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.5
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.18
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 40,
+      "expected": 69.77
+     },
+     {
+      "setting": 20,
+      "observed": 0,
+      "expected": 32.74
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 17.33
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 14.42
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 11.87
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.49
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.17
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 81,
+      "expected": 79.31
+     },
+     {
+      "setting": 20,
+      "observed": 37,
+      "expected": 36.95
+     },
+     {
+      "setting": 40,
+      "observed": 18,
+      "expected": 19.39
+     },
+     {
+      "setting": 50,
+      "observed": 15,
+      "expected": 16.06
+     },
+     {
+      "setting": 64,
+      "observed": 13,
+      "expected": 13.18
+     },
+     {
+      "setting": 100,
+      "observed": 6,
+      "expected": 9.42
+     },
+     {
+      "setting": 200,
+      "observed": 1,
+      "expected": 5.78
+     }
+    ]
+   }
+  },
+  "alibaba": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 46,
+      "expected": 71.82
+     },
+     {
+      "setting": 20,
+      "observed": 5,
+      "expected": 33.98
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 18.06
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 15.03
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 12.36
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.85
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.38
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 35,
+      "expected": 63.7
+     },
+     {
+      "setting": 20,
+      "observed": 1,
+      "expected": 29.93
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 15.86
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 13.21
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 10.9
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.86
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.86
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 37,
+      "expected": 57.8
+     },
+     {
+      "setting": 20,
+      "observed": 2,
+      "expected": 25.57
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 12.93
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 10.64
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 8.68
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 6.14
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 3.71
+     }
+    ]
+   }
+  },
+  "cerebras__fp16": {
+   "unset": {
+    "top_k_bound": 40,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 73,
+      "expected": 74.7
+     },
+     {
+      "setting": 20,
+      "observed": 22,
+      "expected": 33.81
+     },
+     {
+      "setting": 40,
+      "observed": 3,
+      "expected": 17.59
+     },
+     {
+      "setting": 50,
+      "observed": 1,
+      "expected": 14.55
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 11.88
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.39
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.03
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 40,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 59,
+      "expected": 78.6
+     },
+     {
+      "setting": 20,
+      "observed": 24,
+      "expected": 36.59
+     },
+     {
+      "setting": 40,
+      "observed": 3,
+      "expected": 19.06
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 15.77
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 12.91
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 9.17
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.56
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": 50,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 69,
+      "expected": 75.7
+     },
+     {
+      "setting": 20,
+      "observed": 23,
+      "expected": 35.14
+     },
+     {
+      "setting": 40,
+      "observed": 8,
+      "expected": 18.12
+     },
+     {
+      "setting": 50,
+      "observed": 2,
+      "expected": 14.92
+     },
+     {
+      "setting": 64,
+      "observed": 1,
+      "expected": 12.16
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.58
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.14
+     }
+    ]
+   }
+  },
+  "chutes__fp8": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 37,
+      "expected": 68.81
+     },
+     {
+      "setting": 20,
+      "observed": 2,
+      "expected": 30.84
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 15.69
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 12.92
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 10.52
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.42
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.45
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 38,
+      "expected": 67.67
+     },
+     {
+      "setting": 20,
+      "observed": 0,
+      "expected": 31.07
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 16.41
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 13.65
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 11.25
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.07
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.92
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 72,
+      "expected": 74.59
+     },
+     {
+      "setting": 20,
+      "observed": 33,
+      "expected": 34.21
+     },
+     {
+      "setting": 40,
+      "observed": 12,
+      "expected": 18.06
+     },
+     {
+      "setting": 50,
+      "observed": 11,
+      "expected": 15.05
+     },
+     {
+      "setting": 64,
+      "observed": 8,
+      "expected": 12.43
+     },
+     {
+      "setting": 100,
+      "observed": 4,
+      "expected": 8.93
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.46
+     }
+    ]
+   }
+  },
+  "cloudflare": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 47,
+      "expected": 74.07
+     },
+     {
+      "setting": 20,
+      "observed": 3,
+      "expected": 34.7
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 18.28
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 15.18
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 12.47
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.89
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.41
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 41,
+      "expected": 74.84
+     },
+     {
+      "setting": 20,
+      "observed": 0,
+      "expected": 35.53
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 18.85
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 15.63
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 12.81
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 9.08
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.47
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": 40,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 58,
+      "expected": 70.09
+     },
+     {
+      "setting": 20,
+      "observed": 18,
+      "expected": 31.58
+     },
+     {
+      "setting": 40,
+      "observed": 3,
+      "expected": 16.11
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 13.3
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 10.87
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.7
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.65
+     }
+    ]
+   }
+  },
+  "coreweave__fp8": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 37,
+      "expected": 65.43
+     },
+     {
+      "setting": 20,
+      "observed": 1,
+      "expected": 30.18
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 16.03
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 13.33
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 10.95
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.83
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.8
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 39,
+      "expected": 68.96
+     },
+     {
+      "setting": 20,
+      "observed": 0,
+      "expected": 31.77
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 16.54
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 13.72
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 11.27
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.01
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.85
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 88,
+      "expected": 82.99
+     },
+     {
+      "setting": 20,
+      "observed": 43,
+      "expected": 40.02
+     },
+     {
+      "setting": 40,
+      "observed": 24,
+      "expected": 21.64
+     },
+     {
+      "setting": 50,
+      "observed": 19,
+      "expected": 18.09
+     },
+     {
+      "setting": 64,
+      "observed": 15,
+      "expected": 14.95
+     },
+     {
+      "setting": 100,
+      "observed": 12,
+      "expected": 10.77
+     },
+     {
+      "setting": 200,
+      "observed": 6,
+      "expected": 6.62
+     }
+    ]
+   }
+  },
+  "darkbloom__fp4": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 47,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 53,
+      "expected": 79.54
+     },
+     {
+      "setting": 20,
+      "observed": 7,
+      "expected": 37.43
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 19.67
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 16.3
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 13.37
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 9.51
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.75
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 45,
+      "expected": 76.95
+     },
+     {
+      "setting": 20,
+      "observed": 6,
+      "expected": 35.91
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 19.02
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 15.83
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 13.03
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 9.33
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.69
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 47,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 97,
+      "expected": 85.71
+     },
+     {
+      "setting": 20,
+      "observed": 44,
+      "expected": 40.17
+     },
+     {
+      "setting": 40,
+      "observed": 24,
+      "expected": 21.14
+     },
+     {
+      "setting": 50,
+      "observed": 21,
+      "expected": 17.52
+     },
+     {
+      "setting": 64,
+      "observed": 14,
+      "expected": 14.36
+     },
+     {
+      "setting": 100,
+      "observed": 9,
+      "expected": 10.23
+     },
+     {
+      "setting": 200,
+      "observed": 4,
+      "expected": 6.21
+     }
+    ]
+   }
+  },
+  "deepinfra__bf16": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 44,
+      "expected": 78.08
+     },
+     {
+      "setting": 20,
+      "observed": 3,
+      "expected": 36.25
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 19.23
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 16.03
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 13.23
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 9.53
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.88
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 62,
+      "expected": 74.65
+     },
+     {
+      "setting": 20,
+      "observed": 34,
+      "expected": 34.99
+     },
+     {
+      "setting": 40,
+      "observed": 20,
+      "expected": 18.46
+     },
+     {
+      "setting": 50,
+      "observed": 17,
+      "expected": 15.34
+     },
+     {
+      "setting": 64,
+      "observed": 12,
+      "expected": 12.59
+     },
+     {
+      "setting": 100,
+      "observed": 10,
+      "expected": 8.97
+     },
+     {
+      "setting": 200,
+      "observed": 4,
+      "expected": 5.46
+     }
+    ]
+   },
+   "1000": {
+    "rejected": true,
+    "status": 422
+   }
+  },
+  "dekallm": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 45,
+      "expected": 72.09
+     },
+     {
+      "setting": 20,
+      "observed": 1,
+      "expected": 33.44
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 17.51
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 14.51
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 11.89
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.44
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.1
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 46,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 27,
+      "expected": 64.41
+     },
+     {
+      "setting": 20,
+      "observed": 3,
+      "expected": 29.4
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 15.37
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 12.78
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 10.51
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.52
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.59
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 45,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 34,
+      "expected": 68.19
+     },
+     {
+      "setting": 20,
+      "observed": 2,
+      "expected": 31.17
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 16.07
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 13.25
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 10.8
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.59
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.53
+     }
+    ]
+   }
+  },
+  "ionstream__fp8": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 39,
+      "expected": 72.81
+     },
+     {
+      "setting": 20,
+      "observed": 6,
+      "expected": 33.85
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 17.55
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 14.52
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 11.89
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.43
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.1
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 45,
+      "expected": 71.44
+     },
+     {
+      "setting": 20,
+      "observed": 3,
+      "expected": 33.37
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 17.62
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 14.66
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 12.06
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.61
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.22
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 72,
+      "expected": 73.05
+     },
+     {
+      "setting": 20,
+      "observed": 40,
+      "expected": 33.34
+     },
+     {
+      "setting": 40,
+      "observed": 17,
+      "expected": 17.17
+     },
+     {
+      "setting": 50,
+      "observed": 15,
+      "expected": 14.15
+     },
+     {
+      "setting": 64,
+      "observed": 13,
+      "expected": 11.54
+     },
+     {
+      "setting": 100,
+      "observed": 7,
+      "expected": 8.16
+     },
+     {
+      "setting": 200,
+      "observed": 5,
+      "expected": 4.91
+     }
+    ]
+   }
+  },
+  "mancer__fp8": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 35,
+      "expected": 69.0
+     },
+     {
+      "setting": 20,
+      "observed": 2,
+      "expected": 31.09
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 16.04
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 13.28
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 10.88
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.74
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.71
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 62,
+      "expected": 64.92
+     },
+     {
+      "setting": 20,
+      "observed": 26,
+      "expected": 29.27
+     },
+     {
+      "setting": 40,
+      "observed": 11,
+      "expected": 15.09
+     },
+     {
+      "setting": 50,
+      "observed": 9,
+      "expected": 12.46
+     },
+     {
+      "setting": 64,
+      "observed": 6,
+      "expected": 10.2
+     },
+     {
+      "setting": 100,
+      "observed": 6,
+      "expected": 7.24
+     },
+     {
+      "setting": 200,
+      "observed": 3,
+      "expected": 4.39
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 87,
+      "expected": 75.5
+     },
+     {
+      "setting": 20,
+      "observed": 46,
+      "expected": 35.53
+     },
+     {
+      "setting": 40,
+      "observed": 29,
+      "expected": 18.78
+     },
+     {
+      "setting": 50,
+      "observed": 24,
+      "expected": 15.59
+     },
+     {
+      "setting": 64,
+      "observed": 21,
+      "expected": 12.81
+     },
+     {
+      "setting": 100,
+      "observed": 12,
+      "expected": 9.18
+     },
+     {
+      "setting": 200,
+      "observed": 6,
+      "expected": 5.65
+     }
+    ]
+   }
+  },
+  "modal": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 36,
+      "expected": 63.88
+     },
+     {
+      "setting": 20,
+      "observed": 0,
+      "expected": 29.03
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 15.32
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 12.74
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 10.46
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.49
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.59
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 28,
+      "expected": 64.19
+     },
+     {
+      "setting": 20,
+      "observed": 0,
+      "expected": 29.31
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 15.37
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 12.77
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 10.51
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.52
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.59
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 47,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 64,
+      "expected": 71.31
+     },
+     {
+      "setting": 20,
+      "observed": 36,
+      "expected": 33.26
+     },
+     {
+      "setting": 40,
+      "observed": 19,
+      "expected": 17.54
+     },
+     {
+      "setting": 50,
+      "observed": 16,
+      "expected": 14.59
+     },
+     {
+      "setting": 64,
+      "observed": 13,
+      "expected": 12.03
+     },
+     {
+      "setting": 100,
+      "observed": 11,
+      "expected": 8.62
+     },
+     {
+      "setting": 200,
+      "observed": 5,
+      "expected": 5.26
+     }
+    ]
+   }
+  },
+  "modelrun__fp4": {
+   "unset": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 102,
+      "expected": 86.32
+     },
+     {
+      "setting": 20,
+      "observed": 51,
+      "expected": 40.19
+     },
+     {
+      "setting": 40,
+      "observed": 25,
+      "expected": 20.98
+     },
+     {
+      "setting": 50,
+      "observed": 22,
+      "expected": 17.37
+     },
+     {
+      "setting": 64,
+      "observed": 19,
+      "expected": 14.21
+     },
+     {
+      "setting": 100,
+      "observed": 8,
+      "expected": 10.08
+     },
+     {
+      "setting": 200,
+      "observed": 3,
+      "expected": 6.06
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 115,
+      "expected": 99.25
+     },
+     {
+      "setting": 20,
+      "observed": 58,
+      "expected": 48.64
+     },
+     {
+      "setting": 40,
+      "observed": 24,
+      "expected": 26.48
+     },
+     {
+      "setting": 50,
+      "observed": 23,
+      "expected": 22.18
+     },
+     {
+      "setting": 64,
+      "observed": 20,
+      "expected": 18.34
+     },
+     {
+      "setting": 100,
+      "observed": 11,
+      "expected": 13.22
+     },
+     {
+      "setting": 200,
+      "observed": 3,
+      "expected": 8.1
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 102,
+      "expected": 95.87
+     },
+     {
+      "setting": 20,
+      "observed": 62,
+      "expected": 45.57
+     },
+     {
+      "setting": 40,
+      "observed": 29,
+      "expected": 24.44
+     },
+     {
+      "setting": 50,
+      "observed": 26,
+      "expected": 20.44
+     },
+     {
+      "setting": 64,
+      "observed": 21,
+      "expected": 16.9
+     },
+     {
+      "setting": 100,
+      "observed": 13,
+      "expected": 12.2
+     },
+     {
+      "setting": 200,
+      "observed": 5,
+      "expected": 7.53
+     }
+    ]
+   }
+  },
+  "near-ai__fp8": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 33,
+      "expected": 67.63
+     },
+     {
+      "setting": 20,
+      "observed": 1,
+      "expected": 31.29
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 16.4
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 13.63
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 11.21
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.02
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.88
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 48,
+      "expected": 80.73
+     },
+     {
+      "setting": 20,
+      "observed": 1,
+      "expected": 39.01
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 21.15
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 17.74
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 14.72
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 10.69
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 6.62
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 65,
+      "expected": 57.16
+     },
+     {
+      "setting": 20,
+      "observed": 28,
+      "expected": 26.62
+     },
+     {
+      "setting": 40,
+      "observed": 15,
+      "expected": 14.09
+     },
+     {
+      "setting": 50,
+      "observed": 14,
+      "expected": 11.71
+     },
+     {
+      "setting": 64,
+      "observed": 10,
+      "expected": 9.63
+     },
+     {
+      "setting": 100,
+      "observed": 7,
+      "expected": 6.89
+     },
+     {
+      "setting": 200,
+      "observed": 5,
+      "expected": 4.21
+     }
+    ]
+   }
+  },
+  "parasail__fp8": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 40,
+      "expected": 71.39
+     },
+     {
+      "setting": 20,
+      "observed": 1,
+      "expected": 33.0
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 17.29
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 14.34
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 11.76
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.36
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.07
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 15,
+    "inconclusive": true,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 8,
+      "expected": 11.68
+     },
+     {
+      "setting": 20,
+      "observed": 0,
+      "expected": 4.8
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 2.4
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 1.97
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 1.61
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 1.13
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 0.68
+     }
+    ]
+   },
+   "1000": {
+    "rejected": false,
+    "status": 429
+   }
+  },
+  "phala": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 49,
+      "expected": 72.34
+     },
+     {
+      "setting": 20,
+      "observed": 1,
+      "expected": 33.95
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 17.82
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 14.77
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 12.1
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.62
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.25
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 45,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 30,
+      "expected": 61.93
+     },
+     {
+      "setting": 20,
+      "observed": 1,
+      "expected": 28.23
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 14.6
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 12.09
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 9.89
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.03
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.24
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 65,
+      "expected": 76.6
+     },
+     {
+      "setting": 20,
+      "observed": 33,
+      "expected": 35.15
+     },
+     {
+      "setting": 40,
+      "observed": 17,
+      "expected": 18.11
+     },
+     {
+      "setting": 50,
+      "observed": 14,
+      "expected": 14.94
+     },
+     {
+      "setting": 64,
+      "observed": 11,
+      "expected": 12.2
+     },
+     {
+      "setting": 100,
+      "observed": 6,
+      "expected": 8.64
+     },
+     {
+      "setting": 200,
+      "observed": 2,
+      "expected": 5.19
+     }
+    ]
+   }
+  },
+  "reka__fp8": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 45,
+      "expected": 68.97
+     },
+     {
+      "setting": 20,
+      "observed": 7,
+      "expected": 32.09
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 16.78
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 13.92
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 11.44
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.2
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.03
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 33,
+      "expected": 72.54
+     },
+     {
+      "setting": 20,
+      "observed": 2,
+      "expected": 33.64
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 17.7
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 14.69
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 12.07
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.64
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.29
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 74,
+      "expected": 76.4
+     },
+     {
+      "setting": 20,
+      "observed": 38,
+      "expected": 36.14
+     },
+     {
+      "setting": 40,
+      "observed": 20,
+      "expected": 19.38
+     },
+     {
+      "setting": 50,
+      "observed": 17,
+      "expected": 16.15
+     },
+     {
+      "setting": 64,
+      "observed": 14,
+      "expected": 13.3
+     },
+     {
+      "setting": 100,
+      "observed": 10,
+      "expected": 9.52
+     },
+     {
+      "setting": 200,
+      "observed": 4,
+      "expected": 5.84
+     }
+    ]
+   }
+  },
+  "tenstorrent__fp4": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 41,
+      "expected": 76.39
+     },
+     {
+      "setting": 20,
+      "observed": 1,
+      "expected": 36.34
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 19.52
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 16.26
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 13.4
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 9.63
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.92
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 45,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 38,
+      "expected": 67.69
+     },
+     {
+      "setting": 20,
+      "observed": 4,
+      "expected": 32.02
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 17.07
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 14.2
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 11.69
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.39
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.16
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": 40,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 56,
+      "expected": 69.13
+     },
+     {
+      "setting": 20,
+      "observed": 19,
+      "expected": 31.23
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 16.17
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 13.4
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 10.97
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.79
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.72
+     }
+    ]
+   }
+  },
+  "wafer__fp8": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 45,
+      "expected": 79.91
+     },
+     {
+      "setting": 20,
+      "observed": 3,
+      "expected": 37.12
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 19.47
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 16.15
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 13.23
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 9.39
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.68
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 46,
+      "expected": 75.31
+     },
+     {
+      "setting": 20,
+      "observed": 3,
+      "expected": 34.97
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 18.31
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 15.16
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 12.4
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.84
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.4
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "replies": 48,
+    "inconclusive": false,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 77,
+      "expected": 79.23
+     },
+     {
+      "setting": 20,
+      "observed": 30,
+      "expected": 36.71
+     },
+     {
+      "setting": 40,
+      "observed": 17,
+      "expected": 19.34
+     },
+     {
+      "setting": 50,
+      "observed": 14,
+      "expected": 16.11
+     },
+     {
+      "setting": 64,
+      "observed": 9,
+      "expected": 13.27
+     },
+     {
+      "setting": 100,
+      "observed": 6,
+      "expected": 9.52
+     },
+     {
+      "setting": 200,
+      "observed": 4,
+      "expected": 5.84
+     }
+    ]
+   }
+  }
+ }
+}

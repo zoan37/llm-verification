@@ -24,7 +24,9 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    37.5). top_k = 20 is Qwen's recommended default in `generation_config.json`, and common serving stacks apply those
    defaults to requests that do not set top_k. Sending top_k explicitly turns it off on some endpoints but not
    others (DeepInfra honours 0; Parasail, Venice and Darkbloom treat 0 as "not set" but honour 1000; Alibaba and
-   AtlasCloud stay at 20 whatever is sent; SiliconFlow rejects values over 100). Elsewhere: Groq truncates hard on
+   AtlasCloud stay at 20 whatever is sent; SiliconFlow rejects values over 100). On Qwen3.8, a top_k of 1000 gives the
+   full distribution on 11 of the 18 truncating endpoints and 0 does so on only two (DeepInfra, Mancer); Alibaba and
+   DekaLLM truncate whatever is sent. Elsewhere: Groq truncates hard on
    gpt-oss-20b (32 draws past rank 10 vs 143 expected), io.net on Gemma-4 (top_p ≈ 0.95-0.98); all other Gemma and
    gpt-oss endpoints sample the full distribution. Found by the sampler fingerprint (below).
 3. **Broken logprob output.** On Qwen3.8-27B, DekaLLM and Wafer attach top-logprob lists from the wrong position to
@@ -70,14 +72,25 @@ untestable on ordinary prompts (under one expected draw past rank 20); top_p and
 | gpt-oss-20b | 1 / 10 | Groq: top_k ≤ 10 / top_p ≤ 0.95 / min_p ≥ 0.05, or a lower temperature |
 | Gemma-4-26B | 1 / 14 | io.net: top_p ≈ 0.95-0.98 |
 
-Turning it off (Qwen3.5, `experiments/sampler_control.py`, 48 more replies per variant):
+Turning it off (`experiments/sampler_control.py`, 48 more replies per variant; Qwen3.8 at 256 tokens):
 
-| Endpoint | top_k not set | top_k 0 | top_k -1 | top_k 1000 |
-|---|---|---|---|---|
-| DeepInfra | ≤ 20 | **full** | | |
-| Parasail, Venice, Darkbloom | ≤ 20 (Darkbloom ≤ 40) | ≤ 20 | | **full** |
-| SiliconFlow | ≤ 20 | ≤ 40 | ≤ 40 | rejected (top_k must be ≤ 100) |
-| Alibaba, AtlasCloud | ≤ 20 | ≤ 20 | ≤ 20 | ≤ 20 |
+| Model | Endpoint | top_k not set | top_k 0 | top_k -1 | top_k 1000 |
+|---|---|---|---|---|---|
+| Qwen3.5 | DeepInfra | ≤ 20 | **full** | | |
+| Qwen3.5 | Parasail, Venice, Darkbloom | ≤ 20 (Darkbloom ≤ 40) | ≤ 20 | | **full** |
+| Qwen3.5 | SiliconFlow | ≤ 20 | ≤ 40 | ≤ 40 | rejected (top_k must be ≤ 100) |
+| Qwen3.5 | Alibaba, AtlasCloud | ≤ 20 | ≤ 20 | ≤ 20 | ≤ 20 |
+| Qwen3.8 | DeepInfra, Mancer | ≤ 20 | **full** | | DeepInfra rejects (top_k < 1000); Mancer **full** |
+| Qwen3.8 | AkashML, Chutes, CoreWeave, Darkbloom, IonStream, Modal, Near-AI, Phala, Reka, Wafer | ≤ 20 | ≤ 20 | | **full** |
+| Qwen3.8 | Cloudflare, Tenstorrent | ≤ 20 | ≤ 20 | | ≤ 40 |
+| Qwen3.8 | Cerebras | ≤ 40 | ≤ 40 | | ≤ 50 |
+| Qwen3.8 | Alibaba, DekaLLM | ≤ 20 | ≤ 20 | | ≤ 20 |
+| Qwen3.8 | ModelRun | full | full | | full |
+
+So on most endpoints a user who wants the distribution they asked for must send a large explicit top_k; "0" usually
+means "use the default". Alibaba (both models), AtlasCloud and DekaLLM truncate whatever is sent. (Parasail on
+Qwen3.8: rate-limited, too few replies; Novita: requests rejected; Venice's Qwen3.8: not the released model, so its
+sampler cannot be read.)
 
 The earlier long-tail count (tokens under p = 1e-4) caught some of this but had little power where under one such
 token is expected; with a normal approximation it also flagged our own honest Gemma reference (5 drawn vs 0.78

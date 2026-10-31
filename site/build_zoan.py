@@ -137,6 +137,8 @@ for cf in sorted((root / "results" / "sampler_control").glob("*.json")):
             return "<span class=sub>–</span>"
         if "status" in cell:
             return "rejected" if cell["rejected"] else f"error {cell['status']}"
+        if cell.get("inconclusive"):
+            return f"<span class=sub>too few replies ({cell['replies']})</span>"
         parts = [f"top_k ≤ {cell['top_k_bound']}" if cell["top_k_bound"] else None,
                  f"top_p ≤ {cell['top_p_bound']}" if cell["top_p_bound"] else None,
                  f"min_p ≥ {cell['min_p_bound']}" if cell["min_p_bound"] else None]

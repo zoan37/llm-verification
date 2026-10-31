@@ -24,11 +24,14 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--model", required=True)
 a = ap.parse_args()
 key = a.model.replace("/", "__")
+# endpoints whose model is too far from the referee to read their sampler (same gate as report.flags)
+main = json.loads((Path("results") / f"{key}.json").read_text())["endpoints"]
+unreadable = {k for k, v in main.items() if v.get("x_honest") is not None and v["x_honest"] > 100}
 out: dict = {}
 for name, sroot, rroot in VARIANTS:
     for sf in sorted((Path(sroot) / key).glob("*.json.gz")):
         ep = sf.name[:-len(".json.gz")]
-        if ep.startswith("local__"):
+        if ep.startswith("local__") or ep in unreadable:
             continue
         segs = [s for s in json.load(gzip.open(sf, "rt")) if s["mode"] == "sample" and s["segment"] == "answer"]
         cell: dict
@@ -36,8 +39,13 @@ for name, sroot, rroot in VARIANTS:
             t = sampler_test(segs)
             if t is None:
                 continue
+            k20 = next(r for r in t["top_k"]["rows"] if r["setting"] == 20)
             cell = {"top_k_bound": t["top_k"]["bound"], "top_p_bound": t["top_p"]["bound"],
-                    "min_p_bound": t["min_p"]["bound"],
+                    "min_p_bound": t["min_p"]["bound"], "replies": len(segs),
+                    # a top_k = 20 default leaves 0 draws past rank 20; that is only significant (p < 1e-3) when
+                    # about 7 or more are expected, so a clean result on less data is not evidence of no truncation
+                    "inconclusive": t["top_k"]["bound"] is None and k20["expected"] < 7
+                    and k20["observed"] < 0.5 * k20["expected"],
                     "top_k_rows": [{k: r[k] for k in ("setting", "observed", "expected")} for r in t["top_k"]["rows"]]}
         else:
             raw = Path(rroot) / key / f"{ep}.jsonl.gz"
@@ -54,12 +62,15 @@ def show(c):
         return "-"
     if "status" in c:
         return "rejected" if c["rejected"] else f"error {c['status']}"
+    if c.get("inconclusive"):
+        return f"too few ({c['replies']})"
     b = [f"top_k<={c['top_k_bound']}" if c["top_k_bound"] else None,
          f"top_p<={c['top_p_bound']}" if c["top_p_bound"] else None,
          f"min_p>={c['min_p_bound']}" if c["min_p_bound"] else None]
     return ", ".join(x for x in b if x) or "untruncated"
 
 
+out = {ep: c for ep, c in out.items() if any("status" not in x for x in c.values())}  # never answered at all
 dest = Path("results/sampler_control") / f"{key}.json"
 dest.parent.mkdir(parents=True, exist_ok=True)
 dest.write_text(json.dumps({"model": a.model, "variants": [v[0] for v in VARIANTS], "endpoints": out}, indent=1))
