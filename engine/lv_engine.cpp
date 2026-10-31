@@ -198,28 +198,35 @@ struct Engine {
 
     // Top-k by a single pass with a small min-heap (no shared buffer, so positions can be scored in parallel).
     json topk(const float * lg, int k, double & lse_out) const {
-        float mx = -INFINITY;
-        for (int v = 0; v < n_vocab; v++) mx = std::max(mx, lg[v]);
-        double sum = 0.0;
-        for (int v = 0; v < n_vocab; v++) sum += std::exp((double) lg[v] - mx);
-        const double lse = mx + std::log(sum);
-        lse_out = lse;
+        // One pass keeps the max and the best kk (higher logit first, ties to the lower id: a later, equal value never
+        // displaces an earlier one); a second sums exp(x - max) over logits within 30 nats of the max (the rest add
+        // < 1e-13 in all) in float, accumulated in double. Logprobs move by ~1e-7, far below the 1e-4 rounding of a
+        // commitment; this pass runs at every scored or generated position, so it is kept cheap.
         const int kk = std::min(k, n_vocab);
-        // "better" = higher logit, ties to the lower id; the heap keeps the worst of the current best kk on top
-        auto better = [&](int a, int b) { return lg[a] > lg[b] || (lg[a] == lg[b] && a < b); };
-        std::vector<int> heap;
-        heap.reserve(kk);
+        std::vector<int> ids(kk);
+        std::vector<float> vals(kk);
+        int n = 0;
+        float mx = -INFINITY;
         for (int v = 0; v < n_vocab; v++) {
-            if ((int) heap.size() < kk) {
-                heap.push_back(v);
-                std::push_heap(heap.begin(), heap.end(), better);
-            } else if (better(v, heap.front())) {
-                std::pop_heap(heap.begin(), heap.end(), better);
-                heap.back() = v;
-                std::push_heap(heap.begin(), heap.end(), better);
+            const float x = lg[v];
+            if (x > mx) mx = x;
+            if (n < kk || x > vals[n - 1]) {
+                int p = n < kk ? n++ : kk - 1;
+                while (p > 0 && vals[p - 1] < x) { vals[p] = vals[p - 1]; ids[p] = ids[p - 1]; p--; }
+                vals[p] = x; ids[p] = v;
             }
         }
-        std::sort(heap.begin(), heap.end(), better);
+        const float cut = mx - 30.0f;
+        double sum = 0.0;
+        float part = 0.0f;
+        for (int v = 0; v < n_vocab; v++) {
+            if (lg[v] > cut) part += expf(lg[v] - mx);
+            if ((v & 1023) == 1023) { sum += part; part = 0.0f; }
+        }
+        sum += part;
+        const double lse = mx + std::log(sum);
+        lse_out = lse;
+        std::vector<int> heap(ids.begin(), ids.begin() + n);
         json top = json::array();
         for (int t : heap) top.push_back({t, (double) lg[t] - lse});
         return top;

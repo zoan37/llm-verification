@@ -63,7 +63,8 @@ def audit_trace(referee: Model, trace: Trace, spec: SamplingSpec, key: str, star
     context = list(trace.prompt_ids) + list(trace.tokens[:start])
     span_tokens = trace.tokens[start:end]
     temp = spec.temperature if not spec.greedy else 1.0
-    ref = referee.score(context, span_tokens, k=REFEREE_K, temperature=temp)
+    # top-k only: the cooperative checks (regret, agreement, top-k drift) do not use full-vocabulary statistics
+    ref = referee.score(context, span_tokens, k=REFEREE_K, temperature=temp, stats=False)
     return score_reply(span_tokens, ref, spec, key, reported_tops=trace.tops[start:end],
                        reported_lps=[dict(top).get(t) for t, top in zip(span_tokens, trace.tops[start:end])],
                        step_offset=start)
