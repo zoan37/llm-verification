@@ -69,8 +69,11 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    (1,032 where everyone else bills 2,375); on Gemma-4-26B it cuts reasoning at the same ~2,300 tokens as DeepInfra,
    which no other endpoint does. Against: Venice accepts a seed of 2^64 that DeepInfra rejects, and wraps DeepInfra's
    error messages in its own (both expected of a proxy that cleans requests). On Qwen3.5 and Qwen3.8 Venice behaves
-   unlike DeepInfra on all of these, so there it appears to serve the model itself. Indirect evidence, not proof;
-   it matters to anyone choosing Venice for its own privacy terms. Method: `experiments/api_fingerprint.py` (26
+   unlike DeepInfra on all of these, so there it appears to serve the model itself. Indirect evidence, not proof.
+   Venice's privacy page says Private-mode inference runs "on Venice-controlled GPUs or zero-data-retention partner
+   infrastructure" under contractual (not technical) guarantees, without naming partners, and DeepInfra's own policy
+   is in-memory processing with no storage or training; so routing through DeepInfra would be consistent with what
+   Venice discloses. What the listing does not show is which models leave Venice, and to whom. Method: `experiments/api_fingerprint.py` (26
    parameter-validation probes per endpoint; no other pair of providers in 12 models matched this way).
 
 ## Image inputs (7 vision models, 84 answering endpoints)
