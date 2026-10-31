@@ -167,6 +167,12 @@ lie slightly in its committed logprobs to keep the rule check passing.
   0.4% at 0.2-0.5 nats and none beyond; at δ 0.1 the flip test reached z 1.7 after 2,200 tokens, i.e. a flag at
   roughly 12,000. The structural fix is deterministic, batch-invariant inference (honest machines then agree
   exactly and one rigged flip is proof).
+- An exact tier removes it (`experiments/exact_tier.py`, 2026-10-31). When the referee runs the provider's GPU model
+  and build and replays token by token, as generation does, honest commitments match to the last digit: 48 honest
+  gpt-oss-20b replies (14,361 tokens) on an RTX 4090 replayed with 0 differing positions, and every hidden-message
+  flip (14 / 58 / 84 / 186 / 379 at δ 0.01-0.2) was an exact mismatch at its own position, with no false positives.
+  The replay runs at generation speed (~150 tokens/s here), so the price is hardware: a referee per GPU model and
+  build in the tier, and none of the one-pass audit's 2.5x speed-up.
 - What it buys an attacker: picking among outputs M itself nearly produced. It cannot make M say something M
   gives low probability, so it cannot inject a malicious tool call; it can bias style or embed a covert watermark.
 - Mitigations: tighter tolerance on `wgap` (the lie is visible in committed logprobs), per-provider evidence
@@ -192,6 +198,13 @@ Thresholds come from honest machines (same weights, different hardware/engine/ke
   22 draws past rank 40 vs 21.1 expected, within the other honest machines' intervals. So the old noise came from
   the older llama.cpp or that model's fp16 paths, not from the GPU or Mesa. Each GPU/driver pair still needs its own
   baseline before a strict tier.
+- The referee's own arithmetic path matters. Against a BF16 transformers reference (MXFP4 experts dequantized, 48
+  gpt-oss-20b replies, 14,361 positions), token-by-token decoding on two GPUs had top-1 logprob errors of 0.028-0.033
+  and a different top-1 on 2.4-2.7% of positions, while the referee's one-pass replay (batches of up to 2,048 tokens)
+  had 0.101 and 7.3%. The jump is between 8 and 9 tokens per batch, where llama.cpp switches matrix kernels, and
+  does not depend on flash attention; scoring in batches of 8 gives 0.025 and 1.7% at ~3x the scoring time. Q8_0
+  Qwen3.8 shows no such gap (cross-vendor regret 0.0002). So part of gpt-oss's "honest disagreement" was the referee:
+  MXFP4 models are scored with `-b 8`.
 - Honest *providers* (vLLM/SGLang/TensorRT, FP8 weights or KV cache, batch-dependent kernels) are noisier than
   honest llama.cpp machines. In black-box mode the published score places each endpoint on a scale from honest
   machines (100) to a smaller sibling model (0); it does not declare FP8 dishonest.

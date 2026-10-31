@@ -1,0 +1,60 @@
+{
+ "traces": "/tmp/hm-4090.json.gz",
+ "label": "gpt-oss-20b-4090",
+ "variants": {
+  "honest": {
+   "replies": 48,
+   "tokens": 14361,
+   "mismatched_positions": 0,
+   "replies_flagged": 0,
+   "rigged_flips": 0,
+   "median_first_mismatch": null,
+   "replay_tok_s": 144.3
+  },
+  "hidden@0.01": {
+   "replies": 48,
+   "tokens": 14502,
+   "mismatched_positions": 14,
+   "replies_flagged": 12,
+   "rigged_flips": 14,
+   "median_first_mismatch": 133,
+   "replay_tok_s": 164.8
+  },
+  "hidden@0.03": {
+   "replies": 48,
+   "tokens": 14430,
+   "mismatched_positions": 58,
+   "replies_flagged": 33,
+   "rigged_flips": 58,
+   "median_first_mismatch": 63,
+   "replay_tok_s": 165.3
+  },
+  "hidden@0.05": {
+   "replies": 48,
+   "tokens": 14405,
+   "mismatched_positions": 84,
+   "replies_flagged": 37,
+   "rigged_flips": 84,
+   "median_first_mismatch": 58,
+   "replay_tok_s": 165.5
+  },
+  "hidden@0.1": {
+   "replies": 48,
+   "tokens": 14304,
+   "mismatched_positions": 186,
+   "replies_flagged": 43,
+   "rigged_flips": 186,
+   "median_first_mismatch": 42,
+   "replay_tok_s": 164.7
+  },
+  "hidden@0.2": {
+   "replies": 48,
+   "tokens": 14362,
+   "mismatched_positions": 379,
+   "replies_flagged": 44,
+   "rigged_flips": 379,
+   "median_first_mismatch": 32,
+   "replay_tok_s": 163.9
+  }
+ }
+}
