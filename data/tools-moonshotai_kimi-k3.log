@@ -1,0 +1,32 @@
+moonshotai/kimi-k3: 28 endpoints advertise tools
+spent $3.5835
+endpoint                         pass  replies  errors  flaky  top problems
+akashml__fp4                     100%       48       0      0  
+baseten__fp8                     100%       33      15      0  
+fireworks__us                    100%       43       5      0  
+parasail__fp4                    100%       48       0      0  
+pareto-alpha__us                 100%       48       0      0  
+together                         100%       48       0      0  
+modal__mxfp4                      98%       48       0      1  answered in text instead of calling a tool ×1
+fireworks                         96%       48       0      1  answered in text instead of calling a tool ×2
+deepinfra__mxfp4                  94%       48       0      0  filters.max_price ×3; filters.in_stock ×3
+fireworks__fast                   94%       48       0      0  answered in text instead of calling a tool ×3
+inference-net__fp4                94%       48       0      0  filters.max_price ×3; filters.in_stock ×3
+inference-net__us                 94%       48       0      0  filters.max_price ×3; filters.in_stock ×3
+inference-net__us__fast           94%       48       0      0  filters.max_price ×3; filters.in_stock ×3
+makora__fp4                       94%       48       0      0  filters.max_price ×3; filters.in_stock ×3; sort ×1
+relace__fp4                       94%       48       0      0  filters.max_price ×3; filters.in_stock ×3
+wafer                             94%       48       0      0  filters.max_price ×3; filters.in_stock ×3; sort ×1
+wafer__fast                       94%       48       0      0  filters.max_price ×3; filters.in_stock ×3; sort ×3
+wafer__us                         94%       48       0      0  filters.max_price ×3; filters.in_stock ×3; sort ×3
+morph__fp8                        94%       47       1      0  filters.max_price ×3; filters.in_stock ×3
+sail-research__fp4                93%       46       2      0  filters.max_price ×3; filters.in_stock ×3
+inference-net__fast               92%       48       0      1  filters.max_price ×3; filters.in_stock ×3; answered in text instead of calling a tool ×1
+alibaba                           90%       48       0      5  answered in text instead of calling a tool ×5
+amazon-bedrock__us-east-2         83%       48       0      4  answered in text instead of calling a tool ×6; filters.max_price ×2; filters.in_stock ×2
+phala                             81%       48       0      5  answered in text instead of calling a tool ×8; answered in text instead of calling a tool (but the text contains a call-like JSON) ×1
+digitalocean                      80%       45       3      7  answered in text instead of calling a tool ×7; answered in text instead of calling a tool (but the text contains a call-like JSON) ×2
+decart__mxfp4                       -        0       6      0  
+fireworks__spot                     -        0       6      0  
+moonshotai                          -        0       6      0  
+wrote results/tools/moonshotai__kimi-k3.json

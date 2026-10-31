@@ -1,0 +1,45 @@
+z-ai/glm-5.3-flash: 41 endpoints advertise tools
+spent $3.5737
+endpoint                         pass  replies  errors  flaky  top problems
+atlas-cloud__fp8                 100%       47       1      0  
+cohere                           100%       48       0      0  
+darkbloom__fp4                   100%       46       2      0  
+gmicloud__fp8                    100%       48       0      0  
+inceptron__fp8                   100%       48       0      0  
+makora                           100%       48       0      0  
+modal__fp4                       100%       48       0      0  
+nextbit__fp4                     100%       48       0      0  
+novita__fp8                      100%       48       0      0  
+open-inference__fp4              100%       48       0      0  
+particle-ai__nvfp4               100%       48       0      0  
+phala__nvfp4                     100%       48       0      0  
+sail-research__us                100%       24      24      0  
+streamlake__fp8                  100%       48       0      0  
+wafer__nvfp4                     100%       48       0      0  
+wafer__us                        100%       48       0      0  
+z-ai__fp8                        100%       48       0      0  
+siliconflow__fp8                  98%       48       0      1  filters.category ×1
+sail-research__fp4                96%       25      23      0  filters.category ×1
+baseten__fp8                      94%       48       0      0  filters.category ×3
+coreweave__nvfp4                  94%       48       0      0  filters.category ×3
+crusoe__fp4                       94%       48       0      0  filters.category ×3
+deepinfra__fp4                    94%       48       0      0  filters.category ×3
+digitalocean                      94%       48       0      0  filters.category ×3
+fireworks                         94%       48       0      0  filters.category ×3
+fireworks__us                     94%       48       0      0  filters.category ×3
+mistral                           94%       48       0      0  filters.category ×3
+morph__fp8                        94%       48       0      0  filters.category ×3
+near-ai__fp8                      94%       48       0      0  filters.category ×3
+nebius__fp4                       94%       48       0      0  filters.category ×3
+parasail__fp4                     94%       48       0      0  filters.category ×3
+relace__fp4                       94%       48       0      0  filters.category ×3
+together                          94%       48       0      0  filters.category ×3
+venice                            94%       48       0      0  filters.category ×3
+tenstorrent__fp8                  94%       47       1      0  filters.category ×3
+friendli                          92%       48       0      1  filters.category ×3; filters.max_price ×1; filters.in_stock ×1
+inference-net__fp4                90%       48       0      1  filters.max_price ×3; filters.in_stock ×3; filters.category ×2
+inference-net__us                 90%       48       0      1  filters.category ×3; filters.max_price ×2; filters.in_stock ×2
+primeintellect                    88%       48       0      0  filters.max_price ×3; filters.in_stock ×3; filters.category ×3
+reka                              88%       48       0      0  filters.max_price ×3; filters.in_stock ×3; filters.category ×3
+baseten__fp8__us                    -        0       6      0  
+wrote results/tools/z-ai__glm-5.3-flash.json
