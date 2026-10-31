@@ -25,6 +25,13 @@ Open work, roughly in priority order. Each item says what it would establish.
       `lv-snapshot.timer`, ~$0.40 a run), each compared with the previous. Next: more models, time-of-day variation.
 - [ ] **Effective temperature** for every endpoint (Darkbloom first).
 
+## Cooperative mode in production
+- [ ] **Challenge-only traces**: the server sends the receipt with every reply and the trace only when challenged,
+      from a rolling buffer (window configurable); client and auditor fetch by receipt digest.
+- [ ] **llama.cpp server integration**: the threaded rule as a sampler plus receipts behind a flag (overhead measured
+      with engine/bench_coop.cpp: within a few percent when threaded). Then vLLM (GPU-side top-20).
+- [ ] Single-request vocabulary pass split over cores or on the GPU (the last ~5% on fast models).
+
 ## Calibration
 - [ ] Honest baselines on AMD ROCm (R9700) and Intel (Arc B70); Vulkan is known to be noisier.
 - [ ] Cross-machine referee in the cooperative attack run (provider and referee were on one machine, so `wgap`

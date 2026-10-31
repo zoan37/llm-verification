@@ -69,3 +69,35 @@ later block hash), so challenges are unpredictable to the provider yet checkable
 Qwen3.5-4B behind the cheats, laundering failed the exact rule check on 31 of 32 replies; a swap was caught within 64
 audited tokens; a confident-draft shortcut (the small model whenever it is ≥ 90% sure) was caught in 99-100% of
 2,048-token audits at a 0.1% false-flag rate; tie steering stayed within honest noise, as expected.
+
+## Cost to a provider
+
+**Compute.** `engine/bench_coop.cpp` generates many requests in parallel with llama.cpp (one batched decode per step,
+as a server does) and picks tokens with llama.cpp's usual sampler chain, with that chain plus top-20 logprobs, or with
+the cooperative rule (top-20 logprobs plus the seeded Gumbel choice, SHA-256 noise byte-identical to
+`llmverify/sampling.py`). Throughput on a DGX Spark, change against the usual sampler:
+
+| Requests in flight | gpt-oss-20b: logprobs | rule, one thread | rule, threads | Qwen3.8-27B: rule, one thread | rule, threads |
+|---|---|---|---|---|---|
+| 1  | -8.0%  | -5.0%  | -10.2% | -1.0% | -1.5% |
+| 8  | -15.7% | -8.1%  | -0.8%  | -2.0% | +0.2% |
+| 32 | -32.1% | -20.3% | -5.4%  | -1.3% | +3.7% |
+| 64 | -40.3% | -28.3% | +1.1%  |       |       |
+
+The work per token is one pass over the vocabulary (150-260k logits) for the maximum, the top 20 and the
+normaliser, then about 20 hashes. Done for each request in turn on one core it grows with concurrency like any
+host-side sampler; spread over cores (requests are independent) it stays within a few percent. Positive numbers mean
+the threaded rule beats llama.cpp's single-threaded default sampler; against an equally parallel sampler the honest
+reading is "within a few percent". The remaining cost with one request on a fast model is that one vocabulary pass
+(about 1 ms against a 19 ms step); splitting it over cores or doing it on the GPU (as vLLM computes logprobs) removes
+it. Signing a receipt: 8-25 microseconds per token in Python.
+
+**Bandwidth and storage.** Per token: plain text is about 4 bytes; the top-20 logprobs providers already return on
+request (OpenAI-style JSON) about 1,800; the trace here 373 as JSON, roughly 120-200 packed. The receipt is a constant
+~700 bytes per reply. So the efficient protocol sends the receipt with every reply and the trace only when a reply is
+challenged: the receipt commits to the trace (`steps_sha256`), the challenge is derived from the receipt after it is
+signed (above), and the provider answers from a rolling buffer it keeps for the challenge window. Storage is then
+rate x window, a fixed size: a node producing 2,000 tokens/s with a five-minute window holds about 75 MB in memory.
+Old replies stay checkable without the provider: whoever fetched a trace can keep it with its signed receipt. (The
+reference server, `llmverify/server.py`, still returns the full trace with every reply; challenge-only replies are
+next in docs/TODO.md.)
