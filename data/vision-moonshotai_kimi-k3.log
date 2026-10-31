@@ -1,0 +1,33 @@
+spent $1.2381
+endpoint                       36px   24px   16px   12px    9px    7px  prompt_tok  flags
+akashml__fp4                   100%   100%   100%   100%    92%    33%        3110  
+alibaba                        100%   100%   100%   100%    92%    25%        3110  
+amazon-bedrock__us-east-2      100%   100%   100%   100%    92%    50%        3110  
+baseten__fp8                 error: {"error":{"message":"Provider returned error","code":429,"metadata":{"raw":"moonshotai/kim
+chutes__mxfp4                  100%   100%   100%   100%    92%    42%        3110  
+decart__mxfp4                error: {"error":{"message":"Provider returned error","code":429,"metadata":{"raw":"moonshotai/kim
+deepinfra__mxfp4               100%   100%   100%   100%    92%    33%        3113  
+digitalocean                   100%   100%   100%    92%    83%    33%        3114  
+fireworks                      100%   100%   100%   100%    92%    67%        3113  
+fireworks__fast                100%   100%   100%   100%    92%    50%        3113  
+fireworks__spot              error: {"error":{"message":"Provider returned error","code":404,"metadata":{"raw":"{\"error\":{\"
+fireworks__us                  100%   100%   100%   100%    92%    50%        3113  
+inference-net__fast          error: {"error":{"message":"Provider returned error","code":429,"metadata":{"raw":"moonshotai/kim
+inference-net__fp4             100%   100%   100%   100%    92%    42%        3110  
+inference-net__us              100%   100%   100%   100%    92%    25%        3110  
+inference-net__us__fast        100%   100%   100%   100%    92%    25%        3110  
+makora__fp4                    100%   100%   100%   100%    92%    25%        3110  
+modal__mxfp4                     0%     0%     0%     0%     0%     0%        3177  reads 0% of the 9 px codes where its peers read 92% (smallest it reads: none px)
+moonshotai                   error: {"error":{"message":"Provider returned error","code":400,"metadata":{"raw":"{\"error\":{\"
+morph__fp8                     100%   100%   100%   100%    92%    42%        3113  
+parasail__fp4                  100%   100%   100%   100%    92%    75%        3114  
+pareto-alpha__us             error: {"error":{"message":"No endpoints found for moonshotai/kimi-k3. Every candidate endpoint w
+phala                          100%   100%   100%   100%    92%    67%        3113  
+relace__fp4                    100%   100%   100%   100%    92%    42%        3110  
+sail-research__fp4             100%   100%   100%   100%    92%    50%        3110  
+sail-research__fp4__us         100%   100%   100%   100%    92%    50%        3110  
+together                       100%   100%   100%   100%    92%    42%        3110  
+wafer                          100%   100%   100%   100%    92%    25%        3110  
+wafer__fast                    100%   100%   100%   100%    92%    50%        3110  
+wafer__us                      100%   100%   100%   100%    92%    50%        3110  
+wrote results/vision/moonshotai__kimi-k3.json

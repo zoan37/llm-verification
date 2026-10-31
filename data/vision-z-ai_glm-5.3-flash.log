@@ -1,0 +1,44 @@
+spent $1.1089
+endpoint                       36px   24px   16px   12px    9px    7px  prompt_tok  flags
+atlas-cloud__fp8               100%   100%   100%   100%    67%     0%        3096  
+baseten__fp8                   100%   100%   100%   100%   100%     0%        3097  
+baseten__fp8__us             error: {"error":{"message":"Provider returned error","code":429,"metadata":{"raw":"z-ai/glm-5.3-f
+cohere                         100%   100%   100%   100%   100%    17%        3096  
+coreweave__nvfp4               100%   100%   100%   100%   100%     0%        3096  
+crusoe__fp4                    100%   100%   100%   100%   100%     8%        3096  
+darkbloom__fp4                 100%   100%   100%   100%   100%     8%        3096  
+deepinfra__fp4                 100%   100%   100%   100%   100%     0%        3096  
+digitalocean                   100%   100%   100%   100%   100%     0%        3096  
+fireworks                      100%   100%   100%   100%   100%     8%        3096  
+fireworks__us                  100%   100%   100%   100%   100%     8%        3096  
+friendli                       100%   100%   100%   100%   100%    25%        3096  
+gmicloud__fp8                  100%   100%   100%   100%   100%    25%        3096  
+inceptron__fp8                 100%   100%   100%   100%   100%     8%        3096  
+inference-net__fp4             100%   100%   100%   100%   100%     8%        3096  
+inference-net__us              100%   100%   100%   100%    92%     0%        3096  
+makora                         100%   100%   100%   100%   100%     8%        3096  
+mistral                        100%   100%   100%   100%   100%     0%        3096  
+modal__fp4                     100%   100%   100%   100%   100%     8%        3096  
+morph__fp8                     100%   100%   100%   100%    75%    17%        2007  
+near-ai__fp8                   100%   100%   100%   100%   100%     0%        3096  
+nebius__fp4                    100%   100%   100%   100%   100%     8%        3096  
+nextbit__fp4                   100%   100%   100%   100%   100%     8%        3096  
+novita__fp8                    100%   100%   100%   100%    92%     8%        3096  
+open-inference__fp4             17%     0%     0%     0%     0%     0%         171  bills 171 prompt tokens for the image where its peers bill 3096 (image downscaled?); reads 0% of the 9 px codes where its peers read 100% (smallest it reads: none px)
+parasail__fp4                  100%   100%   100%   100%   100%     0%        3096  
+particle-ai__nvfp4             100%   100%   100%   100%   100%     0%        3096  
+phala__nvfp4                   100%   100%   100%   100%    83%     0%        3096  
+primeintellect                 100%   100%   100%    58%     8%     0%        1095  bills 1095 prompt tokens for the image where its peers bill 3096 (image downscaled?); reads 8% of the 9 px codes where its peers read 100% (smallest it reads: 16 px)
+reka                           100%   100%   100%   100%   100%    17%        3096  
+relace__fp4                  error: {"error":{"message":"No endpoints found for z-ai/glm-5.3-flash. Every candidate endpoint w
+sail-research__fp4           error: {"error":{"message":"No endpoints found for z-ai/glm-5.3-flash. Every candidate endpoint w
+sail-research__us            error: {"error":{"message":"No endpoints found for z-ai/glm-5.3-flash. Every candidate endpoint w
+siliconflow__fp8               100%   100%   100%   100%    92%     8%        3096  
+streamlake__fp8                100%   100%   100%   100%    67%     0%        3096  
+tenstorrent__fp8               100%   100%    92%    50%    17%     0%        1095  bills 1095 prompt tokens for the image where its peers bill 3096 (image downscaled?); reads 17% of the 9 px codes where its peers read 100% (smallest it reads: 16 px)
+together                       100%   100%   100%   100%   100%     0%        3096  
+venice                         100%   100%   100%   100%   100%    25%        3096  
+wafer__nvfp4                   100%   100%   100%   100%   100%     8%        3096  
+wafer__us                      100%   100%   100%   100%   100%     0%        3096  
+z-ai__fp8                      100%   100%   100%   100%    92%     0%        3096  
+wrote results/vision/z-ai__glm-5.3-flash.json

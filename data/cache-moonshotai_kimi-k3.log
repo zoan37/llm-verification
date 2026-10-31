@@ -1,0 +1,32 @@
+spent $3.3821
+akashml__fp4                   identical-at-T1 0/4  stale 0  wrong 0  
+alibaba                        identical-at-T1 0/4  stale 0  wrong 0  
+amazon-bedrock__us-east-2      identical-at-T1 0/4  stale 0  wrong 0  
+baseten__fp8                   identical-at-T1 0/0  stale 0  wrong 0  
+chutes__mxfp4                  identical-at-T1 0/3  stale 0  wrong 0  
+decart__mxfp4                  identical-at-T1 0/0  stale 0  wrong 0  
+deepinfra__mxfp4               identical-at-T1 0/4  stale 0  wrong 0  
+digitalocean                   identical-at-T1 0/4  stale 0  wrong 0  
+fireworks                      identical-at-T1 0/4  stale 0  wrong 0  
+fireworks__fast                identical-at-T1 0/4  stale 0  wrong 0  
+fireworks__spot                identical-at-T1 0/0  stale 0  wrong 0  
+fireworks__us                  identical-at-T1 0/4  stale 0  wrong 0  
+inference-net__fast            identical-at-T1 0/4  stale 0  wrong 0  
+inference-net__fp4             identical-at-T1 0/4  stale 0  wrong 0  
+inference-net__us              identical-at-T1 0/4  stale 0  wrong 0  
+inference-net__us__fast        identical-at-T1 0/4  stale 0  wrong 0  
+makora__fp4                    identical-at-T1 0/4  stale 0  wrong 0  
+modal__mxfp4                   identical-at-T1 0/0  stale 0  wrong 0  
+moonshotai                     identical-at-T1 0/0  stale 0  wrong 0  
+morph__fp8                     identical-at-T1 0/4  stale 0  wrong 0  
+parasail__fp4                  identical-at-T1 0/4  stale 0  wrong 0  
+pareto-alpha__us               identical-at-T1 0/4  stale 0  wrong 0  
+phala                          identical-at-T1 0/4  stale 0  wrong 0  
+relace__fp4                    identical-at-T1 0/4  stale 0  wrong 0  
+sail-research__fp4             identical-at-T1 0/4  stale 0  wrong 0  
+sail-research__fp4__us         identical-at-T1 0/4  stale 0  wrong 0  
+together                       identical-at-T1 0/4  stale 0  wrong 0  
+wafer                          identical-at-T1 0/4  stale 0  wrong 0  
+wafer__fast                    identical-at-T1 0/4  stale 0  wrong 0  
+wafer__us                      identical-at-T1 0/4  stale 0  wrong 0  
+wrote results/cache/moonshotai__kimi-k3.json

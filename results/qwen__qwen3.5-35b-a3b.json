@@ -3142,5 +3142,5 @@
  "referee": "Qwen3.5-35B-A3B Q8_0, llama.cpp Metal, M5 Max",
  "anchor": "a 3-bit quantization (Q3_K_M) of the same model",
  "notes": "100 is set by a near-lossless 6-bit re-quantization (Q6_K), stricter than FP8 serving can be; well-behaved FP8 endpoints land around 50 here. The same Q8 weights on the CPU show how tight same-weights agreement is. The referee is Q8_0, so FP8-class endpoints cannot be told apart from each other, only from 4-bit-and-worse behaviour.",
- "built": "2026-10-30"
+ "built": "2026-10-31"
 }

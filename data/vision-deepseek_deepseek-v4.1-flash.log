@@ -1,0 +1,44 @@
+spent $2.0050
+endpoint                       36px   24px   16px   12px    9px    7px  prompt_tok  flags
+alibaba                        100%   100%   100%    83%    67%     8%        1055  
+atlas-cloud__fp8               100%   100%   100%    92%    50%     0%        1055  
+baidu__fp8                     100%   100%   100%    83%    75%     0%        1055  
+baseten                        100%   100%    92%    83%    58%     8%        1055  
+baseten__fast                error: {"error":{"message":"Provider returned error","code":429,"metadata":{"raw":"deepseek/deeps
+baseten__us                    100%   100%   100%   100%    50%     0%        1055  
+cohere                         100%   100%   100%    83%    75%     0%        1055  
+coreweave__fp8                 100%   100%   100%    83%    75%     0%        1055  
+crusoe__fp8                    100%   100%   100%    92%    58%     8%        1055  
+decart__fp4                    100%   100%   100%    83%    75%     8%        1055  
+deepinfra__fp8                 100%   100%   100%    83%    75%     0%        1055  
+deepinfra__fp8__flex           100%   100%   100%    83%    75%     8%        1055  
+deepinfra__fp8__priority       100%   100%   100%    83%    75%     0%        1055  
+digitalocean                   100%   100%   100%    83%    75%     0%        1055  
+fireworks                      100%   100%   100%    83%    75%     8%        1055  
+fireworks__spot                100%   100%   100%    83%    75%     0%        1055  
+fireworks__us                  100%   100%   100%    83%    75%     0%        1055  
+gmicloud__fp8                  100%   100%   100%   100%    42%     8%        1055  
+google-vertex__global          100%    92%    42%     0%     0%     0%         443  bills 443 prompt tokens for the image where its peers bill 1055 (image downscaled?); reads 0% of the 9 px codes where its peers read 75% (smallest it reads: 24 px)
+inference-net__fp8             100%   100%   100%    83%    75%     0%        1055  
+inference-net__us              100%   100%   100%    83%    75%     0%        1055  
+makora__fp8                    100%   100%   100%    83%    75%     0%        1055  
+mancer__fp8                    100%   100%    92%    83%    58%     8%        1055  
+modal                          100%   100%   100%    83%    75%     8%        1055  
+morph__fp8                     100%   100%   100%    92%    58%     8%        1055  
+nebius__fp8                    100%   100%   100%    83%    75%     0%        1055  
+novita__fp8                     67%    67%    67%    58%    33%     8%        1081  
+open-inference__fp4             42%     0%     0%     0%     0%     0%         245  bills 245 prompt tokens for the image where its peers bill 1055 (image downscaled?); reads 0% of the 9 px codes where its peers read 75% (smallest it reads: none px)
+parasail__fp8                  100%   100%   100%    83%    75%     0%        1055  
+phala                          100%    92%    92%    75%    58%     0%        1055  
+primeintellect                 100%   100%   100%    83%    75%     0%        1055  
+reka                           100%   100%    92%    83%    75%     8%        1055  
+relace__fp4                  error: {"error":{"message":"No endpoints found for deepseek/deepseek-v4.1-flash. Every candidate 
+sail-research__fp4           error: {"error":{"message":"No endpoints found for deepseek/deepseek-v4.1-flash. Every candidate 
+sail-research__fp4__us       error: {"error":{"message":"No endpoints found for deepseek/deepseek-v4.1-flash. Every candidate 
+siliconflow__fp8               100%   100%   100%   100%    50%     8%        1055  
+streamlake__fp8                100%   100%   100%    92%    50%     0%        1055  
+together                       100%   100%   100%    83%    67%     0%        1057  
+venice__fp8                    100%   100%    92%    83%    58%     8%        1055  
+wafer__mxfp4                   100%   100%   100%    83%    75%     0%        1055  
+wafer__us                      100%   100%   100%    83%    67%     0%        1055  
+wrote results/vision/deepseek__deepseek-v4.1-flash.json

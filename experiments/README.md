@@ -363,6 +363,12 @@ on this model, nobody serves noticeably degraded weights at temperature 0. The d
 - **Groq** truncates the tail (0 vs 16.8 expected) and bills 4 extra prompt tokens; **DeepInfra (bf16)** failed 81
   of 104 requests and bills 13 fewer prompt tokens than the published template.
 
+Cross-hardware honest baseline (2026-10-31): the same MXFP4 weights served by llama.cpp b12020's prebuilt Vulkan
+build on an AMD Radeon AI PRO R9700 under Windows 11 (`experiments/collect_local_api.py`, llama-server with top_k 0
+and min_p 0 so its sampler defaults do not truncate): regret 0.0376 [0.0314, 0.0440] vs the Grace CPU's 0.0388,
+other-token rate 6.8% vs 7.0%, PIT mean 0.503, 49 draws past rank 40 vs 41.8 expected. Fidelity 100, no flags:
+AMD on Vulkan is an honest machine here.
+
 ## gpt-oss-120b (26 endpoints)
 
 Deferred: the largest and slowest model to score (reasoning text plus 63 GB of weights). Replies from all 26 endpoints

@@ -5880,5 +5880,5 @@
  "referee": "Qwen3.8-27B Q8_0, llama.cpp CUDA, DGX Spark (GB10)",
  "anchor": "a 2-bit quantization (UD-Q2_K_XL) of the same model",
  "notes": "100 is set by a near-lossless 6-bit re-quantization (Q6_K) on the same GPU, stricter than FP8 serving can be. The referee is Q8_0. Venice has its own case study.",
- "built": "2026-10-30"
+ "built": "2026-10-31"
 }

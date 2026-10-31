@@ -33,15 +33,20 @@ extra = json.loads(a.extra_body)
 def call(path, payload=None, timeout=180):
     if payload is not None and path == "/chat/completions":
         payload = {**payload, "model": a.served_name, **extra}
-    return orig_call(path, payload, timeout)
+    out = orig_call(path, payload, timeout)
+    for ch in out.get("choices") or []:  # llama-server names it reasoning_content, OpenRouter reasoning
+        m = ch.get("message") or {}
+        if m.get("reasoning") is None and m.get("reasoning_content") is not None:
+            m["reasoning"] = m["reasoning_content"]
+    return out
 
 
 openrouter.call = call
 orig = openrouter._request
 
 
-def _request(model, tag, prompt, mode, max_tokens, reasoning, top_n):
-    return orig(a.served_name, tag, prompt, mode, max_tokens, reasoning, top_n)
+def _request(model, tag, prompt, mode, max_tokens, reasoning, top_n, extra_body=None):
+    return orig(a.served_name, tag, prompt, mode, max_tokens, reasoning, top_n, extra_body)
 
 
 openrouter._request = _request
