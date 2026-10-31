@@ -139,8 +139,12 @@ Thresholds come from honest machines (same weights, different hardware/engine/ke
 - Honest noise differs by backend and model: CUDA and CPU land near each other; llama.cpp Vulkan was 5-10× noisier in
   an earlier experiment on Qwen3.5-35B-A3B (fp16 paths, older llama.cpp), comparable to a Q3 cheat. On gpt-oss-20b
   with llama.cpp b12020, Vulkan on an AMD Radeon AI PRO R9700 under Windows 11 was indistinguishable from the honest
-  CPU and CUDA runs (regret 0.0376 vs 0.0388, PIT mean 0.503, no truncation). So Vulkan noise is model- or
-  version-dependent, and each backend needs a baseline per model before a strict tier can include it.
+  CPU and CUDA runs (regret 0.0376 vs 0.0388, PIT mean 0.503, no truncation), as was an RTX 4090 on CUDA under
+  WSL2 (0.0385). On Qwen3.8-27B, the R9700 on Vulkan running the referee's own Q8_0 file landed at regret 0.0002
+  (a different token on 0.5% of positions, all near-ties) against 0.0011 for the honest Q6_K reference: the pure
+  backend difference (AMD/Vulkan/Windows vs NVIDIA/CUDA/Linux, same weights) is far below quantization noise. The
+  earlier noisy Vulkan runs (Intel B70 and AMD 780M on Linux/Mesa, an older llama.cpp) are therefore specific to
+  that GPU/driver/version, not to Vulkan; each GPU/driver pair still needs its own baseline before a strict tier.
 - Honest *providers* (vLLM/SGLang/TensorRT, FP8 weights or KV cache, batch-dependent kernels) are noisier than
   honest llama.cpp machines. In black-box mode the published score places each endpoint on a scale from honest
   machines (100) to a smaller sibling model (0); it does not declare FP8 dishonest.
@@ -178,8 +182,9 @@ Findings from adversarial reviews, each now a regression test in `tests/test_red
    with length; long-context audits need their own calibration.
 5. **Calibration coverage.** Every new hardware platform and engine needs an honest baseline before its
    providers can be judged in a strict tier. Measured so far: Apple Metal, NVIDIA CUDA (GB10, RTX PRO 6000), ARM and
-   x86 CPUs, vLLM BF16, AMD R9700 on Vulkan (Windows; gpt-oss-20b). Next: AMD ROCm/HIP, Intel (Arc B70), RTX 4090,
-   and Vulkan on Qwen3.5 again (5-10x noisier than CUDA in an earlier experiment).
+   x86 CPUs, vLLM BF16, AMD R9700 on Vulkan under Windows (gpt-oss-20b, Qwen3.8-27B), RTX 4090 on CUDA under WSL2
+   (gpt-oss-20b). Next: Intel Arc B70 on Linux with a current llama.cpp (the noisy Vulkan result came from Intel
+   B70 and AMD 780M on Mesa), AMD ROCm/HIP.
 6. **Privacy.** Audits need the prompt and the reply. Self-audits keep data with the user; third-party referees
    see it unless they run in a TEE.
 7. **Tool/agent traces.** Multi-turn and tool-call formats add template surface where honest providers differ.

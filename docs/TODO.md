@@ -33,7 +33,8 @@ Open work, roughly in priority order. Each item says what it would establish.
 - [ ] Single-request vocabulary pass split over cores or on the GPU (the last ~5% on fast models).
 
 ## Calibration
-- [ ] Honest baselines on AMD ROCm (R9700) and Intel (Arc B70); Vulkan is known to be noisier.
+- [x] Honest baselines: AMD R9700 Vulkan on Windows (gpt-oss-20b, Qwen3.8), RTX 4090 CUDA on WSL2: all honest.
+- [ ] Intel Arc B70 on Linux with a current llama.cpp (the earlier noisy Vulkan runs); AMD ROCm/HIP (needs the HIP SDK on Windows).
 - [ ] Cross-machine referee in the cooperative attack run (provider and referee were on one machine, so `wgap`
       noise is underestimated there).
 - [ ] A BF16 referee where possible (Qwen3.5/3.8 used Q8_0, which cannot separate FP8-class providers).

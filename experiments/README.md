@@ -367,7 +367,10 @@ Cross-hardware honest baseline (2026-10-31): the same MXFP4 weights served by ll
 build on an AMD Radeon AI PRO R9700 under Windows 11 (`experiments/collect_local_api.py`, llama-server with top_k 0
 and min_p 0 so its sampler defaults do not truncate): regret 0.0376 [0.0314, 0.0440] vs the Grace CPU's 0.0388,
 other-token rate 6.8% vs 7.0%, PIT mean 0.503, 49 draws past rank 40 vs 41.8 expected. Fidelity 100, no flags:
-AMD on Vulkan is an honest machine here.
+AMD on Vulkan is an honest machine here. An RTX 4090 running the verification engine on CUDA under Windows 11 WSL2: regret 0.0385
+[0.0324, 0.0453], PIT 0.507, fidelity 100, no flags. On Qwen3.8-27B the R9700 on Vulkan ran the referee's own Q8_0
+file: regret 0.0002 [0.0001, 0.0003], other token on 0.5% of positions, against 0.0011 for the honest Q6_K reference,
+so same-weights backend differences across vendors are far smaller than quantization differences.
 
 ## gpt-oss-120b (26 endpoints)
 
