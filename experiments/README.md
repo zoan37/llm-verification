@@ -95,9 +95,9 @@ so a resized image shows directly in the bill; Gemma bills a near-fixed count, s
 | Gemma-4-31B | 15 | 328 | Novita (193; 16 px codes 50%, 12 px 0% vs 100%) |
 | Gemma-4-26B-A4B | 11 | 328 | none |
 | Nemotron-3.5-Super-VL | 10 | 2,379 | none |
-| DeepSeek V4.1 Flash | 35 | 1,055 | Google Vertex (443), Open-Inference (245; reads almost nothing, then invents codes) |
-| GLM-5.3-flash | 34 | 3,096 | PrimeIntellect (1,095), Tenstorrent (1,095), Open-Inference (171; invents codes) |
-| Kimi K3 | 23 | 3,177 | none (Modal returns no text: it reasons through the whole reply budget although reasoning was turned off) |
+| DeepSeek V4.1 Flash | 37 | 1,055 | Google Vertex (443), Open-Inference (245; reads almost nothing, then invents codes) |
+| GLM-5.3-flash | 37 | 3,096 | PrimeIntellect (1,095), Tenstorrent (1,095), Open-Inference (171; invents codes) |
+| Kimi K3 | 23 | 3,110 | none (Modal returns no text: it reasons through the whole reply budget although reasoning was turned off) |
 
 DeepInfra resizes on three Qwen models but not on Qwen3.8 (2,375), so it is a per-deployment setting.
 
