@@ -82,7 +82,12 @@ class Ledger:
         under the stated assumption that an honest provider's expected per-token metric is at most tau.
     """
     provider_key: str
-    tolerances: Dict[str, float] = field(default_factory=lambda: {"regret": 0.02, "wgap": 0.08})
+    # Per-token tolerances for the e-processes, e.g. {"regret": 0.06, "wgap": 0.2}. No default: honest noise
+    # differs a lot by model and hardware (gpt-oss-20b on llama.cpp: regret ~0.04 and wgap ~0.15 across two honest
+    # GPUs, Qwen3.8-27B ~0.0002), so a fixed default would accuse honest providers of one model and wave cheats of
+    # another through. Without tolerances (or a calibration) the verdict is UNCALIBRATED: exact failures and the
+    # measured means only.
+    tolerances: Dict[str, float] = field(default_factory=dict)
     uppers: Dict[str, float] = field(default_factory=lambda: {"regret": 5.0, "wgap": 5.0})
     alpha: float = 1e-3
     scores: List[TokenScore] = field(default_factory=list)
@@ -138,6 +143,8 @@ class Ledger:
             status = "FAIL"
         elif n < 64:
             status = "INSUFFICIENT_EVIDENCE"
+        elif not self.tolerances and calibration is None:
+            status = "UNCALIBRATED"
         else:
             status = "PASS"
         return {"status": status, "n_tokens": n, "audits": self.audits, "means": means, "eprocess": e_vals,

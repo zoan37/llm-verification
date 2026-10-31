@@ -42,7 +42,7 @@ MAX_TOKENS_CAP = 4096  # must match the server's
 class VerifyingClient:
     def __init__(self, base_url: str, pinned_key: Optional[str] = None, tokenizer=None, template: Optional[str] = None,
                  bos: Optional[int] = None, referee=None, expected_model: Optional[dict] = None, timeout: float = 600,
-                 template_kwargs: Optional[dict] = None):
+                 template_kwargs: Optional[dict] = None, tolerances: Optional[dict] = None):
         if tokenizer is None or template is None:
             # Without the model's tokenizer and template the client cannot check its own prompt, the returned text,
             # or end-of-sequence handling, so a reply could be fabricated or truncated and still "pass".
@@ -51,7 +51,8 @@ class VerifyingClient:
         self.pinned_key, self.tokenizer, self.template, self.bos = pinned_key, tokenizer, template, bos
         self.referee, self.expected_model, self.timeout = referee, expected_model, timeout
         self.template_kwargs = template_kwargs or {}
-        self.ledger = Ledger(provider_key=pinned_key or "unpinned")
+        # statistical verdicts need tolerances calibrated for this model and hardware (audit.Ledger)
+        self.ledger = Ledger(provider_key=pinned_key or "unpinned", tolerances=dict(tolerances or {}))
 
     def _post(self, body: dict) -> dict:
         req = urllib.request.Request(self.base + "/v1/chat/completions", data=json.dumps(body).encode(),

@@ -37,6 +37,11 @@ r.audit                          # referee replay of the reply: regret, wgap
 c.ledger.verdict()               # evidence across replies
 ```
 
+`verdict()` turns audit statistics into PASS/FAIL only with tolerances calibrated for the model and hardware
+(`VerifyingClient(..., tolerances={"regret": ..., "wgap": ...})`); otherwise it reports exact failures and the
+measured means as UNCALIBRATED. Honest noise differs too much between models for one default: two honest GPUs give
+regret ~0.04 on gpt-oss-20b and ~0.0002 on Qwen3.8-27B.
+
 The client chooses the seed and nonce for every request; never let the provider pick them (it could retry until it
 likes the sample). A reply that fails an exact check is not a statistical outlier, it is proof something was altered.
 
