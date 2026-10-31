@@ -38,5 +38,5 @@ Open work, roughly in priority order. Each item says what it would establish.
       (`experiments/sampler_control.py`). Next: the same on Qwen3.8 and Gemma endpoints.
 - [x] DeepInfra fp8 / Mara / SambaNova serve byte-identical gpt-oss-120b output; Mara = SambaNova on DeepSeek V3.2 too.
 - [ ] Shared deployments among nondeterministic endpoints: longer replies, more prompts, prefix-length statistics.
-- [ ] Lead (unconfirmed): Venice's Qwen3.6 bills exactly DeepInfra's downscaled image-token count (1,032), and its
-      greedy text leans towards DeepInfra's on Qwen3.6 and MiniMax M3. Test whether Venice resells DeepInfra there.
+- [x] Venice / DeepInfra: probable on Gemma-4-26B/31B, Qwen3.6, MiniMax M3 (top_k limit, image tokens, reasoning
+      cap); not on Qwen3.5/3.8. A decisive test would need a timing side channel or a request feature only DeepInfra has.

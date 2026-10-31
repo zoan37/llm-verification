@@ -71,6 +71,14 @@ among substitute references.
   apart within a few hundred greedy tokens (different kernels, batch shapes, quantization), so endpoints whose
   temperature-0 replies are byte-identical on nearly every prompt are one serving stack behind several names. Then
   at least one label (provider, quantization) is not what runs, and choosing between them is no choice.
+- **API fingerprints** (`experiments/api_fingerprint.py`). Byte-identical output only exposes shared deployments
+  among deterministic endpoints. Parameter validation is deterministic for everyone: ~26 tiny requests probe edge
+  values (top_k 999 vs 1000, top_logprobs 21, n = 2, top_p 0, JSON mode without "json" in the prompt, ...) and record
+  accepted or rejected. Errors OpenRouter raises itself before routing are dropped, and exact error wording is not
+  compared (a reseller may wrap its upstream's errors). Two endpoints of different providers that agree on every
+  probe and share behaviours at most one other provider of that model shows, in two or more independent probe
+  families, are reported as a probable shared deployment or stack. Supporting evidence, not proof: two providers can
+  run the same software with the same settings.
 - **Reasoning effort** (`experiments/reasoning_effort.py`). The same 12 problems at effort low/medium/high: does
   reasoning length grow with effort, and does each level spend what the other endpoints spend at that level?
 - **Repeated replies** (`experiments/response_cache.py`). The same long creative prompt three times at temperature

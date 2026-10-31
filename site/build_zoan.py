@@ -228,6 +228,12 @@ serving_html = f"""<section class="coop" aria-label="Serving behaviour">
     <div class="ledger"><table class="small">
       <thead><tr><th>Model</th><th>Endpoints that are one deployment</th><th>Identical greedy replies (per pair)</th><th>Most similar other pair</th></tr></thead>
       <tbody>{''.join(shared_rows) or '<tr><td colspan=4>none found</td></tr>'}</tbody></table></div>
+    <p class="lede" style="font-size:14px;max-width:80ch"><b>Probable, from indirect evidence:</b> Venice serves
+      Gemma-4-26B, Gemma-4-31B, Qwen3.6-35B and MiniMax M3 through DeepInfra. On all four, Venice's endpoint is the only
+      one besides DeepInfra's that accepts top_k 999 but rejects 1000; on Qwen3.6 it bills exactly DeepInfra's
+      downscaled image-token count (1,032 where everyone else bills 2,375); on Gemma-4-26B it cuts reasoning at the same
+      ~2,300 tokens, which no other endpoint does. Against: it accepts a seed DeepInfra rejects, and words errors its own
+      way (both expected of a proxy that cleans requests). On Qwen3.5 and Qwen3.8 Venice behaves unlike DeepInfra.</p>
     <p class="lede" style="font-size:14px;max-width:80ch"><b>Reasoning effort.</b> 12 maths problems at effort low,
       medium and high (temperature 0), measured by the reasoning each endpoint returns. On gpt-oss, endpoints reason
       roughly twice as long at each step up; Qwen3.8 barely changes on any endpoint, so nothing can be flagged there.

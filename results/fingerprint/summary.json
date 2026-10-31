@@ -1,0 +1,92 @@
+{
+ "probes": [
+  "top_k_999",
+  "top_k_1000",
+  "top_k_100k",
+  "top_logprobs_21",
+  "top_logprobs_1000",
+  "max_tokens_10M",
+  "temperature_2.5",
+  "min_p_1",
+  "stop_10",
+  "presence_3",
+  "frequency_-3",
+  "repetition_3",
+  "logit_bias_500",
+  "seed_neg",
+  "top_a_1",
+  "top_p_0",
+  "top_k_0",
+  "top_k_neg1",
+  "n_2",
+  "max_tokens_0",
+  "seed_2^64",
+  "stop_long",
+  "json_mode_no_json",
+  "min_tokens_5",
+  "logprobs_no_top",
+  "top_logprobs_0"
+ ],
+ "models": [
+  {
+   "model": "deepseek/deepseek-v3.2",
+   "endpoints": 9,
+   "same_stack": []
+  },
+  {
+   "model": "deepseek/deepseek-v4.1-flash",
+   "endpoints": 41,
+   "same_stack": []
+  },
+  {
+   "model": "google/gemma-4-26b-a4b-it",
+   "endpoints": 15,
+   "same_stack": []
+  },
+  {
+   "model": "google/gemma-4-31b-it",
+   "endpoints": 16,
+   "same_stack": []
+  },
+  {
+   "model": "meta-llama/llama-3.3-70b-instruct",
+   "endpoints": 10,
+   "same_stack": []
+  },
+  {
+   "model": "minimax/minimax-m3",
+   "endpoints": 13,
+   "same_stack": []
+  },
+  {
+   "model": "openai/gpt-oss-120b",
+   "endpoints": 26,
+   "same_stack": []
+  },
+  {
+   "model": "openai/gpt-oss-20b",
+   "endpoints": 10,
+   "same_stack": []
+  },
+  {
+   "model": "qwen/qwen3.5-35b-a3b",
+   "endpoints": 7,
+   "same_stack": []
+  },
+  {
+   "model": "qwen/qwen3.6-35b-a3b",
+   "endpoints": 10,
+   "same_stack": []
+  },
+  {
+   "model": "qwen/qwen3.8-27b",
+   "endpoints": 21,
+   "same_stack": []
+  },
+  {
+   "model": "z-ai/glm-5.3",
+   "endpoints": 48,
+   "same_stack": []
+  }
+ ]
+}

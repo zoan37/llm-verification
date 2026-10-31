@@ -19,7 +19,8 @@
      "reasoning_returned_share": 1.0,
      "billed_reasoning_tokens_median": 0.0,
      "billed_completion_tokens_median": 155.5,
-     "truncated": 0
+     "truncated": 0,
+     "reasoning_chars_max": 512
     },
     "medium": {
      "n": 12,
@@ -28,7 +29,8 @@
      "reasoning_returned_share": 1.0,
      "billed_reasoning_tokens_median": 0.0,
      "billed_completion_tokens_median": 233.0,
-     "truncated": 0
+     "truncated": 0,
+     "reasoning_chars_max": 1521
     },
     "high": {
      "n": 12,
@@ -37,11 +39,13 @@
      "reasoning_returned_share": 1.0,
      "billed_reasoning_tokens_median": 0.0,
      "billed_completion_tokens_median": 722.5,
-     "truncated": 2
+     "truncated": 2,
+     "reasoning_chars_max": 24067
     }
    },
    "errors": 0,
-   "flags": []
+   "flags": [],
+   "reasoning_chars_longest": 24067
   },
   "amazon-bedrock": {
    "efforts": {
@@ -53,6 +57,7 @@
      "billed_reasoning_tokens_median": 63.5,
      "billed_completion_tokens_median": 129.5,
      "truncated": 0,
+     "reasoning_chars_max": 882,
      "reasoning_chars_per_billed_token": 3.98
     },
     "medium": {
@@ -63,6 +68,7 @@
      "billed_reasoning_tokens_median": 142.5,
      "billed_completion_tokens_median": 244.5,
      "truncated": 0,
+     "reasoning_chars_max": 2440,
      "reasoning_chars_per_billed_token": 3.98
     },
     "high": {
@@ -73,11 +79,13 @@
      "billed_reasoning_tokens_median": 290.0,
      "billed_completion_tokens_median": 424.5,
      "truncated": 1,
+     "reasoning_chars_max": 20366,
      "reasoning_chars_per_billed_token": 3.99
     }
    },
    "errors": 0,
-   "flags": []
+   "flags": [],
+   "reasoning_chars_longest": 20366
   },
   "amazon-bedrock__eu-west-1": {
    "efforts": {
@@ -89,6 +97,7 @@
      "billed_reasoning_tokens_median": 65.5,
      "billed_completion_tokens_median": 113.0,
      "truncated": 0,
+     "reasoning_chars_max": 674,
      "reasoning_chars_per_billed_token": 3.97
     },
     "medium": {
@@ -99,6 +108,7 @@
      "billed_reasoning_tokens_median": 143.0,
      "billed_completion_tokens_median": 225.5,
      "truncated": 0,
+     "reasoning_chars_max": 2357,
      "reasoning_chars_per_billed_token": 3.98
     },
     "high": {
@@ -109,11 +119,13 @@
      "billed_reasoning_tokens_median": 396.0,
      "billed_completion_tokens_median": 538.0,
      "truncated": 1,
+     "reasoning_chars_max": 21914,
      "reasoning_chars_per_billed_token": 3.91
     }
    },
    "errors": 0,
-   "flags": []
+   "flags": [],
+   "reasoning_chars_longest": 21914
   },
   "coreweave__fp4": {
    "efforts": {
@@ -125,6 +137,7 @@
      "billed_reasoning_tokens_median": 62.0,
      "billed_completion_tokens_median": 140.5,
      "truncated": 0,
+     "reasoning_chars_max": 910,
      "reasoning_chars_per_billed_token": 3.96
     },
     "medium": {
@@ -135,6 +148,7 @@
      "billed_reasoning_tokens_median": 143.0,
      "billed_completion_tokens_median": 228.5,
      "truncated": 0,
+     "reasoning_chars_max": 1678,
      "reasoning_chars_per_billed_token": 3.99
     },
     "high": {
@@ -145,11 +159,13 @@
      "billed_reasoning_tokens_median": 266.5,
      "billed_completion_tokens_median": 466.0,
      "truncated": 1,
+     "reasoning_chars_max": 19217,
      "reasoning_chars_per_billed_token": 3.93
     }
    },
    "errors": 0,
-   "flags": []
+   "flags": [],
+   "reasoning_chars_longest": 19217
   },
   "darkbloom__fp8": {
    "efforts": {
@@ -161,6 +177,7 @@
      "billed_reasoning_tokens_median": 100.0,
      "billed_completion_tokens_median": 130.5,
      "truncated": 0,
+     "reasoning_chars_max": 487,
      "reasoning_chars_per_billed_token": 2.45
     },
     "medium": {
@@ -171,6 +188,7 @@
      "billed_reasoning_tokens_median": 213.0,
      "billed_completion_tokens_median": 227.0,
      "truncated": 0,
+     "reasoning_chars_max": 1669,
      "reasoning_chars_per_billed_token": 2.85
     },
     "high": {
@@ -181,13 +199,16 @@
      "billed_reasoning_tokens_median": 205.0,
      "billed_completion_tokens_median": 219.0,
      "truncated": 0,
+     "reasoning_chars_max": 1669,
      "reasoning_chars_per_billed_token": 2.91
     }
    },
    "errors": 0,
    "flags": [
-    "'high' reasons like everyone else's 'medium' (598 vs 607 median chars)"
-   ]
+    "'high' reasons like everyone else's 'medium' (598 vs 607 median chars)",
+    "stops reasoning early: its longest reasoning is 1,669 characters where the other endpoints' runs to 20,366; 0 of its replies hit the token limit, 1 for a typical endpoint"
+   ],
+   "reasoning_chars_longest": 1669
   },
   "deepinfra__bf16": {
    "efforts": {},
@@ -204,6 +225,7 @@
      "billed_reasoning_tokens_median": 102.5,
      "billed_completion_tokens_median": 128.5,
      "truncated": 0,
+     "reasoning_chars_max": 657,
      "reasoning_chars_per_billed_token": 2.52
     },
     "medium": {
@@ -214,6 +236,7 @@
      "billed_reasoning_tokens_median": 252.0,
      "billed_completion_tokens_median": 262.0,
      "truncated": 0,
+     "reasoning_chars_max": 3141,
      "reasoning_chars_per_billed_token": 2.81
     },
     "high": {
@@ -224,11 +247,13 @@
      "billed_reasoning_tokens_median": 533.5,
      "billed_completion_tokens_median": 594.0,
      "truncated": 1,
+     "reasoning_chars_max": 19329,
      "reasoning_chars_per_billed_token": 3.09
     }
    },
    "errors": 0,
-   "flags": []
+   "flags": [],
+   "reasoning_chars_longest": 19329
   },
   "groq": {
    "efforts": {
@@ -240,6 +265,7 @@
      "billed_reasoning_tokens_median": 89.0,
      "billed_completion_tokens_median": 104.5,
      "truncated": 0,
+     "reasoning_chars_max": 457,
      "reasoning_chars_per_billed_token": 1.82
     },
     "medium": {
@@ -250,6 +276,7 @@
      "billed_reasoning_tokens_median": 194,
      "billed_completion_tokens_median": 207,
      "truncated": 0,
+     "reasoning_chars_max": 1818,
      "reasoning_chars_per_billed_token": 2.02
     },
     "high": {
@@ -260,11 +287,13 @@
      "billed_reasoning_tokens_median": 591.0,
      "billed_completion_tokens_median": 625.5,
      "truncated": 2,
+     "reasoning_chars_max": 26207,
      "reasoning_chars_per_billed_token": 3.02
     }
    },
    "errors": 1,
-   "flags": []
+   "flags": [],
+   "reasoning_chars_longest": 26207
   },
   "parasail__fp4": {
    "efforts": {
@@ -276,6 +305,7 @@
      "billed_reasoning_tokens_median": 102.0,
      "billed_completion_tokens_median": 116.5,
      "truncated": 0,
+     "reasoning_chars_max": 461,
      "reasoning_chars_per_billed_token": 2.63
     },
     "medium": {
@@ -286,6 +316,7 @@
      "billed_reasoning_tokens_median": 254.0,
      "billed_completion_tokens_median": 268.0,
      "truncated": 0,
+     "reasoning_chars_max": 2230,
      "reasoning_chars_per_billed_token": 2.89
     },
     "high": {
@@ -296,11 +327,13 @@
      "billed_reasoning_tokens_median": 471.5,
      "billed_completion_tokens_median": 540.5,
      "truncated": 1,
+     "reasoning_chars_max": 21470,
      "reasoning_chars_per_billed_token": 3.4
     }
    },
    "errors": 0,
-   "flags": []
+   "flags": [],
+   "reasoning_chars_longest": 21470
   },
   "siliconflow__fp8": {
    "efforts": {
@@ -312,6 +345,7 @@
      "billed_reasoning_tokens_median": 204.0,
      "billed_completion_tokens_median": 208.0,
      "truncated": 0,
+     "reasoning_chars_max": 4452,
      "reasoning_chars_per_billed_token": 2.7
     },
     "medium": {
@@ -322,6 +356,7 @@
      "billed_reasoning_tokens_median": 296.5,
      "billed_completion_tokens_median": 301.5,
      "truncated": 0,
+     "reasoning_chars_max": 2197,
      "reasoning_chars_per_billed_token": 2.23
     },
     "high": {
@@ -332,6 +367,7 @@
      "billed_reasoning_tokens_median": 302.5,
      "billed_completion_tokens_median": 306.5,
      "truncated": 0,
+     "reasoning_chars_max": 2168,
      "reasoning_chars_per_billed_token": 2.18
     }
    },
@@ -339,8 +375,10 @@
    "flags": [
     "effort setting has little effect on how much it reasons",
     "'low' reasons like everyone else's 'medium' (551 vs 607 median chars)",
-    "'high' reasons like everyone else's 'medium' (660 vs 607 median chars)"
-   ]
+    "'high' reasons like everyone else's 'medium' (660 vs 607 median chars)",
+    "stops reasoning early: its longest reasoning is 4,452 characters where the other endpoints' runs to 20,366; 0 of its replies hit the token limit, 1 for a typical endpoint"
+   ],
+   "reasoning_chars_longest": 4452
   }
  }
 }

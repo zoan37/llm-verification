@@ -1,0 +1,19 @@
+google/gemma-4-26b-a4b-it: 15 endpoints support reasoning
+spent $2.5367
+endpoint                                              low                     medium                       high  flags
+akashml__fp4                     acc 50% tok 5886 rc 9672   acc 50% tok 4897 rc 7848   acc 50% tok 5524 rc 9154  effort setting has little effect on how much it reasons; 'high' reasons like everyone else's 'low' (5524 vs 3672 median tokens)
+cloudflare                       acc 50% tok 4428 rc 7358   acc 67% tok 3236 rc 4418   acc 67% tok 3928 rc 5349  effort setting has little effect on how much it reasons
+coreweave__bf16                  acc 58% tok 4433 rc 7752   acc 58% tok 3532 rc 6786   acc 64% tok 3353 rc 4649  effort setting has little effect on how much it reasons (errors 1)
+darkbloom                        acc 58% tok 3116 rc 4682   acc 50% tok 4938 rc 7238   acc 58% tok 4416 rc 7030  
+deepinfra__fp8                   acc 92% tok 3922 rc 6085  acc 100% tok 3496 rc 4986   acc 92% tok 3492 rc 5674  effort setting has little effect on how much it reasons
+dekallm__bf16                    acc 75% tok 3959 rc 6688   acc 67% tok 3072 rc 4588   acc 67% tok 3034 rc 5046  effort setting has little effect on how much it reasons
+google-vertex__global            acc 58% tok 3274 rc 5660   acc 67% tok 2612 rc 4700   acc 58% tok 3332 rc 5094  effort setting has little effect on how much it reasons
+io-net__bf16                     acc 67% tok 3786 rc 6580   acc 67% tok 3590 rc 6764   acc 67% tok 3040 rc 5767  effort setting has little effect on how much it reasons
+makora                           acc 67% tok 3496 rc 5236   acc 67% tok 4573 rc 8307   acc 75% tok 2694 rc 4533  effort setting has little effect on how much it reasons
+nextbit__bf16                    acc 67% tok 3930 rc 5912   acc 75% tok 3714 rc 5261   acc 67% tok 3722 rc 5056  effort setting has little effect on how much it reasons
+novita__bf16                     acc 83% tok 2536 rc 3910   acc 70% tok 2892 rc 3710   acc 62% tok 4134 rc 6898  'low' reasons like everyone else's 'high' (2536 vs 3353 median tokens) (errors 12)
+parasail__bf16                   acc 67% tok 3275 rc 5487   acc 75% tok 3574 rc 5044   acc 67% tok 3127 rc 4173  effort setting has little effect on how much it reasons
+primeintellect__bf16             acc 67% tok 3146 rc 5034   acc 67% tok 3318 rc 4506   acc 67% tok 2784 rc 4076  effort setting has little effect on how much it reasons
+siliconflow__fp8                 acc 67% tok 3190 rc 5548   acc 75% tok 3537 rc 5536   acc 58% tok 2906 rc 4628  effort setting has little effect on how much it reasons
+venice__bf16                     acc 92% tok 3672 rc 5585  acc 100% tok 3478 rc 5224  acc 100% tok 3988 rc 5986  effort setting has little effect on how much it reasons
+wrote results/reasoning/google__gemma-4-26b-a4b-it.json

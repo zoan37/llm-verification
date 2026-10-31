@@ -1,0 +1,11 @@
+qwen/qwen3.5-35b-a3b: 7 endpoints support reasoning
+spent $2.4670
+endpoint                                              low                     medium                       high  flags
+alibaba                         acc 100% tok 2358 rc 4750  acc 100% tok 2202 rc 3680   acc 92% tok 2368 rc 3822  effort setting has little effect on how much it reasons
+atlas-cloud__fp8                acc 100% tok 2564 rc 4643  acc 100% tok 2095 rc 4269  acc 100% tok 2068 rc 4192  effort setting has little effect on how much it reasons
+darkbloom__fp4                   acc 92% tok 1980 rc 4053   acc 83% tok 1980 rc 4053   acc 83% tok 1980 rc 4053  effort setting has little effect on how much it reasons
+deepinfra__fp8                   acc 92% tok 1950 rc 3528   acc 92% tok 2356 rc 3940   acc 92% tok 1666 rc 3664  effort setting has little effect on how much it reasons
+parasail__fp8                    acc 92% tok 1755 rc 3812   acc 92% tok 1892 rc 3626   acc 92% tok 1755 rc 3626  effort setting has little effect on how much it reasons
+siliconflow__fp8                 acc 92% tok 2102 rc 4412  acc 100% tok 2059 rc 4100   acc 92% tok 1968 rc 3624  effort setting has little effect on how much it reasons
+venice                           acc 92% tok 1684 rc 3770   acc 92% tok 2651 rc 4762   acc 92% tok 1580 rc 3271  effort setting has little effect on how much it reasons
+wrote results/reasoning/qwen__qwen3.5-35b-a3b.json

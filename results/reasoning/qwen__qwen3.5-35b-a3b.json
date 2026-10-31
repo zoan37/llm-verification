@@ -1,0 +1,294 @@
+{
+ "model": "qwen/qwen3.5-35b-a3b",
+ "cases": 12,
+ "crowd_tokens": {
+  "chars": {
+   "low": 4053.0,
+   "medium": 4053.0,
+   "high": 3664.0
+  },
+  "tokens": {}
+ },
+ "endpoints": {
+  "alibaba": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 4749.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1895.0,
+     "billed_completion_tokens_median": 2358.0,
+     "truncated": 0,
+     "reasoning_chars_max": 29883,
+     "reasoning_chars_per_billed_token": 2.51
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 3679.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1528.0,
+     "billed_completion_tokens_median": 2202.0,
+     "truncated": 0,
+     "reasoning_chars_max": 27339,
+     "reasoning_chars_per_billed_token": 2.41
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 3822.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1612.5,
+     "billed_completion_tokens_median": 2368.0,
+     "truncated": 0,
+     "reasoning_chars_max": 27561,
+     "reasoning_chars_per_billed_token": 2.37
+    }
+   },
+   "errors": 0,
+   "flags": [],
+   "reasoning_chars_longest": 29883
+  },
+  "atlas-cloud__fp8": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 4643.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 2004.0,
+     "billed_completion_tokens_median": 2564.0,
+     "truncated": 0,
+     "reasoning_chars_max": 30863,
+     "reasoning_chars_per_billed_token": 2.32
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 4269.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1598.0,
+     "billed_completion_tokens_median": 2095.0,
+     "truncated": 0,
+     "reasoning_chars_max": 25084,
+     "reasoning_chars_per_billed_token": 2.67
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 4192.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1675.5,
+     "billed_completion_tokens_median": 2068.0,
+     "truncated": 0,
+     "reasoning_chars_max": 21681,
+     "reasoning_chars_per_billed_token": 2.5
+    }
+   },
+   "errors": 0,
+   "flags": [],
+   "reasoning_chars_longest": 30863
+  },
+  "darkbloom__fp4": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 4053.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1543.0,
+     "billed_completion_tokens_median": 1980.0,
+     "truncated": 1,
+     "reasoning_chars_max": 17593,
+     "reasoning_chars_per_billed_token": 2.63
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.8333333333333334,
+     "reasoning_chars_median": 4053.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1543.0,
+     "billed_completion_tokens_median": 1980.0,
+     "truncated": 2,
+     "reasoning_chars_max": 17593,
+     "reasoning_chars_per_billed_token": 2.63
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.8333333333333334,
+     "reasoning_chars_median": 4053.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1543.0,
+     "billed_completion_tokens_median": 1980.0,
+     "truncated": 2,
+     "reasoning_chars_max": 17593,
+     "reasoning_chars_per_billed_token": 2.63
+    }
+   },
+   "errors": 0,
+   "flags": [],
+   "reasoning_chars_longest": 17593
+  },
+  "deepinfra__fp8": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 3528.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 905.5,
+     "billed_completion_tokens_median": 1950.0,
+     "truncated": 1,
+     "reasoning_chars_max": 10691,
+     "reasoning_chars_per_billed_token": 3.9
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 3940.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1010.0,
+     "billed_completion_tokens_median": 2356.5,
+     "truncated": 1,
+     "reasoning_chars_max": 10327,
+     "reasoning_chars_per_billed_token": 3.9
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 3664.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 935.0,
+     "billed_completion_tokens_median": 1666.5,
+     "truncated": 1,
+     "reasoning_chars_max": 10856,
+     "reasoning_chars_per_billed_token": 3.92
+    }
+   },
+   "errors": 0,
+   "flags": [],
+   "reasoning_chars_longest": 10856
+  },
+  "parasail__fp8": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 3812.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1426.0,
+     "billed_completion_tokens_median": 1755.0,
+     "truncated": 1,
+     "reasoning_chars_max": 17043,
+     "reasoning_chars_per_billed_token": 2.67
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 3626.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1424.0,
+     "billed_completion_tokens_median": 1892.5,
+     "truncated": 1,
+     "reasoning_chars_max": 16906,
+     "reasoning_chars_per_billed_token": 2.55
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 3626.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1426.0,
+     "billed_completion_tokens_median": 1755.0,
+     "truncated": 1,
+     "reasoning_chars_max": 17763,
+     "reasoning_chars_per_billed_token": 2.54
+    }
+   },
+   "errors": 0,
+   "flags": [],
+   "reasoning_chars_longest": 17763
+  },
+  "siliconflow__fp8": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 4411.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1581.5,
+     "billed_completion_tokens_median": 2102.0,
+     "truncated": 0,
+     "reasoning_chars_max": 26281,
+     "reasoning_chars_per_billed_token": 2.79
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_chars_median": 4100.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1643.0,
+     "billed_completion_tokens_median": 2059.0,
+     "truncated": 0,
+     "reasoning_chars_max": 30849,
+     "reasoning_chars_per_billed_token": 2.5
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 3624.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1455.5,
+     "billed_completion_tokens_median": 1968.5,
+     "truncated": 1,
+     "reasoning_chars_max": 18009,
+     "reasoning_chars_per_billed_token": 2.49
+    }
+   },
+   "errors": 0,
+   "flags": [],
+   "reasoning_chars_longest": 30849
+  },
+  "venice": {
+   "efforts": {
+    "low": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 3770.5,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1288.0,
+     "billed_completion_tokens_median": 1683.5,
+     "truncated": 1,
+     "reasoning_chars_max": 18421,
+     "reasoning_chars_per_billed_token": 2.93
+    },
+    "medium": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 4762.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 2156.0,
+     "billed_completion_tokens_median": 2651.0,
+     "truncated": 1,
+     "reasoning_chars_max": 17282,
+     "reasoning_chars_per_billed_token": 2.21
+    },
+    "high": {
+     "n": 12,
+     "accuracy": 0.9166666666666666,
+     "reasoning_chars_median": 3271.0,
+     "reasoning_returned_share": 1.0,
+     "billed_reasoning_tokens_median": 1201.5,
+     "billed_completion_tokens_median": 1579.5,
+     "truncated": 1,
+     "reasoning_chars_max": 17545,
+     "reasoning_chars_per_billed_token": 2.72
+    }
+   },
+   "errors": 0,
+   "flags": [],
+   "reasoning_chars_longest": 18421
+  }
+ }
+}

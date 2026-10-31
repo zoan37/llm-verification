@@ -1,0 +1,27 @@
+3821 probes to run; key usage $8.92
+spent $0.1784
+
+deepseek__deepseek-v3.2: 9 endpoints
+
+deepseek__deepseek-v4.1-flash: 41 endpoints
+
+google__gemma-4-26b-a4b-it: 15 endpoints
+
+google__gemma-4-31b-it: 16 endpoints
+
+meta-llama__llama-3.3-70b-instruct: 10 endpoints
+
+minimax__minimax-m3: 13 endpoints
+
+openai__gpt-oss-120b: 26 endpoints
+
+openai__gpt-oss-20b: 10 endpoints
+
+qwen__qwen3.5-35b-a3b: 7 endpoints
+
+qwen__qwen3.6-35b-a3b: 10 endpoints
+
+qwen__qwen3.8-27b: 21 endpoints
+
+z-ai__glm-5.3: 48 endpoints
+wrote results/fingerprint/summary.json

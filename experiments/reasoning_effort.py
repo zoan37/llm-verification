@@ -142,7 +142,8 @@ for f in sorted(raw_dir.glob("*.jsonl.gz")):
                     "reasoning_returned_share": sum(1 for x in rlen if x > 0) / len(rs),
                     "billed_reasoning_tokens_median": st.median(det) if det else None,
                     "billed_completion_tokens_median": st.median([(r.get("usage") or {}).get("completion_tokens") or 0 for r in rs]),
-                    "truncated": sum(1 for r in rs if r.get("finish_reason") == "length")}
+                    "truncated": sum(1 for r in rs if r.get("finish_reason") == "length"),
+                    "reasoning_chars_max": max(rlen)}
     flags = []
     for eff, v in row.items():
         if v["billed_reasoning_tokens_median"] and v["reasoning_chars_median"] == 0:
@@ -156,6 +157,22 @@ for f in sorted(raw_dir.glob("*.jsonl.gz")):
 crowd = crowd_levels(summary)
 for s in summary.values():
     s["flags"] += effort_flags(s["efforts"], crowd)
+# Reasoning cut short: the longest reasoning an endpoint ever returns, against the other endpoints' longest.
+longest = {k: max((v.get("reasoning_chars_max") or 0) for v in s["efforts"].values()) for k, s in summary.items()
+           if s["efforts"]}
+if len(longest) >= 4:
+    typical = st.median(longest.values())
+    trunc = {k: sum(v["truncated"] for v in summary[k]["efforts"].values()) for k in longest}
+    typical_trunc = st.median(trunc.values())
+    for k, m in longest.items():
+        summary[k]["reasoning_chars_longest"] = m
+        # where the others' long runs are themselves cut by the token limit, "early" shows as rarely hitting it
+        capped = typical_trunc >= 5 and trunc[k] <= 0.25 * typical_trunc and m < 0.8 * typical
+        if 0 < m < 0.5 * typical or capped:
+            n_trunc = sum(v["truncated"] for v in summary[k]["efforts"].values())
+            summary[k]["flags"].append(f"stops reasoning early: its longest reasoning is {m:,} characters where the "
+                                       f"other endpoints' runs to {typical:,.0f}; {n_trunc} of its replies hit the token "
+                                       f"limit, {typical_trunc:.0f} for a typical endpoint")
 dest = Path("results/reasoning") / f"{key}.json"
 dest.parent.mkdir(parents=True, exist_ok=True)
 dest.write_text(json.dumps({"model": a.model, "cases": len(CASES), "crowd_tokens": crowd, "endpoints": summary}, indent=1))

@@ -63,6 +63,15 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    of the same model bills (Qwen: 1,032-1,296 vs 2,375, i.e. the image arrives at roughly 1000 × 1000 instead of 1536
    × 1536) and read the small print their peers read (9 px codes: 17-42% vs 83-92%). The user pays less, but the
    model sees less, and nothing in the response says so. The other 75 vision endpoints see the full image.
+11. **Venice probably serves several models through DeepInfra.** On Gemma-4-26B, Gemma-4-31B, Qwen3.6-35B and MiniMax
+   M3, Venice's endpoint is the only one besides DeepInfra's that accepts top_k 999 but rejects 1000 (every other
+   provider accepts 1000 or caps far lower); on Qwen3.6 it bills exactly DeepInfra's downscaled image-token count
+   (1,032 where everyone else bills 2,375); on Gemma-4-26B it cuts reasoning at the same ~2,300 tokens as DeepInfra,
+   which no other endpoint does. Against: Venice accepts a seed of 2^64 that DeepInfra rejects, and wraps DeepInfra's
+   error messages in its own (both expected of a proxy that cleans requests). On Qwen3.5 and Qwen3.8 Venice behaves
+   unlike DeepInfra on all of these, so there it appears to serve the model itself. Indirect evidence, not proof;
+   it matters to anyone choosing Venice for its own privacy terms. Method: `experiments/api_fingerprint.py` (26
+   parameter-validation probes per endpoint; no other pair of providers in 12 models matched this way).
 
 ## Image inputs (7 vision models, 84 answering endpoints)
 
@@ -144,6 +153,15 @@ has one ill-posed case, "1/n" with n = 7.5, on which honest high-effort runs rea
 | gpt-oss-120b (24 answering) | 261 / 470 / 1,277 | SiliconFlow (486 / 470 / 458); Novita and Phala "low" (456, 536) |
 | gpt-oss-20b (9 answering) | 258 / 607 / 1,547 | SiliconFlow (551 / 660 / 660); Darkbloom "high" (598) |
 | Qwen3.8-27B (21 answering) | 465 / 534 / 531 | the model barely responds to the setting anywhere |
+| Qwen3.5-35B-A3B (7) | 4,053 / 4,053 / 3,664 | the model does not respond to the setting anywhere |
+| Gemma-4-26B (15) | 5,660 / 5,224 / 5,095 | the model does not respond to the setting anywhere |
+
+Reasoning cut short. DeepInfra and Venice end Gemma-4-26B's reasoning at about 2,200-2,550 tokens at every effort and
+then answer; on the other 13 endpoints the model reasons until the 6,000-token limit on a third of the problems (1-2
+truncated replies of 36 vs 7-18). Under that limit the two score higher (92-100% vs 50-75%; every miss elsewhere is
+a reply cut off before its answer), but they are not running the model's own reasoning length, and on harder
+problems a shortened budget may cost accuracy. On gpt-oss, SiliconFlow and Darkbloom's short reasoning shows the
+same way (`stops reasoning early` in `results/reasoning/`).
 
 ## Qwen3.5-35B-A3B (7 endpoints)
 
