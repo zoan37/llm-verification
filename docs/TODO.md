@@ -41,6 +41,10 @@ Open work, roughly in priority order. Each item says what it would establish.
 - [x] Honest baselines: AMD R9700 Vulkan on Windows (gpt-oss-20b, Qwen3.8), RTX 4090 CUDA on WSL2: all honest.
 - [x] Intel Arc Pro B70 on Linux (Vulkan, Mesa 26.2.5, llama.cpp b12020), gpt-oss-20b: honest.
 - [ ] AMD ROCm/HIP (needs the HIP SDK on Windows).
+- [ ] gpt-oss-20b on llama.cpp is numerically noisy even on one machine: token-by-token generation and a one-pass
+      replay of the same tokens differ by ~0.66 nats (mean over the top 5) and swap the runner-up often, as much as two
+      different GPUs do. Likely MXFP4 activation quantization differing between the decode and prefill kernels; a
+      BF16 vLLM reference would tell kernel noise from a referee problem. Until then its honest noise sets its tier.
 - [ ] Cross-machine referee in the cooperative attack run (provider and referee were on one machine, so `wgap`
       noise is underestimated there).
 - [ ] A BF16 referee where possible (Qwen3.5/3.8 used Q8_0, which cannot separate FP8-class providers).

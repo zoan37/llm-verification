@@ -94,3 +94,22 @@ def test_steering_warning_from_excess_near_tie_flips():
     v = steer.verdict()
     assert v["warnings"] and v["status"] != "FAIL"  # a warning, never a failure on its own
     assert Ledger("x").verdict()["steering"] is None  # off unless a calibrated curve is given
+
+
+@pytest.mark.parametrize("spec", SPECS)
+def test_hidden_message_passes_exact_checks_and_reads_back(spec):
+    from llmverify.attacks import HiddenMessage, from_bits, read_hidden
+    writer = ToyLM(weights_seed=1)
+    prov = HiddenMessage(writer, Signer(), INFO, b"HI", budget=0.2)
+    rng = random.Random(3)
+    same, other = [[0, 0] for _ in range(16)], [[0, 0] for _ in range(16)]
+    for i in range(80):
+        prompt = [rng.randrange(1, 64) for _ in range(6)]
+        g = prov.generate(prompt, spec, 48, f"n{i}")
+        assert check_receipt(g.receipt, g.trace).ok  # the covert channel breaks no exact check
+        read_hidden(ToyLM(weights_seed=1), prompt, g.trace.tokens, spec, f"n{i}", 16, budget=0.2, votes=same)
+        read_hidden(REF, prompt, g.trace.tokens, spec, f"n{i}", 16, budget=0.2, votes=other)
+    assert prov.flipped > 0
+    assert all(z == 0 or o == 0 for z, o in same)  # same weights, same arithmetic: every vote agrees
+    assert from_bits([int(o > z) for z, o in same]) == b"HI"
+    assert from_bits([int(o > z) for z, o in other]) == b"HI"  # a reader on another machine, by majority

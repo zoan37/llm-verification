@@ -151,6 +151,22 @@ lie slightly in its committed logprobs to keep the rule check passing.
   0.03; at δ = 0.01 it is indistinguishable but has only ~3 positions per 1,000 tokens to use. In practice the
   undetectable channel is the closest ~1% of ties, which honest machines cannot call either. (The closest-tie
   buckets hold 14-44 positions, so their rates are rough.)
+- A working covert channel (`attacks.HiddenMessage`, `experiments/hidden_message.py`, 2026-10-31). The provider
+  writes one bit of a message at every near-tie within δ (winner for 0, runner-up for 1, XOR a public pad; the
+  bit index is a hash of the position, so a reader who misjudges a near-tie loses a vote, not the sync), lowering
+  the winner's committed logprob rather than raising the runner-up's (raising can push the committed probabilities
+  past a total of 1, which the receipt check rejects; the toy test caught this). `read_hidden` recovers the message
+  from prompt and reply. gpt-oss-20b on an RTX 4090, 48 replies x 384 tokens per budget, referee a DGX Spark:
+  every receipt passed every exact check; capacity 2 / 12 / 25 / 47 bits per 1,000 tokens at δ 0.01 / 0.05 / 0.1 /
+  0.2; a reader replaying token by token on the writer's GPU got 0 wrong votes at every budget and read "HELLO"
+  after ~7,000 tokens at δ 0.2, while a reader on the Spark got 17-37% of votes wrong (above δ 0.01) and never read it. The
+  flip test never fired (z ≤ 3.4 over ~7,000 tokens): on gpt-oss-20b in llama.cpp honest machines disagree even
+  far from ties (a different token at 2.4% of positions where the referee leads by > 0.5 nats; token-by-token
+  generation and a one-pass replay differ as much as two GPUs), so the channel is invisible but readable only on
+  the provider's exact setup. Qwen3.8-27B (written and read on the Spark, token-by-token vs one-pass): honest flips
+  0.4% at 0.2-0.5 nats and none beyond; at δ 0.1 the flip test reached z 1.7 after 2,200 tokens, i.e. a flag at
+  roughly 12,000. The structural fix is deterministic, batch-invariant inference (honest machines then agree
+  exactly and one rigged flip is proof).
 - What it buys an attacker: picking among outputs M itself nearly produced. It cannot make M say something M
   gives low probability, so it cannot inject a malicious tool call; it can bias style or embed a covert watermark.
 - Mitigations: tighter tolerance on `wgap` (the lie is visible in committed logprobs), per-provider evidence

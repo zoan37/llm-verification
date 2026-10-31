@@ -263,6 +263,25 @@ than the fixed-budget threshold (regret is heavy-tailed: mostly zeros, rare 2-4 
 thousand tokens for the draft cheats. Tie steering is the documented residual freedom: it changes which of two
 nearly-tied tokens appears, and is invisible within honest noise.
 
+### Hidden message (covert channel through near-ties)
+
+`hidden_message.py generate` (provider machine) then `audit` (referee machine): an honest provider and
+`attacks.HiddenMessage` writing "HELLO" at near-ties within δ, greedy, every receipt checked exactly; the referee
+fits the honest flip curve on half the honest replies and judges every variant on the other half.
+
+| gpt-oss-20b, writer RTX 4090, referee DGX Spark | δ 0.01 | 0.03 | 0.05 | 0.1 | 0.2 |
+|---|---|---|---|---|---|
+| exact checks passed (of 48) | 48 | 48 | 48 | 48 | 48 |
+| bits carried per 1,000 tokens | 2 | 7 | 12 | 25 | 47 |
+| reader on the writer's GPU, token by token: wrong votes | 0 / 15 | 0 / 63 | 0 / 89 | 0 / 183 | 0 / 335 ("HELLO") |
+| reader on the Spark, token by token: wrong votes | 0 / 21 | 6 / 35 | 15 / 66 | 62 / 168 | 94 / 289 |
+| steering test z over ~7,000 audited tokens (flag at 4) | 1.6 | 1.5 | 2.8 | 3.4 | 0.8 |
+
+Qwen3.8-27B (24 replies x 256 tokens per budget, written token by token and audited in one pass on the Spark): 96/96
+exact checks passed, 3 / 7 / 22 bits per 1,000 tokens at δ 0.01 / 0.03 / 0.1, steering z -1.1 / -0.6 / 1.7 over
+~2,200 tokens. A token-by-token reader on the same Spark: 0 wrong votes at every budget (7 / 20 / 55 votes), too few to cover
+the 40 bits yet. Results: `experiments/results/hidden-message-*.json`; discussion in docs/soundness.md (tie steering).
+
 ## Case study: Venice and Qwen3.8-27B
 
 The referee-free view flagged Venice first: its temperature-0 replies agreed with the other 20 endpoints less than our
