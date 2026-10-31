@@ -1,0 +1,549 @@
+{
+ "model": "deepseek/deepseek-v4.1-flash",
+ "sizes": [
+  36,
+  24,
+  16,
+  12,
+  9,
+  7
+ ],
+ "endpoints": {
+  "alibaba": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.6666666666666666,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "atlas-cloud__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.9166666666666666,
+    "9": 0.5,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "baidu__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "baseten": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 0.9166666666666666,
+    "12": 0.8333333333333334,
+    "9": 0.5833333333333334,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "baseten__fast": {
+   "error": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"deepseek/deepseek-v4.1-flash is temporarily rate-limited upstream. Please retry shor"
+  },
+  "baseten__us": {
+   "images": 1,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.5,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "cohere": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "coreweave__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "crusoe__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.9166666666666666,
+    "9": 0.5833333333333334,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "decart__fp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "deepinfra__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "deepinfra__fp8__flex": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "deepinfra__fp8__priority": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "digitalocean": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "fireworks": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "fireworks__spot": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "fireworks__us": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "gmicloud__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.4166666666666667,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "google-vertex__global": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 0.9166666666666666,
+    "16": 0.4166666666666667,
+    "12": 0.0,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": 24,
+   "prompt_tokens_median": 443,
+   "flags": [
+    "bills 443 prompt tokens for the image where its peers bill 1055 (image downscaled?)",
+    "reads 0% of the 9 px codes where its peers read 75% (smallest it reads: 24 px)"
+   ]
+  },
+  "inference-net__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "inference-net__us": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "makora__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "mancer__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 0.9166666666666666,
+    "12": 0.8333333333333334,
+    "9": 0.5833333333333334,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "modal": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "morph__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.9166666666666666,
+    "9": 0.5833333333333334,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "nebius__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "novita__fp8": {
+   "images": 2,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.875,
+    "9": 0.5,
+    "7": 0.125
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 1081.0,
+   "flags": []
+  },
+  "open-inference__fp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 0.4166666666666667,
+    "24": 0.0,
+    "16": 0.0,
+    "12": 0.0,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": null,
+   "prompt_tokens_median": 245,
+   "flags": [
+    "bills 245 prompt tokens for the image where its peers bill 1055 (image downscaled?)",
+    "reads 0% of the 9 px codes where its peers read 75% (smallest it reads: none px)"
+   ]
+  },
+  "parasail__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "phala": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 0.9166666666666666,
+    "16": 0.9166666666666666,
+    "12": 0.75,
+    "9": 0.5833333333333334,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "primeintellect": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "reka": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 0.9166666666666666,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "relace__fp4": {
+   "error": "{\"error\":{\"message\":\"No endpoints found for deepseek/deepseek-v4.1-flash. Every candidate endpoint was removed during routing: Filter by Regional Surcharge remo"
+  },
+  "sail-research__fp4": {
+   "error": "{\"error\":{\"message\":\"No endpoints found for deepseek/deepseek-v4.1-flash. Every candidate endpoint was removed during routing: Filter by Regional Surcharge remo"
+  },
+  "sail-research__fp4__us": {
+   "error": "{\"error\":{\"message\":\"No endpoints found for deepseek/deepseek-v4.1-flash. Every candidate endpoint was removed during routing: Filter by Regional Surcharge remo"
+  },
+  "siliconflow__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.5,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "streamlake__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.9166666666666666,
+    "9": 0.5,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "together": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.6666666666666666,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 1057,
+   "flags": []
+  },
+  "venice__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 0.9166666666666666,
+    "12": 0.8333333333333334,
+    "9": 0.5833333333333334,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "wafer__mxfp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.75,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  },
+  "wafer__us": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.8333333333333334,
+    "9": 0.6666666666666666,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 1055,
+   "flags": []
+  }
+ }
+}

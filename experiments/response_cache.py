@@ -32,6 +32,7 @@ ap.add_argument("--model", required=True)
 ap.add_argument("--budget-usd", type=float, required=True)
 ap.add_argument("--reasoning-effort")
 ap.add_argument("--workers", type=int, default=10)
+ap.add_argument("--max-tokens", type=int, default=400, help="raise for models whose reasoning cannot be disabled")
 a = ap.parse_args()
 key = a.model.replace("/", "__")
 raw_dir = Path("data/raw-cache") / key
@@ -59,8 +60,8 @@ def run(e):
     out = raw_dir / f"{tag.replace('/', '__')}.json.gz"
     if out.exists():
         return
-    rec = {"repeat": [[ask(tag, p, 1.0, 400) for _ in range(3)] for p in REPEAT],
-           "pairs": [[ask(tag, p1, 0, 400), ask(tag, p2, 0, 400)] for p1, p2, _, _ in PAIRS]}
+    rec = {"repeat": [[ask(tag, p, 1.0, a.max_tokens) for _ in range(3)] for p in REPEAT],
+           "pairs": [[ask(tag, p1, 0, a.max_tokens), ask(tag, p2, 0, a.max_tokens)] for p1, p2, _, _ in PAIRS]}
     with gzip.open(out, "wt") as f:
         json.dump(rec, f)
 

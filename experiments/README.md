@@ -62,7 +62,10 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    IonStream and Tenstorrent (Qwen3.8) and Novita (Gemma-4-31B) bill 40-60% of the image tokens every other endpoint
    of the same model bills (Qwen: 1,032-1,296 vs 2,375, i.e. the image arrives at roughly 1000 × 1000 instead of 1536
    × 1536) and read the small print their peers read (9 px codes: 17-42% vs 83-92%). The user pays less, but the
-   model sees less, and nothing in the response says so. The other 75 vision endpoints see the full image.
+   model sees less, and nothing in the response says so. Capping image size is a common serving setting (about one
+   megapixel here, a value Qwen's own documentation offers as a cost/quality balance), so this is a disclosure gap
+   rather than misconduct; it matters for screenshots, documents and small text. Five more on DeepSeek V4.1 Flash and GLM-5.3-flash, including Open-Inference, which bills under 250 tokens
+   per image and invents what it cannot read.
 11. **Venice probably serves several models through DeepInfra.** On Gemma-4-26B, Gemma-4-31B, Qwen3.6-35B and MiniMax
    M3, Venice's endpoint is the only one besides DeepInfra's that accepts top_k 999 but rejects 1000 (every other
    provider accepts 1000 or caps far lower); on Qwen3.6 it bills exactly DeepInfra's downscaled image-token count
@@ -76,7 +79,7 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    Venice discloses. What the listing does not show is which models leave Venice, and to whom. Method: `experiments/api_fingerprint.py` (26
    parameter-validation probes per endpoint; no other pair of providers in 12 models matched this way).
 
-## Image inputs (7 vision models, 84 answering endpoints)
+## Image inputs (10 vision models)
 
 `experiments/image_fidelity.py` + `prompts/vision_cases.py`: three 1536 × 1536 pages, four random 5-character codes
 per size band (36, 24, 16, 12, 9, 7 px), temperature 0, "read every code". Share of codes read per band and the
@@ -92,6 +95,9 @@ so a resized image shows directly in the bill; Gemma bills a near-fixed count, s
 | Gemma-4-31B | 15 | 328 | Novita (193; 16 px codes 50%, 12 px 0% vs 100%) |
 | Gemma-4-26B-A4B | 11 | 328 | none |
 | Nemotron-3.5-Super-VL | 10 | 2,379 | none |
+| DeepSeek V4.1 Flash | 35 | 1,055 | Google Vertex (443), Open-Inference (245; reads almost nothing, then invents codes) |
+| GLM-5.3-flash | 34 | 3,096 | PrimeIntellect (1,095), Tenstorrent (1,095), Open-Inference (171; invents codes) |
+| Kimi K3 | 23 | 3,177 | none (Modal returns no text: it reasons through the whole reply budget although reasoning was turned off) |
 
 DeepInfra resizes on three Qwen models but not on Qwen3.8 (2,375), so it is a per-deployment setting.
 

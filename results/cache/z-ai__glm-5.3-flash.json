@@ -1,0 +1,292 @@
+{
+ "model": "z-ai/glm-5.3-flash",
+ "endpoints": {
+  "atlas-cloud__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "baseten__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "baseten__fp8__us": {
+   "identical_sampled": 0,
+   "sampled_prompts": 0,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "cohere": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "coreweave__nvfp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "crusoe__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "darkbloom__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "deepinfra__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "digitalocean": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "fireworks": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "fireworks__us": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "friendli": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "gmicloud__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "inceptron__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "inference-net__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "inference-net__us": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "makora": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "mistral": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "modal__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "morph__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "near-ai__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "nebius__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "nextbit__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "novita__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "open-inference__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "parasail__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "particle-ai__nvfp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "phala__nvfp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "primeintellect": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "reka": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "relace__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "sail-research__fp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 2,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "sail-research__us": {
+   "identical_sampled": 0,
+   "sampled_prompts": 2,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "siliconflow__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "streamlake__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "tenstorrent__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "together": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "venice": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "wafer__nvfp4": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "wafer__us": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  },
+  "z-ai__fp8": {
+   "identical_sampled": 0,
+   "sampled_prompts": 4,
+   "stale": 0,
+   "wrong_other": 0,
+   "flags": []
+  }
+ }
+}

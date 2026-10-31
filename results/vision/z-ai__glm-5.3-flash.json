@@ -1,0 +1,552 @@
+{
+ "model": "z-ai/glm-5.3-flash",
+ "sizes": [
+  36,
+  24,
+  16,
+  12,
+  9,
+  7
+ ],
+ "endpoints": {
+  "atlas-cloud__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.6666666666666666,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "baseten__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3097,
+   "flags": []
+  },
+  "baseten__fp8__us": {
+   "error": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"z-ai/glm-5.3-flash is temporarily rate-limited upstream. Please retry shortly, or ad"
+  },
+  "cohere": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.16666666666666666
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "coreweave__nvfp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "crusoe__fp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "darkbloom__fp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "deepinfra__fp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "digitalocean": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "fireworks": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "fireworks__us": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "friendli": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.25
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "gmicloud__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.25
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "inceptron__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "inference-net__fp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "inference-net__us": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.9166666666666666,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "makora": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "mistral": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "modal__fp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "morph__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.75,
+    "7": 0.16666666666666666
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 2007,
+   "flags": []
+  },
+  "near-ai__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "nebius__fp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "nextbit__fp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "novita__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.9166666666666666,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "open-inference__fp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 0.16666666666666666,
+    "24": 0.0,
+    "16": 0.0,
+    "12": 0.0,
+    "9": 0.0,
+    "7": 0.0
+   },
+   "smallest_read": null,
+   "prompt_tokens_median": 171,
+   "flags": [
+    "bills 171 prompt tokens for the image where its peers bill 3096 (image downscaled?)",
+    "reads 0% of the 9 px codes where its peers read 100% (smallest it reads: none px)"
+   ]
+  },
+  "parasail__fp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "particle-ai__nvfp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "phala__nvfp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.8333333333333334,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "primeintellect": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 0.5833333333333334,
+    "9": 0.08333333333333333,
+    "7": 0.0
+   },
+   "smallest_read": 16,
+   "prompt_tokens_median": 1095,
+   "flags": [
+    "bills 1095 prompt tokens for the image where its peers bill 3096 (image downscaled?)",
+    "reads 8% of the 9 px codes where its peers read 100% (smallest it reads: 16 px)"
+   ]
+  },
+  "reka": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.16666666666666666
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "relace__fp4": {
+   "error": "{\"error\":{\"message\":\"No endpoints found for z-ai/glm-5.3-flash. Every candidate endpoint was removed during routing: Filter by Regional Surcharge removed firewo"
+  },
+  "sail-research__fp4": {
+   "error": "{\"error\":{\"message\":\"No endpoints found for z-ai/glm-5.3-flash. Every candidate endpoint was removed during routing: Filter by Regional Surcharge removed firewo"
+  },
+  "sail-research__us": {
+   "error": "{\"error\":{\"message\":\"No endpoints found for z-ai/glm-5.3-flash. Every candidate endpoint was removed during routing: Filter by Regional Surcharge removed firewo"
+  },
+  "siliconflow__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.9166666666666666,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "streamlake__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.6666666666666666,
+    "7": 0.0
+   },
+   "smallest_read": 12,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "tenstorrent__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 0.9166666666666666,
+    "12": 0.5,
+    "9": 0.16666666666666666,
+    "7": 0.0
+   },
+   "smallest_read": 16,
+   "prompt_tokens_median": 1095,
+   "flags": [
+    "bills 1095 prompt tokens for the image where its peers bill 3096 (image downscaled?)",
+    "reads 17% of the 9 px codes where its peers read 100% (smallest it reads: 16 px)"
+   ]
+  },
+  "together": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "venice": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.25
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "wafer__nvfp4": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.08333333333333333
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "wafer__us": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 1.0,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  },
+  "z-ai__fp8": {
+   "images": 3,
+   "band_accuracy": {
+    "36": 1.0,
+    "24": 1.0,
+    "16": 1.0,
+    "12": 1.0,
+    "9": 0.9166666666666666,
+    "7": 0.0
+   },
+   "smallest_read": 9,
+   "prompt_tokens_median": 3096,
+   "flags": []
+  }
+ }
+}

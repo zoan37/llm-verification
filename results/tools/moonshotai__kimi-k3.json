@@ -1,0 +1,836 @@
+{
+ "model": "moonshotai/kimi-k3",
+ "cases": 16,
+ "repeats": 3,
+ "endpoints": {
+  "akashml__fp4": {
+   "pass_rate": 1.0,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 1.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": []
+  },
+  "alibaba": {
+   "pass_rate": 0.8958333333333334,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 0.6666666666666666,
+    "convert": 0.6666666666666666,
+    "convert_decimal": 0.6666666666666666,
+    "event_full": 1.0,
+    "event_12h": 0.6666666666666666,
+    "search_nested": 1.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 0.6666666666666666,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 5,
+   "top_problems": [
+    [
+     "answered in text instead of calling a tool",
+     5
+    ]
+   ]
+  },
+  "amazon-bedrock__us-east-2": {
+   "pass_rate": 0.8333333333333334,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 0.3333333333333333,
+    "search_nested": 0.0,
+    "search_category": 0.6666666666666666,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 0.6666666666666666,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 0.6666666666666666
+   },
+   "inconsistent_cases": 4,
+   "top_problems": [
+    [
+     "answered in text instead of calling a tool",
+     6
+    ],
+    [
+     "filters.max_price",
+     2
+    ],
+    [
+     "filters.in_stock",
+     2
+    ],
+    [
+     "sort",
+     1
+    ]
+   ]
+  },
+  "baseten__fp8": {
+   "pass_rate": 1.0,
+   "replies": 33,
+   "errors": 15,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "search_nested": 1.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": []
+  },
+  "decart__mxfp4": {
+   "pass_rate": null,
+   "replies": 0,
+   "errors": 6,
+   "case_pass": {},
+   "inconsistent_cases": 0,
+   "top_problems": []
+  },
+  "deepinfra__mxfp4": {
+   "pass_rate": 0.9375,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 0.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": [
+    [
+     "filters.max_price",
+     3
+    ],
+    [
+     "filters.in_stock",
+     3
+    ]
+   ]
+  },
+  "digitalocean": {
+   "pass_rate": 0.8,
+   "replies": 45,
+   "errors": 3,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 0.6666666666666666,
+    "convert": 0.3333333333333333,
+    "convert_decimal": 0.6666666666666666,
+    "event_full": 1.0,
+    "event_12h": 0.3333333333333333,
+    "search_nested": 1.0,
+    "search_category": 0.6666666666666666,
+    "pick_weather": 0.6666666666666666,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 0.5
+   },
+   "inconsistent_cases": 7,
+   "top_problems": [
+    [
+     "answered in text instead of calling a tool",
+     7
+    ],
+    [
+     "answered in text instead of calling a tool (but the text contains a call-like JSON)",
+     2
+    ]
+   ]
+  },
+  "fireworks": {
+   "pass_rate": 0.9583333333333334,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 0.3333333333333333,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 1.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 1,
+   "top_problems": [
+    [
+     "answered in text instead of calling a tool",
+     2
+    ]
+   ]
+  },
+  "fireworks__fast": {
+   "pass_rate": 0.9375,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 0.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 1.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": [
+    [
+     "answered in text instead of calling a tool",
+     3
+    ]
+   ]
+  },
+  "fireworks__spot": {
+   "pass_rate": null,
+   "replies": 0,
+   "errors": 6,
+   "case_pass": {},
+   "inconsistent_cases": 0,
+   "top_problems": []
+  },
+  "fireworks__us": {
+   "pass_rate": 1.0,
+   "replies": 43,
+   "errors": 5,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 1.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": []
+  },
+  "inference-net__fast": {
+   "pass_rate": 0.9166666666666666,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 0.6666666666666666,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 0.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 1,
+   "top_problems": [
+    [
+     "filters.max_price",
+     3
+    ],
+    [
+     "filters.in_stock",
+     3
+    ],
+    [
+     "answered in text instead of calling a tool",
+     1
+    ]
+   ]
+  },
+  "inference-net__fp4": {
+   "pass_rate": 0.9375,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 0.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": [
+    [
+     "filters.max_price",
+     3
+    ],
+    [
+     "filters.in_stock",
+     3
+    ]
+   ]
+  },
+  "inference-net__us": {
+   "pass_rate": 0.9375,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 0.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": [
+    [
+     "filters.max_price",
+     3
+    ],
+    [
+     "filters.in_stock",
+     3
+    ]
+   ]
+  },
+  "inference-net__us__fast": {
+   "pass_rate": 0.9375,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 0.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": [
+    [
+     "filters.max_price",
+     3
+    ],
+    [
+     "filters.in_stock",
+     3
+    ]
+   ]
+  },
+  "makora__fp4": {
+   "pass_rate": 0.9375,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 0.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": [
+    [
+     "filters.max_price",
+     3
+    ],
+    [
+     "filters.in_stock",
+     3
+    ],
+    [
+     "sort",
+     1
+    ]
+   ]
+  },
+  "modal__mxfp4": {
+   "pass_rate": 0.9791666666666666,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 1.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 0.6666666666666666,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 1,
+   "top_problems": [
+    [
+     "answered in text instead of calling a tool",
+     1
+    ]
+   ]
+  },
+  "moonshotai": {
+   "pass_rate": null,
+   "replies": 0,
+   "errors": 6,
+   "case_pass": {},
+   "inconsistent_cases": 0,
+   "top_problems": []
+  },
+  "morph__fp8": {
+   "pass_rate": 0.9361702127659575,
+   "replies": 47,
+   "errors": 1,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 0.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": [
+    [
+     "filters.max_price",
+     3
+    ],
+    [
+     "filters.in_stock",
+     3
+    ]
+   ]
+  },
+  "parasail__fp4": {
+   "pass_rate": 1.0,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 1.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": []
+  },
+  "pareto-alpha__us": {
+   "pass_rate": 1.0,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 1.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": []
+  },
+  "phala": {
+   "pass_rate": 0.8125,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 0.6666666666666666,
+    "weather_fahrenheit": 1.0,
+    "convert": 0.3333333333333333,
+    "convert_decimal": 0.3333333333333333,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 1.0,
+    "search_category": 0.3333333333333333,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 0.3333333333333333
+   },
+   "inconsistent_cases": 5,
+   "top_problems": [
+    [
+     "answered in text instead of calling a tool",
+     8
+    ],
+    [
+     "answered in text instead of calling a tool (but the text contains a call-like JSON)",
+     1
+    ]
+   ]
+  },
+  "relace__fp4": {
+   "pass_rate": 0.9375,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 0.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": [
+    [
+     "filters.max_price",
+     3
+    ],
+    [
+     "filters.in_stock",
+     3
+    ]
+   ]
+  },
+  "sail-research__fp4": {
+   "pass_rate": 0.9347826086956522,
+   "replies": 46,
+   "errors": 2,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 0.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": [
+    [
+     "filters.max_price",
+     3
+    ],
+    [
+     "filters.in_stock",
+     3
+    ]
+   ]
+  },
+  "together": {
+   "pass_rate": 1.0,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 1.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": []
+  },
+  "wafer": {
+   "pass_rate": 0.9375,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 0.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": [
+    [
+     "filters.max_price",
+     3
+    ],
+    [
+     "filters.in_stock",
+     3
+    ],
+    [
+     "sort",
+     1
+    ]
+   ]
+  },
+  "wafer__fast": {
+   "pass_rate": 0.9375,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 0.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": [
+    [
+     "filters.max_price",
+     3
+    ],
+    [
+     "filters.in_stock",
+     3
+    ],
+    [
+     "sort",
+     3
+    ]
+   ]
+  },
+  "wafer__us": {
+   "pass_rate": 0.9375,
+   "replies": 48,
+   "errors": 0,
+   "case_pass": {
+    "weather_simple": 1.0,
+    "weather_fahrenheit": 1.0,
+    "convert": 1.0,
+    "convert_decimal": 1.0,
+    "event_full": 1.0,
+    "event_12h": 1.0,
+    "search_nested": 0.0,
+    "search_category": 1.0,
+    "pick_weather": 1.0,
+    "pick_convert": 1.0,
+    "pick_email": 1.0,
+    "pick_sql": 1.0,
+    "no_call_math": 1.0,
+    "no_call_chat": 1.0,
+    "no_call_fact": 1.0,
+    "unicode_city": 1.0
+   },
+   "inconsistent_cases": 0,
+   "top_problems": [
+    [
+     "filters.max_price",
+     3
+    ],
+    [
+     "filters.in_stock",
+     3
+    ],
+    [
+     "sort",
+     3
+    ]
+   ]
+  }
+ }
+}

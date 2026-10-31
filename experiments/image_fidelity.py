@@ -30,6 +30,8 @@ ap.add_argument("--model", required=True)
 ap.add_argument("--images", type=int, default=3)
 ap.add_argument("--budget-usd", type=float, required=True)
 ap.add_argument("--workers", type=int, default=10)
+ap.add_argument("--reasoning-effort", help="for models whose reasoning cannot be disabled")
+ap.add_argument("--max-tokens", type=int, default=300, help="raise for models whose reasoning cannot be disabled")
 a = ap.parse_args()
 key = a.model.replace("/", "__")
 raw_dir = Path("data/raw-vision") / key
@@ -45,11 +47,13 @@ def run(e):
         return
     recs = []
     for i, (png, _) in enumerate(images):
-        body = {"model": a.model, "temperature": 0, "max_tokens": 300,
+        body = {"model": a.model, "temperature": 0, "max_tokens": a.max_tokens,
                 "messages": [{"role": "user", "content": [{"type": "text", "text": vc.PROMPT},
                                                           {"type": "image_url", "image_url": {"url": vc.data_url(png)}}]}],
                 "provider": {"order": [tag], "allow_fallbacks": False}, "usage": {"include": True}}
-        if "reasoning" in (e.get("supported_parameters") or []):
+        if a.reasoning_effort:
+            body["reasoning"] = {"effort": a.reasoning_effort}
+        elif "reasoning" in (e.get("supported_parameters") or []):
             body["reasoning"] = {"enabled": False}
         r = openrouter.call("/chat/completions", body, timeout=180)
         if "error" in r and r["error"]["status"] == 429:
@@ -75,9 +79,11 @@ print(f"spent ${openrouter.usage_usd() - start:.4f}")
 summary = {}
 for f in sorted(raw_dir.glob("*.jsonl.gz")):
     recs = [json.loads(x) for x in gzip.open(f, "rt")]
-    ok = [r for r in recs if "error" not in r]
+    ok = [r for r in recs if "error" not in r and (r.get("content") or "").strip()]
     if not ok:
-        summary[f.name[:-len(".jsonl.gz")]] = {"error": str(recs[0]["error"].get("body"))[:160] if recs else "none"}
+        # an empty reply (e.g. reasoning that used up max_tokens) says nothing about the image
+        why = str(recs[0]["error"].get("body"))[:160] if recs and "error" in recs[0] else "no text in any reply"
+        summary[f.name[:-len(".jsonl.gz")]] = {"error": why}
         continue
     per = [vc.grade(images[r["image"]][1], r["content"]) for r in ok]
     bands = {s: sum(p[s] for p in per) / len(per) for s in vc.SIZES}

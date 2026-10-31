@@ -30,6 +30,7 @@ ap.add_argument("--repeats", type=int, default=3)
 ap.add_argument("--budget-usd", type=float, required=True)
 ap.add_argument("--reasoning-effort", help="for always-reasoning models")
 ap.add_argument("--workers", type=int, default=8)
+ap.add_argument("--max-tokens", type=int, default=400, help="raise for models whose reasoning cannot be disabled")
 a = ap.parse_args()
 
 key = a.model.replace("/", "__")
@@ -48,7 +49,7 @@ def run(e):
     for case in tc.CASES:
         for rep in range(a.repeats):
             body = {"model": a.model, "messages": [{"role": "user", "content": case["user"]}], "tools": case["tools"],
-                    "temperature": 0, "max_tokens": 400, "provider": {"order": [tag], "allow_fallbacks": False},
+                    "temperature": 0, "max_tokens": a.max_tokens, "provider": {"order": [tag], "allow_fallbacks": False},
                     "usage": {"include": True},
                     "reasoning": {"effort": a.reasoning_effort} if a.reasoning_effort else {"enabled": False}}
             t0 = time.time()

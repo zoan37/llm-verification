@@ -76,20 +76,29 @@ rows = []
 for tf in sorted((root / "results" / "tools").glob("*.json")):
     t = json.loads(tf.read_text())
     eps = t["endpoints"]
-    usable = {k: v for k, v in eps.items() if v["pass_rate"] is not None}
-    perfect = sum(1 for v in usable.values() if v["pass_rate"] == 1.0)
-    issues = [f"<b>{k.split('__')[0]}</b> ({v['pass_rate']:.0%}): {NOTES.get((t['model'], k), ', '.join(p for p, _ in v['top_problems'][:2]))}"
-              for k, v in sorted(usable.items(), key=lambda kv: kv[1]['pass_rate']) if v["pass_rate"] < 1.0]
-    rows.append(f"<tr><td>{t['model']}</td><td class='num'>{len(usable)}</td><td class='num'>{perfect}</td>"
-                f"<td>{'<br>'.join(issues) or '<span class=sub>none</span>'}</td></tr>")
+    usable = {k: v for k, v in eps.items() if v["pass_rate"] is not None and v["replies"] >= 24}
+    if not usable:
+        continue
+    rates = sorted(v["pass_rate"] for v in usable.values())
+    typical = rates[len(rates) // 2]
+    # cases most endpoints miss are the model's own behaviour, not a provider's
+    cases = sorted({c for v in usable.values() for c in v["case_pass"]})
+    model_misses = [c for c in cases if sorted(v["case_pass"].get(c, 1.0) for v in usable.values())[len(usable) // 2] < 1.0]
+    worse = [f"<b>{k.split('__')[0]}</b> ({v['pass_rate']:.0%}): {NOTES.get((t['model'], k), ', '.join(p for p, _ in v['top_problems'][:2]))}"
+             for k, v in sorted(usable.items(), key=lambda kv: kv[1]['pass_rate'])
+             if v["pass_rate"] <= typical - 0.08 or (t["model"], k) in NOTES]
+    rows.append(f"<tr><td>{t['model']}</td><td class='num'>{len(usable)}</td><td class='num'>{typical:.0%}</td>"
+                f"<td>{', '.join(model_misses) or '<span class=sub>none</span>'}</td>"
+                f"<td>{'<br>'.join(worse) or '<span class=sub>none</span>'}</td></tr>")
 tools_html = f"""<section class="coop" aria-label="Tool calling">
     <h2>Tool calling</h2>
     <p class="lede" style="font-size:14px;max-width:80ch">The same 16 tool-calling cases, three times each at temperature 0,
       on every endpoint that advertises tools: the call must name the right function with arguments that parse as JSON,
       fit the schema and carry the right values, and no call may be made when none is needed. Graded exactly, no
-      referee needed.</p>
+      referee needed. A case that most endpoints of a model miss is the model's own behaviour; an endpoint is listed
+      when it passes at least 8 points less often than its peers.</p>
     <div class="ledger"><table class="small">
-      <thead><tr><th>Model</th><th>Endpoints</th><th>All checks passed</th><th>Problems</th></tr></thead>
+      <thead><tr><th>Model</th><th>Endpoints</th><th>Typical pass rate</th><th>Cases the model itself misses</th><th>Endpoints clearly worse than their peers</th></tr></thead>
       <tbody>{''.join(rows)}</tbody></table></div>
   </section>
 """ if rows else ""
@@ -193,7 +202,10 @@ vision_html = f"""<section class="coop" aria-label="Image inputs">
     <p class="lede" style="font-size:14px;max-width:80ch">Three 1536 × 1536 pages of random codes printed from 36 px
       down to 7 px, sent to every endpoint of each vision model at temperature 0: which sizes can it still read, and
       how many prompt tokens does it bill for the image? An endpoint that silently shrinks images loses the small
-      print its peers read, and on models that bill image tokens by area (Qwen) it bills fewer tokens.</p>
+      print its peers read, and on models that bill image tokens by area (Qwen) it bills fewer tokens.
+      Capping image size is a common, usually reasonable cost setting (and the user is billed less); the issue is that
+      listings do not say so, and for screenshots, documents or small text the capped endpoints read far less. The
+      most extreme cases (a few hundred tokens) read almost nothing and invent the rest.</p>
     <div class="ledger"><table class="small">
       <thead><tr><th>Model</th><th>Endpoints</th><th>Median prompt tokens</th><th>Problems</th></tr></thead>
       <tbody>{''.join(vision_rows)}</tbody></table></div>
