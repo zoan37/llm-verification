@@ -1,0 +1,103 @@
+diff --git a/tools/server/server-context.cpp b/tools/server/server-context.cpp
+index 4655b51..0cdc833 100644
+--- a/tools/server/server-context.cpp
++++ b/tools/server/server-context.cpp
+@@ -1732,6 +1732,11 @@ private:
+     }
+ 
+     bool launch_slot_with_task(server_slot & slot, server_task && task) {
++        if (task.params.verify.enabled && slot.can_speculate()) {
++            send_error(task, "llmverify: not supported with speculative decoding", ERROR_TYPE_NOT_SUPPORTED);
++            return false;
++        }
++
+         // process per-request lora adapters
+         if (!task.params.lora.empty()) {
+             auto task_loras = construct_lora_list(task.params.lora);
+@@ -1983,6 +1988,17 @@ private:
+         return slot.has_next_token; // continue
+     }
+ 
++    // The rule's choice from the same top-20 that populate_token_probs reports (pre-sampling), as committed: the
++    // reported logprob is logarithm(p) of the float softmax, rounded to 1e-4 by the client and by the rule alike.
++    static llama_token llmverify_choose(llama_context * ctx, int idx, const llmverify::verify_params & v, int step) {
++        const std::vector<llama_token_data> cur = get_token_probabilities(ctx, idx, llmverify::COMMIT_K);
++        std::vector<std::pair<int, double>> raw;
++        for (size_t i = 0; i < std::min(cur.size(), (size_t) llmverify::COMMIT_K); i++) {
++            raw.emplace_back(cur[i].id, (double) completion_token_output::logarithm(cur[i].p));
++        }
++        return llmverify::rule_choose(llmverify::round_top(raw), v.spec, v.key, step);
++    }
++
+     void populate_token_probs(const server_slot & slot, completion_token_output & result, bool post_sampling, bool special, int idx) const {
+         const size_t n_probs_request = slot.task->params.sampling.n_probs;
+ 
+@@ -3798,7 +3814,9 @@ private:
+             llama_token id;
+             {
+                 scoped_timer timer(t_sampl, n_sampl);
+-                id = common_sampler_sample(slot.smpl.get(), slot.ctx_tgt, tok_idx);
++                const auto & verify = slot.task->params.verify;
++                id = verify.enabled ? llmverify_choose(slot.ctx_tgt, tok_idx, verify, slot.n_decoded)
++                                    : common_sampler_sample(slot.smpl.get(), slot.ctx_tgt, tok_idx);
+             }
+ 
+             slot.i_batch = -1;
+diff --git a/tools/server/server-schema.cpp b/tools/server/server-schema.cpp
+index 674d3ba..db68223 100644
+--- a/tools/server/server-schema.cpp
++++ b/tools/server/server-schema.cpp
+@@ -498,6 +498,12 @@ std::vector<std::unique_ptr<field>> make_llama_cmpl_schema(const common_params &
+             }
+         }));
+ 
++    add((new field_json("llmverify"))
++        ->set_desc("Generate with the llmverify public sampling rule: {key, seed, temperature, top_k, top_p, min_p}")
++        ->set_handler([&](field_eval_context & ctx, const json & data) {
++            ctx.params.verify = llmverify::parse_verify(data.at("llmverify"));
++        }));
++
+     add((new field_json("samplers"))
+         ->set_desc("The order in which samplers are applied. An array of sampler type names, or a single string of sampler chars")
+         ->set_handler([&](field_eval_context & ctx, const json & data) {
+@@ -558,6 +564,18 @@ task_params eval_llama_cmpl_schema(
+             params.sampling.dry_penalty_last_n = n_ctx_slot;
+         }
+ 
++        // llmverify: the rule must see the model's own distribution, and the committed top-20 is what it chooses from
++        if (params.verify.enabled) {
++            if (!common_grammar_value(params.sampling.grammar).empty()) {
++                throw std::invalid_argument("llmverify: grammar / response_format is not supported");
++            }
++            if (!params.sampling.logit_bias.empty() || params.sampling.ignore_eos) {
++                throw std::invalid_argument("llmverify: logit_bias / ignore_eos is not supported");
++            }
++            params.sampling.n_probs    = llmverify::COMMIT_K;
++            params.post_sampling_probs = false;
++        }
++
+         // if "reasoning_format" is not provided, its handler will not be called, we will need to handle it here
+         auto reasoning_format = params.chat_parser_params.reasoning_format;
+         params.chat_parser_params.reasoning_in_content = params.stream && (reasoning_format == COMMON_REASONING_FORMAT_DEEPSEEK_LEGACY);
+diff --git a/tools/server/server-task.h b/tools/server/server-task.h
+index 411d918..51c51f5 100644
+--- a/tools/server/server-task.h
++++ b/tools/server/server-task.h
+@@ -10,6 +10,7 @@
+ 
+ // TODO: prevent including the whole server-common.h as we only use server_tokens
+ #include "server-common.h"
++#include "server-llmverify.h"
+ 
+ using json = nlohmann::ordered_json;
+ 
+@@ -78,6 +79,9 @@ struct task_params {
+     struct common_params_sampling sampling;
+     struct common_params_speculative speculative;
+ 
++    // the llmverify public sampling rule instead of the sampler chain (server-llmverify.h)
++    llmverify::verify_params verify;
++
+     // response formatting
+     bool               verbose  = false;
+     task_response_type res_type = TASK_RESPONSE_TYPE_NONE;

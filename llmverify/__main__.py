@@ -37,6 +37,16 @@ def cmd_serve(a):
     from .provider import VerifiableProvider
     from .receipt import Signer
     from .server import App, serve
+    if a.upstream:  # a llama-server with the llmverify patch generates; this process checks and signs
+        from .upstream import UpstreamLlama, UpstreamProvider
+        up = UpstreamLlama(a.upstream, eos_ids=json.loads(a.eos) if a.eos else None, parallel=a.parallel)
+        signer = Signer.from_hex(Path(a.key).read_text().strip())
+        info = {"name": a.name, "weights_sha256": a.weights_sha256 or (_sha256_file(a.model) if a.model else None)}
+        app = App(UpstreamProvider(up, signer, info), up.meta["chat_template"],
+                  bos=up.meta["bos"] if up.meta.get("add_bos") else None, template_kwargs=json.loads(a.template_kwargs))
+        srv = serve(app, a.host, a.port)
+        print(f"serving {a.name} on http://{a.host}:{a.port} via {a.upstream} key {signer.public_hex}", flush=True)
+        srv.serve_forever()
     eng = LlamaEngine(shlex.split(a.engine) if a.engine else
                       [a.lv_engine, "-m", a.model, "-c", str(a.ctx * a.parallel), "-np", str(a.parallel)])
     signer = Signer.from_hex(Path(a.key).read_text().strip())
@@ -124,6 +134,8 @@ def main():
     s = sub.add_parser("serve")
     s.add_argument("--model", help="GGUF path (also hashed for the model claim)")
     s.add_argument("--engine", help="full lv-engine command line instead of --model")
+    s.add_argument("--upstream", help="base URL of a llama-server with the llmverify patch (docs/llama-server.md)")
+    s.add_argument("--eos", help="end-of-generation token ids as a JSON list (with --upstream; default: the server's eos)")
     s.add_argument("--lv-engine", default="engine/build/lv-engine")
     s.add_argument("--ctx", type=int, default=8192, help="context per request")
     s.add_argument("--parallel", type=int, default=8, help="requests generated together in one batch")

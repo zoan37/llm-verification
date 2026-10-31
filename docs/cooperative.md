@@ -6,6 +6,8 @@ Every reply then carries a signed receipt, and clients can check it exactly and 
 
 ## For providers
 
+Already running llama-server? See [llama-server.md](llama-server.md): a small patch and `llmverify serve --upstream`.
+
 ```bash
 python -m llmverify keygen --out provider.key            # keep it secret; publish the public key
 python -m llmverify serve --model Qwen3.5-35B-A3B-Q8_0.gguf --name qwen3.5-35b-a3b-q8 \
