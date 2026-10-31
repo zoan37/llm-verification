@@ -47,7 +47,7 @@ def cmd_serve(a):
         tok = LlamaEngine([a.lv_engine, "-m", a.model, "-vocab"])
     app = App(VerifiableProvider(eng, signer, info), meta["chat_template"],
               bos=meta["bos"] if meta.get("add_bos") else None, template_kwargs=json.loads(a.template_kwargs),
-              tokenizer=tok)
+              tokenizer=tok, continuous=not a.static_batches)
     srv = serve(app, a.host, a.port)
     print(f"serving {a.name} on http://{a.host}:{a.port} key {signer.public_hex}", flush=True)
     srv.serve_forever()
@@ -127,6 +127,8 @@ def main():
     s.add_argument("--lv-engine", default="engine/build/lv-engine")
     s.add_argument("--ctx", type=int, default=8192, help="context per request")
     s.add_argument("--parallel", type=int, default=8, help="requests generated together in one batch")
+    s.add_argument("--static-batches", action="store_true",
+                   help="collect-then-generate batches instead of continuous batching")
     s.add_argument("--name", required=True)
     s.add_argument("--weights-sha256")
     s.add_argument("--key", default="provider.key")

@@ -76,6 +76,14 @@ class LlamaEngine:
         """How many requests the engine's native cooperative generator takes per call (0: not available)."""
         return int(self.meta.get("n_seq_max", 1)) if "generate" in (self.meta.get("features") or []) else 0
 
+    def cb_add(self, requests: Sequence[dict], k: int = 20) -> List[int]:
+        """Continuous batching: prefill these requests now; returns their sequence slots."""
+        return self.call({"cmd": "cb_add", "requests": list(requests), "k": k})["slots"]
+
+    def cb_step(self, steps: int = 4, k: int = 20) -> dict:
+        """Advance every active sequence up to `steps` tokens: {"finished": [result + "slot"], "active", "free_cells"}."""
+        return self.call({"cmd": "cb_step", "steps": steps, "k": k})
+
     def generate(self, requests: Sequence[dict], k: int = 20) -> List[dict]:
         """Native cooperative generation (engine "generate"): each request {"context", "max_tokens", "key", "eos",
         "spec"}; each result {"tokens", "tops": [[[id, q], ...]], "finish_reason"} with q in units of 1e-4 nats."""

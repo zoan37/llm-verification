@@ -55,6 +55,31 @@ t0 = time.time()
 batch = prov.generate_batch(items)
 t_batch = time.time() - t0
 
+# continuous batching: each request alone, then staggered waves joining a running batch
+def run_cb(waves, steps=3):
+    """waves: lists of item indices; each wave is added after `steps` steps of the previous ones."""
+    out, inflight = {}, {}
+    for w in waves:
+        reqs = [prov.native_request(items[i]) for i in w]
+        for i, req, slot in zip(w, reqs, eng.cb_add(reqs)):
+            inflight[slot] = (i, req)
+        r = eng.cb_step(steps)
+        for res in r["finished"]:
+            i, req = inflight.pop(res["slot"])
+            out[i] = prov.finish_native(items[i], req, res)
+    while inflight:
+        for res in eng.cb_step(8)["finished"]:
+            i, req = inflight.pop(res["slot"])
+            out[i] = prov.finish_native(items[i], req, res)
+    return [out[i] for i in sorted(out)]
+
+
+cb_alone = []
+for i in range(len(items)):
+    cb_alone += run_cb([[i]])
+waves = [list(range(j, min(j + 5, len(items)))) for j in range(0, len(items), 5)]
+cb_waves = run_cb(waves)
+
 same = sum(1 for x, y in zip(py, one) if x.trace.tokens == y.trace.tokens and x.trace.tops == y.trace.tops)
 diff = [(i, next((s for s, (u, v) in enumerate(zip(x.trace.tops, y.trace.tops)) if u != v), None))
         for i, (x, y) in enumerate(zip(py, one)) if not (x.trace.tokens == y.trace.tokens and x.trace.tops == y.trace.tops)]
@@ -72,5 +97,11 @@ print(f"batched tokens identical to single: {batch_same}/{len(items)} (batching 
 print(f"time for {ntok} tokens: Python path {t_py:.1f}s ({ntok / t_py:.0f} tok/s), native single {t_one:.1f}s "
       f"({ntok / t_one:.0f} tok/s), native batched {t_batch:.1f}s "
       f"({sum(len(g.trace.tokens) for g in batch) / t_batch:.0f} tok/s)")
-if a.check and (same != len(items) or ok_one != len(items) or ok_batch != len(items)):
+cb_same = sum(1 for x, y in zip(py, cb_alone) if x.trace.tokens == y.trace.tokens and x.trace.tops == y.trace.tops)
+ok_cb = sum(1 for g, it in zip(cb_waves, items)
+            if check_receipt(g.receipt, g.trace, expected_spec=it[1], expected_nonce=it[3], eos_ids=eos).ok)
+print(f"continuous batching: alone bit-identical to Python {cb_same}/{len(items)}; staggered waves "
+      f"{[len(w) for w in waves]} receipt checks {ok_cb}/{len(items)}")
+if a.check and (same != len(items) or ok_one != len(items) or ok_batch != len(items) or cb_same != len(items)
+                or ok_cb != len(items)):
     sys.exit(1)

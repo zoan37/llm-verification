@@ -30,8 +30,9 @@ Open work, roughly in priority order. Each item says what it would establish.
       hash in the receipt. Next: span reveals (Merkle commitment) so a challenge need not fetch the whole trace.
 - [x] **Native generation** in lv-engine (`generate`, bit-identical to the Python rule) and a batching server:
       16 concurrent verified clients at 134 tok/s on gpt-oss-20b (Python path: 47).
-- [ ] Continuous batching (join a running batch) and parallel prefill; then the same rule as a llama-server /
-      vLLM sampler so existing deployments can turn it on.
+- [x] Continuous batching (lv-engine cb_add / cb_step; server default).
+- [ ] Parallel prefill and a GPU-side top-20; then the same rule as a llama-server / vLLM sampler so existing
+      deployments can turn it on.
 - [ ] Single-request vocabulary pass split over cores or on the GPU (the last ~5% on fast models).
 
 ## Calibration

@@ -38,17 +38,30 @@ class VerifiableProvider:
         out: List[Generation] = []
         for i in range(0, len(items), native):
             chunk = items[i:i + native]
-            reqs = [{"context": [int(x) for x in p], "max_tokens": int(n), "key": nonce or new_nonce(),
-                     "eos": sorted(self.eos), "spec": spec.to_dict()} for p, spec, n, nonce in chunk]
-            for (p, spec, n, _), req, res in zip(chunk, reqs, self.model.generate(reqs, COMMIT_K)):
-                tops = [[(int(t), int(q) / 10 ** LOGPROB_DECIMALS) for t, q in top] for top in res["tops"]]
-                trace = Trace(prompt_ids=[int(x) for x in p], tokens=[int(t) for t in res["tokens"]], tops=tops,
-                              finish_reason=res["finish_reason"])
-                text = (getattr(self, "text_model", None) or self.model).detokenize(
-                    [t for t in trace.tokens if t not in self.eos])
-                out.append(Generation(trace, make_receipt(self.signer, trace, self.model_info, spec, req["key"], n,
-                                                          text), text))
+            reqs = [self.native_request(it) for it in chunk]
+            for it, req, res in zip(chunk, reqs, self.model.generate(reqs, COMMIT_K)):
+                out.append(self.finish_native(it, req, res))
         return out
+
+    @property
+    def native_ok(self) -> bool:
+        """The engine runs the rule natively and this provider does not change generation (attack simulations)."""
+        return bool(getattr(self.model, "native_generate", 0)) and type(self).generate is VerifiableProvider.generate
+
+    def native_request(self, item: tuple) -> dict:
+        p, spec, n, nonce = item
+        return {"context": [int(x) for x in p], "max_tokens": int(n), "key": nonce or new_nonce(),
+                "eos": sorted(self.eos), "spec": spec.to_dict()}
+
+    def finish_native(self, item: tuple, req: dict, res: dict) -> Generation:
+        """Trace, text and signed receipt for one native result (q in units of 1e-4 nats, as committed)."""
+        p, spec, n, _ = item
+        tops = [[(int(t), int(q) / 10 ** LOGPROB_DECIMALS) for t, q in top] for top in res["tops"]]
+        trace = Trace(prompt_ids=[int(x) for x in p], tokens=[int(t) for t in res["tokens"]], tops=tops,
+                      finish_reason=res["finish_reason"])
+        text = (getattr(self, "text_model", None) or self.model).detokenize(
+            [t for t in trace.tokens if t not in self.eos])
+        return Generation(trace, make_receipt(self.signer, trace, self.model_info, spec, req["key"], n, text), text)
 
     def generate(self, prompt_ids: Sequence[int], spec: SamplingSpec, max_tokens: int,
                  client_nonce: Optional[str] = None) -> Generation:

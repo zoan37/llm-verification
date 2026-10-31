@@ -28,6 +28,9 @@
 //     per step the top-20 raw logprobs, quantized to integers q = round(lp * 1e4) (half to even) and ordered by
 //     (q descending, id ascending), then the public rule picks the token. Bit-identical to the Python path for one
 //     request; batched requests are honest generations too (batching changes arithmetic, not the rule). Needs -np.
+//   {"cmd": "cb_add", "requests": [...as generate...]} -> {"slots": [...]}     continuous batching: prefill now
+//   {"cmd": "cb_step", "steps": n} -> {"finished": [{result + "slot"}], "active": m, "free_cells": c}
+//     advance every active sequence up to n tokens; new requests may be added between calls.
 //
 // All logprobs are raw (temperature 1) log-softmax over the full vocabulary, computed in double precision from
 // the engine's float logits.
@@ -305,6 +308,7 @@ struct Engine {
     json score(const std::vector<llama_token> & context, const std::vector<llama_token> & reply, int k, double temp,
                bool stats) {
         if (context.empty() || reply.empty()) throw std::runtime_error("empty context or reply");
+        if (cb_active()) throw std::runtime_error("continuous batch in progress");
         std::vector<llama_token> seq(context);
         seq.insert(seq.end(), reply.begin(), reply.end());
         const int n = (int) seq.size(), first = (int) context.size() - 1;  // logits at i predict seq[i+1]
@@ -362,111 +366,182 @@ struct Engine {
         for (auto & th : pool) th.join();
     }
 
+    // ---- native cooperative generation ------------------------------------------------------------------------
+    struct Seq {
+        std::vector<llama_token> ctxt, tokens, eos;
+        std::vector<std::vector<Cand>> tops;
+        Spec sp; std::string key; int max_tokens = 0, pos = 0, row = -1; bool done = false; std::string finish = "length";
+        long long cells() const { return (long long) ctxt.size() + max_tokens; }
+    };
+
+    static Seq parse_request(const json & r, int k) {
+        Seq q;
+        q.ctxt = r.at("context").get<std::vector<llama_token>>();
+        q.max_tokens = r.at("max_tokens").get<int>();
+        q.key = r.at("key").get<std::string>();
+        q.eos = r.value("eos", std::vector<llama_token>{});
+        const json & sp = r.at("spec");
+        q.sp.greedy = sp.value("mode", std::string("greedy")) == "greedy";
+        q.sp.temperature = sp.value("temperature", 0.0);
+        q.sp.top_k = sp.value("top_k", 20);
+        q.sp.top_p = sp.value("top_p", 1.0);
+        q.sp.min_p = sp.value("min_p", 0.0);
+        q.sp.seed = sp.value("seed", 0LL);
+        if (q.ctxt.empty() || q.max_tokens < 1) throw std::runtime_error("empty context or max_tokens < 1");
+        if (q.sp.top_k < 1 || q.sp.top_k > k) throw std::runtime_error("top_k out of range");
+        return q;
+    }
+
+    static json result(const Seq & q) {
+        json tops = json::array();
+        for (size_t i = 0; i < q.tokens.size(); i++) {
+            json t = json::array();
+            for (auto & c : q.tops[i]) t.push_back({c.id, c.q});
+            tops.push_back(t);
+        }
+        return {{"tokens", q.tokens}, {"tops", tops}, {"finish_reason", q.finish}};
+    }
+
+    void decode_or_throw(llama_batch & batch) {
+        if (batch.n_tokens && llama_decode(ctx, batch) != 0) throw std::runtime_error("llama_decode failed");
+    }
+
+    static int batch_add(llama_batch & b, llama_token t, int pos, int seq, bool logits) {
+        const int j = b.n_tokens++;
+        b.token[j] = t; b.pos[j] = pos; b.n_seq_id[j] = 1; b.seq_id[j][0] = seq; b.logits[j] = logits;
+        return j;
+    }
+
+    // Feed sequence `slot`'s prompt (in chunks of n_batch) and read its first-step top before anything else decodes.
+    void prefill(Seq & q, int slot, int k) {
+        llama_batch batch = llama_batch_init(n_batch, 0, 1);
+        try {
+            for (size_t off = 0; off < q.ctxt.size(); off += n_batch) {
+                batch.n_tokens = 0;
+                const size_t end = std::min(q.ctxt.size(), off + (size_t) n_batch);
+                for (size_t i = off; i < end; i++) {
+                    const int j = batch_add(batch, q.ctxt[i], (int) i, slot, i + 1 == q.ctxt.size());
+                    if (i + 1 == q.ctxt.size()) q.row = j;
+                }
+                decode_or_throw(batch);
+            }
+            q.pos = (int) q.ctxt.size();
+            q.tops.push_back(round_top(topk_raw(llama_get_logits_ith(ctx, q.row), k)));
+        } catch (...) { llama_batch_free(batch); throw; }
+        llama_batch_free(batch);
+    }
+
+    // One step for the given sequences (seqs[i] lives in KV sequence slots[i]): each picks its token by the rule,
+    // the ones that continue are decoded together, and their next tops are read.
+    void advance(std::vector<Seq *> & seqs, const std::vector<int> & slots, int k) {
+        parallel_for((int) seqs.size(), [&](int i) {
+            Seq & q = *seqs[i];
+            const int tok = rule_choose(q.tops.back(), q.sp, q.key, (int) q.tokens.size());
+            q.tokens.push_back(tok);
+            if (std::find(q.eos.begin(), q.eos.end(), tok) != q.eos.end()) { q.done = true; q.finish = "stop"; }
+            else if ((int) q.tokens.size() >= q.max_tokens) q.done = true;
+        });
+        llama_batch batch = llama_batch_init(std::max(n_batch, (int) seqs.size()), 0, 1);
+        std::vector<Seq *> fed;
+        for (size_t i = 0; i < seqs.size(); i++) {
+            Seq & q = *seqs[i];
+            if (q.done) continue;
+            q.row = batch_add(batch, q.tokens.back(), q.pos++, slots[i], true);
+            fed.push_back(&q);
+        }
+        try { decode_or_throw(batch); } catch (...) { llama_batch_free(batch); throw; }
+        llama_batch_free(batch);
+        parallel_for((int) fed.size(), [&](int i) {
+            fed[i]->tops.push_back(round_top(topk_raw(llama_get_logits_ith(ctx, fed[i]->row), k)));
+        });
+    }
+
     json generate(const json & reqs, int k) {
         const int B = (int) reqs.size();
         if (B < 1) throw std::runtime_error("no requests");
         if (B > (int) llama_n_seq_max(ctx)) throw std::runtime_error("more requests than -np sequences");
-        struct Seq {
-            std::vector<llama_token> ctxt, tokens, eos;
-            std::vector<std::vector<Cand>> tops;
-            Spec sp; std::string key; int max_tokens = 0, pos = 0, row = -1; bool done = false; std::string finish = "length";
-        };
-        std::vector<Seq> seqs(B);
+        if (cb_active()) throw std::runtime_error("continuous batch in progress");
+        std::vector<Seq> seqs;
         long long cells = 0;
-        for (int s = 0; s < B; s++) {
-            const json & r = reqs[s];
-            Seq & q = seqs[s];
-            q.ctxt = r.at("context").get<std::vector<llama_token>>();
-            q.max_tokens = r.at("max_tokens").get<int>();
-            q.key = r.at("key").get<std::string>();
-            q.eos = r.value("eos", std::vector<llama_token>{});
-            const json & sp = r.at("spec");
-            q.sp.greedy = sp.value("mode", std::string("greedy")) == "greedy";
-            q.sp.temperature = sp.value("temperature", 0.0);
-            q.sp.top_k = sp.value("top_k", 20);
-            q.sp.top_p = sp.value("top_p", 1.0);
-            q.sp.min_p = sp.value("min_p", 0.0);
-            q.sp.seed = sp.value("seed", 0LL);
-            if (q.ctxt.empty() || q.max_tokens < 1) throw std::runtime_error("empty context or max_tokens < 1");
-            if (q.sp.top_k < 1 || q.sp.top_k > k) throw std::runtime_error("top_k out of range");
-            cells += (long long) q.ctxt.size() + q.max_tokens;
-        }
+        for (int s = 0; s < B; s++) { seqs.push_back(parse_request(reqs[s], k)); cells += seqs.back().cells(); }
         if (cells > n_ctx) throw std::runtime_error("requests need more context than -c provides");
         llama_memory_clear(llama_get_memory(ctx), true);
         n_past = 0;
         last_logits = nullptr;  // start/step state is gone
-        llama_batch batch = llama_batch_init(std::max(n_batch, B), 0, 1);
-        auto add = [&](llama_token t, int pos, int seq, bool logits) {
-            const int j = batch.n_tokens++;
-            batch.token[j] = t; batch.pos[j] = pos; batch.n_seq_id[j] = 1; batch.seq_id[j][0] = seq;
-            batch.logits[j] = logits;
-            return j;
-        };
-        auto decode = [&]() {
-            if (batch.n_tokens && llama_decode(ctx, batch) != 0) {
-                llama_batch_free(batch);
-                throw std::runtime_error("llama_decode failed");
-            }
-        };
-        // prompts, one sequence at a time (in chunks of n_batch); read each one's first-step top right away,
-        // since the next decode overwrites the logits
-        for (int s = 0; s < B; s++) {
-            const auto & c = seqs[s].ctxt;
-            for (size_t off = 0; off < c.size(); off += n_batch) {
-                batch.n_tokens = 0;
-                const size_t end = std::min(c.size(), off + (size_t) n_batch);
-                for (size_t i = off; i < end; i++) {
-                    const int j = add(c[i], (int) i, s, i + 1 == c.size());
-                    if (i + 1 == c.size()) seqs[s].row = j;
-                }
-                decode();
-            }
-            seqs[s].pos = (int) c.size();
-            seqs[s].tops.push_back(round_top(topk_raw(llama_get_logits_ith(ctx, seqs[s].row), k)));
-        }
-        for (int step = 0;; step++) {
-            // choose this step's token for every live sequence (independent work: threads)
-            std::vector<int> live;
-            for (int s = 0; s < B; s++) if (!seqs[s].done) live.push_back(s);
+        for (int s = 0; s < B; s++) prefill(seqs[s], s, k);
+        for (;;) {
+            std::vector<Seq *> live;
+            std::vector<int> slots;
+            for (int s = 0; s < B; s++) if (!seqs[s].done) { live.push_back(&seqs[s]); slots.push_back(s); }
             if (live.empty()) break;
-            parallel_for((int) live.size(), [&](int i) {
-                Seq & q = seqs[live[i]];
-                const int tok = rule_choose(q.tops.back(), q.sp, q.key, (int) q.tokens.size());
-                q.tokens.push_back(tok);
-                if (std::find(q.eos.begin(), q.eos.end(), tok) != q.eos.end()) { q.done = true; q.finish = "stop"; }
-                else if ((int) q.tokens.size() >= q.max_tokens) q.done = true;
-            });
-            batch.n_tokens = 0;
-            std::vector<int> fed;
-            for (int s : live) {
-                Seq & q = seqs[s];
-                if (q.done) continue;
-                q.row = add(q.tokens.back(), q.pos++, s, true);
-                fed.push_back(s);
-            }
-            if (fed.empty()) break;
-            decode();
-            parallel_for((int) fed.size(), [&](int i) {
-                Seq & q = seqs[fed[i]];
-                q.tops.push_back(round_top(topk_raw(llama_get_logits_ith(ctx, q.row), k)));
-            });
+            advance(live, slots, k);
         }
-        llama_batch_free(batch);
         json results = json::array();
-        for (auto & q : seqs) {
-            json tops = json::array();
-            for (size_t i = 0; i < q.tokens.size(); i++) {
-                json t = json::array();
-                for (auto & c : q.tops[i]) t.push_back({c.id, c.q});
-                tops.push_back(t);
-            }
-            results.push_back({{"tokens", q.tokens}, {"tops", tops}, {"finish_reason", q.finish}});
-        }
+        for (auto & q : seqs) results.push_back(result(q));
         return results;
+    }
+
+    // ---- continuous batching: sequences join and leave between steps ------------------------------------------
+    std::vector<Seq> cb;
+    std::vector<char> cb_used;
+    long long cb_cells = 0;
+
+    bool cb_active() const { return std::find(cb_used.begin(), cb_used.end(), 1) != cb_used.end(); }
+
+    json cb_add(const json & reqs, int k) {
+        if (cb_used.empty()) {
+            cb.assign(llama_n_seq_max(ctx), Seq());
+            cb_used.assign(llama_n_seq_max(ctx), 0);
+        }
+        if (!cb_active()) {  // first use since start/step or generate: start from an empty cache
+            llama_memory_clear(llama_get_memory(ctx), true);
+            n_past = 0;
+            last_logits = nullptr;
+            cb_cells = 0;
+        }
+        json slots = json::array();
+        for (const auto & r : reqs) {
+            Seq q = parse_request(r, k);
+            int slot = -1;
+            for (size_t i = 0; i < cb_used.size(); i++) if (!cb_used[i]) { slot = (int) i; break; }
+            if (slot < 0) throw std::runtime_error("no free sequence slot");
+            if (cb_cells + q.cells() > n_ctx) throw std::runtime_error("not enough free context");
+            prefill(q, slot, k);
+            cb[slot] = std::move(q);
+            cb_used[slot] = 1;
+            cb_cells += cb[slot].cells();
+            slots.push_back(slot);
+        }
+        return slots;
+    }
+
+    // Advance every active sequence by up to `steps` tokens; return the ones that finished and free their cells.
+    json cb_step(int steps, int k) {
+        json finished = json::array();
+        for (int n = 0; n < steps; n++) {
+            std::vector<Seq *> live;
+            std::vector<int> slots;
+            for (size_t i = 0; i < cb_used.size(); i++) if (cb_used[i]) { live.push_back(&cb[i]); slots.push_back((int) i); }
+            if (live.empty()) break;
+            advance(live, slots, k);
+            for (size_t i = 0; i < live.size(); i++) {
+                if (!live[i]->done) continue;
+                json r = result(*live[i]);
+                r["slot"] = slots[i];
+                finished.push_back(r);
+                llama_memory_seq_rm(llama_get_memory(ctx), slots[i], -1, -1);
+                cb_cells -= live[i]->cells();
+                cb_used[slots[i]] = 0;
+                cb[slots[i]] = Seq();
+            }
+        }
+        return {{"finished", finished}, {"active", (int) std::count(cb_used.begin(), cb_used.end(), 1)},
+                {"free_cells", n_ctx - cb_cells}};
     }
 
     json start(const std::vector<llama_token> & context, int k) {
         if (context.empty()) throw std::runtime_error("empty context");
+        if (cb_active()) throw std::runtime_error("continuous batch in progress");
         if ((int) context.size() >= n_ctx) throw std::runtime_error("context too long");
         llama_memory_clear(llama_get_memory(ctx), true);
         // decode in batches; only the final token's logits are needed
@@ -617,6 +692,10 @@ int main(int argc, char ** argv) {
                 throw std::runtime_error("vocab-only engine: only meta, tokenize and detokenize");
             } else if (cmd == "generate") {
                 resp["results"] = E.generate(req.at("requests"), k);
+            } else if (cmd == "cb_add") {
+                resp["slots"] = E.cb_add(req.at("requests"), k);
+            } else if (cmd == "cb_step") {
+                resp.update(E.cb_step(req.value("steps", 1), k));
             } else if (cmd == "start" || cmd == "step") {
                 resp["top"] = cmd == "start" ? E.start(req["context"].get<std::vector<llama_token>>(), k)
                                              : E.step(req["token"].get<llama_token>(), k);

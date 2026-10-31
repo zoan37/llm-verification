@@ -106,11 +106,15 @@ different near-tie than the same request alone, which is honest behaviour). The 
 |---|---|
 | Python path (one engine round trip per token) | 47 |
 | native, one request | 49 |
-| server, 16 concurrent verifying clients | 134 |
+| server, 16 verifying clients arriving at once | 142 |
+| server, 32 verifying clients arriving over 6 s, continuous batching | 134 (median latency 21.9 s) |
+| the same with collect-then-generate batches | 116 (median latency 25.9 s) |
 | native engine alone, 32 requests | 222 |
 
-Still to do for production serving: continuous batching (requests joining a running batch), and prompt prefill in
-parallel across sequences.
+Continuous batching (lv-engine `cb_add` / `cb_step`, `server.ContinuousBatcher`, the default) lets requests join the
+running batch between steps and leave as soon as they finish; each request alone is bit-identical to the Python
+rule, and requests joining mid-batch all pass the receipt check (`experiments/native_equivalence.py`, also run in
+CI on a tiny model). Next: prefill in parallel across sequences and the per-token vocabulary pass on the GPU.
 
 **Bandwidth and storage.** Per token: plain text is about 4 bytes; the top-20 logprobs providers already return on
 request (OpenAI-style JSON) about 1,800; the trace here 373 as JSON, roughly 120-200 packed. The receipt is a constant

@@ -99,10 +99,72 @@ class Batcher:
                     fut.set_exception(e)
 
 
+class ContinuousBatcher:
+    """Continuous batching on an engine that runs the rule natively: requests join the running batch between steps
+    (lv-engine cb_add / cb_step) and leave as soon as they finish, so a late request does not wait for a whole batch.
+    Every reply is an ordinary verifiable generation (same rule, same receipt)."""
+
+    def __init__(self, provider: VerifiableProvider, steps: int = 4):
+        self.provider, self.steps = provider, steps
+        meta = provider.model.meta
+        self.max_seqs, self.n_ctx = int(meta["n_seq_max"]), int(meta["n_ctx"])
+        self.q: "queue.Queue" = queue.Queue()
+        self.sizes: list = []  # active sequences per step call, for monitoring
+        threading.Thread(target=self._loop, daemon=True).start()
+
+    def submit(self, prompt_ids, spec, max_tokens, nonce):
+        fut: Future = Future()
+        self.q.put(((prompt_ids, spec, max_tokens, nonce), fut))
+        return fut.result()
+
+    def _loop(self):
+        model = self.provider.model
+        inflight: dict = {}  # slot -> (item, request, future)
+        pending: list = []
+        free_cells = self.n_ctx
+        while True:
+            if not inflight and not pending:
+                pending.append(self.q.get())
+            while True:
+                try:
+                    pending.append(self.q.get_nowait())
+                except queue.Empty:
+                    break
+            admit, keep = [], []
+            for item, fut in pending:
+                req = self.provider.native_request(item)
+                need = len(req["context"]) + req["max_tokens"]
+                if need > self.n_ctx:
+                    fut.set_exception(ValueError("request needs more context than the engine has"))
+                elif len(inflight) + len(admit) < self.max_seqs and need <= free_cells:
+                    admit.append((item, req, fut))
+                    free_cells -= need
+                else:
+                    keep.append((item, fut))
+            pending = keep
+            try:
+                if admit:
+                    for (item, req, fut), slot in zip(admit, model.cb_add([r for _, r, _ in admit])):
+                        inflight[slot] = (item, req, fut)
+                if inflight:
+                    self.sizes.append(len(inflight))
+                    r = model.cb_step(self.steps)
+                    free_cells = int(r["free_cells"])
+                    for res in r["finished"]:
+                        item, req, fut = inflight.pop(int(res["slot"]))
+                        fut.set_result(self.provider.finish_native(item, req, res))
+            except Exception as e:  # noqa: BLE001
+                for _, _, fut in list(inflight.values()) + admit:
+                    if not fut.done():
+                        fut.set_exception(e)
+                inflight.clear()
+                free_cells = self.n_ctx
+
+
 class App:
     def __init__(self, provider: VerifiableProvider, template: str, bos: Optional[int] = None,
                  template_kwargs: Optional[dict] = None, trace_window: float = 300.0, tokenizer=None,
-                 batch_wait: float = 0.05):
+                 batch_wait: float = 0.05, continuous: bool = True):
         self.provider, self.template, self.bos = provider, template, bos
         # A separate tokenizer (a vocab-only engine) lets requests be prepared while the engine generates; without
         # one they wait for the running batch and arrive one by one.
@@ -112,7 +174,8 @@ class App:
         self.kw = template_kwargs or {}
         self.lock = threading.Lock()
         self.traces = TraceStore(trace_window)
-        self.batcher = Batcher(provider, getattr(provider.model, "native_generate", 0) or 1, batch_wait)
+        self.batcher = (ContinuousBatcher(provider) if provider.native_ok and continuous
+                        else Batcher(provider, getattr(provider.model, "native_generate", 0) or 1, batch_wait))
 
     def prompt_ids(self, messages):
         text = render_chat(self.template, messages, True, **self.kw)
@@ -155,9 +218,8 @@ class App:
     def info(self) -> dict:
         return {"provider_key": self.provider.signer.public_hex, "model": self.provider.model_info,
                 "batch_sizes_recent": self.batcher.sizes[-50:],
-                "batch_seconds_recent": self.batcher.durations[-50:],
-                "arrivals_recent_ms": [round(1000 * (t - self.batcher.arrivals[-16:][0])) for t in self.batcher.arrivals[-16:]]
-                if self.batcher.arrivals else [],
+                "batch_seconds_recent": getattr(self.batcher, "durations", [])[-50:],
+
                 "receipt_version": RECEIPT_VERSION, "sampling_rule": "llmverify-gumbel-v1",
                 "trace_window_s": self.traces.window}
 
