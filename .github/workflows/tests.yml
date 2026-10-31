@@ -13,3 +13,29 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: pip install -r requirements.txt
       - run: python -m pytest -q
+
+  engine:
+    # Builds llama.cpp (CPU) at the pinned commit and lv-engine, then checks the native cooperative rule against the
+    # Python reference on a 19 MB model: bit-identical single requests, valid receipts for batched ones.
+    runs-on: ubuntu-latest
+    env:
+      LLAMA_CPP_COMMIT: 11924d4c17abc27383376a1ac6a24fa3e36c1c0c
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: llama.cpp source
+        run: |
+          git init -q llama.cpp && cd llama.cpp
+          git remote add origin https://github.com/ggml-org/llama.cpp
+          git fetch -q --depth 1 origin "$LLAMA_CPP_COMMIT" && git checkout -q FETCH_HEAD
+      - name: build lv-engine
+        run: |
+          cmake -S engine -B engine/build -DLLAMA_CPP_DIR=$PWD/llama.cpp -DCMAKE_BUILD_TYPE=Release -DGGML_NATIVE=OFF
+          cmake --build engine/build -j 4 --target lv-engine
+      - name: tiny model
+        run: curl -sfL -o stories15M-q4_0.gguf https://huggingface.co/ggml-org/models/resolve/main/tinyllamas/stories15M-q4_0.gguf
+      - name: native rule == Python rule
+        run: python experiments/native_equivalence.py --check --engine "engine/build/lv-engine -m stories15M-q4_0.gguf -c 8192 -np 20 -ngl 0"

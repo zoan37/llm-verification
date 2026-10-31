@@ -24,6 +24,8 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--engine", required=True)
 ap.add_argument("--prompts", type=int, default=4)
 ap.add_argument("--max-tokens", type=int, default=96)
+ap.add_argument("--check", action="store_true", help="exit 1 unless single requests are bit-identical and every "
+                                                      "receipt passes (CI)")
 a = ap.parse_args()
 
 eng = LlamaEngine(shlex.split(a.engine))
@@ -70,3 +72,5 @@ print(f"batched tokens identical to single: {batch_same}/{len(items)} (batching 
 print(f"time for {ntok} tokens: Python path {t_py:.1f}s ({ntok / t_py:.0f} tok/s), native single {t_one:.1f}s "
       f"({ntok / t_one:.0f} tok/s), native batched {t_batch:.1f}s "
       f"({sum(len(g.trace.tokens) for g in batch) / t_batch:.0f} tok/s)")
+if a.check and (same != len(items) or ok_one != len(items) or ok_batch != len(items)):
+    sys.exit(1)
