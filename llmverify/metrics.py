@@ -33,6 +33,7 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Sequence
 
 from .sampling import SamplingSpec, TopK, candidates, gumbel_noise
+from .sampling import margin as rule_margin
 
 METRICS = ("regret", "agree", "lp", "ce_dev", "var_lp", "pit", "drift", "topk", "wgap", "tail_hit", "tail_mass")
 TAIL_LP = math.log(1e-4)
@@ -71,6 +72,7 @@ class TokenScore:
     wgap: Optional[float] = None
     tail_hit: Optional[float] = None    # 1 if x is a long-tail token (p_T(x) < 1e-4)
     tail_mass: Optional[float] = None   # the referee's probability of drawing any long-tail token here
+    margin: Optional[float] = None      # the referee's own lead of the rule's winner over the runner-up (nats)
     extra: Dict[str, float] = field(default_factory=dict)
 
     def get(self, name: str) -> Optional[float]:
@@ -96,6 +98,8 @@ def score_token(token: int, ref: RefStep, spec: SamplingSpec, key: str, step: in
     agree_tok = ref.top[0][0] if spec.greedy else max(
         candidates(ref.top, spec), key=lambda c: c[1] / spec.temperature + gumbel_noise(spec.seed, key, step, c[0]))[0]
     s = TokenScore(regret=regret(token, ref, spec, key, step), agree=float(token == agree_tok), lp=ref.lp)
+    if len(ref.top) >= 2:
+        s.margin = rule_margin(ref.top, spec, key, step)
     lp_t = ref.lp if ref.lp_t is None else ref.lp_t
     if ref.entropy is not None and ref.m2 is not None:
         s.ce_dev = lp_t + ref.entropy

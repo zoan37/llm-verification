@@ -12,9 +12,10 @@ from __future__ import annotations
 
 import hashlib
 import hmac
+import math
 import secrets
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Sequence
+from typing import Dict, List, Optional, Sequence, Tuple
 
 from .engine import Model
 from .metrics import TokenScore, score_reply
@@ -88,6 +89,11 @@ class Ledger:
     audits: int = 0
     hard_failures: List[str] = field(default_factory=list)
     _eps: Dict[str, EProcess] = field(default_factory=dict)
+    # Optional honest near-tie flip curve [(margin upper edge, flip rate), ...] for a tier that pins the exact
+    # weights: how often an honest machine picks something other than the referee's rule choice, by the referee's
+    # margin. With it, the verdict warns when flips exceed it (tie steering). Warning only: the curve depends on the
+    # hardware and weights, so it must be calibrated for the tier it is used in (experiments/steering_detection.py).
+    flip_curve: Optional[List[Tuple[float, float]]] = None
 
     def add(self, scores: Sequence[Optional[TokenScore]]):
         self.audits += 1
@@ -123,6 +129,11 @@ class Ledger:
                 thresholds[m] = thr
                 if thr is not None and means.get(m) is not None and means[m] > thr:
                     reasons.append(f"{m}: mean {means[m]:.4f} > calibrated threshold {thr:.4f} at {n} tokens")
+        warnings = []
+        steering = self.steering_test()
+        if steering and steering["z"] > 4:
+            warnings.append(f"possible tie steering: {steering['observed']} near-tie flips where honest machines make "
+                            f"{steering['expected']:.1f} (z = {steering['z']:.1f} over {steering['n']} tokens)")
         if reasons:
             status = "FAIL"
         elif n < 64:
@@ -130,4 +141,24 @@ class Ledger:
         else:
             status = "PASS"
         return {"status": status, "n_tokens": n, "audits": self.audits, "means": means, "eprocess": e_vals,
-                "thresholds": thresholds, "reasons": reasons}
+                "thresholds": thresholds, "reasons": reasons, "warnings": warnings, "steering": steering}
+
+    def steering_test(self, floor: float = 1e-3) -> Optional[dict]:
+        """Observed flips (token != the referee's rule choice) against the honest flip curve, over tokens whose
+        margin the curve covers. Flips beyond the curve's last edge are counted with a small floor rate."""
+        if not self.flip_curve:
+            return None
+        obs = exp = var = 0.0
+        n = 0
+        for s in self.scores:
+            if s.margin is None:
+                continue
+            f = next((r for edge, r in self.flip_curve if s.margin < edge), 0.0)
+            f = min(max(f, floor), 1 - floor)
+            obs += 1.0 - s.agree
+            exp += f
+            var += f * (1 - f)
+            n += 1
+        if not n:
+            return None
+        return {"observed": int(obs), "expected": exp, "z": (obs - exp) / math.sqrt(var), "n": n}

@@ -154,7 +154,10 @@ lie slightly in its committed logprobs to keep the rule check passing.
 - What it buys an attacker: picking among outputs M itself nearly produced. It cannot make M say something M
   gives low probability, so it cannot inject a malicious tool call; it can bias style or embed a covert watermark.
 - Mitigations: tighter tolerance on `wgap` (the lie is visible in committed logprobs), per-provider evidence
-  accumulation, and for high-stakes actions a self-audit with a strict per-reply bound.
+  accumulation, the near-tie flip test (`Ledger(flip_curve=...)`: warns when a provider picks the referee's runner-up
+  more often than honest machines do at the same margins; opt-in and warning-only, since the curve must be
+  calibrated for a tier that pins the exact weights), and for high-stakes actions a self-audit with a strict
+  per-reply bound.
 
 ## Calibration
 

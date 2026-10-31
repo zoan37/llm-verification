@@ -33,6 +33,7 @@ or degraded model, but honest machines differ slightly, so a threshold must come
 | Referee distance (regret, top-k drift) over audited spans | honest noise measured on CPU, Apple Metal, NVIDIA CUDA (GB10, RTX 4090 under WSL2, RTX PRO 6000), AMD R9700 on Vulkan under Windows; same-weights cross-vendor differences are far below quantization differences (docs/soundness.md, Calibration). Not yet: Intel Arc on Linux (earlier Vulkan runs there were 5-10x noisier), ROCm/HIP |
 | Sequential evidence per provider (`stats.EProcess`) | implemented; a threshold should be set from the honest false-positive rate on the network's own hardware mix |
 | Confident-draft and similar shortcuts | caught with 74-100% power by 2,048 audited tokens depending on the threshold (experiments/README.md) |
+| Tie steering (near-tie flip test, `Ledger(flip_curve=...)`) | steering beyond the closest ~1% of ties shows after 50-8,500 audited tokens depending on the tolerance exploited; the honest flip curve must be calibrated per tier (docs/soundness.md) |
 
 Recommended rollout: run these on a sample of replies from day one, show results to providers, act on none. Switch a
 check to enforcement once its false-positive rate on honest providers is measured and acceptable, and act on

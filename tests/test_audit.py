@@ -70,3 +70,27 @@ def test_challenge_is_unpredictable_without_secret_and_stable_with_it():
     rate = sum(derive_challenge(bytes([i, j]) * 16, b"s", 100, audit_probability=0.1).audit
                for i in range(40) for j in range(50)) / 2000
     assert 0.07 < rate < 0.13
+
+
+def test_steering_warning_from_excess_near_tie_flips():
+    import random as _r
+    from llmverify.audit import Ledger
+    from llmverify.metrics import TokenScore
+    curve = [(0.01, 0.57), (0.03, 0.46), (0.05, 0.16), (0.1, 0.077), (0.2, 0.023), (1e9, 0.0)]
+    rng = _r.Random(3)
+
+    def tokens(steer_below, n=4000):
+        out = []
+        for _ in range(n):
+            m = rng.expovariate(1 / 1.5)  # mostly confident positions, some near-ties
+            f = next(r for e, r in curve if m < e)
+            flip = rng.random() < (0.5 if m < steer_below else f)
+            out.append(TokenScore(regret=0.0, agree=float(not flip), lp=0.0, margin=m))
+        return out
+    honest, steer = Ledger("h", flip_curve=curve), Ledger("s", flip_curve=curve)
+    honest.add(tokens(0.0))
+    steer.add(tokens(0.2))  # hides a bit in every position within 0.2 nats
+    assert not honest.verdict()["warnings"]
+    v = steer.verdict()
+    assert v["warnings"] and v["status"] != "FAIL"  # a warning, never a failure on its own
+    assert Ledger("x").verdict()["steering"] is None  # off unless a calibrated curve is given
