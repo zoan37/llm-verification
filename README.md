@@ -2,7 +2,7 @@
 
 **Is this endpoint really serving the model it claims?**
 
-When you call "Llama 70B" or "gpt-oss-120b" through an API, you are trusting the provider. They might serve a
+When you call "Qwen3.8-27B" or "gpt-oss-20b" through an API, you are trusting the provider. They might serve a
 harsher quantization, a smaller model, skip part of the computation, inject a system prompt, or have a bug in
 their output path. This repo checks, as rigorously as the evidence allows, and is explicit about where the
 checks stop.
@@ -59,10 +59,10 @@ cmake -S engine -B engine/build -DLLAMA_CPP_DIR=/path/to/llama.cpp -DCMAKE_BUILD
 cmake --build engine/build -j
 
 # audit every OpenRouter provider of a model (needs ~/.config/openrouter/api-key)
-python experiments/collect.py --model openai/gpt-oss-120b --reasoning-effort low --budget-usd 5
-python experiments/score_model.py --model openai/gpt-oss-120b --chat harmony \
-    --engine "engine/build/lv-engine -m gpt-oss-120b-MXFP4.gguf -c 8192"
-python experiments/build_results.py --model openai/gpt-oss-120b --referee "..." --anchor "..."
+python experiments/collect.py --model openai/gpt-oss-20b --reasoning-effort low --budget-usd 5
+python experiments/score_model.py --model openai/gpt-oss-20b --chat harmony --reasoning \
+    --engine "engine/build/lv-engine -m gpt-oss-20b-MXFP4.gguf -c 8192"
+python experiments/build_results.py --model openai/gpt-oss-20b --referee "..." --anchor "..."
 
 # or audit one OpenAI-compatible endpoint directly
 python -m llmverify audit --base-url https://host/v1 --model NAME --logprobs \
