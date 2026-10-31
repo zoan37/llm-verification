@@ -62,8 +62,9 @@ clients, against 47 for the original per-token path).
 1. Honest baselines on every GPU/driver pair the network will run (above).
 2. External review of `docs/receipt-spec.md` and the sampling rule.
 3. Referee economics: who runs referees and how referees are kept honest. Cost is measured
-   (`experiments/referee_cost.py`, gpt-oss-20b on a DGX Spark): auditing runs at 617 tokens/s against 230 tokens/s
-   for batched generation of the same replies, so auditing every token costs about a third of a generating GPU, and
-   at a 5% spot-check rate one referee GPU covers roughly fifty generating GPUs of the same kind.
+   (`experiments/referee_cost.py`, gpt-oss-20b on a DGX Spark): auditing runs at about 2.5x the rate of batched
+   generation of the same replies (2.3-2.8x across runs, e.g. 617 vs 230 tokens/s), so auditing every token costs
+   about 40% of a generating GPU, and at a 5% spot-check rate one referee GPU covers roughly fifty generating GPUs of
+   the same kind (the exact checks run on every reply at negligible cost).
 4. The rule inside mainstream serving stacks (a llama-server sampler, a vLLM logits processor with GPU-side top-20),
    so providers can turn it on without running this server.
