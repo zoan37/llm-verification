@@ -441,7 +441,7 @@
     "completion": "0.0000001",
     "discount": 0
    },
-   "peer_agreement": 0.3240697674418605,
+   "peer_agreement": 0.32982558139534884,
    "x_honest": 1.16,
    "fidelity": 91.7,
    "flags": [],
@@ -868,7 +868,7 @@
     "completion": "0.00000015",
     "discount": 0
    },
-   "peer_agreement": 0.42127906976744184,
+   "peer_agreement": 0.4280232558139535,
    "x_honest": 0.92,
    "fidelity": 100.0,
    "flags": [
@@ -1297,7 +1297,7 @@
     "completion": "0.00000015",
     "discount": 0
    },
-   "peer_agreement": 0.3952325581395349,
+   "peer_agreement": 0.433953488372093,
    "x_honest": 1.07,
    "fidelity": 96.3,
    "flags": [
@@ -1747,7 +1747,7 @@
     "input_cache_read": "0.00000003",
     "discount": 0
    },
-   "peer_agreement": 0.4257142857142857,
+   "peer_agreement": 0.4454734219269103,
    "x_honest": 1.07,
    "fidelity": 96.4,
    "flags": [
@@ -2185,7 +2185,7 @@
     "input_cache_read": "0.000000009",
     "discount": 0
    },
-   "peer_agreement": 0.4704651162790698,
+   "peer_agreement": 0.4856976744186047,
    "x_honest": 1.0,
    "fidelity": 100.0,
    "flags": [
@@ -2611,7 +2611,7 @@
     "completion": "0.00000014",
     "discount": 0
    },
-   "peer_agreement": 0.22785714285714287,
+   "peer_agreement": 0.23642857142857143,
    "x_honest": 1.12,
    "fidelity": 93.6,
    "flags": [
@@ -3063,7 +3063,7 @@
     "input_cache_read": "0.000000029",
     "discount": 0
    },
-   "peer_agreement": 0.5153488372093024,
+   "peer_agreement": 0.5079651162790697,
    "x_honest": 1.14,
    "fidelity": 92.9,
    "flags": [],
@@ -3491,7 +3491,7 @@
     "input_cache_read": "0.0000000375",
     "discount": 0
    },
-   "peer_agreement": 0.34930232558139535,
+   "peer_agreement": 0.3480813953488372,
    "x_honest": 1.08,
    "fidelity": 95.9,
    "flags": [
@@ -3938,7 +3938,7 @@
    "reference": "honest",
    "label": "honest: MXFP4 release weights, Grace ARM CPU (no GPU)",
    "pricing": null,
-   "peer_agreement": 0.2879069767441861,
+   "peer_agreement": 0.28750000000000003,
    "x_honest": 1.0,
    "fidelity": 100.0,
    "flags": [],
@@ -4381,7 +4381,7 @@
    "reference": "honest",
    "label": "honest: MXFP4 release weights, llama.cpp CUDA (11924d4c1), RTX 4090, Windows 11 WSL2",
    "pricing": null,
-   "peer_agreement": 0.3952325581395349,
+   "peer_agreement": 0.41500000000000004,
    "x_honest": 0.99,
    "fidelity": 100.0,
    "flags": [],
@@ -4824,10 +4824,443 @@
    "reference": "cheat",
    "label": "cheat: re-quantized copy (experts Q4_0, rest Q2_K) served as the release weights",
    "pricing": null,
-   "peer_agreement": 0.08046511627906977,
+   "peer_agreement": 0.08017441860465116,
    "x_honest": 6.18,
    "fidelity": 0.0,
    "flags": [],
+   "verdict": {
+    "level": "reference",
+    "text": "reference run"
+   }
+  },
+  "local__vulkan-b70-linux": {
+   "greedy": {
+    "replies": 48,
+    "regret": {
+     "mean": 0.04262515630427232,
+     "lo": 0.035922546840781895,
+     "hi": 0.05023441580246914,
+     "n_tokens": 11516,
+     "n_replies": 48
+    },
+    "disagree": {
+     "mean": 0.07476554359152487,
+     "lo": 0.06583501006036219,
+     "hi": 0.08462980318650426,
+     "n_tokens": 11516,
+     "n_replies": 48
+    },
+    "wgap": null,
+    "topk": null,
+    "big_miss_per_1k": 0.9551927752691907,
+    "first_token_match": 0.8541666666666666
+   },
+   "sample_answer": {
+    "replies": 48,
+    "likelihood": {
+     "z": -0.06401796052209484,
+     "p": 0.9489559257130012,
+     "excess_ce": 0.0005731016461980654,
+     "excess_ce_lo": -0.018915576368876082,
+     "excess_ce_hi": 0.02029910920808687,
+     "n_tokens": 11481
+    },
+    "pit": {
+     "ks": 0.010125087535929,
+     "p": 0.18880852185466576,
+     "mean": 0.5016621609615887,
+     "n_tokens": 11481
+    },
+    "tail": {
+     "observed": 22,
+     "expected": 21.0762298,
+     "ratio": 1.043829954824273,
+     "z": 0.20263304938427973,
+     "p": 0.8394218561717712,
+     "p_low": 0.6341353981172014,
+     "p_high": 0.4489237475329064,
+     "n_tokens": 11481
+    },
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 164,
+        "expected": 178.32,
+        "ratio": 0.9197203785349243,
+        "p_low": 0.1501663467988194,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 88,
+        "expected": 90.75,
+        "ratio": 0.9696875987214977,
+        "p_low": 0.41306229580354653,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 49,
+        "expected": 48.78,
+        "ratio": 1.0045546507866667,
+        "p_low": 0.5505335951409742,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 39,
+        "expected": 40.29,
+        "ratio": 0.96803815996498,
+        "p_low": 0.4609342786332879,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 31,
+        "expected": 32.67,
+        "ratio": 0.9489113186356358,
+        "p_low": 0.43002130676206546,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 18,
+        "expected": 22.44,
+        "ratio": 0.8021418613728631,
+        "p_low": 0.2056814941928496,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 10,
+        "expected": 12.45,
+        "ratio": 0.8034125107074802,
+        "p_low": 0.3021797462330644,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 745,
+        "expected": 748.45,
+        "ratio": 0.9953909936507161,
+        "p_low": 0.45946174633259196,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 410,
+        "expected": 412.0,
+        "ratio": 0.9951524377174017,
+        "p_low": 0.47385316095698904,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 227,
+        "expected": 223.53,
+        "ratio": 1.015507860804776,
+        "p_low": 0.6085887746858721,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 110,
+        "expected": 100.36,
+        "ratio": 1.0960785488151186,
+        "p_low": 0.8443330503499474,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 60,
+        "expected": 54.36,
+        "ratio": 1.1038273631665245,
+        "p_low": 0.7996985315413155,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 161,
+        "expected": 159.04,
+        "ratio": 1.0123237081490366,
+        "p_low": 0.5822899530984667,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 242,
+        "expected": 235.83,
+        "ratio": 1.0261666995930485,
+        "p_low": 0.6711813193295744,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 397,
+        "expected": 406.63,
+        "ratio": 0.9763292154177109,
+        "p_low": 0.3278223410748708,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 608,
+        "expected": 606.6,
+        "ratio": 1.0022998098841678,
+        "p_low": 0.5333400333464869,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 919,
+        "expected": 912.72,
+        "ratio": 1.0068767060486312,
+        "p_low": 0.590774727089262,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 48
+    }
+   },
+   "sample_reasoning": {
+    "replies": 48,
+    "likelihood": {
+     "z": -1.114084177690943,
+     "p": 0.265243075790947,
+     "excess_ce": 0.040063494558645704,
+     "excess_ce_lo": -0.03693568441064639,
+     "excess_ce_hi": 0.1349758249158249,
+     "n_tokens": 827
+    },
+    "pit": {
+     "ks": 0.0226572067714631,
+     "p": 0.7852092963105719,
+     "mean": 0.5031972914147521,
+     "n_tokens": 827
+    },
+    "tail": {
+     "observed": 3,
+     "expected": 1.8437217,
+     "ratio": 1.6271436193434183,
+     "z": 0.8580196532109433,
+     "p": 0.390881611323227,
+     "p_low": 0.884165528681707,
+     "p_high": 0.2811130961761845,
+     "n_tokens": 827
+    },
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 20,
+        "expected": 13.18,
+        "ratio": 1.517358121704867,
+        "p_low": 0.9716373818282504,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 8,
+        "expected": 6.65,
+        "ratio": 1.202614182579382,
+        "p_low": 0.7731845007277915,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 3,
+        "expected": 3.59,
+        "ratio": 0.8352211651725024,
+        "p_low": 0.5169461412987356,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 3,
+        "expected": 2.98,
+        "ratio": 1.007881972989435,
+        "p_low": 0.6524879722749567,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 3,
+        "expected": 2.44,
+        "ratio": 1.2312248471023943,
+        "p_low": 0.7710391977847402,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 3,
+        "expected": 1.71,
+        "ratio": 1.7561924810375118,
+        "p_low": 0.9055739387068896,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 3,
+        "expected": 1.01,
+        "ratio": 2.95638737346662,
+        "p_low": 0.9800939748023424,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 69,
+        "expected": 61.6,
+        "ratio": 1.1201053769165146,
+        "p_low": 0.8429792055219077,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 37,
+        "expected": 34.11,
+        "ratio": 1.084877216235557,
+        "p_low": 0.7258154065289054,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 20,
+        "expected": 18.63,
+        "ratio": 1.0735956241960112,
+        "p_low": 0.6789396276529345,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 8,
+        "expected": 8.42,
+        "ratio": 0.950337161806187,
+        "p_low": 0.5343975456195873,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 6,
+        "expected": 4.51,
+        "ratio": 1.3291468162281739,
+        "p_low": 0.8292303251558694,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 14,
+        "expected": 12.9,
+        "ratio": 1.0851811384356278,
+        "p_low": 0.6851911000158444,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 25,
+        "expected": 18.88,
+        "ratio": 1.323923099767879,
+        "p_low": 0.9307267995428802,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 42,
+        "expected": 32.72,
+        "ratio": 1.2837137226704607,
+        "p_low": 0.9517509445469166,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 58,
+        "expected": 48.97,
+        "ratio": 1.1843758284249464,
+        "p_low": 0.9105133902792459,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 80,
+        "expected": 74.22,
+        "ratio": 1.077815358804194,
+        "p_low": 0.7696312310167183,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 48
+    }
+   },
+   "integrity": {
+    "billed_minus_returned_median": null,
+    "stop_replies_checked": 38,
+    "early_stop_share": 0.0,
+    "requests": 104,
+    "errors": 0,
+    "empty": 0,
+    "logprobs": false,
+    "own_top_miss": null,
+    "inserted_tokens": 0,
+    "scored_tokens": 25778,
+    "prompt_tokens_delta_median": 0,
+    "prompt_tokens_mismatch_share": 0.0,
+    "determinism": {
+     "prompts": 4,
+     "identical_share": 0.25,
+     "mean_distinct": 1.75
+    },
+    "max_completion_tokens": 320,
+    "cost_usd": 0,
+    "logprob_self_consistency": {
+     "ks": 0.013843464525405302,
+     "p": 0.014898560045613848,
+     "mean": 0.5053813959628204,
+     "n_tokens": 12756
+    },
+    "logprob_alignment": {
+     "bad_share": 0.005089710728670816,
+     "n_tokens": 27310
+    }
+   },
+   "tag": "local/vulkan-b70-linux",
+   "provider": "vulkan-b70-linux",
+   "quantization": "honest: MXFP4 release weights, llama.cpp b12020 Vulkan, Intel Arc Pro B70, Linux (xe)",
+   "local": true,
+   "reference": "honest",
+   "label": "honest: MXFP4 release weights, llama.cpp b12020 Vulkan, Intel Arc Pro B70, Linux (xe)",
+   "pricing": null,
+   "peer_agreement": 0.468953488372093,
+   "x_honest": 1.1,
+   "fidelity": 94.9,
+   "flags": [
+    "no logprobs (text-only checks)"
+   ],
    "verdict": {
     "level": "reference",
     "text": "reference run"
@@ -5255,7 +5688,7 @@
    "reference": "honest",
    "label": "honest: MXFP4 release weights, llama.cpp b12020 Vulkan, Radeon AI PRO R9700, Windows 11",
    "pricing": null,
-   "peer_agreement": 0.47255813953488374,
+   "peer_agreement": 0.4875581395348837,
    "x_honest": 0.97,
    "fidelity": 100.0,
    "flags": [
@@ -5705,7 +6138,7 @@
     "input_cache_read": "0.00000002",
     "discount": 0
    },
-   "peer_agreement": 0.5167441860465116,
+   "peer_agreement": 0.5181976744186046,
    "x_honest": 1.06,
    "fidelity": 96.7,
    "flags": [],
@@ -6147,5 +6580,6 @@
  "referee": "gpt-oss-20b MXFP4 (release weights), llama.cpp CUDA, DGX Spark (GB10)",
  "anchor": "a re-quantized copy of the same model (experts Q4_0, rest Q2_K)",
  "notes": "100 is set by the same release weights on the Spark's Grace CPU. gpt-oss-20b has many near-tied tokens, so honest machines disagree on ~7% of tokens, almost all harmless near-tie flips. Darkbloom has its own case study.",
+ "scale_ref": "local__cpu-grace",
  "built": "2026-10-31"
 }

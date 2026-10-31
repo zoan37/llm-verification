@@ -202,7 +202,9 @@ def flags(s: dict, ref_regret: Optional[float]) -> List[str]:
     return f
 
 
-def model_report(model: str, root: Path = Path("data")) -> dict:
+def model_report(model: str, root: Path = Path("data"), scale_ref: str | None = None) -> dict:
+    """scale_ref pins 100 on the fidelity scale to one honest reference (an endpoint file stem); by default it is the
+    noisiest honest reference, so adding another honest machine can move every score."""
     key = model.replace("/", "__")
     eps = {}
     ep_meta = {}
@@ -239,7 +241,10 @@ def model_report(model: str, root: Path = Path("data")) -> dict:
 
     honest = [s for s in eps.values() if s["reference"] == "honest" and "same machine" not in (s["label"] or "")]
     cheats = [s for s in eps.values() if s["reference"] == "cheat"]
-    h_reg = max((reg(s) for s in honest if reg(s) is not None), default=None)
+    if scale_ref:
+        h_reg = reg(eps[scale_ref])
+    else:
+        h_reg = max((reg(s) for s in honest if reg(s) is not None), default=None)
     c_reg = min((reg(s) for s in cheats if reg(s) is not None), default=None)
     for s in eps.values():
         r = reg(s)

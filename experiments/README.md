@@ -370,7 +370,12 @@ other-token rate 6.8% vs 7.0%, PIT mean 0.503, 49 draws past rank 40 vs 41.8 exp
 AMD on Vulkan is an honest machine here. An RTX 4090 running the verification engine on CUDA under Windows 11 WSL2: regret 0.0385
 [0.0324, 0.0453], PIT 0.507, fidelity 100, no flags. On Qwen3.8-27B the R9700 on Vulkan ran the referee's own Q8_0
 file: regret 0.0002 [0.0001, 0.0003], other token on 0.5% of positions, against 0.0011 for the honest Q6_K reference,
-so same-weights backend differences across vendors are far smaller than quantization differences.
+so same-weights backend differences across vendors are far smaller than quantization differences. An Intel Arc Pro
+B70 on Linux (xe driver, Mesa 26.2.5, the same llama.cpp b12020 Vulkan build): regret 0.0426 [0.0359, 0.0502], other
+token 7.5%, PIT 0.502, 22 draws past rank 40 vs 21.1 expected, no flags; honest too. Because 100 on the fidelity
+scale is the noisiest honest reference by default, this run would have nudged every endpoint's score up by up to 5
+points without changing a verdict, so the gpt-oss-20b results pin the scale to the Grace CPU run
+(`build_results.py --scale-ref local__cpu-grace`), as the notes already said; the B70 itself shows 95.
 
 ## gpt-oss-120b (26 endpoints)
 

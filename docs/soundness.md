@@ -171,7 +171,11 @@ Thresholds come from honest machines (same weights, different hardware/engine/ke
   (a different token on 0.5% of positions, all near-ties) against 0.0011 for the honest Q6_K reference: the pure
   backend difference (AMD/Vulkan/Windows vs NVIDIA/CUDA/Linux, same weights) is far below quantization noise. The
   earlier noisy Vulkan runs (Intel B70 and AMD 780M on Linux/Mesa, an older llama.cpp) are therefore specific to
-  that GPU/driver/version, not to Vulkan; each GPU/driver pair still needs its own baseline before a strict tier.
+  that GPU/driver/version, not to Vulkan. The same Intel Arc Pro B70 on Linux (xe driver, Mesa 26.2.5) with llama.cpp
+  b12020 is honest on gpt-oss-20b: regret 0.0426 [0.0359, 0.0502], other token on 7.5% of positions, PIT mean 0.502,
+  22 draws past rank 40 vs 21.1 expected, within the other honest machines' intervals. So the old noise came from
+  the older llama.cpp or that model's fp16 paths, not from the GPU or Mesa. Each GPU/driver pair still needs its own
+  baseline before a strict tier.
 - Honest *providers* (vLLM/SGLang/TensorRT, FP8 weights or KV cache, batch-dependent kernels) are noisier than
   honest llama.cpp machines. In black-box mode the published score places each endpoint on a scale from honest
   machines (100) to a smaller sibling model (0); it does not declare FP8 dishonest.
@@ -210,8 +214,7 @@ Findings from adversarial reviews, each now a regression test in `tests/test_red
 5. **Calibration coverage.** Every new hardware platform and engine needs an honest baseline before its
    providers can be judged in a strict tier. Measured so far: Apple Metal, NVIDIA CUDA (GB10, RTX PRO 6000), ARM and
    x86 CPUs, vLLM BF16, AMD R9700 on Vulkan under Windows (gpt-oss-20b, Qwen3.8-27B), RTX 4090 on CUDA under WSL2
-   (gpt-oss-20b). Next: Intel Arc B70 on Linux with a current llama.cpp (the noisy Vulkan result came from Intel
-   B70 and AMD 780M on Mesa), AMD ROCm/HIP.
+   (gpt-oss-20b), Intel Arc Pro B70 on Vulkan under Linux (gpt-oss-20b). Next: AMD ROCm/HIP.
 6. **Privacy.** Audits need the prompt and the reply. Self-audits keep data with the user; third-party referees
    see it unless they run in a TEE.
 7. **Tool/agent traces.** Multi-turn and tool-call formats add template surface where honest providers differ.

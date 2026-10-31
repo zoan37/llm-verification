@@ -16,6 +16,7 @@ ap.add_argument("--model", required=True)
 ap.add_argument("--referee", default="", help="what the referee ran, e.g. 'gpt-oss-120b MXFP4 (original release format), llama.cpp Metal'")
 ap.add_argument("--anchor", default="", help="what fidelity 0 means for this model")
 ap.add_argument("--notes", default="")
+ap.add_argument("--scale-ref", default=None, help="honest reference that sets 100 (endpoint file stem, e.g. local__cpu-grace); default: the noisiest honest reference")
 ap.add_argument("--referee-free", action="store_true", help="no referee scores: referee-free checks only")
 a = ap.parse_args()
 if a.referee_free:
@@ -26,8 +27,8 @@ if a.referee_free:
     out.write_text(json.dumps(r, indent=1, default=float))
     print("wrote", out)
     sys.exit(0)
-r = model_report(a.model)
-r.update({"referee": a.referee, "anchor": a.anchor, "notes": a.notes, "built": dt.date.today().isoformat()})
+r = model_report(a.model, scale_ref=a.scale_ref)
+r.update({"referee": a.referee, "anchor": a.anchor, "notes": a.notes, "scale_ref": a.scale_ref, "built": dt.date.today().isoformat()})
 out = Path("results") / f"{a.model.replace('/', '__')}.json"
 out.parent.mkdir(exist_ok=True)
 out.write_text(json.dumps(r, indent=1, default=float))
