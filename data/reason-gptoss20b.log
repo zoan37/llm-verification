@@ -1,0 +1,14 @@
+openai/gpt-oss-20b: 10 endpoints support reasoning
+spent $0.2270
+endpoint                                              low                     medium                       high  flags
+akashml__fp4                       acc 83% tok 156 rc 258     acc 83% tok 233 rc 615    acc 75% tok 722 rc 1647  
+amazon-bedrock                     acc 83% tok 130 rc 252     acc 83% tok 244 rc 568    acc 83% tok 424 rc 1158  
+amazon-bedrock__eu-west-1          acc 83% tok 113 rc 260     acc 83% tok 226 rc 569    acc 83% tok 538 rc 1546  
+coreweave__fp4                     acc 83% tok 140 rc 246     acc 83% tok 228 rc 570    acc 83% tok 466 rc 1048  
+darkbloom__fp8                     acc 83% tok 130 rc 245     acc 83% tok 227 rc 607     acc 83% tok 219 rc 598  
+deepinfra__bf16                                         -                          -                          -   (errors 6)
+dekallm__bf16                      acc 83% tok 128 rc 258     acc 83% tok 262 rc 708    acc 83% tok 594 rc 1649  
+groq                               acc 83% tok 104 rc 162     acc 82% tok 207 rc 392    acc 75% tok 626 rc 1784   (errors 1)
+parasail__fp4                      acc 92% tok 116 rc 268     acc 83% tok 268 rc 734    acc 83% tok 540 rc 1601  
+siliconflow__fp8                   acc 92% tok 208 rc 551     acc 83% tok 302 rc 660     acc 83% tok 306 rc 660  
+wrote results/reasoning/openai__gpt-oss-20b.json

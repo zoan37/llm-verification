@@ -1,0 +1,30 @@
+openai/gpt-oss-120b: 26 endpoints support reasoning
+spent $0.3675
+endpoint                                              low                     medium                       high  flags
+akashml__bf16                      acc 83% tok 271 rc 255     acc 83% tok 328 rc 461    acc 92% tok 799 rc 1426  
+amazon-bedrock                     acc 83% tok 265 rc 228     acc 83% tok 291 rc 458    acc 92% tok 632 rc 1188  
+amazon-bedrock__eu-west-1          acc 83% tok 264 rc 222     acc 92% tok 395 rc 469    acc 92% tok 718 rc 1383  
+baseten__fp4                       acc 83% tok 264 rc 228     acc 92% tok 340 rc 590    acc 92% tok 866 rc 1876  
+baseten__fp4__us                   acc 83% tok 282 rc 220     acc 92% tok 350 rc 584    acc 92% tok 698 rc 1296  
+cerebras__fp16                     acc 92% tok 270 rc 318     acc 92% tok 258 rc 406    acc 83% tok 616 rc 1580  
+coreweave__fp4                     acc 83% tok 264 rc 229     acc 92% tok 421 rc 457    acc 92% tok 734 rc 1414  
+crusoe__bf16                       acc 92% tok 246 rc 258     acc 92% tok 286 rc 479    acc 92% tok 745 rc 1308  
+deepinfra__bf16                    acc 83% tok 266 rc 278     acc 83% tok 390 rc 470    acc 83% tok 675 rc 1206  
+deepinfra__fp8                     acc 83% tok 280 rc 281     acc 92% tok 321 rc 481    acc 83% tok 645 rc 1092  
+dekallm__bf16                      acc 83% tok 265 rc 258     acc 92% tok 402 rc 475    acc 92% tok 751 rc 1558  
+digitalocean                                            -                          -                          -   (errors 6)
+google-vertex__global              acc 83% tok 286 rc 238     acc 83% tok 360 rc 453    acc 92% tok 614 rc 1158  
+groq                               acc 92% tok 260 rc 284     acc 83% tok 370 rc 463    acc 92% tok 638 rc 1585  
+mancer__fp8                        acc 83% tok 262 rc 301     acc 83% tok 380 rc 468    acc 83% tok 809 rc 1195  
+mara                               acc 83% tok 280 rc 281     acc 92% tok 321 rc 481    acc 83% tok 645 rc 1092  
+near-ai__fp4                       acc 83% tok 262 rc 263     acc 83% tok 400 rc 490    acc 91% tok 582 rc 1254   (errors 1)
+nebius__fp4                        acc 83% tok 260 rc 230     acc 92% tok 364 rc 472    acc 92% tok 708 rc 1258  
+novita__fp4                        acc 83% tok 306 rc 456     acc 92% tok 314 rc 456    acc 92% tok 610 rc 1440  
+parasail__fp4                      acc 83% tok 242 rc 255     acc 83% tok 365 rc 468    acc 83% tok 855 rc 1502  
+phala                              acc 83% tok 278 rc 536     acc 92% tok 280 rc 459    acc 92% tok 638 rc 1304  
+sail-research__fp4                                      -                          -                          -   (errors 6)
+sambanova                          acc 83% tok 280 rc 281     acc 92% tok 321 rc 481    acc 83% tok 645 rc 1092  
+siliconflow__fp8                   acc 83% tok 326 rc 486     acc 83% tok 354 rc 486     acc 92% tok 318 rc 458  effort setting has little effect on how much it reasons
+together                           acc 83% tok 260 rc 285     acc 83% tok 366 rc 506    acc 92% tok 621 rc 1084  
+venice__int4                       acc 83% tok 274 rc 250     acc 92% tok 362 rc 448    acc 83% tok 630 rc 1214  
+wrote results/reasoning/openai__gpt-oss-120b.json

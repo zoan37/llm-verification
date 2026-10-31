@@ -76,3 +76,11 @@ def test_every_receipt_field_is_covered_by_the_signature():
         d = dict(base)
         d[k] = (v + 1) if isinstance(v, int) else ({**v, "x": 1} if isinstance(v, dict) else str(v) + "0")
         assert not check_receipt(Receipt.from_dict(d), g.trace).ok, k
+
+
+def test_openrouter_error_bodies_are_redacted():
+    from llmverify.openrouter import redact
+    body = '{"error":{"message":"x","code":400},"user_id":"user_2AbCdEfGhIjKlMnOpQrStUvWx"}'
+    out = redact(body)
+    assert "user_2AbC" not in out and "(redacted)" in out
+    assert redact('raw text user_2AbCdEfGhIjKlMnOpQrStUvWxYz more') == "raw text (redacted) more"

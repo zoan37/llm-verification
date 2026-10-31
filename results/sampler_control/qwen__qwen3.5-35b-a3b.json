@@ -1,0 +1,953 @@
+{
+ "model": "qwen/qwen3.5-35b-a3b",
+ "variants": [
+  "unset",
+  "0",
+  "-1",
+  "1000"
+ ],
+ "endpoints": {
+  "alibaba": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 28,
+      "expected": 51.78
+     },
+     {
+      "setting": 20,
+      "observed": 3,
+      "expected": 24.73
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 13.29
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 11.1
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 9.14
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 6.51
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 3.9
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 37,
+      "expected": 59.59
+     },
+     {
+      "setting": 20,
+      "observed": 2,
+      "expected": 27.38
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 14.13
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 11.64
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 9.47
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 6.64
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 3.89
+     }
+    ]
+   },
+   "-1": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 44,
+      "expected": 58.76
+     },
+     {
+      "setting": 20,
+      "observed": 4,
+      "expected": 27.49
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 14.62
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 12.18
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 10.02
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.15
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.28
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 31,
+      "expected": 56.46
+     },
+     {
+      "setting": 20,
+      "observed": 5,
+      "expected": 25.94
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 13.57
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 11.22
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 9.17
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 6.45
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 3.79
+     }
+    ]
+   }
+  },
+  "atlas-cloud__fp8": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 59,
+      "expected": 59.87
+     },
+     {
+      "setting": 20,
+      "observed": 7,
+      "expected": 29.06
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 15.63
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 13.03
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 10.72
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.62
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.52
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 45,
+      "expected": 60.03
+     },
+     {
+      "setting": 20,
+      "observed": 8,
+      "expected": 28.43
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 15.22
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 12.72
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 10.5
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.48
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.47
+     }
+    ]
+   },
+   "-1": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 64,
+      "expected": 81.94
+     },
+     {
+      "setting": 20,
+      "observed": 8,
+      "expected": 41.36
+     },
+     {
+      "setting": 40,
+      "observed": 1,
+      "expected": 23.11
+     },
+     {
+      "setting": 50,
+      "observed": 1,
+      "expected": 19.41
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 16.08
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 11.56
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 6.95
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 45,
+      "expected": 64.28
+     },
+     {
+      "setting": 20,
+      "observed": 4,
+      "expected": 30.44
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 16.34
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 13.58
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 11.14
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.89
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.69
+     }
+    ]
+   }
+  },
+  "darkbloom__fp4": {
+   "unset": {
+    "top_k_bound": 40,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 54,
+      "expected": 56.0
+     },
+     {
+      "setting": 20,
+      "observed": 11,
+      "expected": 27.22
+     },
+     {
+      "setting": 40,
+      "observed": 2,
+      "expected": 14.56
+     },
+     {
+      "setting": 50,
+      "observed": 1,
+      "expected": 12.08
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 9.88
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 6.97
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.13
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 54,
+      "expected": 62.59
+     },
+     {
+      "setting": 20,
+      "observed": 6,
+      "expected": 28.45
+     },
+     {
+      "setting": 40,
+      "observed": 1,
+      "expected": 14.78
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 12.23
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 10.0
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.02
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.13
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 106,
+      "expected": 72.1
+     },
+     {
+      "setting": 20,
+      "observed": 44,
+      "expected": 34.76
+     },
+     {
+      "setting": 40,
+      "observed": 23,
+      "expected": 18.98
+     },
+     {
+      "setting": 50,
+      "observed": 19,
+      "expected": 15.91
+     },
+     {
+      "setting": 64,
+      "observed": 15,
+      "expected": 13.15
+     },
+     {
+      "setting": 100,
+      "observed": 11,
+      "expected": 9.41
+     },
+     {
+      "setting": 200,
+      "observed": 5,
+      "expected": 5.62
+     }
+    ]
+   }
+  },
+  "deepinfra__fp8": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 30,
+      "expected": 46.93
+     },
+     {
+      "setting": 20,
+      "observed": 0,
+      "expected": 21.57
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 11.22
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 9.27
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 7.56
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 5.26
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 3.06
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 67,
+      "expected": 67.88
+     },
+     {
+      "setting": 20,
+      "observed": 36,
+      "expected": 32.85
+     },
+     {
+      "setting": 40,
+      "observed": 18,
+      "expected": 17.58
+     },
+     {
+      "setting": 50,
+      "observed": 14,
+      "expected": 14.61
+     },
+     {
+      "setting": 64,
+      "observed": 12,
+      "expected": 12.0
+     },
+     {
+      "setting": 100,
+      "observed": 9,
+      "expected": 8.51
+     },
+     {
+      "setting": 200,
+      "observed": 6,
+      "expected": 5.04
+     }
+    ]
+   }
+  },
+  "parasail__fp8": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 29,
+      "expected": 52.06
+     },
+     {
+      "setting": 20,
+      "observed": 0,
+      "expected": 25.72
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 14.38
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 12.12
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 10.1
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.34
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.47
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 33,
+      "expected": 66.61
+     },
+     {
+      "setting": 20,
+      "observed": 2,
+      "expected": 31.28
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 16.53
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 13.73
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 11.27
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.99
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.77
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 60,
+      "expected": 67.98
+     },
+     {
+      "setting": 20,
+      "observed": 27,
+      "expected": 32.57
+     },
+     {
+      "setting": 40,
+      "observed": 16,
+      "expected": 17.62
+     },
+     {
+      "setting": 50,
+      "observed": 12,
+      "expected": 14.71
+     },
+     {
+      "setting": 64,
+      "observed": 9,
+      "expected": 12.13
+     },
+     {
+      "setting": 100,
+      "observed": 8,
+      "expected": 8.66
+     },
+     {
+      "setting": 200,
+      "observed": 3,
+      "expected": 5.19
+     }
+    ]
+   }
+  },
+  "siliconflow__fp8": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 60,
+      "expected": 92.99
+     },
+     {
+      "setting": 20,
+      "observed": 3,
+      "expected": 43.22
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 22.77
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 18.88
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 15.46
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 10.91
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 6.46
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 40,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 74,
+      "expected": 84.92
+     },
+     {
+      "setting": 20,
+      "observed": 22,
+      "expected": 39.07
+     },
+     {
+      "setting": 40,
+      "observed": 3,
+      "expected": 20.33
+     },
+     {
+      "setting": 50,
+      "observed": 2,
+      "expected": 16.76
+     },
+     {
+      "setting": 64,
+      "observed": 1,
+      "expected": 13.64
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 9.52
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.55
+     }
+    ]
+   },
+   "-1": {
+    "top_k_bound": 40,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 61,
+      "expected": 80.15
+     },
+     {
+      "setting": 20,
+      "observed": 21,
+      "expected": 38.17
+     },
+     {
+      "setting": 40,
+      "observed": 5,
+      "expected": 20.76
+     },
+     {
+      "setting": 50,
+      "observed": 2,
+      "expected": 17.4
+     },
+     {
+      "setting": 64,
+      "observed": 1,
+      "expected": 14.42
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 10.41
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 6.36
+     }
+    ]
+   },
+   "1000": {
+    "rejected": true,
+    "status": 400
+   }
+  },
+  "venice": {
+   "unset": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 29,
+      "expected": 53.35
+     },
+     {
+      "setting": 20,
+      "observed": 3,
+      "expected": 26.28
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 14.43
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 12.1
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 10.02
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 7.2
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 4.37
+     }
+    ]
+   },
+   "0": {
+    "top_k_bound": 20,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 48,
+      "expected": 65.78
+     },
+     {
+      "setting": 20,
+      "observed": 1,
+      "expected": 31.94
+     },
+     {
+      "setting": 40,
+      "observed": 0,
+      "expected": 17.42
+     },
+     {
+      "setting": 50,
+      "observed": 0,
+      "expected": 14.54
+     },
+     {
+      "setting": 64,
+      "observed": 0,
+      "expected": 11.97
+     },
+     {
+      "setting": 100,
+      "observed": 0,
+      "expected": 8.51
+     },
+     {
+      "setting": 200,
+      "observed": 0,
+      "expected": 5.07
+     }
+    ]
+   },
+   "1000": {
+    "top_k_bound": null,
+    "top_p_bound": null,
+    "min_p_bound": null,
+    "top_k_rows": [
+     {
+      "setting": 10,
+      "observed": 89,
+      "expected": 73.73
+     },
+     {
+      "setting": 20,
+      "observed": 44,
+      "expected": 35.96
+     },
+     {
+      "setting": 40,
+      "observed": 28,
+      "expected": 19.58
+     },
+     {
+      "setting": 50,
+      "observed": 22,
+      "expected": 16.33
+     },
+     {
+      "setting": 64,
+      "observed": 16,
+      "expected": 13.43
+     },
+     {
+      "setting": 100,
+      "observed": 9,
+      "expected": 9.56
+     },
+     {
+      "setting": 200,
+      "observed": 5,
+      "expected": 5.74
+     }
+    ]
+   }
+  }
+ }
+}

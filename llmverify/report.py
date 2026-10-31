@@ -123,11 +123,13 @@ def fidelity(d: Optional[float], honest: Optional[float], cheat: Optional[float]
 
 
 def sampler_flags(sm: Optional[dict]) -> List[str]:
-    """Plain-language flags from stats.sampler_test: which truncation the endpoint's temperature-1 sampling shows."""
+    """One plain-language flag from stats.sampler_test: the sampler settings the endpoint's temperature-1 draws
+    respect although the request asked for no truncation. Several families can fit the same draws (a hard top_k
+    also removes what a min_p would); all are listed, with the evidence for the first."""
     if not sm:
         return []
-    out = []
-    for fam, unit in (("top_k", "rank"), ("top_p", "cumulative probability"), ("min_p", "relative probability")):
+    fits, evidence = [], None
+    for fam in ("top_k", "top_p", "min_p"):
         b = sm[fam]["bound"]
         if b is None:
             continue
@@ -136,19 +138,22 @@ def sampler_flags(sm: Optional[dict]) -> List[str]:
         i = rows.index(r)
         if fam == "top_k":
             lo = rows[i - 1]["setting"] if i > 0 and not rows[i - 1]["deficit"] else None
-            rng = f"top_k between {lo + 1} and {b}" if lo is not None else f"top_k <= {b}"
+            fits.append(f"top_k between {lo + 1} and {b}" if lo is not None else f"top_k <= {b}")
             what = f"{r['observed']} draws past rank {b}"
         elif fam == "top_p":
             lo = rows[i - 1]["setting"] if i > 0 and not rows[i - 1]["deficit"] else None
-            rng = f"top_p between {lo} and {b}" if lo is not None else f"top_p <= {b}"
+            fits.append(f"top_p between {lo} and {b}" if lo is not None else f"top_p <= {b}")
             what = f"{r['observed']} draws outside the top-{b} probability nucleus"
         else:
             hi = rows[i + 1]["setting"] if i + 1 < len(rows) and not rows[i + 1]["deficit"] else None
-            rng = f"min_p between {b} and {hi}" if hi is not None else f"min_p >= {b}"
+            fits.append(f"min_p between {b} and {hi}" if hi is not None else f"min_p >= {b}")
             what = f"{r['observed']} draws below {b} x the top token's probability"
-        out.append(f"truncates sampling at top_p=1 (behaves like {rng}): {what} where an untruncated sampler "
-                   f"makes {r['expected']:.0f}")
-    return out
+        if evidence is None:
+            evidence = f"{what} where an untruncated sampler makes {r['expected']:.0f}"
+    if not fits:
+        return []
+    more = " (or a lower temperature)" if len(fits) == 3 else ""
+    return [f"truncates sampling at top_p=1 (behaves like {' / '.join(fits)}{more}): {evidence}"]
 
 
 def flags(s: dict, ref_regret: Optional[float]) -> List[str]:
@@ -171,7 +176,9 @@ def flags(s: dict, ref_regret: Optional[float]) -> List[str]:
     if bm is not None and bm > 2:
         f.append(f"bills a median {bm} more completion tokens than it returns")
     tail = (s.get("sample_answer") or {}).get("tail") or {}
-    trunc = sampler_flags((s.get("sample_answer") or {}).get("sampler"))
+    # The fingerprint reads the endpoint's draws through the referee's ranks: meaningless for a different model.
+    far = s.get("x_honest") is not None and s["x_honest"] > 100
+    trunc = [] if far else sampler_flags((s.get("sample_answer") or {}).get("sampler"))
     f.extend(trunc)
     # exact Poisson tails; thresholds leave well under one false flag across ~100 endpoints
     if not trunc and tail.get("p_low") is not None and tail["p_low"] < 1e-3 and (tail.get("ratio") or 0) < 0.5:

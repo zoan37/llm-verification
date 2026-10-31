@@ -1,0 +1,12 @@
+spent $0.1063
+akashml__fp4                   identical-at-T1 0/4  stale 0  wrong 0  
+amazon-bedrock                 identical-at-T1 0/4  stale 0  wrong 0  
+amazon-bedrock__eu-west-1      identical-at-T1 0/4  stale 0  wrong 1  
+coreweave__fp4                 identical-at-T1 0/4  stale 0  wrong 1  
+darkbloom__fp8                 identical-at-T1 0/4  stale 0  wrong 1  
+deepinfra__bf16                identical-at-T1 0/0  stale 0  wrong 0  
+dekallm__bf16                  identical-at-T1 0/4  stale 0  wrong 0  
+groq                           identical-at-T1 0/4  stale 0  wrong 0  
+parasail__fp4                  identical-at-T1 0/4  stale 0  wrong 0  
+siliconflow__fp8               identical-at-T1 0/4  stale 0  wrong 0  
+wrote results/cache/openai__gpt-oss-20b.json

@@ -1,0 +1,5 @@
+qwen/qwen3.5-35b-a3b: 3 endpoints; key usage $5.2443
+alibaba                        quant=unknown  ok=48/48 logprobs=48 errors=0
+atlas-cloud/fp8                quant=fp8      ok=48/48 logprobs=0 errors=0
+siliconflow/fp8                quant=fp8      ok=48/48 logprobs=0 errors=0
+qwen/qwen3.5-35b-a3b: spent $0.1006

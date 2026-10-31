@@ -1,0 +1,23 @@
+spent $0.3504
+akashml__fp8                   identical-at-T1 0/4  stale 0  wrong 0  
+alibaba                        identical-at-T1 0/4  stale 0  wrong 0  
+cerebras__fp16                 identical-at-T1 0/4  stale 0  wrong 0  
+chutes__fp8                    identical-at-T1 0/4  stale 0  wrong 0  
+cloudflare                     identical-at-T1 0/4  stale 0  wrong 0  
+coreweave__fp8                 identical-at-T1 0/4  stale 0  wrong 0  
+darkbloom__fp4                 identical-at-T1 0/4  stale 0  wrong 0  
+deepinfra__bf16                identical-at-T1 0/4  stale 0  wrong 0  
+dekallm                        identical-at-T1 0/4  stale 0  wrong 0  
+ionstream__fp8                 identical-at-T1 0/4  stale 0  wrong 0  
+mancer__fp8                    identical-at-T1 0/4  stale 0  wrong 0  
+modal                          identical-at-T1 0/4  stale 0  wrong 0  
+modelrun__fp4                  identical-at-T1 4/4  stale 0  wrong 0  identical temperature-1 replies for 4 of 4 prompts (response cache or ignored temperature)
+near-ai__fp8                   identical-at-T1 0/4  stale 0  wrong 0  
+novita                         identical-at-T1 0/4  stale 0  wrong 0  
+parasail__fp8                  identical-at-T1 0/4  stale 0  wrong 0  
+phala                          identical-at-T1 0/4  stale 0  wrong 0  
+reka__fp8                      identical-at-T1 0/4  stale 0  wrong 0  
+tenstorrent__fp4               identical-at-T1 0/4  stale 0  wrong 0  
+venice__fp8                    identical-at-T1 0/4  stale 0  wrong 0  
+wafer__fp8                     identical-at-T1 0/4  stale 0  wrong 0  
+wrote results/cache/qwen__qwen3.8-27b.json

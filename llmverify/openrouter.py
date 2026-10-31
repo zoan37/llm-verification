@@ -16,6 +16,7 @@ from __future__ import annotations
 import datetime as dt
 import gzip
 import json
+import re
 import os
 import threading
 import time
@@ -35,6 +36,14 @@ def _key() -> str:
     return os.environ.get("OPENROUTER_API_KEY") or Path("~/.config/openrouter/api-key").expanduser().read_text().strip()
 
 
+_ACCOUNT_ID = re.compile(r'"user_id"\s*:\s*"[^"]*"?|\\"user_id\\"\s*:\s*\\"[^"\\]*|user_[A-Za-z0-9]{6,}')
+
+
+def redact(body: str) -> str:
+    """Error bodies carry the caller's OpenRouter account id; raw data is published, so it is removed."""
+    return _ACCOUNT_ID.sub(lambda m: '"user_id":"(redacted)"' if m.group(0).startswith('"') else "(redacted)", body)
+
+
 def call(path: str, payload: Optional[dict] = None, timeout: float = 180) -> dict:
     headers = {"Authorization": f"Bearer {_key()}", "Content-Type": "application/json",
                "X-Title": "llm-verification audit"}
@@ -44,10 +53,10 @@ def call(path: str, payload: Optional[dict] = None, timeout: float = 180) -> dic
         with urllib.request.urlopen(req, timeout=timeout) as r:
             out = json.load(r)
         if isinstance(out.get("error"), dict):
-            return {"error": {"status": out["error"].get("code"), "body": json.dumps(out["error"])[:600]}}
+            return {"error": {"status": out["error"].get("code"), "body": redact(json.dumps(out["error"]))[:600]}}
         return out
     except urllib.error.HTTPError as e:
-        return {"error": {"status": e.code, "body": e.read().decode(errors="replace")[:600]}}
+        return {"error": {"status": e.code, "body": redact(e.read().decode(errors="replace"))[:600]}}
     except Exception as e:  # timeouts, resets
         return {"error": {"status": None, "body": repr(e)[:300]}}
 

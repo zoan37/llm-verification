@@ -105,34 +105,55 @@ trunc_rows = []
 for rf in sorted((root / "results").glob("*.json")):
     r = json.loads(rf.read_text())
     eps = {k: v for k, v in r["endpoints"].items() if not k.startswith("local__")}
-    with_fp = {k: v for k, v in eps.items() if (v.get("sample_answer") or {}).get("sampler")}
+    with_fp = {k: v for k, v in eps.items() if (v.get("sample_answer") or {}).get("sampler")
+               and not (v.get("x_honest") is not None and v["x_honest"] > 100)}  # same gate as report.flags
     if not with_fp:
         continue
-    hits, flagged = [], set()
+    hits = []
     for k, v in sorted(with_fp.items()):
         sm = v["sample_answer"]["sampler"]
-        if any(sm[f]["bound"] is not None for f in ("top_k", "top_p", "min_p")):
-            flagged.add(k)
-        if sm["top_k"]["bound"] is not None:
-            b = sm["top_k"]["bound"]
-            row = next(x for x in sm["top_k"]["rows"] if x["setting"] == b)
-            hits.append((b, f"<b>{ep_name(k)}</b> ≤{b} <span class=sub>({row['observed']} vs {row['expected']:.0f})</span>"))
-        for fam, lab in (("top_p", "top_p"), ("min_p", "min_p")):
-            if sm[fam]["bound"] is not None:
-                hits.append((999, f"<b>{ep_name(k)}</b> {lab} {sm[fam]['bound']}"))
+        parts, ev, order = [], "", 999
+        for fam, sym in (("top_k", "≤"), ("top_p", "≤"), ("min_p", "≥")):
+            b = sm[fam]["bound"]
+            if b is None:
+                continue
+            row = next(x for x in sm[fam]["rows"] if x["setting"] == b)
+            parts.append(f"{fam} {sym} {b}")
+            if not ev:
+                ev, order = f"{row['observed']} vs {row['expected']:.0f}", (b if fam == "top_k" else 500)
+        if parts:
+            hits.append((order, f"<b>{ep_name(k)}</b> {' / '.join(parts)} <span class=sub>({ev})</span>"))
     hits.sort(key=lambda h: h[0])
     trunc_rows.append(f"<tr><td>{r['model']}</td><td class='num'>{len(with_fp)}</td>"
-                      f"<td class='num'>{len(flagged)}</td>"
+                      f"<td class='num'>{len(hits)}</td>"
                       f"<td>{', '.join(h[1] for h in hits) or '<span class=sub>none</span>'}</td></tr>")
+
+control_rows = []
+for cf in sorted((root / "results" / "sampler_control").glob("*.json")):
+    c = json.loads(cf.read_text())
+
+    def show(cell):
+        if cell is None:
+            return "<span class=sub>–</span>"
+        if "status" in cell:
+            return "rejected" if cell["rejected"] else f"error {cell['status']}"
+        parts = [f"top_k ≤ {cell['top_k_bound']}" if cell["top_k_bound"] else None,
+                 f"top_p ≤ {cell['top_p_bound']}" if cell["top_p_bound"] else None,
+                 f"min_p ≥ {cell['min_p_bound']}" if cell["min_p_bound"] else None]
+        out = " / ".join(x for x in parts if x)
+        return out or "<b>full distribution</b>"
+    for ep, cells in sorted(c["endpoints"].items()):
+        control_rows.append(f"<tr><td>{c['model']}</td><td>{ep_name(ep)}</td>"
+                            + "".join(f"<td>{show(cells.get(v))}</td>" for v in c["variants"]) + "</tr>")
+control_head = "".join(f"<th>top_k {'not set' if v == 'unset' else v}</th>" for v in ("unset", "0", "-1", "1000"))
 
 shared_rows = []
 for sf in sorted((root / "results" / "shared").glob("*.json")):
     sh = json.loads(sf.read_text())
     for g in sh["groups"]:
-        ev = [p for p in sh["same_pairs"] if p["a"] in g]
-        tot_i, tot_c = sum(p["identical"] for p in ev), sum(p["compared"] for p in ev)
-        shared_rows.append(f"<tr><td>{sh['model_key'].replace('__', '/')}</td><td>{', '.join(g)}</td>"
-                           f"<td class='num'>{tot_i} / {tot_c}</td><td class='num'>{sh['max_other_share']:.0%}</td></tr>")
+        ev = [f"{ep_name(p['a'])}–{ep_name(p['b'])} {p['identical']}/{p['compared']}" for p in sh["same_pairs"] if p["a"] in g]
+        shared_rows.append(f"<tr><td>{sh['model_key'].replace('__', '/')}</td><td>{', '.join(ep_name(x) for x in g)}</td>"
+                           f"<td>{'<br>'.join(ev)}</td><td class='num'>{sh['max_other_share']:.0%}</td></tr>")
 
 effort_rows = []
 for ef in sorted((root / "results" / "reasoning").glob("*.json")):
@@ -162,14 +183,21 @@ serving_html = f"""<section class="coop" aria-label="Serving behaviour">
       model's recommended defaults (Qwen's is top_k = 20) to requests that do not set top_k. The listed value is the
       loosest setting the endpoint's draws still respect (observed vs expected draws past it).</p>
     <div class="ledger"><table class="small">
-      <thead><tr><th>Model</th><th>Endpoints</th><th>Truncating</th><th>Behaves like top_k ≤</th></tr></thead>
+      <thead><tr><th>Model</th><th>Endpoints</th><th>Truncating</th><th>Behaves like (draws past the cutoff vs expected)</th></tr></thead>
       <tbody>{''.join(trunc_rows)}</tbody></table></div>
+    <p class="lede" style="font-size:14px;max-width:80ch"><b>Can it be turned off?</b> The same prompts again with top_k
+      sent explicitly. "0" and "-1" mean "no top_k" in most APIs; 1000 is a cutoff too loose to remove anything
+      measurable. Some endpoints treat 0 as "not set", some reject large values, and some keep truncating whatever
+      the request says.</p>
+    <div class="ledger"><table class="small">
+      <thead><tr><th>Model</th><th>Endpoint</th>{control_head}</tr></thead>
+      <tbody>{''.join(control_rows)}</tbody></table></div>
     <p class="lede" style="font-size:14px;max-width:80ch"><b>One deployment, several names.</b> Independent deployments of
       the same weights drift apart within a few hundred greedy (temperature 0) tokens: different hardware, kernels and
       batch sizes round differently. Endpoints whose greedy replies are byte-identical on nearly every prompt are one
       serving stack sold under several names, so at least one label is not what runs.</p>
     <div class="ledger"><table class="small">
-      <thead><tr><th>Model</th><th>Endpoints that are one deployment</th><th>Identical replies</th><th>Most similar other pair</th></tr></thead>
+      <thead><tr><th>Model</th><th>Endpoints that are one deployment</th><th>Identical greedy replies (per pair)</th><th>Most similar other pair</th></tr></thead>
       <tbody>{''.join(shared_rows) or '<tr><td colspan=4>none found</td></tr>'}</tbody></table></div>
     <p class="lede" style="font-size:14px;max-width:80ch"><b>Reasoning effort.</b> 12 maths problems at effort low,
       medium and high (temperature 0). Honest endpoints reason roughly twice as long at each step up; the medians of all

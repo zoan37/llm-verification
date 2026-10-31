@@ -1,0 +1,28 @@
+spent $0.0406
+akashml__bf16                  identical-at-T1 0/4  stale 0  wrong 0  
+amazon-bedrock                 identical-at-T1 0/4  stale 0  wrong 0  
+amazon-bedrock__eu-west-1      identical-at-T1 0/4  stale 0  wrong 0  
+baseten__fp4                   identical-at-T1 0/4  stale 0  wrong 0  
+baseten__fp4__us               identical-at-T1 0/4  stale 0  wrong 0  
+cerebras__fp16                 identical-at-T1 0/4  stale 0  wrong 0  
+coreweave__fp4                 identical-at-T1 0/4  stale 0  wrong 0  
+crusoe__bf16                   identical-at-T1 0/4  stale 0  wrong 0  
+deepinfra__bf16                identical-at-T1 0/4  stale 0  wrong 0  
+deepinfra__fp8                 identical-at-T1 0/4  stale 0  wrong 0  
+dekallm__bf16                  identical-at-T1 0/4  stale 0  wrong 0  
+digitalocean                   identical-at-T1 0/4  stale 0  wrong 1  
+google-vertex__global          identical-at-T1 0/4  stale 0  wrong 0  
+groq                           identical-at-T1 0/4  stale 0  wrong 0  
+mancer__fp8                    identical-at-T1 0/4  stale 0  wrong 0  
+mara                           identical-at-T1 0/4  stale 0  wrong 0  
+near-ai__fp4                   identical-at-T1 0/4  stale 0  wrong 0  
+nebius__fp4                    identical-at-T1 0/4  stale 0  wrong 0  
+novita__fp4                    identical-at-T1 0/3  stale 0  wrong 0  
+parasail__fp4                  identical-at-T1 0/4  stale 0  wrong 0  
+phala                          identical-at-T1 0/4  stale 0  wrong 0  
+sail-research__fp4             identical-at-T1 0/0  stale 0  wrong 0  
+sambanova                      identical-at-T1 0/4  stale 0  wrong 0  
+siliconflow__fp8               identical-at-T1 0/4  stale 0  wrong 0  
+together                       identical-at-T1 0/4  stale 0  wrong 0  
+venice__int4                   identical-at-T1 0/4  stale 0  wrong 0  
+wrote results/cache/openai__gpt-oss-120b.json

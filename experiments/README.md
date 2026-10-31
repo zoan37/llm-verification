@@ -18,10 +18,15 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    past a deliberately 3-bit-quantized copy (5.8×). Their temperature-1 samples also fit the referee worse (PIT mean
    0.507-0.512, p < 0.001 for two of them). Possible causes: harsher quantization than labelled, an approximate KV
    cache or kernels, or a different checkpoint. The audit shows the distance, not the cause.
-2. **Silent sampling truncation is common.** Asked for temperature 1 and top_p 1, six of seven Qwen3.5 endpoints
-   almost never produce a long-tail token (13 observed vs about 64 expected in total; honest references: 0.7-1.3× the
-   expected count). The likely cause is serving stacks applying the model's recommended `top_k` when the request does
-   not set one. That changes the distribution users get without telling them. Found by the new tail-rate test.
+2. **Silent sampling truncation is the norm on Qwen models.** Asked for temperature 1 and top_p 1, 7 of 7 Qwen3.5
+   endpoints and 18 of 19 measurable Qwen3.8 endpoints sample only from the 20 likeliest tokens (e.g. DeepInfra on
+   Qwen3.5: 0 draws past rank 20 where an untruncated sampler makes 22; honest references: 25 vs 26.5 and 40 vs
+   37.5). top_k = 20 is Qwen's recommended default in `generation_config.json`, and common serving stacks apply those
+   defaults to requests that do not set top_k. Sending top_k explicitly turns it off on some endpoints but not
+   others (DeepInfra honours 0; Parasail, Venice and Darkbloom treat 0 as "not set" but honour 1000; Alibaba and
+   AtlasCloud stay at 20 whatever is sent; SiliconFlow rejects values over 100). Elsewhere: Groq truncates hard on
+   gpt-oss-20b (32 draws past rank 10 vs 143 expected), io.net on Gemma-4 (top_p ≈ 0.95-0.98); all other Gemma and
+   gpt-oss endpoints sample the full distribution. Found by the sampler fingerprint (below).
 3. **Broken logprob output.** On Qwen3.8-27B, DekaLLM and Wafer attach top-logprob lists from the wrong position to
    64-73% of tokens (every other endpoint: under 1%), and the same two endpoints pick tokens that are not their own
    top choice at temperature 0 (28-32%). Their logprobs cannot be used to verify anything. Found without any reference
@@ -34,6 +39,62 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    the referee, twice as far as a deliberately 2-bit-quantized copy, yet fluent, with no hidden system prompt, not an
    older Qwen 27B, and behaving differently on borderline requests (it tells a dark joke where the released model
    deflects). Most consistent with modified weights, e.g. an "uncensored" fine-tune, served under the official name.
+7. **Three gpt-oss-120b endpoints are one deployment.** Mara and SambaNova return byte-identical greedy replies on
+   83 of 83 prompts, and DeepInfra (fp8, which failed during the first collection) matches both on 36 of 36
+   (reasoning included, often 1,000+ characters), while no other pair of the 26 endpoints matches on more than 14%;
+   their latencies differ (SambaNova fastest). Independent deployments of the same
+   weights drift apart within a few hundred greedy tokens, so these are one serving stack under three names, and
+   the labels (DeepInfra says fp8) cannot all describe what runs.
+8. **Reasoning effort is not always honoured.** SiliconFlow reasons about the same amount at low, medium and high on
+   both gpt-oss models (gpt-oss-120b: 326 / 354 / 318 median tokens; everyone else: 266 / 357 / 645). Darkbloom's
+   gpt-oss-20b "high" reasons like everyone else's "medium" (219 vs 233 tokens). All 30 other endpoints scale.
+9. **One endpoint repeats itself at temperature 1.** ModelRun (Qwen3.8, fp4) returns the same reply to the same
+   prompt on repeated calls, across seeds and whitespace changes (7 of 9 identical), while honouring other
+   temperatures; its single samples are statistically honest, so retries and best-of-n silently get one sample.
+   None of the other 75 endpoints tested repeats, and none answered a near-duplicate prompt with the other's answer.
+
+## Sampler fingerprint (all models)
+
+`blackbox.sampler_counts` + `stats.sampler_test`. For each common sampler setting (top_k 10-200, top_p 0.8-0.99,
+min_p 0.01-0.2) the referee knows at every position how much probability that setting would remove, so it predicts
+how many removed tokens an untruncated temperature-1 sampler draws over 48 replies; the endpoint's actual count is
+compared with exact Poisson tails (truncation = under 30% of expected, p < 0.001). Honest references are calibrated
+at every setting (Qwen3.5 Q6_K: 15 draws past rank 40 vs 14.3 expected; Qwen3.8 Q6_K: 22 vs 20.2; gpt-oss-20b on a
+CPU: 45 vs 50.2; Gemma vLLM BF16: 35 outside the 0.98 nucleus vs 27.5). Gemma-4 is so sharp that top_k is
+untestable on ordinary prompts (under one expected draw past rank 20); top_p and min_p still have power.
+
+| Model | Truncating / measurable | Settings the draws respect |
+|---|---|---|
+| Qwen3.5-35B-A3B | 7 / 7 | top_k ≤ 20 (Darkbloom ≤ 40) |
+| Qwen3.8-27B | 18 / 19 | top_k ≤ 20 (Cerebras ≤ 40); ModelRun samples the full distribution; Venice not readable (different model) |
+| gpt-oss-20b | 1 / 10 | Groq: top_k ≤ 10 / top_p ≤ 0.95 / min_p ≥ 0.05, or a lower temperature |
+| Gemma-4-26B | 1 / 14 | io.net: top_p ≈ 0.95-0.98 |
+
+Turning it off (Qwen3.5, `experiments/sampler_control.py`, 48 more replies per variant):
+
+| Endpoint | top_k not set | top_k 0 | top_k -1 | top_k 1000 |
+|---|---|---|---|---|
+| DeepInfra | ≤ 20 | **full** | | |
+| Parasail, Venice, Darkbloom | ≤ 20 (Darkbloom ≤ 40) | ≤ 20 | | **full** |
+| SiliconFlow | ≤ 20 | ≤ 40 | ≤ 40 | rejected (top_k must be ≤ 100) |
+| Alibaba, AtlasCloud | ≤ 20 | ≤ 20 | ≤ 20 | ≤ 20 |
+
+The earlier long-tail count (tokens under p = 1e-4) caught some of this but had little power where under one such
+token is expected; with a normal approximation it also flagged our own honest Gemma reference (5 drawn vs 0.78
+expected, a 1-in-1000 event). It now uses exact Poisson tails; see the red-team log in docs/soundness.md.
+
+## Shared deployments, reasoning effort, repeated replies
+
+`experiments/shared_backends.py`, `experiments/reasoning_effort.py`, `experiments/response_cache.py`; no referee
+needed. Results in `results/shared/`, `results/reasoning/`, `results/cache/`; findings 7-9 above.
+
+Reasoning effort, median billed completion tokens on 12 problems at temperature 0 (the 12 have one ill-posed case,
+"1/n" with n = 7.5, on which honest high-effort runs reason past the 6,000-token cap):
+
+| Model | All endpoints low / medium / high | Not honoured |
+|---|---|---|
+| gpt-oss-120b (24 answering) | 266 / 357 / 645 | SiliconFlow (326 / 354 / 318) |
+| gpt-oss-20b (9 answering) | 130 / 233 / 538 | SiliconFlow (208 / 302 / 306), Darkbloom high (219) |
 
 ## Qwen3.5-35B-A3B (7 endpoints)
 

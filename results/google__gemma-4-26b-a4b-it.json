@@ -63,7 +63,160 @@
      "p_high": 8.766953827489299e-23,
      "n_tokens": 11269
     },
-    "sampler": null
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 22,
+        "expected": 3.78,
+        "ratio": 5.817028027498678,
+        "p_low": 0.9999999999797473,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 12,
+        "expected": 0.94,
+        "ratio": 12.795659712225612,
+        "p_low": 0.9999999999707627,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 5,
+        "expected": 0.28,
+        "ratio": 17.806965372575135,
+        "p_low": 0.9999994645860961,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 4,
+        "expected": 0.2,
+        "ratio": 20.36027506731616,
+        "p_low": 0.9999979285854603,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 3,
+        "expected": 0.13,
+        "ratio": 22.715914769887785,
+        "p_low": 0.9999885930329236,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 0,
+        "expected": 0.07,
+        "ratio": 0.0,
+        "p_low": 0.9363611808120051,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 0,
+        "expected": 0.02,
+        "ratio": 0.0,
+        "p_low": 0.9765014927429074,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 668,
+        "expected": 242.49,
+        "ratio": 2.7547350059567433,
+        "p_low": 0.9999999999999385,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 492,
+        "expected": 124.86,
+        "ratio": 3.9404707635570335,
+        "p_low": 0.9999999999999554,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 351,
+        "expected": 68.26,
+        "ratio": 5.141858454568883,
+        "p_low": 0.9999999999999905,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 215,
+        "expected": 30.74,
+        "ratio": 6.993289727081827,
+        "p_low": 0.9999999999999972,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 161,
+        "expected": 16.61,
+        "ratio": 9.692830586479465,
+        "p_low": 0.999999999999999,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 177,
+        "expected": 21.51,
+        "ratio": 8.23053763824862,
+        "p_low": 0.9999999999999981,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 241,
+        "expected": 37.72,
+        "ratio": 6.389945778260928,
+        "p_low": 1.0,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 375,
+        "expected": 75.85,
+        "ratio": 4.943660202696924,
+        "p_low": 1.0,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 500,
+        "expected": 131.35,
+        "ratio": 3.80663787046628,
+        "p_low": 0.9999999999999083,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 647,
+        "expected": 223.39,
+        "ratio": 2.8962648662600907,
+        "p_low": 0.9999999999999564,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 48
+    }
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -177,7 +330,160 @@
      "p_high": 0.5310042629393088,
      "n_tokens": 11064
     },
-    "sampler": null
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 2,
+        "expected": 2.65,
+        "ratio": 0.7547967332397386,
+        "p_low": 0.5060204626541736,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 0,
+        "expected": 0.58,
+        "ratio": 0.0,
+        "p_low": 0.5616878558648363,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 0,
+        "expected": 0.17,
+        "ratio": 0.0,
+        "p_low": 0.8439154222600117,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 0,
+        "expected": 0.12,
+        "ratio": 0.0,
+        "p_low": 0.8908359388028674,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 0,
+        "expected": 0.08,
+        "ratio": 0.0,
+        "p_low": 0.9259963370623415,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 0,
+        "expected": 0.04,
+        "ratio": 0.0,
+        "p_low": 0.9620854566358346,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 0,
+        "expected": 0.01,
+        "ratio": 0.0,
+        "p_low": 0.9857623280877915,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 262,
+        "expected": 222.12,
+        "ratio": 1.179531400717354,
+        "p_low": 0.9958996044805994,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 136,
+        "expected": 115.07,
+        "ratio": 1.1818963102205282,
+        "p_low": 0.9747249013701724,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 80,
+        "expected": 59.64,
+        "ratio": 1.3414494827815149,
+        "p_low": 0.9951155089165075,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 35,
+        "expected": 26.79,
+        "ratio": 1.306539810361346,
+        "p_low": 0.948789307495265,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 19,
+        "expected": 14.5,
+        "ratio": 1.3100398141784368,
+        "p_low": 0.9010609847382133,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 26,
+        "expected": 18.22,
+        "ratio": 1.42728522500136,
+        "p_low": 0.9680490375619558,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 45,
+        "expected": 31.26,
+        "ratio": 1.4394057672382996,
+        "p_low": 0.9920340999693736,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 84,
+        "expected": 65.89,
+        "ratio": 1.2748507684732138,
+        "p_low": 0.9866345213233797,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 153,
+        "expected": 117.1,
+        "ratio": 1.3065332117283952,
+        "p_low": 0.9993660300850803,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 246,
+        "expected": 203.57,
+        "ratio": 1.2084193820447842,
+        "p_low": 0.9982646174795969,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 48
+    }
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -291,7 +597,160 @@
      "p_high": 1.0,
      "n_tokens": 10779
     },
-    "sampler": null
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 0,
+        "expected": 1.88,
+        "ratio": 0.0,
+        "p_low": 0.15238120044481024,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 0,
+        "expected": 0.49,
+        "ratio": 0.0,
+        "p_low": 0.6121628114922054,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 0,
+        "expected": 0.16,
+        "ratio": 0.0,
+        "p_low": 0.8554898928831846,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 0,
+        "expected": 0.11,
+        "ratio": 0.0,
+        "p_low": 0.8936187937022043,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 0,
+        "expected": 0.08,
+        "ratio": 0.0,
+        "p_low": 0.9230738840113442,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 0,
+        "expected": 0.05,
+        "ratio": 0.0,
+        "p_low": 0.9559621105806443,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 0,
+        "expected": 0.02,
+        "ratio": 0.0,
+        "p_low": 0.9802143566109943,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 198,
+        "expected": 209.24,
+        "ratio": 0.9462747719083519,
+        "p_low": 0.2304264479112242,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 109,
+        "expected": 109.89,
+        "ratio": 0.9918871457377234,
+        "p_low": 0.49144478277378834,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 58,
+        "expected": 59.14,
+        "ratio": 0.9807937750033714,
+        "p_low": 0.4756523572598597,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 28,
+        "expected": 26.09,
+        "ratio": 1.0733037316164153,
+        "p_low": 0.6906054921312057,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 16,
+        "expected": 14.16,
+        "ratio": 1.129568495656915,
+        "p_low": 0.7414978492690304,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 18,
+        "expected": 17.68,
+        "ratio": 1.0182816632703202,
+        "p_low": 0.5924625942797078,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 38,
+        "expected": 30.76,
+        "ratio": 1.2353390048180497,
+        "p_low": 0.9148563520407883,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 62,
+        "expected": 63.33,
+        "ratio": 0.9789798654000582,
+        "p_low": 0.4666665954043192,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 101,
+        "expected": 112.31,
+        "ratio": 0.8992972704146379,
+        "p_low": 0.15360871549428703,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 182,
+        "expected": 190.69,
+        "ratio": 0.9544436044000542,
+        "p_low": 0.27926302494547584,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 47
+    }
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -405,7 +864,160 @@
      "p_high": 4.502848819959651e-18,
      "n_tokens": 10998
     },
-    "sampler": null
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 19,
+        "expected": 3.2,
+        "ratio": 5.9298893576275695,
+        "p_low": 0.9999999997442767,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 3,
+        "expected": 0.8,
+        "ratio": 3.731997775729326,
+        "p_low": 0.9907713914004028,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 1,
+        "expected": 0.23,
+        "ratio": 4.313580012595653,
+        "p_low": 0.97694162434293,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 1,
+        "expected": 0.16,
+        "ratio": 6.188501763723003,
+        "p_low": 0.9882691060627076,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 1,
+        "expected": 0.11,
+        "ratio": 9.048136083966702,
+        "p_low": 0.9943245407123475,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 1,
+        "expected": 0.06,
+        "ratio": 16.74985762621018,
+        "p_low": 0.9982872050338498,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 1,
+        "expected": 0.02,
+        "ratio": 40.56301464324829,
+        "p_low": 0.999701063379018,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 651,
+        "expected": 232.05,
+        "ratio": 2.805395783621142,
+        "p_low": 1.0,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 465,
+        "expected": 119.72,
+        "ratio": 3.883935543943043,
+        "p_low": 0.9999999999999541,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 358,
+        "expected": 63.79,
+        "ratio": 5.612452093488527,
+        "p_low": 0.999999999999995,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 229,
+        "expected": 28.81,
+        "ratio": 7.949355178855631,
+        "p_low": 1.0,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 159,
+        "expected": 15.55,
+        "ratio": 10.2242039315858,
+        "p_low": 1.0,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 186,
+        "expected": 20.1,
+        "ratio": 9.25358079995415,
+        "p_low": 1.0,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 251,
+        "expected": 35.0,
+        "ratio": 7.1717670788346926,
+        "p_low": 1.0,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 364,
+        "expected": 71.12,
+        "ratio": 5.117792317119558,
+        "p_low": 1.0,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 473,
+        "expected": 124.45,
+        "ratio": 3.8006922450683467,
+        "p_low": 1.0,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 633,
+        "expected": 209.64,
+        "ratio": 3.019428548772295,
+        "p_low": 1.0,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 48
+    }
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -507,7 +1119,160 @@
      "p_high": 0.5492532828459514,
      "n_tokens": 11009
     },
-    "sampler": null
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 0,
+        "expected": 2.6,
+        "ratio": 0.0,
+        "p_low": 0.07451357167897597,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 0,
+        "expected": 0.62,
+        "ratio": 0.0,
+        "p_low": 0.5395919895078096,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 0,
+        "expected": 0.18,
+        "ratio": 0.0,
+        "p_low": 0.8335746655996413,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 0,
+        "expected": 0.13,
+        "ratio": 0.0,
+        "p_low": 0.8801807454880504,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 0,
+        "expected": 0.09,
+        "ratio": 0.0,
+        "p_low": 0.9162784278130892,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 0,
+        "expected": 0.05,
+        "ratio": 0.0,
+        "p_low": 0.9554011254869667,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 0,
+        "expected": 0.02,
+        "ratio": 0.0,
+        "p_low": 0.9824360759516672,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 257,
+        "expected": 218.9,
+        "ratio": 1.1740693007607343,
+        "p_low": 0.99459204827117,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 130,
+        "expected": 113.02,
+        "ratio": 1.1502076421193688,
+        "p_low": 0.9473177954840815,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 70,
+        "expected": 61.32,
+        "ratio": 1.1414620246754412,
+        "p_low": 0.8779756946114728,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 33,
+        "expected": 27.14,
+        "ratio": 1.2158085618786318,
+        "p_low": 0.8864278285479343,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 20,
+        "expected": 14.78,
+        "ratio": 1.353040091660348,
+        "p_low": 0.9258326415918763,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 22,
+        "expected": 18.97,
+        "ratio": 1.1597286951776478,
+        "p_low": 0.7951665724605848,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 37,
+        "expected": 32.04,
+        "ratio": 1.1548071406532001,
+        "p_low": 0.8334125061375114,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 71,
+        "expected": 66.24,
+        "ratio": 1.0719358807210144,
+        "p_low": 0.7450004504494832,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 138,
+        "expected": 115.67,
+        "ratio": 1.1930736369371449,
+        "p_low": 0.9809304821419821,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 237,
+        "expected": 203.54,
+        "ratio": 1.164383924735638,
+        "p_low": 0.9900887328996893,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 48
+    }
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -614,7 +1379,160 @@
      "p_high": 1.0,
      "n_tokens": 11137
     },
-    "sampler": null
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 2,
+        "expected": 2.27,
+        "ratio": 0.8826207127250517,
+        "p_low": 0.6050800545308695,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 0,
+        "expected": 0.48,
+        "ratio": 0.0,
+        "p_low": 0.6199155623349556,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 0,
+        "expected": 0.13,
+        "ratio": 0.0,
+        "p_low": 0.8763585220745442,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 0,
+        "expected": 0.09,
+        "ratio": 0.0,
+        "p_low": 0.9128835071599801,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 0,
+        "expected": 0.06,
+        "ratio": 0.0,
+        "p_low": 0.9391294029033085,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 0,
+        "expected": 0.03,
+        "ratio": 0.0,
+        "p_low": 0.9665434744703115,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 0,
+        "expected": 0.01,
+        "ratio": 0.0,
+        "p_low": 0.9863332497416235,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 277,
+        "expected": 219.94,
+        "ratio": 1.2594540612198795,
+        "p_low": 0.999907674787466,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 150,
+        "expected": 112.44,
+        "ratio": 1.3339916255918787,
+        "p_low": 0.999693112006974,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 80,
+        "expected": 61.08,
+        "ratio": 1.309758831323151,
+        "p_low": 0.9915396112640068,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 39,
+        "expected": 27.58,
+        "ratio": 1.4141379493019943,
+        "p_low": 0.9846260232603558,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 17,
+        "expected": 14.83,
+        "ratio": 1.146272688697893,
+        "p_low": 0.7630405620707814,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 26,
+        "expected": 18.48,
+        "ratio": 1.407082647921728,
+        "p_low": 0.9630742702654012,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 44,
+        "expected": 32.08,
+        "ratio": 1.3717158122825617,
+        "p_low": 0.9820791886544169,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 85,
+        "expected": 66.54,
+        "ratio": 1.2774895268778461,
+        "p_low": 0.9876257102511151,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 153,
+        "expected": 115.62,
+        "ratio": 1.3232880719513758,
+        "p_low": 0.999620673308435,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 261,
+        "expected": 202.13,
+        "ratio": 1.2912380622072785,
+        "p_low": 0.9999688829349687,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 48
+    }
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -728,7 +1646,160 @@
      "p_high": 0.05076903149223666,
      "n_tokens": 11068
     },
-    "sampler": null
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 6,
+        "expected": 3.16,
+        "ratio": 1.8966376723450946,
+        "p_low": 0.957564769030345,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 5,
+        "expected": 0.76,
+        "ratio": 6.574950490622806,
+        "p_low": 0.9998593788850312,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 3,
+        "expected": 0.24,
+        "ratio": 12.6575869576224,
+        "p_low": 0.9998911437388948,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 3,
+        "expected": 0.17,
+        "ratio": 17.208248487108154,
+        "p_low": 0.999966508494294,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 3,
+        "expected": 0.13,
+        "ratio": 23.794604969899826,
+        "p_low": 0.9999904797542004,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 3,
+        "expected": 0.07,
+        "ratio": 41.66377334907298,
+        "p_low": 0.9999989425680601,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 2,
+        "expected": 0.03,
+        "ratio": 61.70363742942647,
+        "p_low": 0.9999944606677181,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 233,
+        "expected": 223.18,
+        "ratio": 1.044008184540249,
+        "p_low": 0.7570254580369215,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 128,
+        "expected": 117.24,
+        "ratio": 1.091739669080742,
+        "p_low": 0.8505269603331214,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 66,
+        "expected": 63.67,
+        "ratio": 1.0365601193325702,
+        "p_low": 0.6452723054449017,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 32,
+        "expected": 28.45,
+        "ratio": 1.1249548523978379,
+        "p_low": 0.7804704815506815,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 18,
+        "expected": 15.4,
+        "ratio": 1.1685786344353635,
+        "p_low": 0.7898759594173387,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 23,
+        "expected": 19.65,
+        "ratio": 1.1704349158037464,
+        "p_low": 0.8102193068469984,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 36,
+        "expected": 33.74,
+        "ratio": 1.0669961550793552,
+        "p_low": 0.6905357075336688,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 72,
+        "expected": 69.43,
+        "ratio": 1.0370808995841378,
+        "p_low": 0.6503219329060784,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 131,
+        "expected": 121.56,
+        "ratio": 1.0776942085790924,
+        "p_low": 0.8172625476129121,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 213,
+        "expected": 203.53,
+        "ratio": 1.046511876423554,
+        "p_low": 0.7594754704268949,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 48
+    }
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -837,7 +1908,160 @@
      "p_high": 1.0,
      "n_tokens": 11042
     },
-    "sampler": null
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 0,
+        "expected": 2.41,
+        "ratio": 0.0,
+        "p_low": 0.08988142296131488,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 0,
+        "expected": 0.55,
+        "ratio": 0.0,
+        "p_low": 0.5740848909251088,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 0,
+        "expected": 0.16,
+        "ratio": 0.0,
+        "p_low": 0.8537951373310828,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 0,
+        "expected": 0.11,
+        "ratio": 0.0,
+        "p_low": 0.8951088034459951,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 0,
+        "expected": 0.08,
+        "ratio": 0.0,
+        "p_low": 0.9270859493211594,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 0,
+        "expected": 0.04,
+        "ratio": 0.0,
+        "p_low": 0.9620642909886116,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 0,
+        "expected": 0.01,
+        "ratio": 0.0,
+        "p_low": 0.9854301821529594,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 222,
+        "expected": 218.5,
+        "ratio": 1.0160256303906996,
+        "p_low": 0.6106979308090693,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 93,
+        "expected": 113.2,
+        "ratio": 0.8215765943535266,
+        "p_low": 0.029168915442357175,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 31,
+        "expected": 59.93,
+        "ratio": 0.5172611462810683,
+        "p_low": 2.9290102511703078e-05,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 6,
+        "expected": 26.97,
+        "ratio": 0.2225042504801549,
+        "p_low": 1.3196861659384402e-06,
+        "deficit": true
+       },
+       {
+        "setting": 0.99,
+        "observed": 4,
+        "expected": 14.57,
+        "ratio": 0.2744628196539806,
+        "p_low": 0.0011791809861344917,
+        "deficit": false
+       }
+      ],
+      "bound": 0.98
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 5,
+        "expected": 18.27,
+        "ratio": 0.2736014043412882,
+        "p_low": 0.0002642381200608929,
+        "deficit": true
+       },
+       {
+        "setting": 0.02,
+        "observed": 12,
+        "expected": 31.88,
+        "ratio": 0.3764196549655885,
+        "p_low": 5.134521215811507e-05,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 40,
+        "expected": 65.53,
+        "ratio": 0.6104289465894815,
+        "p_low": 0.0004723587209608716,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 95,
+        "expected": 116.28,
+        "ratio": 0.8170267690650617,
+        "p_low": 0.024259464701036078,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 199,
+        "expected": 200.85,
+        "ratio": 0.9908023420277068,
+        "p_low": 0.4667686239190278,
+        "deficit": false
+       }
+      ],
+      "bound": 0.01
+     },
+     "replies": 48
+    }
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -885,7 +2109,9 @@
    "peer_agreement": 0.5779813664596274,
    "x_honest": 6.49,
    "fidelity": 49.9,
-   "flags": [],
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_p between 0.95 and 0.98 / min_p between 0.01 and 0.02): 6 draws outside the top-0.98 probability nucleus where an untruncated sampler makes 27"
+   ],
    "verdict": {
     "level": "lossy",
     "text": "measurably further from the real model than the honest reference"
@@ -951,7 +2177,160 @@
      "p_high": 1.970253299986816e-24,
      "n_tokens": 11092
     },
-    "sampler": null
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 20,
+        "expected": 3.01,
+        "ratio": 6.643845058889382,
+        "p_low": 0.9999999999874523,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 8,
+        "expected": 0.7,
+        "ratio": 11.488228156211182,
+        "p_low": 0.9999999431836146,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 3,
+        "expected": 0.2,
+        "ratio": 14.925595904416483,
+        "p_low": 0.9999420637756212,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 1,
+        "expected": 0.14,
+        "ratio": 7.083055913643382,
+        "p_low": 0.9909240051201571,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 1,
+        "expected": 0.1,
+        "ratio": 10.279816608071712,
+        "p_low": 0.9955644339111118,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 0,
+        "expected": 0.05,
+        "ratio": 0.0,
+        "p_low": 0.9503185830747468,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 0,
+        "expected": 0.02,
+        "ratio": 0.0,
+        "p_low": 0.9802104357614095,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 683,
+        "expected": 245.28,
+        "ratio": 2.7845417976337306,
+        "p_low": 0.9999999999999182,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 498,
+        "expected": 126.95,
+        "ratio": 3.922870876011096,
+        "p_low": 0.9999999999999405,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 357,
+        "expected": 67.25,
+        "ratio": 5.308417653037332,
+        "p_low": 1.0,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 226,
+        "expected": 30.47,
+        "ratio": 7.417579045299812,
+        "p_low": 1.0,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 158,
+        "expected": 16.63,
+        "ratio": 9.500549498554383,
+        "p_low": 1.0,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 174,
+        "expected": 21.32,
+        "ratio": 8.159941225912991,
+        "p_low": 0.999999999999994,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 243,
+        "expected": 36.4,
+        "ratio": 6.675279883772114,
+        "p_low": 0.9999999999999947,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 376,
+        "expected": 75.88,
+        "ratio": 4.954916845689394,
+        "p_low": 0.9999999999999954,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 506,
+        "expected": 131.99,
+        "ratio": 3.8337437181722556,
+        "p_low": 0.9999999999999919,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 654,
+        "expected": 227.48,
+        "ratio": 2.8749890913066816,
+        "p_low": 1.0,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 48
+    }
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -1060,7 +2439,160 @@
      "p_high": 0.0012607664132243354,
      "n_tokens": 11119
     },
-    "sampler": null
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 3,
+        "expected": 2.57,
+        "ratio": 1.1660547470477438,
+        "p_low": 0.7419116809972855,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 2,
+        "expected": 0.61,
+        "ratio": 3.2520853997625974,
+        "p_low": 0.97537801964673,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 0,
+        "expected": 0.17,
+        "ratio": 0.0,
+        "p_low": 0.8456489146614246,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 0,
+        "expected": 0.12,
+        "ratio": 0.0,
+        "p_low": 0.8894019574875422,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 0,
+        "expected": 0.08,
+        "ratio": 0.0,
+        "p_low": 0.9222877599985502,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 0,
+        "expected": 0.04,
+        "ratio": 0.0,
+        "p_low": 0.958143232675251,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 0,
+        "expected": 0.02,
+        "ratio": 0.0,
+        "p_low": 0.9834298210779716,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 240,
+        "expected": 221.95,
+        "ratio": 1.0813455626187345,
+        "p_low": 0.8924573125993804,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 122,
+        "expected": 117.52,
+        "ratio": 1.03815507521425,
+        "p_low": 0.681476633100326,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 75,
+        "expected": 63.13,
+        "ratio": 1.1880274396321677,
+        "p_low": 0.9370126352328859,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 35,
+        "expected": 27.46,
+        "ratio": 1.2745398073740648,
+        "p_low": 0.9328868983539546,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 19,
+        "expected": 15.18,
+        "ratio": 1.2514065974814454,
+        "p_low": 0.864773973584632,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 20,
+        "expected": 19.27,
+        "ratio": 1.0377781336203689,
+        "p_low": 0.6234800159808098,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 38,
+        "expected": 33.09,
+        "ratio": 1.1482959906973522,
+        "p_low": 0.8274985162047268,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 77,
+        "expected": 69.88,
+        "ratio": 1.1018395368473315,
+        "p_low": 0.8198855393345276,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 137,
+        "expected": 120.6,
+        "ratio": 1.1360144268856969,
+        "p_low": 0.9357502254140422,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 226,
+        "expected": 208.81,
+        "ratio": 1.0823304336615491,
+        "p_low": 0.888572540198844,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 48
+    }
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -1169,7 +2701,160 @@
      "p_high": 0.035931464778904965,
      "n_tokens": 10700
     },
-    "sampler": null
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 0,
+        "expected": 1.99,
+        "ratio": 0.0,
+        "p_low": 0.136232267595036,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 0,
+        "expected": 0.39,
+        "ratio": 0.0,
+        "p_low": 0.6752940860195217,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 0,
+        "expected": 0.1,
+        "ratio": 0.0,
+        "p_low": 0.9061440409318787,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 0,
+        "expected": 0.07,
+        "ratio": 0.0,
+        "p_low": 0.9350493222642315,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 0,
+        "expected": 0.04,
+        "ratio": 0.0,
+        "p_low": 0.9562078244159389,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 0,
+        "expected": 0.02,
+        "ratio": 0.0,
+        "p_low": 0.9770025665231202,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 0,
+        "expected": 0.01,
+        "ratio": 0.0,
+        "p_low": 0.9909412796900431,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 298,
+        "expected": 206.18,
+        "ratio": 1.4453728696295207,
+        "p_low": 0.9999999991955733,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 158,
+        "expected": 110.55,
+        "ratio": 1.4291766189672035,
+        "p_low": 0.999991213685891,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 100,
+        "expected": 59.29,
+        "ratio": 1.6865996604233977,
+        "p_low": 0.999999477120888,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 51,
+        "expected": 26.33,
+        "ratio": 1.9372865399876265,
+        "p_low": 0.9999935283142788,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 31,
+        "expected": 13.96,
+        "ratio": 2.220836865777348,
+        "p_low": 0.9999757151828687,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 37,
+        "expected": 17.35,
+        "ratio": 2.132569512255992,
+        "p_low": 0.9999877213557232,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 57,
+        "expected": 30.42,
+        "ratio": 1.874060688726509,
+        "p_low": 0.9999944246857897,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 108,
+        "expected": 63.95,
+        "ratio": 1.688835235357955,
+        "p_low": 0.9999998116371105,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 164,
+        "expected": 111.95,
+        "ratio": 1.4649601714846645,
+        "p_low": 0.999998369665928,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 271,
+        "expected": 190.85,
+        "ratio": 1.4199439851484548,
+        "p_low": 0.999999980674503,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 46
+    }
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -1283,7 +2968,160 @@
      "p_high": 1.0,
      "n_tokens": 11151
     },
-    "sampler": null
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 2,
+        "expected": 2.56,
+        "ratio": 0.7822228897190882,
+        "p_low": 0.5293238759516179,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 0,
+        "expected": 0.56,
+        "ratio": 0.0,
+        "p_low": 0.5721288790254162,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 0,
+        "expected": 0.14,
+        "ratio": 0.0,
+        "p_low": 0.8695547325633491,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 0,
+        "expected": 0.09,
+        "ratio": 0.0,
+        "p_low": 0.9108290957817837,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 0,
+        "expected": 0.06,
+        "ratio": 0.0,
+        "p_low": 0.940410309018681,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 0,
+        "expected": 0.03,
+        "ratio": 0.0,
+        "p_low": 0.970076834303053,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 0,
+        "expected": 0.01,
+        "ratio": 0.0,
+        "p_low": 0.9888120557986828,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 284,
+        "expected": 225.01,
+        "ratio": 1.262144939685182,
+        "p_low": 0.9999328413109878,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 141,
+        "expected": 115.28,
+        "ratio": 1.2231449525574603,
+        "p_low": 0.9911687254153441,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 66,
+        "expected": 62.28,
+        "ratio": 1.0597585991943843,
+        "p_low": 0.7088396027411783,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 40,
+        "expected": 27.95,
+        "ratio": 1.4312097103285215,
+        "p_low": 0.9878683066091776,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 19,
+        "expected": 15.13,
+        "ratio": 1.2558290295852168,
+        "p_low": 0.8678781786511021,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 25,
+        "expected": 19.05,
+        "ratio": 1.312463001667983,
+        "p_low": 0.9252431027069397,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 40,
+        "expected": 32.95,
+        "ratio": 1.2139848996667277,
+        "p_low": 0.9027776455521521,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 75,
+        "expected": 68.87,
+        "ratio": 1.0890368978769445,
+        "p_low": 0.7900536806793346,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 140,
+        "expected": 117.18,
+        "ratio": 1.1947499512520685,
+        "p_low": 0.9822746243811747,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 265,
+        "expected": 208.75,
+        "ratio": 1.2694775339219486,
+        "p_low": 0.9999211749137025,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 48
+    }
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -1397,7 +3235,160 @@
      "p_high": 1.0,
      "n_tokens": 11164
     },
-    "sampler": null
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 3,
+        "expected": 2.28,
+        "ratio": 1.314375943064739,
+        "p_low": 0.8029050901797455,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 0,
+        "expected": 0.5,
+        "ratio": 0.0,
+        "p_low": 0.608241665401084,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 0,
+        "expected": 0.13,
+        "ratio": 0.0,
+        "p_low": 0.8791154917465894,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 0,
+        "expected": 0.09,
+        "ratio": 0.0,
+        "p_low": 0.9147001246917462,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 0,
+        "expected": 0.06,
+        "ratio": 0.0,
+        "p_low": 0.9408204173105241,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 0,
+        "expected": 0.03,
+        "ratio": 0.0,
+        "p_low": 0.9682857877499935,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 0,
+        "expected": 0.01,
+        "ratio": 0.0,
+        "p_low": 0.98717297659025,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 217,
+        "expected": 208.94,
+        "ratio": 1.0385863398337878,
+        "p_low": 0.7256886326034424,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 119,
+        "expected": 110.79,
+        "ratio": 1.074075891278103,
+        "p_low": 0.7973987781138304,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 64,
+        "expected": 59.85,
+        "ratio": 1.06940041058292,
+        "p_low": 0.7308143952368866,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 25,
+        "expected": 27.43,
+        "ratio": 0.9115502052501135,
+        "p_low": 0.36700025653520524,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 14,
+        "expected": 14.83,
+        "ratio": 0.9442671920029742,
+        "p_low": 0.48354335048762603,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 17,
+        "expected": 18.42,
+        "ratio": 0.9228101349088705,
+        "p_low": 0.4296694884450135,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 26,
+        "expected": 32.21,
+        "ratio": 0.8071723096186316,
+        "p_low": 0.15672126781873658,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 64,
+        "expected": 65.28,
+        "ratio": 0.9804613358595736,
+        "p_low": 0.46992600853141236,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 119,
+        "expected": 112.48,
+        "ratio": 1.05795500640045,
+        "p_low": 0.7487813843949802,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 188,
+        "expected": 189.06,
+        "ratio": 0.9944037495876398,
+        "p_low": 0.48864424382735794,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 48
+    }
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -1499,7 +3490,160 @@
      "p_high": 1.0,
      "n_tokens": 11022
     },
-    "sampler": null
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 2,
+        "expected": 2.62,
+        "ratio": 0.7637508568329925,
+        "p_low": 0.5137564832029373,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 1,
+        "expected": 0.58,
+        "ratio": 1.73768588894797,
+        "p_low": 0.8861054816314313,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 0,
+        "expected": 0.15,
+        "ratio": 0.0,
+        "p_low": 0.8586653618601189,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 0,
+        "expected": 0.1,
+        "ratio": 0.0,
+        "p_low": 0.9014785773139384,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 0,
+        "expected": 0.07,
+        "ratio": 0.0,
+        "p_low": 0.933459221877018,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 0,
+        "expected": 0.04,
+        "ratio": 0.0,
+        "p_low": 0.9648670105903083,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 0,
+        "expected": 0.01,
+        "ratio": 0.0,
+        "p_low": 0.9854902952275009,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 265,
+        "expected": 218.67,
+        "ratio": 1.211884539177657,
+        "p_low": 0.9989437103879405,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 139,
+        "expected": 112.03,
+        "ratio": 1.24078620284305,
+        "p_low": 0.9940385304400479,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 81,
+        "expected": 60.95,
+        "ratio": 1.3289146211238985,
+        "p_low": 0.9941648342863442,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 34,
+        "expected": 26.78,
+        "ratio": 1.2697937503888743,
+        "p_low": 0.927760863321603,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 16,
+        "expected": 14.62,
+        "ratio": 1.094577667468673,
+        "p_low": 0.700327545602589,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 21,
+        "expected": 18.63,
+        "ratio": 1.127413086785629,
+        "p_low": 0.7541279982788791,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 45,
+        "expected": 31.97,
+        "ratio": 1.407653474503251,
+        "p_low": 0.9885924447090524,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 90,
+        "expected": 67.69,
+        "ratio": 1.3296850518328223,
+        "p_low": 0.9960361592951033,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 146,
+        "expected": 116.79,
+        "ratio": 1.250128705459616,
+        "p_low": 0.9960754670754717,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 240,
+        "expected": 198.77,
+        "ratio": 1.207420413449426,
+        "p_low": 0.9979851029556415,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 48
+    }
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -1595,7 +3739,160 @@
      "p_high": 1.0,
      "n_tokens": 11064
     },
-    "sampler": null
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 2,
+        "expected": 2.91,
+        "ratio": 0.6872455473360988,
+        "p_low": 0.4436143191611188,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 0,
+        "expected": 0.69,
+        "ratio": 0.0,
+        "p_low": 0.5016979668608208,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 0,
+        "expected": 0.19,
+        "ratio": 0.0,
+        "p_low": 0.8246732761472834,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 0,
+        "expected": 0.13,
+        "ratio": 0.0,
+        "p_low": 0.8760448418757474,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 0,
+        "expected": 0.09,
+        "ratio": 0.0,
+        "p_low": 0.912870726880342,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 0,
+        "expected": 0.05,
+        "ratio": 0.0,
+        "p_low": 0.9535170238853472,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 0,
+        "expected": 0.02,
+        "ratio": 0.0,
+        "p_low": 0.9814610011330173,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 284,
+        "expected": 226.45,
+        "ratio": 1.2541221094892054,
+        "p_low": 0.9998998586830805,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 157,
+        "expected": 118.89,
+        "ratio": 1.3205112087472615,
+        "p_low": 0.9996449624995997,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 96,
+        "expected": 62.28,
+        "ratio": 1.5413248210244925,
+        "p_low": 0.9999719206227482,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 47,
+        "expected": 27.34,
+        "ratio": 1.7193021257561225,
+        "p_low": 0.9997810935999182,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 23,
+        "expected": 15.04,
+        "ratio": 1.5290427374757938,
+        "p_low": 0.9799701670812438,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 31,
+        "expected": 18.98,
+        "ratio": 1.6335237863985328,
+        "p_low": 0.9960687896727167,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 50,
+        "expected": 32.81,
+        "ratio": 1.5241159494984788,
+        "p_low": 0.9980555074222993,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 103,
+        "expected": 69.4,
+        "ratio": 1.4842297134546116,
+        "p_low": 0.9999363418151754,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 169,
+        "expected": 121.8,
+        "ratio": 1.3874912035931193,
+        "p_low": 0.9999786194745669,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 278,
+        "expected": 210.8,
+        "ratio": 1.31879269197007,
+        "p_low": 0.9999957615030662,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 48
+    }
    },
    "integrity": {
     "billed_minus_returned_median": 0,
@@ -1691,7 +3988,160 @@
      "p_high": 0.5155873243924873,
      "n_tokens": 11152
     },
-    "sampler": null
+    "sampler": {
+     "top_k": {
+      "rows": [
+       {
+        "setting": 10,
+        "observed": 4,
+        "expected": 2.84,
+        "ratio": 1.4088877570823906,
+        "p_low": 0.8415331583825076,
+        "deficit": false
+       },
+       {
+        "setting": 20,
+        "observed": 3,
+        "expected": 0.67,
+        "ratio": 4.449256232666439,
+        "p_low": 0.9949464737030365,
+        "deficit": false
+       },
+       {
+        "setting": 40,
+        "observed": 1,
+        "expected": 0.19,
+        "ratio": 5.35323308512176,
+        "p_low": 0.9845802578801758,
+        "deficit": false
+       },
+       {
+        "setting": 50,
+        "observed": 0,
+        "expected": 0.13,
+        "ratio": 0.0,
+        "p_low": 0.8803030991150532,
+        "deficit": false
+       },
+       {
+        "setting": 64,
+        "observed": 0,
+        "expected": 0.09,
+        "ratio": 0.0,
+        "p_low": 0.9179016767818661,
+        "deficit": false
+       },
+       {
+        "setting": 100,
+        "observed": 0,
+        "expected": 0.04,
+        "ratio": 0.0,
+        "p_low": 0.9590270481120842,
+        "deficit": false
+       },
+       {
+        "setting": 200,
+        "observed": 0,
+        "expected": 0.01,
+        "ratio": 0.0,
+        "p_low": 0.9853730288598561,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "top_p": {
+      "rows": [
+       {
+        "setting": 0.8,
+        "observed": 263,
+        "expected": 217.54,
+        "ratio": 1.2089988718891287,
+        "p_low": 0.998762157966136,
+        "deficit": false
+       },
+       {
+        "setting": 0.9,
+        "observed": 145,
+        "expected": 113.73,
+        "ratio": 1.2749759882453193,
+        "p_low": 0.9979450927591614,
+        "deficit": false
+       },
+       {
+        "setting": 0.95,
+        "observed": 81,
+        "expected": 60.53,
+        "ratio": 1.338279504234523,
+        "p_low": 0.9950545522978067,
+        "deficit": false
+       },
+       {
+        "setting": 0.98,
+        "observed": 34,
+        "expected": 26.43,
+        "ratio": 1.2864426014094188,
+        "p_low": 0.9369592500699045,
+        "deficit": false
+       },
+       {
+        "setting": 0.99,
+        "observed": 16,
+        "expected": 14.6,
+        "ratio": 1.0955781711801178,
+        "p_low": 0.7015698399572926,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "min_p": {
+      "rows": [
+       {
+        "setting": 0.01,
+        "observed": 22,
+        "expected": 18.19,
+        "ratio": 1.2096615669351107,
+        "p_low": 0.8444136277721948,
+        "deficit": false
+       },
+       {
+        "setting": 0.02,
+        "observed": 37,
+        "expected": 30.98,
+        "ratio": 1.1944608395852327,
+        "p_low": 0.8776466724329007,
+        "deficit": false
+       },
+       {
+        "setting": 0.05,
+        "observed": 86,
+        "expected": 66.27,
+        "ratio": 1.2977148825337912,
+        "p_low": 0.9916207754397013,
+        "deficit": false
+       },
+       {
+        "setting": 0.1,
+        "observed": 152,
+        "expected": 115.32,
+        "ratio": 1.3180453598893807,
+        "p_low": 0.9995369342134538,
+        "deficit": false
+       },
+       {
+        "setting": 0.2,
+        "observed": 251,
+        "expected": 199.89,
+        "ratio": 1.255683317747852,
+        "p_low": 0.9997837150991339,
+        "deficit": false
+       }
+      ],
+      "bound": null
+     },
+     "replies": 48
+    }
    },
    "integrity": {
     "billed_minus_returned_median": 0,

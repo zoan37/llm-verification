@@ -1,0 +1,23 @@
+qwen/qwen3.8-27b: 21 endpoints; key usage $5.3789
+reka/fp8                       quant=fp8      ok=48/48 logprobs=48 errors=0
+deepinfra/bf16                 quant=bf16     ok=0/48 logprobs=0 errors=4
+near-ai/fp8                    quant=fp8      ok=48/48 logprobs=48 errors=0
+dekallm                        quant=unknown  ok=45/48 logprobs=45 errors=3
+chutes/fp8                     quant=fp8      ok=48/48 logprobs=0 errors=0
+ionstream/fp8                  quant=fp8      ok=48/48 logprobs=48 errors=0
+darkbloom/fp4                  quant=fp4      ok=47/48 logprobs=47 errors=1
+modelrun/fp4                   quant=fp4      ok=48/48 logprobs=0 errors=0
+parasail/fp8                   quant=fp8      ok=0/48 logprobs=0 errors=4
+mancer/fp8                     quant=fp8      ok=48/48 logprobs=48 errors=0
+novita                         quant=unknown  ok=0/48 logprobs=0 errors=4
+wafer/fp8                      quant=fp8      ok=48/48 logprobs=48 errors=0
+venice/fp8                     quant=fp8      ok=48/48 logprobs=0 errors=0
+tenstorrent/fp4                quant=fp4      ok=48/48 logprobs=48 errors=0
+cerebras/fp16                  quant=fp16     ok=48/48 logprobs=48 errors=0
+phala                          quant=unknown  ok=48/48 logprobs=0 errors=0
+akashml/fp8                    quant=fp8      ok=48/48 logprobs=48 errors=0
+modal                          quant=unknown  ok=47/48 logprobs=47 errors=1
+alibaba                        quant=unknown  ok=48/48 logprobs=48 errors=0
+coreweave/fp8                  quant=fp8      ok=48/48 logprobs=48 errors=0
+cloudflare                     quant=unknown  ok=48/48 logprobs=48 errors=0
+qwen/qwen3.8-27b: spent $0.3929

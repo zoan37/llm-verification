@@ -1,0 +1,17 @@
+spent $0.2608
+akashml__fp4                   identical-at-T1 0/4  stale 0  wrong 0  
+cloudflare                     identical-at-T1 0/4  stale 0  wrong 0  
+coreweave__bf16                identical-at-T1 0/4  stale 0  wrong 0  
+darkbloom                      identical-at-T1 0/4  stale 0  wrong 0  
+deepinfra__fp8                 identical-at-T1 0/4  stale 0  wrong 0  
+dekallm__bf16                  identical-at-T1 0/4  stale 0  wrong 0  
+google-vertex__global          identical-at-T1 0/4  stale 0  wrong 0  
+io-net__bf16                   identical-at-T1 0/4  stale 0  wrong 0  
+makora                         identical-at-T1 0/4  stale 0  wrong 0  
+nextbit__bf16                  identical-at-T1 0/4  stale 0  wrong 0  
+novita__bf16                   identical-at-T1 0/2  stale 0  wrong 0  
+parasail__bf16                 identical-at-T1 0/4  stale 0  wrong 0  
+primeintellect__bf16           identical-at-T1 0/4  stale 0  wrong 0  
+siliconflow__fp8               identical-at-T1 0/4  stale 0  wrong 0  
+venice__bf16                   identical-at-T1 0/4  stale 0  wrong 0  
+wrote results/cache/google__gemma-4-26b-a4b-it.json

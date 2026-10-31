@@ -1,0 +1,9 @@
+spent $0.2714
+alibaba                        identical-at-T1 0/4  stale 0  wrong 1  
+atlas-cloud__fp8               identical-at-T1 0/4  stale 0  wrong 1  
+darkbloom__fp4                 identical-at-T1 0/4  stale 0  wrong 1  
+deepinfra__fp8                 identical-at-T1 0/0  stale 0  wrong 0  
+parasail__fp8                  identical-at-T1 0/4  stale 0  wrong 1  
+siliconflow__fp8               identical-at-T1 0/4  stale 0  wrong 1  
+venice                         identical-at-T1 0/4  stale 0  wrong 1  
+wrote results/cache/qwen__qwen3.5-35b-a3b.json

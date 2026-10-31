@@ -11,10 +11,11 @@ Open work, roughly in priority order. Each item says what it would establish.
 - [ ] **gpt-oss-120b** full rescore on one referee (deferred: slow).
 - [ ] **Tie steering**: quantify the steering capacity on real models (bits per 1k tokens at a given tolerance).
 
-- [ ] **Tool calling / structured output fidelity**: same tool-call prompts to every endpoint; check the call is
+- [x] **Tool calling / structured output fidelity**: same tool-call prompts to every endpoint; check the call is
       well formed, arguments complete, and the referee agrees with the call tokens (verify-before-act).
-- [ ] **Reasoning effort honesty**: requested effort vs reasoning length and quality; reasoning tokens billed vs returned.
-- [ ] **Response caching**: near-duplicate prompts; detect stale reuse of an earlier answer.
+- [x] **Reasoning effort honesty** (`experiments/reasoning_effort.py`): gpt-oss-20b/120b done. Next: Qwen3.8 and other
+      reasoning models; a harder problem set (accuracy saturates).
+- [x] **Response caching** (`experiments/response_cache.py`): 76 endpoints, one repeats temperature-1 replies (ModelRun).
 - [ ] **Image inputs on vision models**: fine-detail images to detect silent downscaling.
 - [ ] **Scheduled snapshots**: quality by time of day / load; detect quiet model swaps over time.
 - [ ] **Effective temperature** for every endpoint (Darkbloom first).
@@ -25,6 +26,11 @@ Open work, roughly in priority order. Each item says what it would establish.
       noise is underestimated there).
 - [ ] A BF16 referee where possible (Qwen3.5/3.8 used Q8_0, which cannot separate FP8-class providers).
 
+## Before making the repo public
+- [ ] Git history: five committed raw files (data/raw-edge, data/raw-kvprobe) held the OpenRouter account id from
+      error bodies before `openrouter.redact` existed. The files are scrubbed; purge the old blobs from history (or
+      publish a fresh single-commit repo).
+
 ## Pipeline
 - [ ] Full-vocabulary statistics only for sampled replies; multithread or move to GPU (scoring is CPU-bound).
 - [ ] Rotate audit prompts per snapshot (`prompts/generate.py`) and publish seeds after collection.
@@ -33,4 +39,6 @@ Open work, roughly in priority order. Each item says what it would establish.
 ## Findings to follow up
 - [ ] Venice / Qwen3.8-27B: fingerprint against public uncensored builds (in progress).
 - [ ] Alibaba and SiliconFlow on Qwen3.5: distance grows at 32k (second long-context batch in progress).
-- [ ] Silent top-k defaults: confirm by requesting `top_k: 0` / explicit values and re-running the tail test.
+- [x] Silent top-k defaults: confirmed with the sampler fingerprint and explicit `top_k` 0 / -1 / 1000
+      (`experiments/sampler_control.py`). Next: the same on Qwen3.8 and Gemma endpoints.
+- [ ] DeepInfra fp8 / Mara / SambaNova serve byte-identical gpt-oss-120b output: check other models they share.
