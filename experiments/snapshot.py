@@ -67,8 +67,9 @@ prev_name = prev_files[-1].stem if prev_files else "main results"
 def brief(s):
     g = s["greedy"]["regret"]
     sm = (s.get("sample_answer") or {}).get("sampler") or {}
+    far = s.get("x_honest") is not None and s["x_honest"] > 100  # sampler unreadable (same gate as report.flags)
     return {"regret": g["mean"], "lo": g["lo"], "hi": g["hi"], "fidelity": s.get("fidelity"),
-            "top_k_bound": (sm.get("top_k") or {}).get("bound"), "flags": s.get("flags", [])}
+            "top_k_bound": None if far else (sm.get("top_k") or {}).get("bound"), "flags": s.get("flags", [])}
 
 
 now = {k: brief(v) for k, v in rep["endpoints"].items() if not k.startswith("local__")}
@@ -89,10 +90,15 @@ for k in sorted(set(now) | set(before)):
         c.append(f"sampler truncation top_k bound {b['top_k_bound']} -> {n['top_k_bound']}")
     if c:
         changes[k] = c
+cost = 0.0
+for f in (root / "raw" / key).glob("*.jsonl.gz"):
+    if not f.name.startswith("local__"):
+        cost += sum(((r.get("usage") or {}).get("cost") or 0) for r in openrouter.load(f))
 dest = out_dir / f"{a.date}.json"
-dest.write_text(json.dumps({"model": a.model, "date": a.date, "compared_with": prev_name, "endpoints": now,
+dest.write_text(json.dumps({"model": a.model, "date": a.date, "compared_with": prev_name, "cost_usd": round(cost, 4),
+                            "endpoints": now,
                             "changes": changes}, indent=1, default=float))
-print(f"{a.model} {a.date} vs {prev_name}: {len(changes)} endpoints changed")
+print(f"{a.model} {a.date} vs {prev_name}: {len(changes)} endpoints changed; collection cost ${cost:.2f}")
 for k, c in changes.items():
     print(f"  {k}: {'; '.join(c)}")
 print("wrote", dest)

@@ -8,6 +8,10 @@ Open work, roughly in priority order. Each item says what it would establish.
       lookups, verbatim copy of an early paragraph) with an honest f16 cache vs a 4-bit cache on a model with full
       attention (gpt-oss-20b, Gemma-4), measuring task accuracy and referee distance; then point them at providers.
 - [ ] **Longer contexts** (64k-128k) and multi-needle recall.
+- [ ] **Gemma-4-31B (16 endpoints) and Qwen3.6-35B-A3B (10)**: full referee audits, the most popular local-sized models
+      after those done. Paused 2026-10-30: needs ~148 GB of weights (Q8 referee, Q6_K honest, Q2_K_XL substitute)
+      over home wifi; `~/lv/fetch_new.sh` on the Spark resumes it. Qwen3.8-Flash-Next (180B, Alibaba-only on
+      OpenRouter) and DeepSeek V4.1 Flash (763B) are too big for a local referee: referee-free checks only.
 - [ ] **gpt-oss-120b** full rescore on one referee (deferred: slow).
 - [ ] **Tie steering**: quantify the steering capacity on real models (bits per 1k tokens at a given tolerance).
 

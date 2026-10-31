@@ -1,0 +1,225 @@
+{
+ "model": "qwen/qwen3.8-27b",
+ "date": "2026-10-30",
+ "compared_with": "main results",
+ "endpoints": {
+  "akashml__fp8": {
+   "regret": 0.0038614914489104955,
+   "lo": 0.0029712657483621703,
+   "hi": 0.004808570408072149,
+   "fidelity": 70.0,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 4 draws past rank 20 where an untruncated sampler makes 38"
+   ]
+  },
+  "alibaba": {
+   "regret": 0.05077053496134926,
+   "lo": 0.042791090301003344,
+   "hi": 0.05913249236227456,
+   "fidelity": 10.4,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 4 draws past rank 20 where an untruncated sampler makes 33"
+   ]
+  },
+  "cerebras__fp16": {
+   "regret": 0.0033065125274725276,
+   "lo": 0.0026444132165605095,
+   "hi": 0.003960078838917756,
+   "fidelity": 73.6,
+   "top_k_bound": 40,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 21 and 40): 5 draws past rank 40 where an untruncated sampler makes 17"
+   ]
+  },
+  "chutes__fp8": {
+   "regret": 0.003609151439522239,
+   "lo": 0.0026330106199061497,
+   "hi": 0.004618389469952136,
+   "fidelity": 71.6,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 1 draws past rank 20 where an untruncated sampler makes 40",
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "cloudflare": {
+   "regret": 0.0005862554187619212,
+   "lo": 0.0004429169526424159,
+   "hi": 0.0007384885922986743,
+   "fidelity": 100.0,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 0 draws past rank 20 where an untruncated sampler makes 36"
+   ]
+  },
+  "coreweave__fp8": {
+   "regret": 0.0023608842641376884,
+   "lo": 0.001961272832147664,
+   "hi": 0.0027951427776747636,
+   "fidelity": 81.4,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 2 draws past rank 20 where an untruncated sampler makes 38"
+   ]
+  },
+  "darkbloom__fp4": {
+   "regret": 0.024456018347079618,
+   "lo": 0.020506557039073236,
+   "hi": 0.02840284209639366,
+   "fidelity": 27.3,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 6 draws past rank 20 where an untruncated sampler makes 34"
+   ]
+  },
+  "deepinfra__bf16": {
+   "regret": 0.005209245594235611,
+   "lo": 0.004225521104220844,
+   "hi": 0.006296167270887783,
+   "fidelity": 63.1,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 3 draws past rank 20 where an untruncated sampler makes 42",
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "dekallm": {
+   "regret": 0.0026346079791847356,
+   "lo": 0.0021600180766449747,
+   "hi": 0.0030965265165274246,
+   "fidelity": 78.8,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 2 draws past rank 20 where an untruncated sampler makes 34",
+    "logprob output is broken: top-20 lists contradict the returned token at 73% of positions, so its logprobs can't be used to verify anything"
+   ]
+  },
+  "ionstream__fp8": {
+   "regret": 0.002680729049554614,
+   "lo": 0.0020869368936701567,
+   "hi": 0.0033128141970519783,
+   "fidelity": 78.4,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 2 draws past rank 20 where an untruncated sampler makes 40"
+   ]
+  },
+  "mancer__fp8": {
+   "regret": 0.002863985706905459,
+   "lo": 0.0022384107579462103,
+   "hi": 0.003470298966430341,
+   "fidelity": 76.9,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 3 draws past rank 20 where an untruncated sampler makes 38"
+   ]
+  },
+  "modal": {
+   "regret": 0.0005806063738156762,
+   "lo": 0.0004459183673469388,
+   "hi": 0.0007197323321554771,
+   "fidelity": 100.0,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 0 draws past rank 20 where an untruncated sampler makes 37"
+   ]
+  },
+  "modelrun__fp4": {
+   "regret": 0.02931886466296039,
+   "lo": 0.0249980160372478,
+   "hi": 0.03398249479528106,
+   "fidelity": 23.1,
+   "top_k_bound": null,
+   "flags": [
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "near-ai__fp8": {
+   "regret": 0.005202716390423572,
+   "lo": 0.003872163856907895,
+   "hi": 0.006639659234738584,
+   "fidelity": 63.1,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 4 draws past rank 20 where an untruncated sampler makes 36"
+   ]
+  },
+  "novita": {
+   "regret": null,
+   "lo": null,
+   "hi": null,
+   "fidelity": null,
+   "top_k_bound": null,
+   "flags": [
+    "no logprobs (text-only checks)",
+    "4 of 4 requests failed"
+   ]
+  },
+  "parasail__fp8": {
+   "regret": 0.003996361744559092,
+   "lo": 0.003195326969943136,
+   "hi": 0.004882329673877947,
+   "fidelity": 69.2,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 1 draws past rank 20 where an untruncated sampler makes 41"
+   ]
+  },
+  "phala": {
+   "regret": 0.0026348099288318,
+   "lo": 0.0020110849603280734,
+   "hi": 0.0033305568268497325,
+   "fidelity": 78.8,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 0 draws past rank 20 where an untruncated sampler makes 34",
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "reka__fp8": {
+   "regret": 0.004715004869411244,
+   "lo": 0.003244454117438039,
+   "hi": 0.006601729641131815,
+   "fidelity": 65.4,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 5 draws past rank 20 where an untruncated sampler makes 44"
+   ]
+  },
+  "tenstorrent__fp4": {
+   "regret": 0.006309994002227744,
+   "lo": 0.005294662474206544,
+   "hi": 0.007409689402538437,
+   "fidelity": 58.6,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 3 draws past rank 20 where an untruncated sampler makes 36"
+   ]
+  },
+  "venice__fp8": {
+   "regret": 0.15481282696708326,
+   "lo": 0.13159531990521325,
+   "hi": 0.181535499949449,
+   "fidelity": 0.0,
+   "top_k_bound": null,
+   "flags": [
+    "no logprobs (text-only checks)"
+   ]
+  },
+  "wafer__fp8": {
+   "regret": 0.002820125966466858,
+   "lo": 0.0022740789039286894,
+   "hi": 0.0034450044251347653,
+   "fidelity": 77.3,
+   "top_k_bound": 20,
+   "flags": [
+    "truncates sampling at top_p=1 (behaves like top_k between 11 and 20): 2 draws past rank 20 where an untruncated sampler makes 35",
+    "logprob output is broken: top-20 lists contradict the returned token at 64% of positions, so its logprobs can't be used to verify anything"
+   ]
+  }
+ },
+ "changes": {},
+ "cost_usd": 1.039
+}
