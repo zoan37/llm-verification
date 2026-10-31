@@ -92,6 +92,26 @@ reading is "within a few percent". The remaining cost with one request on a fast
 (about 1 ms against a 19 ms step); splitting it over cores or doing it on the GPU (as vLLM computes logprobs) removes
 it. Signing a receipt: 8-25 microseconds per token in Python.
 
+**Native generation.** lv-engine's `generate` command runs the whole rule in C++ (top-20 commitment, rounding,
+top_k/top_p/min_p, SHA-256 Gumbel noise) for many requests in one batch, so the provider no longer makes a round
+trip per token. `experiments/native_equivalence.py` checks it against the Python reference: one request at a time it
+is bit-identical (20 of 20 requests across greedy and four sampling specs, every token and every committed top-20);
+batched, every reply passes the full receipt check (batching changes the arithmetic, so batched tokens can take a
+different near-tie than the same request alone, which is honest behaviour). The server collects concurrent requests
+(`server.Batcher`: until 50 ms pass with no new arrival, at most 250 ms) and prepares prompts on a vocab-only engine
+(`lv-engine -vocab`) so preparation never waits for generation. gpt-oss-20b on a DGX Spark
+(`experiments/coop_load.py`, 128 tokens per request, every reply's trace fetched and checked):
+
+| | tokens/s |
+|---|---|
+| Python path (one engine round trip per token) | 47 |
+| native, one request | 49 |
+| server, 16 concurrent verifying clients | 134 |
+| native engine alone, 32 requests | 222 |
+
+Still to do for production serving: continuous batching (requests joining a running batch), and prompt prefill in
+parallel across sequences.
+
 **Bandwidth and storage.** Per token: plain text is about 4 bytes; the top-20 logprobs providers already return on
 request (OpenAI-style JSON) about 1,800; the trace here 373 as JSON, roughly 120-200 packed. The receipt is a constant
 ~700 bytes per reply. So the efficient protocol sends the receipt with every reply and the trace only when a reply is

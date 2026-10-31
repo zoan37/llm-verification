@@ -14,6 +14,7 @@ against ours, and the first answer tokens' agreement with the referee.
 from __future__ import annotations
 
 import datetime as _dt
+import functools
 from typing import List, Optional
 
 import jinja2
@@ -24,16 +25,23 @@ def _raise(msg):
     raise jinja2.TemplateError(msg)
 
 
-def render_chat(template: str, messages: List[dict], add_generation_prompt: bool = True,
-                date: Optional[str] = None, **kwargs) -> str:
+@functools.lru_cache(maxsize=32)
+def _compiled(template: str):
+    """Compiling a chat template takes tens of milliseconds (gpt-oss's is large): do it once per template."""
     env = ImmutableSandboxedEnvironment(trim_blocks=True, lstrip_blocks=True)
     env.filters["tojson"] = lambda x, indent=None, ensure_ascii=False, **_: __import__("json").dumps(
         x, indent=indent, ensure_ascii=ensure_ascii)
-    day = _dt.date.fromisoformat(date) if date else _dt.date.today()
     env.globals["raise_exception"] = _raise
-    env.globals["strftime_now"] = lambda fmt: _dt.datetime.combine(day, _dt.time()).strftime(fmt)
-    return env.from_string(template).render(messages=messages, add_generation_prompt=add_generation_prompt,
-                                            bos_token="", eos_token="", **kwargs)
+    return env.from_string(template)
+
+
+def render_chat(template: str, messages: List[dict], add_generation_prompt: bool = True,
+                date: Optional[str] = None, **kwargs) -> str:
+    day = _dt.date.fromisoformat(date) if date else _dt.date.today()
+    return _compiled(template).render(messages=messages, add_generation_prompt=add_generation_prompt,
+                                      bos_token="", eos_token="",
+                                      strftime_now=lambda fmt: _dt.datetime.combine(day, _dt.time()).strftime(fmt),
+                                      **kwargs)
 
 
 HARMONY_SYSTEM = ("<|start|>system<|message|>You are ChatGPT, a large language model trained by OpenAI.\n"

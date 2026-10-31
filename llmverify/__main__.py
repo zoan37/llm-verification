@@ -37,12 +37,17 @@ def cmd_serve(a):
     from .provider import VerifiableProvider
     from .receipt import Signer
     from .server import App, serve
-    eng = LlamaEngine(shlex.split(a.engine) if a.engine else [a.lv_engine, "-m", a.model, "-c", str(a.ctx)])
+    eng = LlamaEngine(shlex.split(a.engine) if a.engine else
+                      [a.lv_engine, "-m", a.model, "-c", str(a.ctx * a.parallel), "-np", str(a.parallel)])
     signer = Signer.from_hex(Path(a.key).read_text().strip())
     info = {"name": a.name, "weights_sha256": a.weights_sha256 or (_sha256_file(a.model) if a.model else None)}
     meta = eng.meta
+    tok = None
+    if a.model and a.parallel > 1:  # prepare requests while the engine generates
+        tok = LlamaEngine([a.lv_engine, "-m", a.model, "-vocab"])
     app = App(VerifiableProvider(eng, signer, info), meta["chat_template"],
-              bos=meta["bos"] if meta.get("add_bos") else None, template_kwargs=json.loads(a.template_kwargs))
+              bos=meta["bos"] if meta.get("add_bos") else None, template_kwargs=json.loads(a.template_kwargs),
+              tokenizer=tok)
     srv = serve(app, a.host, a.port)
     print(f"serving {a.name} on http://{a.host}:{a.port} key {signer.public_hex}", flush=True)
     srv.serve_forever()
@@ -120,7 +125,8 @@ def main():
     s.add_argument("--model", help="GGUF path (also hashed for the model claim)")
     s.add_argument("--engine", help="full lv-engine command line instead of --model")
     s.add_argument("--lv-engine", default="engine/build/lv-engine")
-    s.add_argument("--ctx", type=int, default=8192)
+    s.add_argument("--ctx", type=int, default=8192, help="context per request")
+    s.add_argument("--parallel", type=int, default=8, help="requests generated together in one batch")
     s.add_argument("--name", required=True)
     s.add_argument("--weights-sha256")
     s.add_argument("--key", default="provider.key")

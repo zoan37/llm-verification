@@ -21,6 +21,13 @@
 //     ordinary full-vocabulary sample by inverse CDF, and "sampled_lp", its raw logprob (honest baselines).
 //     start/step keep the KV cache between calls: this is how the cooperative provider generates with the
 //     public sampling rule applied in Python, one token per round trip.
+//   {"cmd": "generate", "requests": [{"context": [ids], "max_tokens": n, "key": "<nonce>", "eos": [ids],
+//                                      "spec": {"mode", "temperature", "top_k", "top_p", "min_p", "seed"}}, ...]}
+//     -> {"results": [{"tokens": [ids], "tops": [[[id, q], ...20], ...], "finish_reason": "stop"|"length"}]}
+//     The cooperative rule run natively (llmverify/sampling.py, docs/receipt-spec.md), many requests in one batch:
+//     per step the top-20 raw logprobs, quantized to integers q = round(lp * 1e4) (half to even) and ordered by
+//     (q descending, id ascending), then the public rule picks the token. Bit-identical to the Python path for one
+//     request; batched requests are honest generations too (batching changes arithmetic, not the rule). Needs -np.
 //
 // All logprobs are raw (temperature 1) log-softmax over the full vocabulary, computed in double precision from
 // the engine's float logits.
@@ -30,6 +37,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <cstdio>
 #include <functional>
 #include <iostream>
@@ -45,6 +53,119 @@ static const double MINP_GRID[] = {0.01, 0.02, 0.05, 0.1, 0.2};
 static const int TOPK_MAX = 200;
 
 using json = nlohmann::json;
+
+// ---- SHA-256 (FIPS 180-4), for the public sampling noise -------------------------------------------------------
+namespace sha {
+static const uint32_t K[64] = {
+    0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01,
+    0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174, 0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc,
+    0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da, 0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147,
+    0x06ca6351, 0x14292967, 0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+    0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070, 0x19a4c116, 0x1e376c08,
+    0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
+    0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2};
+static inline uint32_t rotr(uint32_t x, int n) { return (x >> n) | (x << (32 - n)); }
+static void digest(const std::string & msg, uint8_t out[32]) {
+    uint32_t h[8] = {0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19};
+    std::string m = msg;
+    const uint64_t bits = (uint64_t) msg.size() * 8;
+    m.push_back((char) 0x80);
+    while (m.size() % 64 != 56) m.push_back(0);
+    for (int i = 7; i >= 0; i--) m.push_back((char) (bits >> (8 * i)));
+    for (size_t off = 0; off < m.size(); off += 64) {
+        uint32_t w[64];
+        for (int i = 0; i < 16; i++)
+            w[i] = (uint32_t) (uint8_t) m[off + 4 * i] << 24 | (uint32_t) (uint8_t) m[off + 4 * i + 1] << 16 |
+                   (uint32_t) (uint8_t) m[off + 4 * i + 2] << 8 | (uint32_t) (uint8_t) m[off + 4 * i + 3];
+        for (int i = 16; i < 64; i++) {
+            const uint32_t s0 = rotr(w[i - 15], 7) ^ rotr(w[i - 15], 18) ^ (w[i - 15] >> 3);
+            const uint32_t s1 = rotr(w[i - 2], 17) ^ rotr(w[i - 2], 19) ^ (w[i - 2] >> 10);
+            w[i] = w[i - 16] + s0 + w[i - 7] + s1;
+        }
+        uint32_t a = h[0], b = h[1], c = h[2], d = h[3], e = h[4], f = h[5], g = h[6], hh = h[7];
+        for (int i = 0; i < 64; i++) {
+            const uint32_t t1 = hh + (rotr(e, 6) ^ rotr(e, 11) ^ rotr(e, 25)) + ((e & f) ^ (~e & g)) + K[i] + w[i];
+            const uint32_t t2 = (rotr(a, 2) ^ rotr(a, 13) ^ rotr(a, 22)) + ((a & b) ^ (a & c) ^ (b & c));
+            hh = g; g = f; f = e; e = d + t1; d = c; c = b; b = a; a = t1 + t2;
+        }
+        h[0] += a; h[1] += b; h[2] += c; h[3] += d; h[4] += e; h[5] += f; h[6] += g; h[7] += hh;
+    }
+    for (int i = 0; i < 8; i++)
+        for (int j = 0; j < 4; j++) out[4 * i + j] = (uint8_t) (h[i] >> (24 - 8 * j));
+}
+}  // namespace sha
+
+// ---- The public sampling rule (llmverify/sampling.py), bit for bit ---------------------------------------------
+struct Spec {
+    bool greedy = true;
+    double temperature = 0.0, top_p = 1.0, min_p = 0.0;
+    int top_k = 20;
+    long long seed = 0;
+};
+struct Cand { int id; long long q; double lp; };  // q = committed integer units of 1e-4 nats, lp = q / 1e4
+
+static double gumbel_noise(long long seed, const std::string & key, int step, int tok) {
+    uint8_t h[32];
+    sha::digest("llmverify-gumbel-v1:" + std::to_string(seed) + ":" + key + ":" + std::to_string(step) + ":" +
+                std::to_string(tok), h);
+    uint64_t v = 0;
+    for (int i = 0; i < 8; i++) v = (v << 8) | h[i];
+    const double u = ((double) v + 0.5) / 18446744073709551616.0;
+    return -std::log(-std::log(u));
+}
+
+// rounded, canonically ordered top (receipt.round_top): q = round half to even, order (lp desc, id asc)
+static std::vector<Cand> round_top(const std::vector<std::pair<int, double>> & raw) {
+    std::vector<Cand> out;
+    for (auto & r : raw) {
+        if (std::isfinite(r.second)) {
+            const long long q = (long long) std::nearbyint(r.second * 10000.0);
+            out.push_back({r.first, q, (double) q / 10000.0});
+        } else {
+            out.push_back({r.first, -100000000LL, -1e4});
+        }
+    }
+    std::stable_sort(out.begin(), out.end(), [](const Cand & a, const Cand & b) {
+        return a.lp > b.lp || (a.lp == b.lp && a.id < b.id);
+    });
+    return out;
+}
+
+static int rule_choose(const std::vector<Cand> & top, const Spec & sp, const std::string & key, int step) {
+    std::vector<Cand> cands(top.begin(), top.begin() + std::min((size_t) sp.top_k, top.size()));
+    if (cands.empty()) throw std::runtime_error("no candidates");
+    if (sp.greedy) return cands[0].id;
+    const double t = sp.temperature, m = cands[0].lp;
+    std::vector<double> w;
+    double z = 0.0;
+    for (auto & c : cands) { w.push_back(std::exp((c.lp - m) / t)); z += w.back(); }
+    std::vector<double> probs;
+    for (double x : w) probs.push_back(x / z);
+    std::vector<std::pair<Cand, double>> kept;
+    for (size_t i = 0; i < cands.size(); i++) kept.push_back({cands[i], probs[i]});
+    if (sp.min_p > 0) {
+        std::vector<std::pair<Cand, double>> k2;
+        for (auto & cp : kept) if (cp.second >= sp.min_p * probs[0]) k2.push_back(cp);
+        kept = k2;
+    }
+    if (sp.top_p < 1.0) {
+        std::vector<std::pair<Cand, double>> k2;
+        double cum = 0.0;
+        for (auto & cp : kept) {
+            k2.push_back(cp);
+            cum += cp.second;
+            if (cum >= sp.top_p) break;
+        }
+        kept = k2;
+    }
+    int best = -1;
+    double bv = -INFINITY;
+    for (auto & cp : kept) {
+        const double v = cp.first.lp / t + gumbel_noise(sp.seed, key, step, cp.first.id);
+        if (v > bv || (v == bv && cp.first.id < best)) { bv = v; best = cp.first.id; }
+    }
+    return best;
+}
 
 struct Engine {
     llama_model * model = nullptr;
@@ -223,6 +344,127 @@ struct Engine {
         return steps;
     }
 
+    // Raw top-k (id, logprob at temperature 1) as doubles, same values topk() reports.
+    std::vector<std::pair<int, double>> topk_raw(const float * lg, int k) const {
+        double lse;
+        json t = topk(lg, k, lse);
+        std::vector<std::pair<int, double>> out;
+        for (auto & e : t) out.emplace_back(e[0].get<int>(), e[1].get<double>());
+        return out;
+    }
+
+    template <class F> void parallel_for(int n, F f) const {
+        const int nt = std::max(1, std::min(n_threads, n));
+        if (nt == 1) { for (int i = 0; i < n; i++) f(i); return; }
+        std::vector<std::thread> pool;
+        for (int t = 0; t < nt; t++)
+            pool.emplace_back([&, t]() { for (int i = t; i < n; i += nt) f(i); });
+        for (auto & th : pool) th.join();
+    }
+
+    json generate(const json & reqs, int k) {
+        const int B = (int) reqs.size();
+        if (B < 1) throw std::runtime_error("no requests");
+        if (B > (int) llama_n_seq_max(ctx)) throw std::runtime_error("more requests than -np sequences");
+        struct Seq {
+            std::vector<llama_token> ctxt, tokens, eos;
+            std::vector<std::vector<Cand>> tops;
+            Spec sp; std::string key; int max_tokens = 0, pos = 0, row = -1; bool done = false; std::string finish = "length";
+        };
+        std::vector<Seq> seqs(B);
+        long long cells = 0;
+        for (int s = 0; s < B; s++) {
+            const json & r = reqs[s];
+            Seq & q = seqs[s];
+            q.ctxt = r.at("context").get<std::vector<llama_token>>();
+            q.max_tokens = r.at("max_tokens").get<int>();
+            q.key = r.at("key").get<std::string>();
+            q.eos = r.value("eos", std::vector<llama_token>{});
+            const json & sp = r.at("spec");
+            q.sp.greedy = sp.value("mode", std::string("greedy")) == "greedy";
+            q.sp.temperature = sp.value("temperature", 0.0);
+            q.sp.top_k = sp.value("top_k", 20);
+            q.sp.top_p = sp.value("top_p", 1.0);
+            q.sp.min_p = sp.value("min_p", 0.0);
+            q.sp.seed = sp.value("seed", 0LL);
+            if (q.ctxt.empty() || q.max_tokens < 1) throw std::runtime_error("empty context or max_tokens < 1");
+            if (q.sp.top_k < 1 || q.sp.top_k > k) throw std::runtime_error("top_k out of range");
+            cells += (long long) q.ctxt.size() + q.max_tokens;
+        }
+        if (cells > n_ctx) throw std::runtime_error("requests need more context than -c provides");
+        llama_memory_clear(llama_get_memory(ctx), true);
+        n_past = 0;
+        last_logits = nullptr;  // start/step state is gone
+        llama_batch batch = llama_batch_init(std::max(n_batch, B), 0, 1);
+        auto add = [&](llama_token t, int pos, int seq, bool logits) {
+            const int j = batch.n_tokens++;
+            batch.token[j] = t; batch.pos[j] = pos; batch.n_seq_id[j] = 1; batch.seq_id[j][0] = seq;
+            batch.logits[j] = logits;
+            return j;
+        };
+        auto decode = [&]() {
+            if (batch.n_tokens && llama_decode(ctx, batch) != 0) {
+                llama_batch_free(batch);
+                throw std::runtime_error("llama_decode failed");
+            }
+        };
+        // prompts, one sequence at a time (in chunks of n_batch); read each one's first-step top right away,
+        // since the next decode overwrites the logits
+        for (int s = 0; s < B; s++) {
+            const auto & c = seqs[s].ctxt;
+            for (size_t off = 0; off < c.size(); off += n_batch) {
+                batch.n_tokens = 0;
+                const size_t end = std::min(c.size(), off + (size_t) n_batch);
+                for (size_t i = off; i < end; i++) {
+                    const int j = add(c[i], (int) i, s, i + 1 == c.size());
+                    if (i + 1 == c.size()) seqs[s].row = j;
+                }
+                decode();
+            }
+            seqs[s].pos = (int) c.size();
+            seqs[s].tops.push_back(round_top(topk_raw(llama_get_logits_ith(ctx, seqs[s].row), k)));
+        }
+        for (int step = 0;; step++) {
+            // choose this step's token for every live sequence (independent work: threads)
+            std::vector<int> live;
+            for (int s = 0; s < B; s++) if (!seqs[s].done) live.push_back(s);
+            if (live.empty()) break;
+            parallel_for((int) live.size(), [&](int i) {
+                Seq & q = seqs[live[i]];
+                const int tok = rule_choose(q.tops.back(), q.sp, q.key, (int) q.tokens.size());
+                q.tokens.push_back(tok);
+                if (std::find(q.eos.begin(), q.eos.end(), tok) != q.eos.end()) { q.done = true; q.finish = "stop"; }
+                else if ((int) q.tokens.size() >= q.max_tokens) q.done = true;
+            });
+            batch.n_tokens = 0;
+            std::vector<int> fed;
+            for (int s : live) {
+                Seq & q = seqs[s];
+                if (q.done) continue;
+                q.row = add(q.tokens.back(), q.pos++, s, true);
+                fed.push_back(s);
+            }
+            if (fed.empty()) break;
+            decode();
+            parallel_for((int) fed.size(), [&](int i) {
+                Seq & q = seqs[fed[i]];
+                q.tops.push_back(round_top(topk_raw(llama_get_logits_ith(ctx, q.row), k)));
+            });
+        }
+        llama_batch_free(batch);
+        json results = json::array();
+        for (auto & q : seqs) {
+            json tops = json::array();
+            for (size_t i = 0; i < q.tokens.size(); i++) {
+                json t = json::array();
+                for (auto & c : q.tops[i]) t.push_back({c.id, c.q});
+                tops.push_back(t);
+            }
+            results.push_back({{"tokens", q.tokens}, {"tops", tops}, {"finish_reason", q.finish}});
+        }
+        return results;
+    }
+
     json start(const std::vector<llama_token> & context, int k) {
         if (context.empty()) throw std::runtime_error("empty context");
         if ((int) context.size() >= n_ctx) throw std::runtime_error("context too long");
@@ -278,7 +520,8 @@ static std::string meta_str(llama_model * model, const char * key) {
 
 int main(int argc, char ** argv) {
     std::string model_path, cache_k = "f16", cache_v = "f16";
-    int n_ctx = 16384, n_batch = 2048, n_gpu_layers = 99;
+    int n_ctx = 16384, n_batch = 2048, n_gpu_layers = 99, n_seq = 1;
+    bool vocab_only = false;
     for (int i = 1; i < argc; i++) {
         std::string a = argv[i];
         if (a == "-m" && i + 1 < argc) model_path = argv[++i];
@@ -287,9 +530,11 @@ int main(int argc, char ** argv) {
         else if (a == "-ngl" && i + 1 < argc) n_gpu_layers = std::stoi(argv[++i]);
         else if (a == "-ctk" && i + 1 < argc) cache_k = argv[++i];  // KV cache types, to emulate a provider that
         else if (a == "-ctv" && i + 1 < argc) cache_v = argv[++i];  // compresses its cache (f16, q8_0, q4_0)
+        else if (a == "-np" && i + 1 < argc) n_seq = std::stoi(argv[++i]);  // parallel sequences for "generate"
+        else if (a == "-vocab") vocab_only = true;  // tokenizer only (meta, tokenize, detokenize): no weights, no context
     }
     if (model_path.empty()) {
-        fprintf(stderr, "usage: lv-engine -m model.gguf [-c ctx] [-b batch] [-ngl layers] [-ctk t] [-ctv t] < requests.jsonl\n");
+        fprintf(stderr, "usage: lv-engine -m model.gguf [-c ctx] [-b batch] [-ngl layers] [-ctk t] [-ctv t] [-np seqs] [-vocab] < requests.jsonl\n");
         return 1;
     }
     llama_log_set([](ggml_log_level level, const char * text, void *) {
@@ -298,6 +543,7 @@ int main(int argc, char ** argv) {
     llama_backend_init();
     llama_model_params mp = llama_model_default_params();
     mp.n_gpu_layers = n_gpu_layers;
+    mp.vocab_only = vocab_only;
     Engine E;
     E.model = llama_model_load_from_file(model_path.c_str(), mp);
     if (!E.model) { fprintf(stderr, "failed to load %s\n", model_path.c_str()); return 1; }
@@ -311,11 +557,13 @@ int main(int argc, char ** argv) {
         if (t == "f16") return GGML_TYPE_F16;
         throw std::runtime_error("unknown cache type " + t);
     };
+    cp.n_seq_max = n_seq;
+    cp.kv_unified = true;  // sequences share the n_ctx cells
     cp.type_k = kv_type(cache_k);
     cp.type_v = kv_type(cache_v);
     if (cache_v != "f16") cp.flash_attn_type = LLAMA_FLASH_ATTN_TYPE_ENABLED;  // a quantized V cache needs flash attention
-    E.ctx = llama_init_from_model(E.model, cp);
-    if (!E.ctx) { fprintf(stderr, "failed to create context\n"); return 1; }
+    E.ctx = vocab_only ? nullptr : llama_init_from_model(E.model, cp);
+    if (!E.ctx && !vocab_only) { fprintf(stderr, "failed to create context\n"); return 1; }
     E.vocab = llama_model_get_vocab(E.model);
     E.n_vocab = llama_vocab_n_tokens(E.vocab);
     E.n_ctx = n_ctx;
@@ -345,6 +593,9 @@ int main(int argc, char ** argv) {
                 resp["eos"] = eos;
                 resp["chat_template"] = meta_str(E.model, "tokenizer.chat_template");
                 resp["desc"] = desc;
+                resp["features"] = E.ctx ? json::array({"generate"}) : json::array();
+                resp["n_seq_max"] = E.ctx ? (int) llama_n_seq_max(E.ctx) : 0;
+                resp["vocab_only"] = E.ctx == nullptr;
                 resp["trunc_grid"] = {{"top_k", std::vector<int>(std::begin(TOPK_GRID), std::end(TOPK_GRID))},
                                       {"top_p", std::vector<double>(std::begin(TOPP_GRID), std::end(TOPP_GRID))},
                                       {"min_p", std::vector<double>(std::begin(MINP_GRID), std::end(MINP_GRID))}};
@@ -362,6 +613,10 @@ int main(int argc, char ** argv) {
                 auto context = req["context"].get<std::vector<llama_token>>();
                 auto reply = req["tokens"].get<std::vector<llama_token>>();
                 resp["steps"] = E.score(context, reply, k, req.value("temperature", 1.0), req.value("stats", true));
+            } else if (!E.ctx && cmd != "tokenize" && cmd != "detokenize") {
+                throw std::runtime_error("vocab-only engine: only meta, tokenize and detokenize");
+            } else if (cmd == "generate") {
+                resp["results"] = E.generate(req.at("requests"), k);
             } else if (cmd == "start" || cmd == "step") {
                 resp["top"] = cmd == "start" ? E.start(req["context"].get<std::vector<llama_token>>(), k)
                                              : E.step(req["token"].get<llama_token>(), k);

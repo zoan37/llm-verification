@@ -7,10 +7,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional, Sequence
+from typing import List, Optional, Sequence
 
 from .engine import Model
-from .receipt import Receipt, Signer, Trace, make_receipt, new_nonce, round_top
+from .receipt import LOGPROB_DECIMALS, Receipt, Signer, Trace, make_receipt, new_nonce, round_top
 from .sampling import COMMIT_K, SamplingSpec, choose
 
 
@@ -28,10 +28,34 @@ class VerifiableProvider:
         self.model_info = dict(model_info)
         self.eos = set(int(x) for x in (eos_ids if eos_ids is not None else model.eos_ids))
 
+    def generate_batch(self, items: Sequence[tuple]) -> List[Generation]:
+        """Many requests [(prompt_ids, spec, max_tokens, client_nonce), ...]. With an engine that runs the rule
+        natively they are generated together in batches; otherwise one after another."""
+        native = getattr(self.model, "native_generate", 0)
+        if not native or type(self).generate is not VerifiableProvider.generate:
+            # a subclass that changes generation (the attack simulations) must not be bypassed by the native path
+            return [self.generate(*it) for it in items]
+        out: List[Generation] = []
+        for i in range(0, len(items), native):
+            chunk = items[i:i + native]
+            reqs = [{"context": [int(x) for x in p], "max_tokens": int(n), "key": nonce or new_nonce(),
+                     "eos": sorted(self.eos), "spec": spec.to_dict()} for p, spec, n, nonce in chunk]
+            for (p, spec, n, _), req, res in zip(chunk, reqs, self.model.generate(reqs, COMMIT_K)):
+                tops = [[(int(t), int(q) / 10 ** LOGPROB_DECIMALS) for t, q in top] for top in res["tops"]]
+                trace = Trace(prompt_ids=[int(x) for x in p], tokens=[int(t) for t in res["tokens"]], tops=tops,
+                              finish_reason=res["finish_reason"])
+                text = (getattr(self, "text_model", None) or self.model).detokenize(
+                    [t for t in trace.tokens if t not in self.eos])
+                out.append(Generation(trace, make_receipt(self.signer, trace, self.model_info, spec, req["key"], n,
+                                                          text), text))
+        return out
+
     def generate(self, prompt_ids: Sequence[int], spec: SamplingSpec, max_tokens: int,
                  client_nonce: Optional[str] = None) -> Generation:
         """Generate up to max_tokens tokens. The client should always supply `client_nonce` (and a seed in
         `spec`): if the provider picks them it can retry with different randomness until it likes the output."""
+        if getattr(self.model, "native_generate", 0) and not getattr(self, "force_python", False):
+            return self.generate_batch([(prompt_ids, spec, max_tokens, client_nonce)])[0]
         nonce = client_nonce or new_nonce()
         tokens, tops = [], []
         top = round_top(self.model.start(list(prompt_ids), COMMIT_K))

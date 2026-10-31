@@ -28,8 +28,10 @@ Open work, roughly in priority order. Each item says what it would establish.
 ## Cooperative mode in production
 - [x] **Challenge-only traces** (receipt v2): `trace: "deferred"`, rolling buffer, private client challenges, text
       hash in the receipt. Next: span reveals (Merkle commitment) so a challenge need not fetch the whole trace.
-- [ ] **llama.cpp server integration**: the threaded rule as a sampler plus receipts behind a flag (overhead measured
-      with engine/bench_coop.cpp: within a few percent when threaded). Then vLLM (GPU-side top-20).
+- [x] **Native generation** in lv-engine (`generate`, bit-identical to the Python rule) and a batching server:
+      16 concurrent verified clients at 134 tok/s on gpt-oss-20b (Python path: 47).
+- [ ] Continuous batching (join a running batch) and parallel prefill; then the same rule as a llama-server /
+      vLLM sampler so existing deployments can turn it on.
 - [ ] Single-request vocabulary pass split over cores or on the GPU (the last ~5% on fast models).
 
 ## Calibration

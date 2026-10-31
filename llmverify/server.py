@@ -8,16 +8,19 @@ waits in a rolling in-memory buffer for `trace_window` seconds and is served onc
 GET /v1/verification/trace/<trace_id>, where trace_id is the hex sha256 of the receipt body (the digest it signs).
 GET /v1/verification/info returns the provider's public key, model claim and trace window, for pinning.
 
-This is a reference implementation on top of lv-engine: one request at a time, no batching.
+Concurrent requests are collected for a few milliseconds and generated together when the engine runs the rule
+natively (lv-engine "generate", -np N); otherwise they run one at a time.
 """
 
 from __future__ import annotations
 
 import json
+import queue
 import secrets
 import threading
 import time
 from collections import OrderedDict
+from concurrent.futures import Future
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Optional
 
@@ -56,17 +59,64 @@ class TraceStore:
             return item[1] if item else None
 
 
+class Batcher:
+    """Collects concurrent requests until none has arrived for `wait_s` (or `max_batch` are waiting, or `max_wait`
+    has passed) and generates them in one `provider.generate_batch` call; each caller blocks on its own future."""
+
+    def __init__(self, provider: VerifiableProvider, max_batch: int, wait_s: float = 0.05, max_wait: float = 0.25):
+        self.provider, self.max_batch, self.wait_s, self.max_wait = provider, max(1, max_batch), wait_s, max_wait
+        self.q: "queue.Queue" = queue.Queue()
+        self.sizes: list = []  # batch sizes served, for monitoring
+        self.arrivals: list = []
+        self.durations: list = []
+        threading.Thread(target=self._loop, daemon=True).start()
+
+    def submit(self, prompt_ids, spec, max_tokens, nonce):
+        fut: Future = Future()
+        self.arrivals.append(time.monotonic())
+        self.q.put(((prompt_ids, spec, max_tokens, nonce), fut))
+        return fut.result()
+
+    def _loop(self):
+        while True:
+            batch = [self.q.get()]
+            # keep collecting while requests keep arriving (each arrival restarts the wait), up to max_wait in all
+            hard = time.monotonic() + self.max_wait
+            while len(batch) < self.max_batch:
+                try:
+                    batch.append(self.q.get(timeout=max(0.0, min(self.wait_s, hard - time.monotonic()))))
+                except queue.Empty:
+                    break
+            self.sizes.append(len(batch))
+            try:
+                t0 = time.monotonic()
+                gens = self.provider.generate_batch([item for item, _ in batch])
+                self.durations.append(round(time.monotonic() - t0, 2))
+                for (_, fut), g in zip(batch, gens):
+                    fut.set_result(g)
+            except Exception as e:  # noqa: BLE001
+                for _, fut in batch:
+                    fut.set_exception(e)
+
+
 class App:
     def __init__(self, provider: VerifiableProvider, template: str, bos: Optional[int] = None,
-                 template_kwargs: Optional[dict] = None, trace_window: float = 300.0):
+                 template_kwargs: Optional[dict] = None, trace_window: float = 300.0, tokenizer=None,
+                 batch_wait: float = 0.05):
         self.provider, self.template, self.bos = provider, template, bos
+        # A separate tokenizer (a vocab-only engine) lets requests be prepared while the engine generates; without
+        # one they wait for the running batch and arrive one by one.
+        self.tokenizer = tokenizer or provider.model
+        if tokenizer is not None:
+            provider.text_model = tokenizer
         self.kw = template_kwargs or {}
         self.lock = threading.Lock()
         self.traces = TraceStore(trace_window)
+        self.batcher = Batcher(provider, getattr(provider.model, "native_generate", 0) or 1, batch_wait)
 
     def prompt_ids(self, messages):
         text = render_chat(self.template, messages, True, **self.kw)
-        return ([self.bos] if self.bos is not None else []) + self.provider.model.tokenize(text, special=True)
+        return ([self.bos] if self.bos is not None else []) + self.tokenizer.tokenize(text, special=True)
 
     def complete(self, body: dict) -> dict:
         messages = body.get("messages")
@@ -81,12 +131,10 @@ class App:
         mode = (body.get("verification") or {}).get("trace", "inline")
         if mode not in ("inline", "deferred"):
             raise ValueError("verification.trace must be 'inline' or 'deferred'")
-        with self.lock:
-            ids = self.prompt_ids(messages)
-            g = self.provider.generate(ids, spec, max_tokens, nonce)
-            eos = self.provider.eos
-            text = g.text if g.text is not None else self.provider.model.detokenize(
-                [t for t in g.trace.tokens if t not in eos])
+        ids = self.prompt_ids(messages)
+        g = self.batcher.submit(ids, spec, max_tokens, nonce)
+        eos = self.provider.eos
+        text = g.text if g.text is not None else self.tokenizer.detokenize([t for t in g.trace.tokens if t not in eos])
         if mode == "deferred":
             trace_id = g.receipt.digest().hex()
             self.traces.put(trace_id, g.trace.to_dict())
@@ -106,6 +154,10 @@ class App:
 
     def info(self) -> dict:
         return {"provider_key": self.provider.signer.public_hex, "model": self.provider.model_info,
+                "batch_sizes_recent": self.batcher.sizes[-50:],
+                "batch_seconds_recent": self.batcher.durations[-50:],
+                "arrivals_recent_ms": [round(1000 * (t - self.batcher.arrivals[-16:][0])) for t in self.batcher.arrivals[-16:]]
+                if self.batcher.arrivals else [],
                 "receipt_version": RECEIPT_VERSION, "sampling_rule": "llmverify-gumbel-v1",
                 "trace_window_s": self.traces.window}
 
@@ -150,6 +202,11 @@ def make_handler(app: App):
     return Handler
 
 
+class _Server(ThreadingHTTPServer):
+    request_queue_size = 256  # the default (5) resets connections when many clients arrive at once
+    daemon_threads = True
+
+
 def serve(app: App, host: str = "127.0.0.1", port: int = 8090) -> ThreadingHTTPServer:
-    srv = ThreadingHTTPServer((host, port), make_handler(app))
+    srv = _Server((host, port), make_handler(app))
     return srv

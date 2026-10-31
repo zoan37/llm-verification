@@ -71,6 +71,16 @@ class LlamaEngine:
     def detokenize(self, tokens: Sequence[int]) -> str:
         return self.call({"cmd": "detokenize", "tokens": [int(t) for t in tokens]})["text"]
 
+    @property
+    def native_generate(self) -> int:
+        """How many requests the engine's native cooperative generator takes per call (0: not available)."""
+        return int(self.meta.get("n_seq_max", 1)) if "generate" in (self.meta.get("features") or []) else 0
+
+    def generate(self, requests: Sequence[dict], k: int = 20) -> List[dict]:
+        """Native cooperative generation (engine "generate"): each request {"context", "max_tokens", "key", "eos",
+        "spec"}; each result {"tokens", "tops": [[[id, q], ...]], "finish_reason"} with q in units of 1e-4 nats."""
+        return self.call({"cmd": "generate", "requests": list(requests), "k": k})["results"]
+
     def score(self, context, tokens, k=20, temperature=1.0, stats=True) -> List[RefStep]:
         r = self.call({"cmd": "score", "context": [int(t) for t in context], "tokens": [int(t) for t in tokens],
                        "k": k, "temperature": temperature, "stats": stats})

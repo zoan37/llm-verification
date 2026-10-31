@@ -131,3 +131,20 @@ def test_deferred_over_http():
             c.fetch_trace("00" * 32)
     finally:
         srv.shutdown()
+
+
+def test_native_batch_path_never_bypasses_an_overridden_generate():
+    class FakeNative(ToyLM):
+        native_generate = 8
+
+        def generate(self, requests, k=20):
+            raise AssertionError("native path used")
+    called = []
+
+    class Cheat(VerifiableProvider):
+        def generate(self, prompt_ids, spec, max_tokens, client_nonce=None):
+            called.append(1)
+            self.force_python = True
+            return super().generate(prompt_ids, spec, max_tokens, client_nonce)
+    g = Cheat(FakeNative(weights_seed=1), SIGNER, INFO).generate_batch([([5, 6], SamplingSpec(), 4, "n")])
+    assert called and g[0].trace.tokens
