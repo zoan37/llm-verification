@@ -178,7 +178,8 @@ lie slightly in its committed logprobs to keep the rule check passing.
   plus a build, not an architecture (experiments/results/exact-tier-cross-machine.json). With vLLM's batch-invariant
   mode (`VLLM_BATCH_INVARIANT=1`) the tier widens: an A100, an RTX 3090, two RTX 4090s, an RTX 4080 SUPER and an L40S
   produced identical replies and top-20 logprobs at all 9,493 positions, however requests were batched; an RTX 5090
-  (Blackwell) was batch-invariant but its own group; an H100 was not (it changed 3 of 48 replies with batching). Determinism across GPU generations is available today where the
+  (Blackwell) was batch-invariant but its own group, shared with an RTX PRO 6000 (receipts signed on one and checked on
+  the other: 0 false alarms, every forgery caught); an H100 was not (it changed 3 of 48 replies with batching). Determinism across GPU generations is available today where the
   engine's kernels are batch-invariant (experiments/results/vllm-batch-invariance-gpt-oss-20b.json). In that mode vLLM's
   one-pass scoring (prompt_logprobs) reproduces its token-by-token decode bit for bit, also across machines (an RTX
   A6000 matched an RTX 4090's 8,588 positions in 7 s), so the vLLM tier needs no replay. Its decode is also accurate:

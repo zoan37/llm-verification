@@ -1,0 +1,65 @@
+{
+ "what": "Is Blackwell one batch-invariant group? vLLM 0.32.0, VLLM_BATCH_INVARIANT=1, eager, gpt-oss-20b, on a rented RTX 5090 (consumer, South Korea, driver 580.178.04) and a rented RTX PRO 6000 Blackwell Workstation Edition (UK, driver 580.173.02), both compute capability 12.0. Each made a determinism run (48 prompts, sequential and 16 concurrent; vllm_determinism.py, reasoning effort low sent at top level) and scored its own run and the home RTX 4090's run in one prefill (vllm_onepass_referee.py). Then the RTX 5090 signed receipts with the llmverify logits processor (vllm_exact_receipts.py generate) and the RTX PRO 6000 checked them in one pass.",
+ "date": "2026-11-01",
+ "determinism": "each GPU sequential vs 16 concurrent: 0 of 8,564 positions differ; RTX 5090 vs RTX PRO 6000: 0 replies diverge, 0 of 8,564 positions differ; either vs the home RTX 4090 (Ampere/Ada group): 38 of 48 replies diverge, 2,673 of the 2,712 positions before divergence have different values",
+ "onepass_own_run": "0 of 8,564 positions differ on each GPU (3-4 s)",
+ "onepass_on_rtx4090_run": "top-20 differs at 8,587 of 8,588 positions on each (identical counts on both Blackwell GPUs): a Blackwell referee cannot check an Ada provider",
+ "receipts_rtx5090_checked_on_rtx_pro_6000": {
+  "honest greedy": {
+   "replies": 48,
+   "tokens": 8564,
+   "client_checks_pass": 48,
+   "positions_differ": 0,
+   "replies_flagged": 0,
+   "rule_breaks_on_referee_numbers": 0,
+   "caught_at_flip": 0
+  },
+  "honest t1.0": {
+   "replies": 48,
+   "tokens": 8552,
+   "client_checks_pass": 48,
+   "positions_differ": 0,
+   "replies_flagged": 0,
+   "rule_breaks_on_referee_numbers": 0,
+   "caught_at_flip": 0
+  },
+  "honest t0.7-p0.95": {
+   "replies": 48,
+   "tokens": 8587,
+   "client_checks_pass": 48,
+   "positions_differ": 0,
+   "replies_flagged": 0,
+   "rule_breaks_on_referee_numbers": 0,
+   "caught_at_flip": 0
+  },
+  "tampered greedy": {
+   "replies": 48,
+   "tokens": 8687,
+   "client_checks_pass": 48,
+   "positions_differ": 48,
+   "replies_flagged": 48,
+   "rule_breaks_on_referee_numbers": 48,
+   "caught_at_flip": 48
+  },
+  "tampered t1.0": {
+   "replies": 48,
+   "tokens": 3890,
+   "client_checks_pass": 48,
+   "positions_differ": 48,
+   "replies_flagged": 48,
+   "rule_breaks_on_referee_numbers": 48,
+   "caught_at_flip": 48
+  },
+  "tampered t0.7-p0.95": {
+   "replies": 48,
+   "tokens": 4006,
+   "client_checks_pass": 48,
+   "positions_differ": 48,
+   "replies_flagged": 48,
+   "rule_breaks_on_referee_numbers": 48,
+   "caught_at_flip": 48
+  }
+ },
+ "check_seconds": 11.6,
+ "notes": "Blackwell (sm_120) is one group across consumer and workstation cards, separate from Ampere/Ada. So with vLLM batch-invariant mode there are at least two exact tiers, each spanning several GPU models; a referee must be in the provider's group."
+}

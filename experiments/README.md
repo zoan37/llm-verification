@@ -434,7 +434,9 @@ user's RTX 4090 (`exact_tier.py`, `vllm_determinism.py`; results `exact-tier-cro
 - **vLLM batch-invariant mode (`VLLM_BATCH_INVARIANT=1`):** on six machines and five GPU models across two
   architectures (A100, RTX 3090, two RTX 4090s, RTX 4080 SUPER, L40S) every reply and every top-20 logprob was
   identical, one at a time or 16 at once, at all 9,493 positions. An RTX 5090 (Blackwell) was batch-invariant on itself
-  but formed its own group (46 of 48 replies differ from the Ampere/Ada group); an H100 was not even batch-invariant
+  but formed its own group (46 of 48 replies differ from the Ampere/Ada group), and an RTX PRO 6000 Blackwell
+  Workstation Edition matched it exactly (0 of 8,564 positions differ), so Blackwell is one group across consumer and
+  workstation cards (`vllm-blackwell-group-gpt-oss-20b.json`); an H100 was not even batch-invariant
   on itself (3 of 48 replies changed with batching) and matched nothing else. Cost on an RTX 4090 (eager mode): 46 -> 40 tokens/s for
   one request, none measurable at 16 concurrent (644 -> 656).
 
@@ -479,7 +481,9 @@ up to 2,974 tokens, chunked prefill on; same RTX 4090 as referee) the result was
 positions differ, all 144 tampered replies caught at the edit, 144,097 tokens checked in 27 s. So on vLLM, across Ampere and
 Ada, cooperative verification can be exact: no calibration, no false alarms, and any nudge, however small, is
 caught where it was made. Limits: one engine version (a second model below); the referee must run the same vLLM version in
-batch-invariant mode on a GPU of the same kernel family (Hopper was not batch-invariant, Blackwell is its own group);
+batch-invariant mode on a GPU of the same kernel family (Hopper was not batch-invariant, Blackwell is its own group:
+receipts signed on an RTX 5090 and checked on an RTX PRO 6000 gave the same clean result, 0 of 25,703 honest positions
+differ and 144 of 144 forgeries caught at the edit, 42,286 tokens in 12 s);
 tampered sampled replies end at the edit because the rule's step index cannot be resumed through the vLLM API.
 
 The same test on a dense BF16 model, Qwen3-8B with thinking off (result `vllm-exact-receipts-qwen3-8b.json`), on two
