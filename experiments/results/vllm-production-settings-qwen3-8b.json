@@ -131,7 +131,7 @@
    }
   }
  },
- "verdict": "For an exact one-pass tier on vLLM: batch-invariant mode, --enforce-eager, a fixed tensor-parallel size (part of the tier), any prefix caching / chunking / n-gram speculation. CUDA graphs with torch.compile give numbers that are stable within one server lifetime but change on every restart, so no referee can reproduce them; a provider in that mode falls to the statistical tier. Which of compilation or graph capture causes it was not separated.",
+ "verdict": "For an exact one-pass tier on vLLM: batch-invariant mode, --enforce-eager, a fixed tensor-parallel size (part of the tier), any prefix caching / chunking / n-gram speculation. torch.compile gives its own numbers, prefill no longer matches decode, and on one machine two of three starts differed; CUDA graphs alone match eager exactly (compile_vs_graphs).",
  "throughput_rtx4090": {
   "what": "output tokens/s, Qwen3-8B, 256-token replies, vLLM 0.32.0, one rented RTX 4090 (performance only; this box's numerics were faulty, see below)",
   "plain default (compiled + CUDA graphs)": {
@@ -157,5 +157,11 @@
   "control": "a second RTX 4090 on the same driver 615.71.09 reproduced the canonical numbers exactly on three starts (0 of 8,250 positions differ), so the driver is not the cause; it was that machine",
   "consequence": "a split of compiled mode into compile-only and graphs-only, run on that machine, is inconclusive and not reported; the compiled-mode finding above comes from a machine whose eager runs were reproducible",
   "lesson": "an exact tier needs admission and periodic calibration: a node runs a fixed probe whose canonical answers are known, and hardware that does not reproduce them stays in the statistical tier instead of being penalized"
+ },
+ "compile_vs_graphs": {
+  "what": "on a rented RTX 4090 (Vietnam, driver 580.142) that first passed the calibration probe (decode and prefill) on three starts",
+  "cuda graphs only (mode 0, FULL_AND_PIECEWISE)": "identical to the eager canonical numbers; passes calibration on two starts; 893 vs 884 tokens/s at 32 concurrent (eager), 27 vs 27 single",
+  "torch.compile only (cudagraph_mode NONE)": "its own numbers (fails the eager calibration); identical across four starts, two of them with the compile cache cleared; identical to one of the three compiled runs on the earlier 2x RTX 4090 box, whose other two compiled starts differed",
+  "verdict": "torch.compile, not CUDA graphs, breaks the eager tier, and its reproducibility depends on the machine (likely timing-based kernel choices). Exact tier: batch-invariant with torch.compile off; CUDA graphs are free to use."
  }
 }

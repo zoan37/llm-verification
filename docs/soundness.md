@@ -193,7 +193,7 @@ lie slightly in its committed logprobs to keep the rule check passing.
   (experiments/results/vllm-exact-receipts-gpt-oss-20b.json). It is not specific to that model: on dense BF16
   Qwen3-8B an RTX 4090 and an RTX 3090 each signed receipts and checked the other's, with 0 differing positions on
   288 honest replies and all 286 tampered replies caught at the edit (experiments/results/vllm-exact-receipts-qwen3-8b.json).
-  The tier needs eager mode: with CUDA graphs and torch.compile each server restart computes different numbers
+  The tier needs torch.compile off (CUDA graphs alone are fine): compiled, a server's numbers can change on restart
   (experiments/results/vllm-production-settings-qwen3-8b.json), so a compiled provider gets the statistical tier.
 - What it buys an attacker: picking among outputs M itself nearly produced. It cannot make M say something M
   gives low probability, so it cannot inject a malicious tool call; it can bias style or embed a covert watermark.

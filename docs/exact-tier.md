@@ -13,7 +13,7 @@ means all of:
 | Setting | Measured |
 |---|---|
 | `VLLM_BATCH_INVARIANT=1` | without it, sending the same prompts one at a time or 16 at once changed 45 of 48 replies |
-| `--enforce-eager` | with CUDA graphs + torch.compile a server is stable while it runs but computes different numbers after every restart |
+| torch.compile off (`--enforce-eager`, or CUDA graphs alone: `--compilation-config '{"mode": 0, "cudagraph_mode": "FULL_AND_PIECEWISE"}'`) | compiled, a server computes its own numbers, prefill no longer matches decode, and on one machine 2 of 3 starts differed; CUDA graphs alone match eager exactly at no cost |
 | same GPU group | Ampere/Ada (RTX 3090, RTX 4090, RTX 4080 SUPER, RTX A6000, A100, L40S) is one group; Blackwell (RTX 5090, RTX PRO 6000, DGX Spark GB10) another; H100 was not batch-invariant on vLLM 0.32 |
 | same tensor-parallel size | TP=2 is deterministic but differs from TP=1 |
 | same vLLM / torch / Triton | vLLM 0.30-0.32 agreed (all torch 2.13, Triton 3.7.1); treat a torch or Triton change as a new tier until re-measured |
@@ -22,7 +22,7 @@ means all of:
 
 Free to vary: prefix caching, chunked prefill, n-gram speculative decoding, driver version (580 and 615 agreed),
 batch composition and load. Not supported: hybrid linear-attention models (vLLM refuses batch-invariant mode for
-their layers), Hopper on 0.32, compiled mode.
+their layers), Hopper on 0.32, torch.compile.
 
 ## Tier descriptor (proposal)
 
@@ -38,7 +38,7 @@ the first token, like any other cheat.
 
 ## Admission and calibration
 
-`experiments/vllm_calibration.py` replays 16 fixed prompts (64 tokens each) and requires an exact match with
+`experiments/calibration_probe.py` replays 16 fixed prompts (64 tokens each) and requires an exact match with
 canonical answers recorded on known-good machines of the group (`calibration/`). It takes about 3 seconds by
 one-pass prefill, 10-15 by decoding. Proposal:
 
@@ -92,7 +92,7 @@ receipts (replies edited at a known token) whose detection is itself checked.
 
 ## Open
 
-Hopper (H100/H200) on newer vLLM; hybrid linear-attention models; whether compile-only or graph-capture-only
-keeps reproducibility; tensor parallelism across GPU models of one group; AMD (ROCm) batch-invariant kernels;
+Hopper (H100/H200) on newer vLLM; hybrid linear-attention models; whether torch.compile can be made
+reproducible (a fixed kernel cache shipped with the tier); tensor parallelism across GPU models of one group; AMD (ROCm) batch-invariant kernels;
 llama.cpp nodes, which are exact only on the same GPU model and build with token-by-token replay
 (`experiments/exact_tier.py`).

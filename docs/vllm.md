@@ -53,8 +53,10 @@ the other's receipts) (experiments/README.md). For Qwen3-8B, vLLM 0.30.0, 0.31.0
 3.7.1) gave identical numbers, so a referee need not upgrade in lockstep within that range; batch-invariant gpt-oss on
 Ampere/Ada needs 0.32.0 or later.
 
-Exactness needs `--enforce-eager`. With CUDA graphs and torch.compile (vLLM's default) a server is batch-invariant
-while it runs, but every restart computes different numbers and its prefill does not match its decode. Prefix caching,
+Exactness needs torch.compile off: `--enforce-eager`, or CUDA graphs alone with
+`--compilation-config '{"mode": 0, "cudagraph_mode": "FULL_AND_PIECEWISE"}'`, which gives exactly the eager numbers.
+Compiled (vLLM's default), a server computes its own numbers, its prefill does not match its decode, and a restart
+can change them. Prefix caching,
 chunked prefill and n-gram speculative decoding keep exactness; tensor parallelism changes the numbers, so the TP size
 is part of the tier (measured on Qwen3-8B, `experiments/results/vllm-production-settings-qwen3-8b.json`). Hybrid
 linear-attention models (Qwen3.8-Flash-Next's GDN layers) refuse batch-invariant mode.

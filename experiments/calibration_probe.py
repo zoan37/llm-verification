@@ -6,15 +6,20 @@ server start) or a mismatched config would otherwise look like a cheat. The prob
 of a canonical run, the first `--tokens` tokens of each reply (default 16 x 64, about a thousand tokens, seconds of GPU
 time), compared to the last digit. Run it at admission, after every restart, and now and then at random.
 
-    # canonical answers: an existing vllm_determinism.py run from known-good machines of the group
-    python experiments/vllm_calibration.py make vdet-prod-eager.json.gz --tag "qwen3-8b ampere-ada vllm0.32 bi eager" \
+    # canonical answers: an existing vllm_determinism.py run from known-good machines of the group ...
+    python experiments/calibration_probe.py make vdet-prod-eager.json.gz --tag "qwen3-8b ampere-ada vllm0.32 bi eager" \
         --out calibration/qwen3-8b__ampere-ada.json.gz
+    # ... or recorded from a known-good node (prompt ids taken from another canonical file or run of the same model)
+    python experiments/calibration_probe.py record --engine llama --base http://GOOD:8080 --model gpt-oss-20b \
+        --prompts-from calibration/gpt-oss-20b__ampere-ada__vllm0.32-bi-eager.json.gz --tag "..." --out calibration/x.json.gz
     # on the node (or by a coordinator against the node's server)
-    python experiments/vllm_calibration.py check calibration/qwen3-8b__ampere-ada.json.gz \
-        --base http://NODE:8300 --model Qwen/Qwen3-8B [--prefill]
+    python experiments/calibration_probe.py check calibration/qwen3-8b__ampere-ada.json.gz \
+        --base http://NODE:8300 --model Qwen/Qwen3-8B [--prefill] [--engine llama]
 
 `check` makes the node generate greedily from the canonical prompt ids (decode path); `--prefill` instead has it score
-prompt + canonical reply in one pass (the referee path). Both must match exactly.
+prompt + canonical reply in one pass (the referee path, vLLM only). Both must match exactly. `--engine llama` talks to
+llama-server (`/completion` with `n_probs`), one request at a time: llama.cpp batches concurrent requests together,
+and its exact tier is defined for one sequence at a time.
 """
 import argparse
 import gzip
@@ -32,11 +37,19 @@ m.add_argument("--tag", required=True, help="model, GPU group and config the ans
 m.add_argument("--n", type=int, default=16)
 m.add_argument("--tokens", type=int, default=64)
 m.add_argument("--out", required=True)
+r = sub.add_parser("record")
+r.add_argument("--prompts-from", required=True, help="a canonical file or vllm_determinism.py run of the same model")
+r.add_argument("--tag", required=True)
+r.add_argument("--n", type=int, default=16)
+r.add_argument("--tokens", type=int, default=64)
+r.add_argument("--out", required=True)
 c = sub.add_parser("check")
 c.add_argument("canonical")
-c.add_argument("--base", required=True, help="server root, e.g. http://127.0.0.1:8300")
-c.add_argument("--model", required=True)
 c.add_argument("--prefill", action="store_true", help="score the canonical replies in one pass instead of generating")
+for s in (r, c):
+    s.add_argument("--base", required=True, help="server root, e.g. http://127.0.0.1:8300")
+    s.add_argument("--model", required=True)
+    s.add_argument("--engine", choices=["vllm", "llama"], default="vllm")
 a = ap.parse_args()
 
 
@@ -59,7 +72,12 @@ if a.cmd == "make":
     print("wrote", a.out, len(out["replies"]), "prompts,", sum(len(r) for r in out["replies"]), "positions")
     sys.exit(0)
 
-can = json.load(gzip.open(a.canonical, "rt"))
+if a.cmd == "record":
+    src = json.load(gzip.open(a.prompts_from, "rt"))
+    can = {"tag": a.tag, "source": f"recorded from {a.base} ({a.engine})", "prompt_ids": src["prompt_ids"][: a.n],
+           "replies": [[[0, []]] * a.tokens] * min(a.n, len(src["prompt_ids"]))}  # only the lengths are used below
+else:
+    can = json.load(gzip.open(a.canonical, "rt"))
 
 
 def post(path, body):
@@ -75,6 +93,13 @@ def decode(i):
     return [[tid(t), rounded(top.items())] for t, top in zip(lp["tokens"], lp["top_logprobs"])]
 
 
+def decode_llama(i):
+    ids, ref = can["prompt_ids"][i], can["replies"][i]
+    r = post("/completion", {"prompt": ids, "n_predict": len(ref), "temperature": 0, "n_probs": 20,
+                             "cache_prompt": False})
+    return [[s["id"], rounded((t["id"], t["logprob"]) for t in s["top_logprobs"])] for s in r["completion_probabilities"]]
+
+
 def prefill(i):
     ids, ref = can["prompt_ids"][i], can["replies"][i]
     r = post("/v1/completions", {"model": a.model, "prompt": list(ids) + [s[0] for s in ref], "max_tokens": 1,
@@ -83,8 +108,20 @@ def prefill(i):
     return [[s[0], rounded((k, v["logprob"]) for k, v in p.items())] for s, p in zip(ref, plp)]
 
 
-with ThreadPoolExecutor(8) as ex:
-    got = list(ex.map(prefill if a.prefill else decode, range(len(can["replies"]))))
+if a.engine == "llama":
+    if a.prefill:
+        sys.exit("llama-server cannot score a prompt; use the decode probe")
+    got = [decode_llama(i) for i in range(len(can["replies"]))]
+else:
+    with ThreadPoolExecutor(8) as ex:
+        got = list(ex.map(prefill if a.prefill else decode, range(len(can["replies"]))))
+if a.cmd == "record":
+    can["replies"] = got
+    Path(a.out).parent.mkdir(parents=True, exist_ok=True)
+    with gzip.open(a.out, "wt") as f:
+        json.dump(can, f)
+    print("recorded", a.out, len(got), "prompts,", sum(len(x) for x in got), "positions")
+    sys.exit(0)
 bad = []
 for i, (ref, g) in enumerate(zip(can["replies"], got)):
     j = next((j for j, (x, y) in enumerate(zip(ref, g)) if x[0] != y[0] or x[1] != y[1]), None)

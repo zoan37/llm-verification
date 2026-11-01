@@ -526,13 +526,16 @@ compared with the eager baseline at all 8,250 positions:
 |---|---|
 | prefix caching off; prefill in 256-token chunks; n-gram speculative decoding | yes: identical to the baseline |
 | tensor parallel 2 (eager, or with CUDA graphs) | its own tier: deterministic, but 28 of 48 replies differ from one GPU |
-| CUDA graphs + torch.compile (vLLM's default) | **no**: stable while a server runs, different after every restart |
+| CUDA graphs without torch.compile (`--compilation-config '{"mode": 0, "cudagraph_mode": "FULL_AND_PIECEWISE"}'`) | **yes**: identical to eager, passes calibration, same after restarts |
+| torch.compile (vLLM's default, with or without graphs) | its own numbers, and not reliably the same after a restart |
 
-Compiled mode is the trap. Within one server it is batch-invariant, but three starts (fresh compile, cache cleared,
-cache reused) produced three different sets of replies (29-36 of 48 diverge), and its prefill does not reproduce its
-decode, so neither a one-pass nor a replaying referee can check it exactly. An exact tier on vLLM today means
-batch-invariant mode plus `--enforce-eager`, with the tensor-parallel size as part of the tier. Which of compilation
-or graph capture causes the drift was not separated (the attempt ran on a faulty machine, below).
+torch.compile is the problem, not CUDA graphs. Compiled, a server computes different numbers from eager, and its
+prefill does not reproduce its decode, so a one-pass referee cannot check it. Its numbers were the same across four
+fresh compiles on one calibrated RTX 4090, but on another machine (whose eager runs were exact) two of three compiled
+starts came out different (29-36 of 48 replies diverge), most likely from kernel choices made by timing. CUDA graphs
+alone gave exactly the eager numbers and passed the calibration probe on two starts, at no cost (893 vs 884
+tokens/s at 32 concurrent). So the exact tier on vLLM is batch-invariant mode with torch.compile off (`--enforce-eager`,
+or graphs only), with the tensor-parallel size as part of the tier.
 
 What exactness costs, on an RTX 4090 with Qwen3-8B (output tokens/s at 1 / 32 concurrent requests): plain vLLM
 59 / 1,675, plain eager 57 / 1,595, batch-invariant eager 26 / 863. On a dense model the price is batch-invariant
@@ -541,7 +544,8 @@ measurable at 16 concurrent.)
 
 One rented RTX 4090 was simply faulty: in batch-invariant eager mode it gave four different sets of numbers in eight
 server starts, none matching what every other Ampere/Ada machine computes. Another RTX 4090 on the same driver
-reproduced the canonical numbers exactly. An exact tier therefore needs an admission and calibration probe (fixed
+reproduced the canonical numbers exactly. (A compile-vs-graphs split run on that machine was discarded and redone on
+a machine that first passed calibration, above.) An exact tier therefore needs an admission and calibration probe (fixed
 prompts with known canonical answers): hardware that fails it belongs in the statistical tier, not in a penalty.
 
 The llmverify rule now runs under speculative decoding (each draft row is masked to the rule's choice for its own
