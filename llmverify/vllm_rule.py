@@ -12,7 +12,12 @@ vLLM returns "raw_logprobs" (the default): the top-20 of the logits before any p
 `compute_token_logprobs` (one kernel program per row). This processor runs that same top-k and kernel on the same
 rows, rounds the values as committed (1e-4), applies the rule and masks every other token, so the token vLLM
 samples is the rule's choice and the logprobs it returns are what the rule chose from. The step is the number of
-tokens the request has produced (sequence length minus prompt length). No speculative decoding.
+tokens the request has produced before the row's token (the row's position + 1 minus the prompt length).
+
+Speculative decoding: a request owns one logits row per draft position, each a later step of the same request, and
+every row is masked to the rule's choice for its own step. At vLLM temperature 0 the rejection sampler keeps a draft
+token only where it equals that row's argmax, so the accepted tokens are exactly the rule's choices; rows after a
+rejection are discarded with their tokens.
 
 Import-light at module level: vLLM loads the class in its frontend process too.
 """
@@ -68,12 +73,11 @@ class LlmverifyRule(LogitsProcessor):
     def apply(self, logits, ctx):
         import torch
         from vllm.v1.worker.gpu.sample.logprob import compute_token_logprobs
-        mapping = ctx.idx_mapping_np
-        rows = [r for r, slot in enumerate(mapping) if int(slot) in self.slots]
-        if not rows:
+        if not any(int(slot) in self.slots for slot in ctx.idx_mapping_np):
             return logits
-        if logits.shape[0] != len(mapping):
-            raise RuntimeError("llmverify does not support speculative decoding")
+        mapping = ctx.expanded_idx_mapping.tolist()  # row -> request slot (several rows per request when speculating)
+        pos = ctx.pos.tolist()  # row -> position of the token fed at that row
+        rows = [r for r, slot in enumerate(mapping) if slot in self.slots]
         sub = logits[rows]
         ids = torch.topk(sub, COMMIT_K, dim=-1).indices
         vals = compute_token_logprobs(sub, ids).tolist()  # the kernel vLLM's raw_logprobs uses, row by row
@@ -81,9 +85,9 @@ class LlmverifyRule(LogitsProcessor):
         prompt_len = self.req_states.prompt_len.np
         chosen = []
         for r, row in enumerate(rows):
-            slot = int(mapping[row])
+            slot = mapping[row]
             spec, key = self.slots[slot]
-            step = int(ctx.seq_lens_upper_bound_np[row]) - int(prompt_len[slot])
+            step = max(0, pos[row] + 1 - int(prompt_len[slot]))  # rows inside a prefill are discarded anyway
             chosen.append(choose(round_top(list(zip(ids[r], vals[r]))), spec, key, step))
         # one masked write for all verifying rows: everything but the rule's token goes to -inf
         rows_t = torch.tensor(rows, device=logits.device)

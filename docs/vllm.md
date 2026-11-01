@@ -20,8 +20,13 @@ and masks every other token to -inf, so vLLM's own sampler (at temperature 0) em
 are what the rule chose from. The rule's temperature, seed and top-k/top-p/min-p travel in `vllm_xargs`
 (`llmverify_temperature`, `llmverify_seed`, ...) with the client's nonce as `llmverify_key`. Requests with a
 distribution-changing option (logit_bias, penalties, min_tokens, bad_words, allowed_token_ids) are refused at
-admission. The step index is the request's sequence length minus its prompt length, which needs synchronous
-scheduling (`--no-async-scheduling`); speculative decoding is refused.
+admission. The step index is the row's position plus one minus the prompt length, which needs synchronous
+scheduling (`--no-async-scheduling`). Speculative decoding works: a request then owns one logits row per draft
+position, each masked to the rule's choice for its own step, and at vLLM temperature 0 the rejection sampler keeps a
+draft token only where it equals that choice. Measured with n-gram speculation (3 draft tokens) on Qwen3-8B, RTX 4090,
+batch-invariant: 144 honest replies checked by a referee without speculation, 0 differing positions; 143 of 143
+tampered replies caught at the edit (until 2026-11-01 the processor refused speculative decoding by raising, which
+killed the whole engine).
 
 The front end (`llmverify/upstream.py`, `VllmUpstream`) asks for `logprobs: 20` with `return_tokens_as_token_ids`,
 uses the model's Hugging Face tokenizer for the chat template and token ids, recomputes the rule at every step and
