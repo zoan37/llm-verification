@@ -17,7 +17,8 @@
   "within each machine": "1-at-a-time vs 16-at-once: 0/48 replies diverge, 0/9,493 positions differ",
   "across the identical group": "0/48 replies diverge, 0/9,493 positions differ, both modes (every pair)",
   "H100 PCIe": "not batch-invariant on itself (3/48 replies diverge, 384/9,426 positions differ between 1-at-a-time and 16-at-once); differs from the group on 44-45/48 replies",
-  "throughput (RTX 4090, eager)": "1 request: 46 -> 40 tok/s; 16 concurrent: 644 -> 656 tok/s"
+  "throughput (RTX 4090, eager)": "1 request: 46 -> 40 tok/s; 16 concurrent: 644 -> 656 tok/s",
+  "RTX 5090": "batch-invariant on itself (0/48 replies diverge, 0/9,517 positions differ) but its own group: differs from the Ampere/Ada group and from the H100 on 46/48 replies"
  },
  "notes": "Ampere and Ada take vLLM's Triton batch-invariant path, Hopper a cuBLAS path (vLLM source, per the research summary in docs/soundness.md); the H100 leak was not traced. Same vLLM, torch and model on every machine; drivers 580-610."
 }

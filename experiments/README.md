@@ -433,12 +433,14 @@ user's RTX 4090 (`exact_tier.py`, `vllm_determinism.py`; results `exact-tier-cro
   changed 45 of 48 replies on an RTX 4090.
 - **vLLM batch-invariant mode (`VLLM_BATCH_INVARIANT=1`):** on six machines and five GPU models across two
   architectures (A100, RTX 3090, two RTX 4090s, RTX 4080 SUPER, L40S) every reply and every top-20 logprob was
-  identical, one at a time or 16 at once, at all 9,493 positions. An H100 was not even batch-invariant on itself (3
-  of 48 replies changed with batching) and matched nothing else. Cost on an RTX 4090 (eager mode): 46 -> 40 tokens/s for
+  identical, one at a time or 16 at once, at all 9,493 positions. An RTX 5090 (Blackwell) was batch-invariant on itself
+  but formed its own group (46 of 48 replies differ from the Ampere/Ada group); an H100 was not even batch-invariant
+  on itself (3 of 48 replies changed with batching) and matched nothing else. Cost on an RTX 4090 (eager mode): 46 -> 40 tokens/s for
   one request, none measurable at 16 concurrent (644 -> 656).
 
 So an exact tier (bit-for-bit verification, where any nudge is proof) can span GPU generations with vLLM's
-batch-invariant kernels on Ampere and Ada; with llama.cpp it needs the same GPU model; on Hopper it did not hold.
+batch-invariant kernels (one group for Ampere and Ada, another for Blackwell); with llama.cpp it needs the same GPU
+model; on Hopper it did not hold.
 
 ## Engines on the same weights: Strata vs llama.cpp (Qwen3.6-35B-A3B)
 

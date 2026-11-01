@@ -177,8 +177,8 @@ lie slightly in its committed logprobs to keep the rule check passing.
   0 differences; an RTX 4080 SUPER (same Ada architecture, fewer SMs) differed at every position. A tier is a GPU model
   plus a build, not an architecture (experiments/results/exact-tier-cross-machine.json). With vLLM's batch-invariant
   mode (`VLLM_BATCH_INVARIANT=1`) the tier widens: an A100, an RTX 3090, two RTX 4090s, an RTX 4080 SUPER and an L40S
-  produced identical replies and top-20 logprobs at all 9,493 positions, however requests were batched; an H100 did
-  not (it changed 3 of 48 replies with batching). Determinism across GPU generations is available today where the
+  produced identical replies and top-20 logprobs at all 9,493 positions, however requests were batched; an RTX 5090
+  (Blackwell) was batch-invariant but its own group; an H100 was not (it changed 3 of 48 replies with batching). Determinism across GPU generations is available today where the
   engine's kernels are batch-invariant (experiments/results/vllm-batch-invariance-gpt-oss-20b.json).
 - What it buys an attacker: picking among outputs M itself nearly produced. It cannot make M say something M
   gives low probability, so it cannot inject a malicious tool call; it can bias style or embed a covert watermark.
