@@ -686,7 +686,8 @@ int main(int argc, char ** argv) {
                 json devices = json::array();  // GPU names, so a client can spot kernel paths with known accuracy issues
                 for (size_t i = 0; i < ggml_backend_dev_count(); i++) {
                     ggml_backend_dev_t dev = ggml_backend_dev_get(i);
-                    if (ggml_backend_dev_type(dev) == GGML_BACKEND_DEVICE_TYPE_GPU)
+                    const auto type = ggml_backend_dev_type(dev);  // GB10 and other unified-memory GPUs are IGPU
+                    if (type == GGML_BACKEND_DEVICE_TYPE_GPU || type == GGML_BACKEND_DEVICE_TYPE_IGPU)
                         devices.push_back(ggml_backend_dev_description(dev));
                 }
                 resp["devices"] = devices;
