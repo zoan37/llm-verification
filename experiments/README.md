@@ -420,6 +420,26 @@ other token on 0.5% of positions, against 0.0011 for the honest Q6_K reference, 
 across vendors are far smaller than quantization differences. 100 on the fidelity scale is pinned to the Grace CPU
 run (`build_results.py --scale-ref local__cpu-grace`) so that adding honest machines does not move published scores.
 
+## Exact replay across machines (llama.cpp and vLLM)
+
+Can a referee reproduce a provider's numbers bit for bit on *another* machine? gpt-oss-20b, rented GPUs plus the
+user's RTX 4090 (`exact_tier.py`, `vllm_determinism.py`; results `exact-tier-cross-machine.json`,
+`vllm-batch-invariance-gpt-oss-20b.json`).
+
+- **llama.cpp, token-by-token replay, same build (commit, CUDA 12.6, sm_89):** two RTX 4090s on different hosts,
+  operating systems and drivers agreed on all 14,361 positions; an RTX 4080 SUPER (same Ada architecture, fewer SMs)
+  differed at every one. A llama.cpp tier is a GPU model plus a build.
+- **vLLM default mode:** not reproducible even on one machine; sending the same 48 prompts one at a time or 16 at once
+  changed 45 of 48 replies on an RTX 4090.
+- **vLLM batch-invariant mode (`VLLM_BATCH_INVARIANT=1`):** on six machines and five GPU models across two
+  architectures (A100, RTX 3090, two RTX 4090s, RTX 4080 SUPER, L40S) every reply and every top-20 logprob was
+  identical, one at a time or 16 at once, at all 9,493 positions. An H100 was not even batch-invariant on itself (3
+  of 48 replies changed with batching) and matched nothing else. Cost on an RTX 4090 (eager mode): 46 -> 40 tokens/s for
+  one request, none measurable at 16 concurrent (644 -> 656).
+
+So an exact tier (bit-for-bit verification, where any nudge is proof) can span GPU generations with vLLM's
+batch-invariant kernels on Ampere and Ada; with llama.cpp it needs the same GPU model; on Hopper it did not hold.
+
 ## Engines on the same weights: Strata vs llama.cpp (Qwen3.6-35B-A3B)
 
 The same UD-Q4_K_XL GGUF on the same RTX 4090, served by llama.cpp (11924d4c1) and by Strata (0.2.9, engine 0.1.47;
