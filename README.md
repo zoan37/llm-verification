@@ -20,7 +20,7 @@ Two modes:
   and any reply can be re-checked by any referee later.
 
 [What this can and cannot prove](docs/soundness.md) is the most important document here. Results so far:
-[experiments/README.md](experiments/README.md). Guides: [black-box method](docs/black-box.md), [deployment readiness](docs/readiness.md),
+[experiments/README.md](experiments/README.md). Guides: [black-box method](docs/black-box.md), [deployment readiness](docs/readiness.md), [running an exact tier](docs/exact-tier.md),
 [cooperative mode](docs/cooperative.md), [receipt spec](docs/receipt-spec.md).
 
 ## How it works (one paragraph)
