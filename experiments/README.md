@@ -474,7 +474,9 @@ prefill and compared the committed top-20 with its own to the last digit.
 | honest (3 settings) | 144 | 25,791 | 144 | 0 | 0 |
 | tampered (3 settings) | 144 | 17,480 | 144 | 144 | 144, each first at the edited token |
 
-The check took 22 s for 43,271 tokens on the RTX 3090 (40 s on the RTX 4090 itself). So on vLLM, across Ampere and
+The check took 22 s for 43,271 tokens on the RTX 3090 (40 s on the RTX 4090 itself). With replies of up to 3,600 tokens (contexts
+up to 2,974 tokens, chunked prefill on; same RTX 4090 as referee) the result was the same: 0 of 86,187 honest
+positions differ, all 144 tampered replies caught at the edit, 144,097 tokens checked in 27 s. So on vLLM, across Ampere and
 Ada, cooperative verification can be exact: no calibration, no false alarms, and any nudge, however small, is
 caught where it was made. Limits: one model and engine version; the referee must run the same vLLM version in
 batch-invariant mode on a GPU of the same kernel family (Hopper was not batch-invariant, Blackwell is its own group);

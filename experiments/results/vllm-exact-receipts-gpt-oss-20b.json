@@ -73,5 +73,16 @@
    "max": 1.2587
   }
  },
- "notes": "Every tampered receipt passes every client-side check (signature, hashes, rule from the committed numbers); only the referee sees it, and exactly at the edited token. Greedy honest replies are identical to vLLM without the processor (same 8,588 tokens). Median greedy flip margin 0: the edit is 1e-4 nats at a rounded tie and is still caught."
+ "notes": "Every tampered receipt passes every client-side check (signature, hashes, rule from the committed numbers); only the referee sees it, and exactly at the edited token. Greedy honest replies are identical to vLLM without the processor (same 8,588 tokens). Median greedy flip margin 0: the edit is 1e-4 nats at a rounded tie and is still caught.",
+ "long_replies_same_rtx4090": {
+  "what": "the same test with max 3,600 tokens per reply (max-model-len 4096, chunked prefill on), referee on the same RTX 4090",
+  "honest": "144 replies, 86,187 tokens, 0 positions differ",
+  "tampered": "144 replies, 57,910 tokens, all 144 flagged first at the flip",
+  "context_tokens": {
+   "max": 2974,
+   "median": 566,
+   "over_2048": 3
+  },
+  "check_seconds": 27
+ }
 }
