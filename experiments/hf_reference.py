@@ -16,7 +16,7 @@ from transformers import AutoModelForCausalLM
 ap = argparse.ArgumentParser()
 ap.add_argument("traces")
 ap.add_argument("--model", required=True)
-ap.add_argument("--variant", default="honest")
+ap.add_argument("--variant", nargs="+", default=["honest"], help="one or more variants; each gets its own output file")
 ap.add_argument("--out", required=True)
 a = ap.parse_args()
 
@@ -30,16 +30,19 @@ except (ValueError, KeyError):  # multimodal checkpoints (Gemma-4) load as image
     from transformers import AutoModelForImageTextToText
     model = AutoModelForImageTextToText.from_pretrained(a.model, dtype=torch.bfloat16, device_map={"": 0}, **kw).eval()
 data = json.load(gzip.open(a.traces, "rt"))
-out = []
-with torch.no_grad():
-    for rep in data["variants"][a.variant]["replies"]:
-        ids = rep["prompt_ids"] + rep["tokens"]
-        logits = model(torch.tensor([ids], device="cuda")).logits[0].float()
-        lp = torch.log_softmax(logits[len(rep["prompt_ids"]) - 1: len(ids) - 1], dim=-1)
-        v, i = lp.topk(20, dim=-1)
-        out.append({"i": rep["i"], "top": [[[int(t), float(x)] for t, x in zip(ii, vv)] for ii, vv in
-                                           zip(i.tolist(), v.tolist())]})
-        print(rep["i"], len(rep["tokens"]), flush=True)
-with gzip.open(a.out, "wt") as f:
-    json.dump(out, f)
-print("wrote", a.out)
+for variant in a.variant:
+    out = []
+    dest = a.out if len(a.variant) == 1 else a.out.replace(".json.gz", f"-{variant}.json.gz")
+    with torch.no_grad():
+        for rep in data["variants"][variant]["replies"]:
+            ids = rep["prompt_ids"] + rep["tokens"]
+            logits = model(torch.tensor([ids], device="cuda")).logits[0].float()
+            lp = torch.log_softmax(logits[len(rep["prompt_ids"]) - 1: len(ids) - 1], dim=-1)
+            v, i = lp.topk(20, dim=-1)
+            own = lp.gather(1, torch.tensor(rep["tokens"], device=lp.device).unsqueeze(1)).squeeze(1)
+            out.append({"i": rep["i"], "top": [[[int(t), float(x)] for t, x in zip(ii, vv)] for ii, vv in
+                                               zip(i.tolist(), v.tolist())], "lp": own.tolist()})
+            print(rep["i"], len(rep["tokens"]), flush=True)
+    with gzip.open(dest, "wt") as f:
+        json.dump(out, f)
+    print("wrote", dest, flush=True)
