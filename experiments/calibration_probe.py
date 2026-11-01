@@ -109,12 +109,12 @@ def prefill(i):
 
 
 if a.engine == "llama":
-    if a.prefill:
+    if getattr(a, "prefill", False):
         sys.exit("llama-server cannot score a prompt; use the decode probe")
     got = [decode_llama(i) for i in range(len(can["replies"]))]
 else:
     with ThreadPoolExecutor(8) as ex:
-        got = list(ex.map(prefill if a.prefill else decode, range(len(can["replies"]))))
+        got = list(ex.map(prefill if getattr(a, "prefill", False) else decode, range(len(can["replies"]))))
 if a.cmd == "record":
     can["replies"] = got
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
@@ -131,7 +131,7 @@ for i, (ref, g) in enumerate(zip(can["replies"], got)):
         bad.append((i, j))
 n = sum(len(r) for r in can["replies"])
 print(f"{can['tag']}: {len(can['replies']) - len(bad)} of {len(can['replies'])} prompts match exactly "
-      f"({'prefill' if a.prefill else 'decode'}, {n} canonical positions)")
+      f"({"prefill" if getattr(a, "prefill", False) else "decode"}, {n} canonical positions)")
 for i, j in bad[:5]:
     ref, g = can["replies"][i][j], got[i][j] if j < len(got[i]) else None
     if g is None:

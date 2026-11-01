@@ -47,6 +47,23 @@ one-pass prefill, 10-15 by decoding. Proposal:
 - at random times: re-probe, so a node cannot swap hardware or weights after admission;
 - a failed probe is a demotion, not a penalty: an honest node on faulty hardware fails it too.
 
+### Calibrating a new group (for example a fleet of identical AMD cards on llama.cpp)
+
+1. Pin the stack: engine and build (a llama.cpp commit, or a vLLM release with its torch and Triton), backend
+   (ROCm or Vulkan), model file and its hash, sequence count (llama.cpp: one sequence at a time, `-np 1`).
+2. On one card, record canonical answers:
+   `calibration_probe.py record --engine llama --base http://CARD:8080 --model M --prompts-from <a canonical file of
+   the same model> --tag "<model, card, engine build, backend>" --out calibration/<name>.json.gz`.
+3. Restart and check the same card against them, then check every other card (other board brands too) with
+   `calibration_probe.py check calibration/<name>.json.gz --engine llama ...`. All must pass; a card that fails is
+   faulty or misconfigured and stays in the statistical tier.
+4. For llama.cpp the referee replays token by token on a card of the group (`experiments/exact_tier.py`); there is no
+   one-pass check.
+
+Measured on the DGX Spark with llama.cpp 11924d4c1 and gpt-oss-20b MXFP4: recorded, then reproduced exactly before
+and after a server restart (16 of 16 prompts, 965 positions); vLLM's canonical answers for the same GPU fail at the
+first token, as they should (different engine, different group).
+
 ## Serving and checking
 
 Receipts commit the prompt token ids, the output tokens and the top-20 logprobs at every step, signed by the node,
