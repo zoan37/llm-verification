@@ -2,21 +2,91 @@
  "what": "gpt-oss-20b MXFP4 top-20 logprobs vs Hugging Face transformers BF16 (MXFP4 experts dequantized), teacher-forced, on 48 honest greedy replies generated token by token on an RTX 4090 (14,361 positions); subset rows on the first 12 replies (3,224 positions)",
  "reference": "transformers 5.22.1, torch 2.7.1, RTX A6000 (Vast.ai), BF16",
  "full": {
-  "provider_4090_token_by_token": {"top1_lp_mae": 0.0279, "margin_mae": 0.2485, "top1_differs": 0.0235},
-  "spark_token_by_token": {"top1_lp_mae": 0.0327, "margin_mae": 0.2844, "top1_differs": 0.0269},
-  "spark_one_pass_referee_batch_2048": {"top1_lp_mae": 0.1005, "margin_mae": 0.7618, "top1_differs": 0.0728}
+  "provider_4090_token_by_token": {
+   "top1_lp_mae": 0.0279,
+   "margin_mae": 0.2485,
+   "top1_differs": 0.0235
+  },
+  "spark_token_by_token": {
+   "top1_lp_mae": 0.0327,
+   "margin_mae": 0.2844,
+   "top1_differs": 0.0269
+  },
+  "spark_one_pass_referee_batch_2048": {
+   "top1_lp_mae": 0.1005,
+   "margin_mae": 0.7618,
+   "top1_differs": 0.0728
+  }
  },
  "subset_referee_settings_spark": {
-  "batch 2048 (default)": {"top1_lp_mae": 0.0855, "margin_mae": 0.7908, "top1_differs": 0.0596, "seconds": 12.2},
-  "batch 512": {"top1_lp_mae": 0.0855, "margin_mae": 0.7908, "top1_differs": 0.0596, "seconds": 12.6},
-  "batch 64": {"top1_lp_mae": 0.0847, "margin_mae": 0.7821, "top1_differs": 0.0568, "seconds": 17.4},
-  "batch 16": {"top1_lp_mae": 0.0884, "margin_mae": 0.7919, "top1_differs": 0.0611, "seconds": 24.7},
-  "batch 9": {"top1_lp_mae": 0.0882, "margin_mae": 0.7755, "top1_differs": 0.0617, "seconds": 39.4},
-  "batch 8": {"top1_lp_mae": 0.0250, "margin_mae": 0.2585, "top1_differs": 0.0171, "seconds": 38.6},
-  "batch 1": {"top1_lp_mae": 0.0247, "margin_mae": 0.2604, "top1_differs": 0.0167},
-  "batch 2048, flash attention off": {"top1_lp_mae": 0.0832, "margin_mae": 0.7937, "top1_differs": 0.0521},
-  "batch 2048, flash attention on": {"top1_lp_mae": 0.0855, "margin_mae": 0.7908, "top1_differs": 0.0596},
-  "batch 8, flash attention off": {"top1_lp_mae": 0.0250, "margin_mae": 0.2636, "top1_differs": 0.0171},
+  "batch 2048 (default)": {
+   "top1_lp_mae": 0.0855,
+   "margin_mae": 0.7908,
+   "top1_differs": 0.0596,
+   "seconds": 12.2
+  },
+  "batch 512": {
+   "top1_lp_mae": 0.0855,
+   "margin_mae": 0.7908,
+   "top1_differs": 0.0596,
+   "seconds": 12.6
+  },
+  "batch 64": {
+   "top1_lp_mae": 0.0847,
+   "margin_mae": 0.7821,
+   "top1_differs": 0.0568,
+   "seconds": 17.4
+  },
+  "batch 16": {
+   "top1_lp_mae": 0.0884,
+   "margin_mae": 0.7919,
+   "top1_differs": 0.0611,
+   "seconds": 24.7
+  },
+  "batch 9": {
+   "top1_lp_mae": 0.0882,
+   "margin_mae": 0.7755,
+   "top1_differs": 0.0617,
+   "seconds": 39.4
+  },
+  "batch 8": {
+   "top1_lp_mae": 0.025,
+   "margin_mae": 0.2585,
+   "top1_differs": 0.0171,
+   "seconds": 38.6
+  },
+  "batch 1": {
+   "top1_lp_mae": 0.0247,
+   "margin_mae": 0.2604,
+   "top1_differs": 0.0167
+  },
+  "batch 2048, flash attention off": {
+   "top1_lp_mae": 0.0832,
+   "margin_mae": 0.7937,
+   "top1_differs": 0.0521
+  },
+  "batch 2048, flash attention on": {
+   "top1_lp_mae": 0.0855,
+   "margin_mae": 0.7908,
+   "top1_differs": 0.0596
+  },
+  "batch 8, flash attention off": {
+   "top1_lp_mae": 0.025,
+   "margin_mae": 0.2636,
+   "top1_differs": 0.0171
+  },
   "GGML_CUDA_FORCE_CUBLAS=1 or GGML_CUDA_FORCE_MMQ=1 (batch 2048)": "no change"
+ },
+ "perplexity_llama_cpp_11924d4c1": {
+  "what": "llama-perplexity, gpt-oss-20b MXFP4, 40 chunks x 512 tokens of llama.cpp's own README/docs text",
+  "DGX Spark GB10 (sm_121)": {
+   "batch 2048 / ubatch 512": 4.5492,
+   "batch 8 / ubatch 8": 4.4588
+  },
+  "RTX 4090 (sm_89)": {
+   "batch 2048 / ubatch 512": 4.458,
+   "batch 8 / ubatch 8": 4.4569,
+   "batch 16 / ubatch 16": 4.455
+  }
  }
 }

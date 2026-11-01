@@ -44,7 +44,8 @@ Open work, roughly in priority order. Each item says what it would establish.
 - [x] gpt-oss-20b noise: against a BF16 transformers reference, llama.cpp's batched path (> 8 tokens per batch, the
       referee's default) is ~3x less accurate than token-by-token decoding; scoring in batches of 8 fixes it
       (experiments/results/path-noise-gpt-oss-20b.json). Rescore published gpt-oss results with `-b 8`.
-- [ ] Report the MXFP4 batched-path accuracy gap to llama.cpp (with the user's OK).
+- [ ] Report to llama.cpp (with the user's OK): on GB10 (sm_121) the batched MXFP4 path costs gpt-oss-20b ~2% perplexity
+      (4.549 vs 4.459 at batch 8; RTX 4090 unaffected, 4.458 vs 4.457), experiments/results/path-noise-gpt-oss-20b.json.
 - [ ] Cross-machine referee in the cooperative attack run (provider and referee were on one machine, so `wgap`
       noise is underestimated there).
 - [ ] A BF16 referee where possible (Qwen3.5/3.8 used Q8_0, which cannot separate FP8-class providers).
