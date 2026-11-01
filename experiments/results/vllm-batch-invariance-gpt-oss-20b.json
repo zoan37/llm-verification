@@ -46,6 +46,7 @@
   },
   "spot_check": "reply position 3 of 'Name three colors.': vLLM decode token 976 at -0.78 (chosen greedily); vLLM prefill -6.14; llama.cpp one pass -6.37; llama.cpp step not in its top 3; also seen without batch-invariant mode",
   "positions": 9493,
-  "note": "vLLM's own prefill (prompt_logprobs) sided with llama.cpp in the spot check. Kernel path on Ada: Marlin MXFP4 MoE, TRITON_ATTN; cause not traced. The Ampere/Ada machines that agree bit for bit agree on this less accurate decode: reproducible is not the same as accurate. OpenRouter gpt-oss-20b endpoints audited earlier (likely Hopper/Blackwell) were not affected."
+  "note": "vLLM's own prefill (prompt_logprobs) sided with llama.cpp in the spot check. Kernel path on Ada: Marlin MXFP4 MoE, TRITON_ATTN; cause not traced. The Ampere/Ada machines that agree bit for bit agree on this less accurate decode: reproducible is not the same as accurate. OpenRouter gpt-oss-20b endpoints audited earlier (likely Hopper/Blackwell) were not affected.",
+  "default_mode_check": "vLLM default mode (not batch-invariant), Vast RTX 4090: decode top-1 differs from llama.cpp token-by-token at 11.70% of 9,562 positions (top-1 logprob MAE 0.238); llama.cpp's two paths differ at 1.58%"
  }
 }
