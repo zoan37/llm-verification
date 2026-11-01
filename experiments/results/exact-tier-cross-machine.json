@@ -1,0 +1,25 @@
+{
+ "what": "cross-machine exact tier: 48 honest gpt-oss-20b greedy replies (14,361 positions) replayed token by token with lv-engine (current source) built from llama.cpp 11924d4c1, CUDA 12.6, sm_89, Release, same GGUF (sha256 27cd6c43...); rounded top-20 compared position by position",
+ "machines": {
+  "home_4090": "RTX 4090, Windows 11 WSL2, driver 610.88",
+  "norway_4090": "RTX 4090 (Vast.ai, Norway), Linux, driver 580.173.02, image pytorch 2.7.1-cuda12.6-devel",
+  "rtx_4080_super": "RTX 4080 SUPER (Vast.ai, California), Linux, driver 610.57.04, same image"
+ },
+ "results": {
+  "home_4090 vs norway_4090": {
+   "positions": 14361,
+   "differ": 0
+  },
+  "home_4090 vs rtx_4080_super": {
+   "positions": 14361,
+   "differ": 14361,
+   "largest_gap_nats": 5.6884
+  },
+  "norway_4090 vs rtx_4080_super": {
+   "positions": 14361,
+   "differ": 14361,
+   "largest_gap_nats": 5.6884
+  }
+ },
+ "note": "the original traces were generated with an older lv-engine build whose logprob arithmetic differs in the 7th decimal; any machine replaying them with the current engine differs at the same 639 positions (4.4%), so compare replays made with one engine build"
+}

@@ -172,7 +172,10 @@ lie slightly in its committed logprobs to keep the rule check passing.
   gpt-oss-20b replies (14,361 tokens) on an RTX 4090 replayed with 0 differing positions, and every hidden-message
   flip (14 / 58 / 84 / 186 / 379 at δ 0.01-0.2) was an exact mismatch at its own position, with no false positives.
   The replay runs at generation speed (~150 tokens/s here), so the price is hardware: a referee per GPU model and
-  build in the tier, and none of the one-pass audit's 2.5x speed-up.
+  build in the tier, and none of the one-pass audit's 2.5x speed-up. It holds across machines: the user's RTX 4090
+  (Windows, WSL2) and a rented RTX 4090 in Norway (Linux, another driver), same build, replayed 14,361 positions with
+  0 differences; an RTX 4080 SUPER (same Ada architecture, fewer SMs) differed at every position. A tier is a GPU model
+  plus a build, not an architecture (experiments/results/exact-tier-cross-machine.json).
 - What it buys an attacker: picking among outputs M itself nearly produced. It cannot make M say something M
   gives low probability, so it cannot inject a malicious tool call; it can bias style or embed a covert watermark.
 - Mitigations: tighter tolerance on `wgap` (the lie is visible in committed logprobs), per-provider evidence
