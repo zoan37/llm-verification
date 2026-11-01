@@ -1,0 +1,135 @@
+{
+ "what": "The exact one-pass cooperative test (experiments/vllm_exact_receipts.py) repeated on a dense BF16 model, Qwen/Qwen3-8B (thinking off via chat_template_kwargs enable_thinking=false), on two rented GPUs of different generations: an RTX 4090 (Ada, Vast, driver 580.178.04) and an RTX 3090 (Ampere, Vast, driver 580.173.02). Each ran vLLM 0.32.0 (torch 2.13.0) with VLLM_BATCH_INVARIANT=1, eager, max-model-len 4096 and the llmverify logits processor; each made its own determinism run (48 prompts, sequential and 16 concurrent, vllm_determinism.py) and its own signed receipts (48 prompts x greedy / T=1.0 / T=0.7 top-p 0.95, max 200 tokens, plus tampered copies), and each checked the other's receipts in one prefill pass.",
+ "date": "2026-11-01",
+ "determinism": "rtx4090 and rtx3090: sequential vs 16 concurrent 0 of 8,250 positions differ on each; rtx4090 vs rtx3090: 0 of 8,250 positions differ (top-20 logprobs to 1e-4 nats), sequential and concurrent",
+ "receipts_rtx4090_checked_on_rtx3090": {
+  "honest greedy": {
+   "replies": 48,
+   "tokens": 8250,
+   "client_checks_pass": 48,
+   "positions_differ": 0,
+   "replies_flagged": 0,
+   "rule_breaks_on_referee_numbers": 0,
+   "caught_at_flip": 0
+  },
+  "honest t1.0": {
+   "replies": 48,
+   "tokens": 8287,
+   "client_checks_pass": 48,
+   "positions_differ": 0,
+   "replies_flagged": 0,
+   "rule_breaks_on_referee_numbers": 0,
+   "caught_at_flip": 0
+  },
+  "honest t0.7-p0.95": {
+   "replies": 48,
+   "tokens": 8274,
+   "client_checks_pass": 48,
+   "positions_differ": 0,
+   "replies_flagged": 0,
+   "rule_breaks_on_referee_numbers": 0,
+   "caught_at_flip": 0
+  },
+  "tampered greedy": {
+   "replies": 48,
+   "tokens": 8263,
+   "client_checks_pass": 48,
+   "positions_differ": 48,
+   "replies_flagged": 48,
+   "rule_breaks_on_referee_numbers": 48,
+   "caught_at_flip": 48
+  },
+  "tampered t1.0": {
+   "replies": 48,
+   "tokens": 4334,
+   "client_checks_pass": 48,
+   "positions_differ": 48,
+   "replies_flagged": 48,
+   "rule_breaks_on_referee_numbers": 48,
+   "caught_at_flip": 48
+  },
+  "tampered t0.7-p0.95": {
+   "replies": 47,
+   "tokens": 4028,
+   "client_checks_pass": 47,
+   "positions_differ": 47,
+   "replies_flagged": 47,
+   "rule_breaks_on_referee_numbers": 47,
+   "caught_at_flip": 47
+  }
+ },
+ "check_seconds_on_rtx3090": 31.6,
+ "receipts_rtx3090_checked_on_rtx4090": {
+  "honest greedy": {
+   "replies": 48,
+   "tokens": 8250,
+   "client_checks_pass": 48,
+   "positions_differ": 0,
+   "replies_flagged": 0,
+   "rule_breaks_on_referee_numbers": 0,
+   "caught_at_flip": 0
+  },
+  "honest t1.0": {
+   "replies": 48,
+   "tokens": 8251,
+   "client_checks_pass": 48,
+   "positions_differ": 0,
+   "replies_flagged": 0,
+   "rule_breaks_on_referee_numbers": 0,
+   "caught_at_flip": 0
+  },
+  "honest t0.7-p0.95": {
+   "replies": 48,
+   "tokens": 8210,
+   "client_checks_pass": 48,
+   "positions_differ": 0,
+   "replies_flagged": 0,
+   "rule_breaks_on_referee_numbers": 0,
+   "caught_at_flip": 0
+  },
+  "tampered greedy": {
+   "replies": 48,
+   "tokens": 8263,
+   "client_checks_pass": 48,
+   "positions_differ": 48,
+   "replies_flagged": 48,
+   "rule_breaks_on_referee_numbers": 48,
+   "caught_at_flip": 48
+  },
+  "tampered t1.0": {
+   "replies": 48,
+   "tokens": 4062,
+   "client_checks_pass": 48,
+   "positions_differ": 48,
+   "replies_flagged": 48,
+   "rule_breaks_on_referee_numbers": 48,
+   "caught_at_flip": 48
+  },
+  "tampered t0.7-p0.95": {
+   "replies": 47,
+   "tokens": 4079,
+   "client_checks_pass": 47,
+   "positions_differ": 47,
+   "replies_flagged": 47,
+   "rule_breaks_on_referee_numbers": 47,
+   "caught_at_flip": 47
+  }
+ },
+ "check_seconds_on_rtx4090": 12.2,
+ "same_machine_checks": "identical counts on each box (0 honest positions differ; every tampered reply flagged first at the flip)",
+ "flip_margins_nats_rtx4090_receipts": {
+  "greedy": {
+   "median": 0.0,
+   "max": 3.75
+  },
+  "t1.0": {
+   "median": 0.033,
+   "max": 3.6905
+  },
+  "t0.7-p0.95": {
+   "median": 0.0303,
+   "max": 1.8435
+  }
+ },
+ "notes": "143 tampered replies per provider, not 144: one T=0.7 top-p 0.95 reply (19 tokens) had no position where the rule had a runner-up inside the nucleus, so no edit was possible. Sampled honest replies differ between the two providers only because each receipt carries its own random client nonce. Together with the gpt-oss-20b result (vllm-exact-receipts-gpt-oss-20b.json) the exact tier on vLLM now holds for a MoE MXFP4 model and a dense BF16 model, across Ampere and Ada."
+}

@@ -43,7 +43,8 @@ With `VLLM_BATCH_INVARIANT=1` on both sides, a referee running the same vLLM ver
 the same kernel family reproduces the committed top-20 exactly by scoring prompt + reply in one prefill
 (`prompt_logprobs: 20`), so receipts can be checked with zero tolerance: `experiments/vllm_exact_receipts.py check`.
 Measured with gpt-oss-20b, provider RTX 4090, referee RTX 3090: 0 differing positions on 144 honest replies, every
-tampered reply caught at the edited token (experiments/README.md).
+tampered reply caught at the edited token. The same holds for dense BF16 Qwen3-8B (RTX 4090 and RTX 3090, each checking
+the other's receipts) (experiments/README.md).
 
 ## gpt-oss: reasoning effort and the rendered prompt
 

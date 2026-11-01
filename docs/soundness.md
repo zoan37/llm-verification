@@ -189,7 +189,9 @@ lie slightly in its committed logprobs to keep the rule check passing.
   llmverify logits processor, checked in one prefill on an RTX 3090 with zero tolerance, gave 0 differing positions
   on 144 honest replies (three sampling settings, 25,791 tokens) and caught all 144 re-signed tampered replies at the
   edited token, edits as small as 1e-4 nats; 43,271 tokens in 22 s
-  (experiments/results/vllm-exact-receipts-gpt-oss-20b.json).
+  (experiments/results/vllm-exact-receipts-gpt-oss-20b.json). It is not specific to that model: on dense BF16
+  Qwen3-8B an RTX 4090 and an RTX 3090 each signed receipts and checked the other's, with 0 differing positions on
+  288 honest replies and all 286 tampered replies caught at the edit (experiments/results/vllm-exact-receipts-qwen3-8b.json).
 - What it buys an attacker: picking among outputs M itself nearly produced. It cannot make M say something M
   gives low probability, so it cannot inject a malicious tool call; it can bias style or embed a covert watermark.
 - Mitigations: tighter tolerance on `wgap` (the lie is visible in committed logprobs), per-provider evidence

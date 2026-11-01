@@ -478,9 +478,23 @@ The check took 22 s for 43,271 tokens on the RTX 3090 (40 s on the RTX 4090 itse
 up to 2,974 tokens, chunked prefill on; same RTX 4090 as referee) the result was the same: 0 of 86,187 honest
 positions differ, all 144 tampered replies caught at the edit, 144,097 tokens checked in 27 s. So on vLLM, across Ampere and
 Ada, cooperative verification can be exact: no calibration, no false alarms, and any nudge, however small, is
-caught where it was made. Limits: one model and engine version; the referee must run the same vLLM version in
+caught where it was made. Limits: one engine version (a second model below); the referee must run the same vLLM version in
 batch-invariant mode on a GPU of the same kernel family (Hopper was not batch-invariant, Blackwell is its own group);
 tampered sampled replies end at the edit because the rule's step index cannot be resumed through the vLLM API.
+
+The same test on a dense BF16 model, Qwen3-8B with thinking off (result `vllm-exact-receipts-qwen3-8b.json`), on two
+rented GPUs of different generations. An RTX 4090 and an RTX 3090 each served it in batch-invariant mode with the
+processor, made their own determinism run and their own signed receipts, and each checked the other's in one pass:
+
+| | honest replies | honest positions that differ | tampered replies caught at the edit | tokens checked | check time |
+|---|---|---|---|---|---|
+| RTX 4090's receipts on the RTX 3090 | 144 | 0 of 24,811 | 143 of 143 | 41,436 | 32 s* |
+| RTX 3090's receipts on the RTX 4090 | 144 | 0 of 24,711 | 143 of 143 | 41,115 | 12 s |
+
+\* while the RTX 3090 was still generating its own receipts. The two GPUs' determinism runs agree at all 8,250 positions,
+sequential or 16 concurrent. 143 tampered replies, not 144: one short sampled reply had no position where the rule
+had a runner-up inside the nucleus. So the exact one-pass tier is not a property of one model: it holds for a MoE MXFP4
+model and a dense BF16 one.
 
 ## Engines on the same weights: Strata vs llama.cpp (Qwen3.6-35B-A3B)
 
