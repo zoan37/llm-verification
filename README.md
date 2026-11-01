@@ -3,19 +3,9 @@
 **Is this endpoint really serving the model it claims?**
 
 When you call "Qwen3.8-27B" or "gpt-oss-20b" through an API, you are trusting the provider. They might serve a
-harsher quantization, a smaller model, skip part of the computation, inject a system prompt, or have a bug in
-their output path. This repo checks, as rigorously as the evidence allows, and is explicit about where the
+harsher quantization, a smaller model, skip part of the computation, inject a system prompt, have a bug in
+their output path, or serve a secretly fine-tuned copy that slips a malicious tool call into an agent's work. This repo checks, as rigorously as the evidence allows, and is explicit about where the
 checks stop.
-
-The case that matters most is an agent that acts on what the model says. A provider, or whoever has compromised
-one, could serve a copy of the model that was secretly fine-tuned, patched or prompted to behave normally until it
-sees a trigger (a user, a repository, a keyword) and then emit a harmful action: a tool call that sends credentials
-to an outside server, a destructive shell command, a backdoor slipped into generated code. Nothing in the reply
-says it came from a modified model. A verifier can: under the real weights such a reply is improbable, often
-vanishingly so, and in cooperative mode an altered token cannot be committed without breaking the receipt. Two
-honest limits: random audits rarely see a backdoor that fires on one trigger, so for actions that matter the agent
-should verify the reply *before* acting on it (cooperative mode makes that one cheap check); and verification proves
-the reply came from the claimed model, not that the claimed model is safe.
 
 Two modes:
 
