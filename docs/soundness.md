@@ -187,17 +187,15 @@ Thresholds come from honest machines (same weights, different hardware/engine/ke
 
 - Honest noise differs by backend and model: CUDA and CPU land near each other; llama.cpp Vulkan was 5-10× noisier in
   an earlier experiment on Qwen3.5-35B-A3B (fp16 paths, older llama.cpp), comparable to a Q3 cheat. On gpt-oss-20b
-  with llama.cpp b12020, Vulkan on an AMD Radeon AI PRO R9700 under Windows 11 was indistinguishable from the honest
-  CPU and CUDA runs (regret 0.0376 vs 0.0388, PIT mean 0.503, no truncation), as was an RTX 4090 on CUDA under
-  WSL2 (0.0385). On Qwen3.8-27B, the R9700 on Vulkan running the referee's own Q8_0 file landed at regret 0.0002
-  (a different token on 0.5% of positions, all near-ties) against 0.0011 for the honest Q6_K reference: the pure
-  backend difference (AMD/Vulkan/Windows vs NVIDIA/CUDA/Linux, same weights) is far below quantization noise. The
-  earlier noisy Vulkan runs (Intel B70 and AMD 780M on Linux/Mesa, an older llama.cpp) are therefore specific to
-  that GPU/driver/version, not to Vulkan. The same Intel Arc Pro B70 on Linux (xe driver, Mesa 26.2.5) with llama.cpp
-  b12020 is honest on gpt-oss-20b: regret 0.0426 [0.0359, 0.0502], other token on 7.5% of positions, PIT mean 0.502,
-  22 draws past rank 40 vs 21.1 expected, within the other honest machines' intervals. So the old noise came from
-  the older llama.cpp or that model's fp16 paths, not from the GPU or Mesa. Each GPU/driver pair still needs its own
-  baseline before a strict tier.
+  with llama.cpp b12020 and an accurate referee (RTX 4090, see the next point), honest machines on three vendors
+  agree closely: an RTX 4090 on CUDA 0.0013, an Intel Arc Pro B70 on Vulkan under Linux (xe, Mesa 26.2.5) 0.0015, an
+  AMD Radeon AI PRO R9700 on Vulkan under Windows 0.0017, the Grace CPU 0.0035 (a different token on 1.2-1.9% of
+  positions, PIT means 0.497-0.504, no truncation). On Qwen3.8-27B, the R9700 on Vulkan running the referee's own Q8_0
+  file landed at regret 0.0002 (a different token on 0.5% of positions, all near-ties) against 0.0011 for the honest
+  Q6_K reference: the pure backend difference (AMD/Vulkan/Windows vs NVIDIA/CUDA/Linux, same weights) is far below
+  quantization noise. The earlier noisy Vulkan runs (Intel B70 and AMD 780M on Linux/Mesa, an older llama.cpp) are
+  therefore specific to that GPU/driver/version, not to Vulkan. Each GPU/driver pair still needs its own baseline
+  before a strict tier.
 - The referee's own arithmetic path matters. Against a BF16 transformers reference (MXFP4 experts dequantized, 48
   gpt-oss-20b replies, 14,361 positions), token-by-token decoding on two GPUs had top-1 logprob errors of 0.028-0.033
   and a different top-1 on 2.4-2.7% of positions, while the referee's one-pass replay (batches of up to 2,048 tokens)
@@ -207,7 +205,10 @@ Thresholds come from honest machines (same weights, different hardware/engine/ke
   MXFP4 models are scored with `-b 8`. It is the referee's GPU: plain `llama-perplexity` on gpt-oss-20b gives 4.549
   at batch 2048 against 4.459 at batch 8 on the DGX Spark (GB10, Blackwell), but 4.458 against 4.457 on an RTX 4090
   (Ada), same llama.cpp build. The batched MXFP4 path on Blackwell loses accuracy (plausibly native FP4 tensor-core
-  kernels with low-precision activations, not checked in the source), and every prompt a GB10 ingests goes through it.
+  kernels with low-precision activations: llama.cpp PR #17906 quantizes activations to MXFP4 there), and every prompt a
+  GB10 ingests goes through it. Rescored on the RTX 4090, honest gpt-oss-20b machines fell from regret ~0.04 to
+  0.0013-0.0035 and the endpoints spread out (fidelity 97 down to 61) where before all sat within honest noise;
+  experiments/README.md (gpt-oss-20b) has the table.
 - Honest *providers* (vLLM/SGLang/TensorRT, FP8 weights or KV cache, batch-dependent kernels) are noisier than
   honest llama.cpp machines. In black-box mode the published score places each endpoint on a scale from honest
   machines (100) to a smaller sibling model (0); it does not declare FP8 dishonest.

@@ -27,7 +27,7 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    AtlasCloud stay at 20 whatever is sent; SiliconFlow rejects values over 100). On Qwen3.8, a top_k of 1000 gives the
    full distribution on 11 of the 18 truncating endpoints and 0 does so on only two (DeepInfra, Mancer); Alibaba and
    DekaLLM truncate whatever is sent. Elsewhere: Groq truncates hard on
-   gpt-oss-20b (32 draws past rank 10 vs 143 expected), io.net on Gemma-4 (top_p ≈ 0.95-0.98); all other Gemma and
+   gpt-oss-20b (21 draws past rank 10 vs 124 expected), io.net on Gemma-4 (top_p ≈ 0.95-0.98); all other Gemma and
    gpt-oss endpoints sample the full distribution. Found by the sampler fingerprint (below).
 3. **Broken logprob output.** On Qwen3.8-27B, DekaLLM and Wafer attach top-logprob lists from the wrong position to
    64-73% of tokens (every other endpoint: under 1%), and the same two endpoints pick tokens that are not their own
@@ -108,7 +108,7 @@ min_p 0.01-0.2) the referee knows at every position how much probability that se
 how many removed tokens an untruncated temperature-1 sampler draws over 48 replies; the endpoint's actual count is
 compared with exact Poisson tails (truncation = under 30% of expected, p < 0.001). Honest references are calibrated
 at every setting (Qwen3.5 Q6_K: 15 draws past rank 40 vs 14.3 expected; Qwen3.8 Q6_K: 22 vs 20.2; gpt-oss-20b on a
-CPU: 45 vs 50.2; Gemma vLLM BF16: 35 outside the 0.98 nucleus vs 27.5). Gemma-4 is so sharp that top_k is
+CPU: 40 vs 41.0; Gemma vLLM BF16: 35 outside the 0.98 nucleus vs 27.5). Gemma-4 is so sharp that top_k is
 untestable on ordinary prompts (under one expected draw past rank 20); top_p and min_p still have power.
 
 | Model | Truncating / measurable | Settings the draws respect |
@@ -368,33 +368,56 @@ Their temperature-1 samples also fit the referee worse (PIT mean 0.52, like the 
 
 ## gpt-oss-20b (10 endpoints)
 
-Referee: the MXFP4 release weights on llama.cpp CUDA (DGX Spark). 100 = the same weights on the Grace CPU; 0 = a
-re-quantized copy (experts Q4_0, rest Q2_K). Every endpoint is within 1.2× an honest machine (fidelity 92-100):
-on this model, nobody serves noticeably degraded weights at temperature 0. The differences are in sampling:
+Referee: the MXFP4 release weights on llama.cpp CUDA, RTX 4090 (rescored 2026-10-31). 100 = the same weights on the
+Grace CPU; 0 = a re-quantized copy (experts Q4_0, rest Q2_K).
+
+The first referee, a DGX Spark, made every endpoint look like honest noise: on Blackwell, llama.cpp's batched MXFP4
+path (more than 8 tokens at a time) quantizes activations to FP4, which against a BF16 transformers reference is about
+3x less accurate than token-by-token decoding (a different top-1 token on 7.3% of positions vs 1.7-2.7%) and costs
+~2% perplexity; an RTX 4090 at full batch is as accurate as decoding (1.8%). The Spark at batch 8 and the 4090 give
+the same numbers (AkashML 0.0110 and 0.0110, Bedrock 0.0051 and 0.0053). `experiments/results/path-noise-gpt-oss-20b.json`,
+docs/soundness.md (Calibration). Rescored, honest machines differ from the referee on 1-2% of greedy tokens instead of 7%:
+
+| Endpoint | Regret [95% CI] | x honest | Fidelity | Other token | Before (Spark) |
+|---|---|---|---|---|---|
+| honest: RTX 4090 (CUDA, WSL2) | 0.0013 [0.0009, 0.0016] | 0.4 | 100 | 1.2% | 0.0385 |
+| honest: Arc Pro B70 (Vulkan, Linux) | 0.0015 [0.0011, 0.0019] | 0.4 | 100 | 1.3% | 0.0426 |
+| honest: R9700 (Vulkan, Windows) | 0.0017 [0.0012, 0.0021] | 0.5 | 100 | 1.2% | 0.0376 |
+| honest: Grace CPU (sets 100) | 0.0035 [0.0027, 0.0045] | 1.0 | 100 | 1.9% | 0.0388 |
+| Parasail (fp4) | 0.0040 [0.0031, 0.0050] | 1.2 | 97 | 2.3% | 0.0413 |
+| Amazon Bedrock | 0.0053 [0.0044, 0.0062] | 1.5 | 90 | 2.7% | 0.0357 |
+| Darkbloom (fp8) | 0.0055 [0.0045, 0.0065] | 1.6 | 89 | 2.7% | 0.0387 |
+| Groq | 0.0060 [0.0049, 0.0072] | 1.7 | 87 | 2.7% | 0.0418 |
+| DeepInfra (bf16) | 0.0064 [0.0043, 0.0083] | 1.8 | 86 | 2.8% | 0.0436 |
+| Amazon Bedrock (eu-west-1) | 0.0067 [0.0041, 0.0106] | 1.9 | 85 | 2.6% | 0.0415 |
+| CoreWeave (fp4) | 0.0068 [0.0039, 0.0122] | 2.0 | 84 | 2.4% | 0.0414 |
+| DekaLLM (bf16) | 0.0086 [0.0041, 0.0150] | 2.5 | 79 | 2.5% | 0.0442 |
+| AkashML (fp4) | 0.0110 [0.0086, 0.0133] | 3.1 | 73 | 3.4% | 0.0452 |
+| SiliconFlow (fp8) | 0.0183 [0.0147, 0.0211] | 5.2 | 61 | 4.9% | 0.0409 |
+| substitute: re-quantized copy | 0.2482 [0.2181, 0.2754] | 71 | 0 | 16.9% | 0.2399 |
+
+Every endpoint now sits measurably above the honest GPUs, from Parasail (indistinguishable from the CPU run) to
+SiliconFlow at 5x; none is anywhere near the re-quantized copy. Labels don't predict it: fp4 endpoints span 97 to 73,
+bf16 ones 86 to 79. The sampling findings are unchanged:
 
 - **Darkbloom (labelled fp8)** injects junk tokens when sampling: tokens the model rates below 1e-10 (foreign-script
   fragments, words glued into identifiers) at 39-62 per 10,000 sampled tokens for requested temperatures 0.9-1.1, in
-  two separate batches; every other endpoint, the honest CPU run and a crippled 2-bit copy show 0-1. Its temperature-0
-  output matches the model exactly and the rest of its samples fit an effective temperature close to the request, so
+  two separate batches; every other endpoint, the honest CPU run and a crippled 2-bit copy show 0-1 (94 tokens below
+  1e-4 where the model predicts 26.6). The rest of its samples fit an effective temperature close to the request, so
   this is a sampling-path defect (e.g. low-precision softmax), not a different model. Effective-temperature scans
   (`experiments/effective_temperature.py`) and junk counts are in `experiments/results/`. Side note: asked for 0.5,
   Darkbloom and Bedrock both behave like ~0.6.
-- **Groq** truncates the tail (0 vs 16.8 expected) and bills 4 extra prompt tokens; **DeepInfra (bf16)** failed 81
+- **Groq** truncates the tail (0 vs 14.3 expected) and bills 4 extra prompt tokens; **DeepInfra (bf16)** failed 81
   of 104 requests and bills 13 fewer prompt tokens than the published template.
 
-Cross-hardware honest baseline (2026-10-31): the same MXFP4 weights served by llama.cpp b12020's prebuilt Vulkan
-build on an AMD Radeon AI PRO R9700 under Windows 11 (`experiments/collect_local_api.py`, llama-server with top_k 0
-and min_p 0 so its sampler defaults do not truncate): regret 0.0376 [0.0314, 0.0440] vs the Grace CPU's 0.0388,
-other-token rate 6.8% vs 7.0%, PIT mean 0.503, 49 draws past rank 40 vs 41.8 expected. Fidelity 100, no flags:
-AMD on Vulkan is an honest machine here. An RTX 4090 running the verification engine on CUDA under Windows 11 WSL2: regret 0.0385
-[0.0324, 0.0453], PIT 0.507, fidelity 100, no flags. On Qwen3.8-27B the R9700 on Vulkan ran the referee's own Q8_0
-file: regret 0.0002 [0.0001, 0.0003], other token on 0.5% of positions, against 0.0011 for the honest Q6_K reference,
-so same-weights backend differences across vendors are far smaller than quantization differences. An Intel Arc Pro
-B70 on Linux (xe driver, Mesa 26.2.5, the same llama.cpp b12020 Vulkan build): regret 0.0426 [0.0359, 0.0502], other
-token 7.5%, PIT 0.502, 22 draws past rank 40 vs 21.1 expected, no flags; honest too. Because 100 on the fidelity
-scale is the noisiest honest reference by default, this run would have nudged every endpoint's score up by up to 5
-points without changing a verdict, so the gpt-oss-20b results pin the scale to the Grace CPU run
-(`build_results.py --scale-ref local__cpu-grace`), as the notes already said; the B70 itself shows 95.
+Cross-hardware honest baselines (2026-10-31): the same MXFP4 weights served by llama.cpp b12020's prebuilt Vulkan
+build on an AMD Radeon AI PRO R9700 under Windows 11 and on an Intel Arc Pro B70 under Linux (xe, Mesa 26.2.5)
+(`experiments/collect_local_api.py`, llama-server with top_k 0 and min_p 0 so its sampler defaults do not truncate),
+and the verification engine on an RTX 4090 under WSL2 (the referee's own GPU, so its row is a same-machine check): all
+honest, no flags. On Qwen3.8-27B the R9700 on Vulkan ran the referee's own Q8_0 file: regret 0.0002 [0.0001, 0.0003],
+other token on 0.5% of positions, against 0.0011 for the honest Q6_K reference, so same-weights backend differences
+across vendors are far smaller than quantization differences. 100 on the fidelity scale is pinned to the Grace CPU
+run (`build_results.py --scale-ref local__cpu-grace`) so that adding honest machines does not move published scores.
 
 ## gpt-oss-120b (26 endpoints)
 
