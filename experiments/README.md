@@ -420,6 +420,27 @@ other token on 0.5% of positions, against 0.0011 for the honest Q6_K reference, 
 across vendors are far smaller than quantization differences. 100 on the fidelity scale is pinned to the Grace CPU
 run (`build_results.py --scale-ref local__cpu-grace`) so that adding honest machines does not move published scores.
 
+## Engines on the same weights: Strata vs llama.cpp (Qwen3.6-35B-A3B)
+
+The same UD-Q4_K_XL GGUF on the same RTX 4090, served by llama.cpp (11924d4c1) and by Strata (0.2.9, engine 0.1.47;
+`collect_local_api.py`, thinking off), scored two ways: by the usual referee (lv-engine with the same file, DGX Spark)
+and by the original model, Qwen3.6-35B-A3B in BF16 in transformers (`export_replies.py`, `hf_reference.py`,
+`engine_vs_reference.py`).
+
+| Engine | Regret vs Q4 referee | Other token | Sampled-text likelihood | Regret vs BF16 original | Not BF16's top token |
+|---|---|---|---|---|---|
+| llama.cpp | 0.0017 [0.0013, 0.0022] | 1.2% | fits (p 0.72) | 0.0064 [0.0049, 0.0079] | 1.96% |
+| Strata | 0.0273 [0.0222, 0.0328] | 4.6% | does not fit (p < 0.001) | 0.0314 [0.0231, 0.0364] | 4.59% |
+| Strata, drafting off | 0.0264 [0.0213, 0.0314] | 4.2% | does not fit | 0.0302 [0.0214, 0.0335] | 4.49% |
+
+llama.cpp's distance from the original is about the 4-bit quantization alone; Strata adds about four times as much
+again on the same file, with or without its MTP drafting. Its greedy output is not deterministic (identical repeats
+on 2 of 4 prompts, llama.cpp 4 of 4), and its sampler keeps at most 64 candidates whatever top_k says (2 draws past
+rank 50 where 14 are expected, which the sampler fingerprint flags on its own; the cap is documented in its server
+code). It returns no logprobs for Qwen3.6 (its Qwen3.6 engine path writes none), so it was audited on text. A
+nondeterministic engine also rules out the exact verification tier: two honest runs do not even match each other.
+One model, one Strata engine version, one GPU; `experiments/results/engines-qwen36-strata-vs-llamacpp.json`.
+
 ## gpt-oss-120b (26 endpoints)
 
 Deferred: the largest and slowest model to score (reasoning text plus 63 GB of weights). Replies from all 26 endpoints

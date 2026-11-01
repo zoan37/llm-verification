@@ -1,0 +1,67 @@
+{
+ "what": "Qwen3.6-35B-A3B, the same UD-Q4_K_XL GGUF (unsloth/Qwen3.6-35B-A3B-MTP-GGUF, sha256 55983c5a...), served by llama.cpp 11924d4c1 and by Strata (terminal 0.2.9, engine 0.1.47) on the same RTX 4090 (WSL2), thinking off; the standard 104-request set (48 greedy, 48 sampled, 8 repeats)",
+ "vs_q4_referee_spark": {
+  "llamacpp": {
+   "regret": 0.00174,
+   "ci": [
+    0.00129,
+    0.00223
+   ],
+   "disagree": 0.0118,
+   "likelihood_p": 0.719,
+   "greedy_repeats_identical": 1.0
+  },
+  "strata": {
+   "regret": 0.02732,
+   "ci": [
+    0.02221,
+    0.0328
+   ],
+   "disagree": 0.0455,
+   "likelihood_p": 0.0,
+   "greedy_repeats_identical": 0.5,
+   "sampler": "2 draws past rank 50 where an untruncated sampler makes 14 (the server caps top_k at 64 even for top_k 0)"
+  },
+  "strata_drafting_off": {
+   "regret": 0.0264,
+   "ci": [
+    0.02125,
+    0.03142
+   ],
+   "disagree": 0.0422,
+   "likelihood_p": 0.0,
+   "greedy_repeats_identical": 0.5
+  }
+ },
+ "vs_bf16_original_transformers": {
+  "reference": "Qwen/Qwen3.6-35B-A3B in BF16, transformers 5.22.1, A100 80GB (Vast.ai), teacher-forced on each engine's 48 greedy replies",
+  "llamacpp": {
+   "tokens": 9446,
+   "regret": 0.0064,
+   "ci": [
+    0.0049,
+    0.0079
+   ],
+   "not_reference_top": 0.0196
+  },
+  "strata": {
+   "tokens": 9422,
+   "regret": 0.0314,
+   "ci": [
+    0.0231,
+    0.0364
+   ],
+   "not_reference_top": 0.0459
+  },
+  "strata_drafting_off": {
+   "tokens": 9453,
+   "regret": 0.0302,
+   "ci": [
+    0.0214,
+    0.0335
+   ],
+   "not_reference_top": 0.0449
+  }
+ },
+ "conclusion": "On the same weights and GPU, Strata's output is ~5x as far from the original model as llama.cpp's (llama.cpp's distance is about the 4-bit quantization alone); not caused by MTP drafting; Strata's greedy output is not deterministic across identical requests. Cost of the BF16 reference: $2.59 (72 GB download at $0.039/GB)."
+}
