@@ -29,6 +29,8 @@ try:
 except (ValueError, KeyError):  # multimodal checkpoints (Gemma-4) load as image-text models; text input works the same
     from transformers import AutoModelForImageTextToText
     model = AutoModelForImageTextToText.from_pretrained(a.model, dtype=torch.bfloat16, device_map={"": 0}, **kw).eval()
+if any(t.device.type != "cuda" for t in list(model.parameters()) + list(model.buffers())):
+    model = model.to("cuda")  # dequantized experts can be left on the CPU by the loader
 data = json.load(gzip.open(a.traces, "rt"))
 for variant in a.variant:
     out = []

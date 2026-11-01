@@ -442,6 +442,14 @@ A one-pass shortcut does not work for this model: scored as a prompt (prompt_log
 differ from its own token-by-token decode even on one RTX 3090, by over 5 nats at some positions with an identical
 prompt (`vllm_onepass_referee.py`), so the referee has to replay token by token.
 
+Reproducible is not the same as accurate. Against the original model (transformers, BF16) the logprobs vLLM 0.32
+returned while generating gpt-oss-20b on the RTX 4090 had a different top token at 12.5% of 9,493 positions and a
+top-1 logprob error of 0.26, against 2.7-2.8% and 0.032 for llama.cpp on the same tokens; greedy decoding follows those
+numbers, so vLLM generated words the model rates as unlikely (e.g. a token at -0.78 where the reference has about -6.2).
+vLLM's own one-pass scoring sided with the reference in a spot check. Its Ampere/Ada kernels for this model (Marlin
+MXFP4 MoE, Triton attention) are the likely place; not traced. The six machines that agree bit for bit agree on this
+less accurate computation.
+
 So an exact tier (bit-for-bit verification, where any nudge is proof) can span GPU generations with vLLM's
 batch-invariant kernels (one group for Ampere and Ada, another for Blackwell); with llama.cpp it needs the same GPU
 model; on Hopper it did not hold.

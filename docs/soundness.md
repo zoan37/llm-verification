@@ -179,7 +179,10 @@ lie slightly in its committed logprobs to keep the rule check passing.
   mode (`VLLM_BATCH_INVARIANT=1`) the tier widens: an A100, an RTX 3090, two RTX 4090s, an RTX 4080 SUPER and an L40S
   produced identical replies and top-20 logprobs at all 9,493 positions, however requests were batched; an RTX 5090
   (Blackwell) was batch-invariant but its own group; an H100 was not (it changed 3 of 48 replies with batching). Determinism across GPU generations is available today where the
-  engine's kernels are batch-invariant (experiments/results/vllm-batch-invariance-gpt-oss-20b.json).
+  engine's kernels are batch-invariant (experiments/results/vllm-batch-invariance-gpt-oss-20b.json). Determinism is not
+  accuracy: on those GPUs vLLM 0.32's gpt-oss-20b decode was far from the original model (12.5% different top tokens
+  vs 2.7% for llama.cpp, against BF16 transformers), so an exact tier pins the arithmetic and a fidelity check against
+  the reference implementation is still needed to say the arithmetic is good.
 - What it buys an attacker: picking among outputs M itself nearly produced. It cannot make M say something M
   gives low probability, so it cannot inject a malicious tool call; it can bias style or embed a covert watermark.
 - Mitigations: tighter tolerance on `wgap` (the lie is visible in committed logprobs), per-provider evidence

@@ -26,5 +26,26 @@
   "home RTX 4090 decode vs RTX 3090 prefill": "top-20 differs at 9,493/9,493 positions; chosen-token logprob at 9,174",
   "same RTX 3090, its own decode vs its own prefill": "prompt identical (71 tokens); positions 0-2 agree up to tail rounding, position 3 differs by >5 nats (decode: token 976 at -0.78, chosen; prefill: 976 at -6.06, another token on top)",
   "conclusion": "for gpt-oss in vLLM 0.32 the prefill path does not reproduce decode even on one machine, so the exact tier needs token-by-token replay (which is bit-identical across Ampere/Ada); not traced (gpt-oss sliding-window/sink attention in prefill is a guess)"
+ },
+ "accuracy_of_vllm_decode": {
+  "what": "the 48 replies the user's RTX 4090 generated with vLLM 0.32 (batch-invariant mode, eager) with their returned top-20 logprobs, scored on the same tokens by Hugging Face transformers in BF16 (A6000) and by llama.cpp (lv-engine, RTX 4090) one pass and token by token; experiments/path_noise.py compare",
+  "vllm_decode_vs_bf16": {
+   "top1_differs": 0.1254,
+   "top1_lp_mae": 0.2604,
+   "margin_mae": 0.6523
+  },
+  "llamacpp_one_pass_vs_bf16": {
+   "top1_differs": 0.0273,
+   "top1_lp_mae": 0.0324,
+   "margin_mae": 0.2023
+  },
+  "llamacpp_token_by_token_vs_bf16": {
+   "top1_differs": 0.028,
+   "top1_lp_mae": 0.0325,
+   "margin_mae": 0.2028
+  },
+  "spot_check": "reply position 3 of 'Name three colors.': vLLM decode token 976 at -0.78 (chosen greedily); vLLM prefill -6.14; llama.cpp one pass -6.37; llama.cpp step not in its top 3; also seen without batch-invariant mode",
+  "positions": 9493,
+  "note": "vLLM's own prefill (prompt_logprobs) sided with llama.cpp in the spot check. Kernel path on Ada: Marlin MXFP4 MoE, TRITON_ATTN; cause not traced. The Ampere/Ada machines that agree bit for bit agree on this less accurate decode: reproducible is not the same as accurate. OpenRouter gpt-oss-20b endpoints audited earlier (likely Hopper/Blackwell) were not affected."
  }
 }
