@@ -20,5 +20,11 @@
   "throughput (RTX 4090, eager)": "1 request: 46 -> 40 tok/s; 16 concurrent: 644 -> 656 tok/s",
   "RTX 5090": "batch-invariant on itself (0/48 replies diverge, 0/9,517 positions differ) but its own group: differs from the Ampere/Ada group and from the H100 on 46/48 replies"
  },
- "notes": "Ampere and Ada take vLLM's Triton batch-invariant path, Hopper a cuBLAS path (vLLM source, per the research summary in docs/soundness.md); the H100 leak was not traced. Same vLLM, torch and model on every machine; drivers 580-610."
+ "notes": "Ampere and Ada take vLLM's Triton batch-invariant path, Hopper a cuBLAS path (vLLM source, per the research summary in docs/soundness.md); the H100 leak was not traced. Same vLLM, torch and model on every machine; drivers 580-610.",
+ "one_pass_referee (prompt_logprobs)": {
+  "what": "a referee in batch-invariant mode scoring prompt+reply in one prefill (prompt_logprobs=20) vs the provider's token-by-token logprobs (experiments/vllm_onepass_referee.py)",
+  "home RTX 4090 decode vs RTX 3090 prefill": "top-20 differs at 9,493/9,493 positions; chosen-token logprob at 9,174",
+  "same RTX 3090, its own decode vs its own prefill": "prompt identical (71 tokens); positions 0-2 agree up to tail rounding, position 3 differs by >5 nats (decode: token 976 at -0.78, chosen; prefill: 976 at -6.06, another token on top)",
+  "conclusion": "for gpt-oss in vLLM 0.32 the prefill path does not reproduce decode even on one machine, so the exact tier needs token-by-token replay (which is bit-identical across Ampere/Ada); not traced (gpt-oss sliding-window/sink attention in prefill is a guess)"
+ }
 }

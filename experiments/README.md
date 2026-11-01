@@ -438,6 +438,10 @@ user's RTX 4090 (`exact_tier.py`, `vllm_determinism.py`; results `exact-tier-cro
   on itself (3 of 48 replies changed with batching) and matched nothing else. Cost on an RTX 4090 (eager mode): 46 -> 40 tokens/s for
   one request, none measurable at 16 concurrent (644 -> 656).
 
+A one-pass shortcut does not work for this model: scored as a prompt (prompt_logprobs, one prefill), vLLM's numbers
+differ from its own token-by-token decode even on one RTX 3090, by over 5 nats at some positions with an identical
+prompt (`vllm_onepass_referee.py`), so the referee has to replay token by token.
+
 So an exact tier (bit-for-bit verification, where any nudge is proof) can span GPU generations with vLLM's
 batch-invariant kernels (one group for Ampere and Ada, another for Blackwell); with llama.cpp it needs the same GPU
 model; on Hopper it did not hold.
