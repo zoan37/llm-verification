@@ -154,6 +154,15 @@ SambaNova, Mara and a few others: 100%), and a nondeterministic deployment canno
 to replace it; longer replies and more prompts are the next step. GLM-5.3 could not be scanned (reasoning cannot be
 disabled at temperature 0 there). Results in `results/shared/`, `results/reasoning/`, `results/cache/`; findings 7-9 above.
 
+Does any provider already serve exactly? In the audit data each endpoint answered 4 prompts twice more at
+temperature 0. Across 86 endpoint-model pairs only three returned bit-identical logprobs on every repeat: Mara
+(gpt-oss-120b; it serves the same deployment as SambaNova, which returned identical text on every repeat), Cerebras
+(Qwen3.8) and Darkbloom (Qwen3.8); Tenstorrent was identical on 7 of 8. Groq and Venice (Qwen3.8) repeated the text
+but return no logprobs. Most GPU endpoints repeated their own text on 0-4 of 8. The reproducible ones are largely
+custom silicon (SambaNova's and Cerebras's chips, Groq's LPU, Tenstorrent), whose dataflow designs do not reorder
+sums under load. That makes them repeatable, not checkable: nobody outside has the chip to reproduce the numbers.
+An exact tier that outsiders can referee still needs batch-invariant kernels on hardware anyone can rent.
+
 Reasoning effort, median characters of returned reasoning on 12 problems at temperature 0 (8 for Qwen3.8; the set
 has one ill-posed case, "1/n" with n = 7.5, on which honest high-effort runs reason past the token cap):
 
