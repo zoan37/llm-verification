@@ -6,7 +6,8 @@ Every reply then carries a signed receipt, and clients can check it exactly and 
 
 ## For providers
 
-Already running llama-server? See [llama-server.md](llama-server.md): a small patch and `llmverify serve --upstream`.
+Already running llama-server or vLLM? See [llama-server.md](llama-server.md) (a small patch) or [vllm.md](vllm.md) (a
+logits processor); `llmverify serve --upstream` checks and signs.
 
 ```bash
 python -m llmverify keygen --out provider.key            # keep it secret; publish the public key

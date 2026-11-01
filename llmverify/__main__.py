@@ -38,8 +38,10 @@ def cmd_serve(a):
     from .receipt import Signer
     from .server import App, serve
     if a.upstream:  # a llama-server with the llmverify patch generates; this process checks and signs
-        from .upstream import UpstreamLlama, UpstreamProvider
-        up = UpstreamLlama(a.upstream, eos_ids=json.loads(a.eos) if a.eos else None, parallel=a.parallel)
+        from .upstream import UpstreamLlama, UpstreamProvider, VllmUpstream
+        eos = json.loads(a.eos) if a.eos else None
+        up = (VllmUpstream(a.upstream, a.vllm_model, a.tokenizer or a.vllm_model, eos_ids=eos, parallel=a.parallel)
+              if a.vllm_model else UpstreamLlama(a.upstream, eos_ids=eos, parallel=a.parallel))
         signer = Signer.from_hex(Path(a.key).read_text().strip())
         info = {"name": a.name, "weights_sha256": a.weights_sha256 or (_sha256_file(a.model) if a.model else None)}
         app = App(UpstreamProvider(up, signer, info), up.meta["chat_template"],
@@ -136,6 +138,8 @@ def main():
     s.add_argument("--engine", help="full lv-engine command line instead of --model")
     s.add_argument("--upstream", help="base URL of a llama-server with the llmverify patch (docs/llama-server.md)")
     s.add_argument("--eos", help="end-of-generation token ids as a JSON list (with --upstream; default: the server's eos)")
+    s.add_argument("--vllm-model", help="with --upstream: the upstream is vLLM serving this model (docs/vllm.md)")
+    s.add_argument("--tokenizer", help="with --vllm-model: Hugging Face tokenizer (default: the model name)")
     s.add_argument("--lv-engine", default="engine/build/lv-engine")
     s.add_argument("--ctx", type=int, default=8192, help="context per request")
     s.add_argument("--parallel", type=int, default=8, help="requests generated together in one batch")

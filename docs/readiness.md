@@ -69,5 +69,5 @@ clients, against 47 for the original per-token path).
    about 40% of a generating GPU, and at a 5% spot-check rate one referee GPU covers roughly fifty generating GPUs of
    the same kind (the exact checks run on every reply at negligible cost).
 4. The rule inside mainstream serving stacks, so providers can turn it on without running this server: done for
-   llama-server (a small patch plus `llmverify serve --upstream`, docs/llama-server.md); open for vLLM (a logits
-   processor with GPU-side top-20).
+   llama-server (a small patch plus `llmverify serve --upstream`, docs/llama-server.md) and vLLM (a logits processor,
+   docs/vllm.md); throughput cost on large models still to measure.
