@@ -94,4 +94,4 @@ clients, against 47 for the original per-token path).
    the same kind (the exact checks run on every reply at negligible cost).
 4. The rule inside mainstream serving stacks, so providers can turn it on without running this server: done for
    llama-server (a small patch plus `llmverify serve --upstream`, docs/llama-server.md) and vLLM (a logits processor,
-   docs/vllm.md); throughput cost on large models still to measure.
+   docs/vllm.md; about 10% throughput on gpt-oss-20b at 16-32 concurrent requests).

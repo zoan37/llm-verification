@@ -33,4 +33,6 @@ RTX 4090 (WSL2), vLLM 0.32, Qwen3-0.6B: 16 of 16 replies through `VerifyingClien
 and T=0.8, inline and deferred traces, replies ending at EOS and at the length limit). Throughput with 32 concurrent
 256-token requests: 3,600-3,850 tokens/s with the rule against 4,400-6,200 without (two runs each). The rule's cost
 per step is roughly fixed (a top-20, SHA-256 noise for up to 20 candidates per request, one host sync), so it weighs
-most on a model this small; larger models have proportionally slower steps.
+most on a model this small. gpt-oss-20b (Marlin MXFP4 kernels on the 4090): 16 of 16 replies passed every exact check,
+and 256-token requests ran at 989-995 tokens/s with the rule against 1,072-1,143 without at 16 concurrent, and
+1,712-1,749 against 1,815-2,043 at 32 concurrent: about 10% (6-15%).
