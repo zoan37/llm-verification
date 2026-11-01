@@ -1,0 +1,135 @@
+{
+ "what": "Which production serving settings keep vLLM's exact tier? Qwen3-8B (BF16, thinking off), vLLM 0.32.0, VLLM_BATCH_INVARIANT=1, a rented 2x RTX 4090 box (Quebec, driver 580.178.04). Each setting made a determinism run (48 prompts, max 200 tokens, greedy, sequential and 16 concurrent; vllm_determinism.py) compared with the eager baseline; one-pass referee checks (vllm_onepass_referee.py) of compiled-mode runs; and the llmverify logits processor under n-gram speculative decoding, its receipts checked by a plain eager referee (vllm_exact_receipts.py).",
+ "date": "2026-11-01",
+ "vs_eager_baseline": {
+  "prefix caching off": "identical (0 of 8,250 positions differ)",
+  "max-num-batched-tokens 256 (prefill in small chunks)": "identical",
+  "n-gram speculative decoding, 3 draft tokens, eager": "identical",
+  "tensor parallel 2, eager": "its own group: 28 of 48 replies diverge from TP=1; batch-invariant within itself (sequential = concurrent)",
+  "tensor parallel 2, CUDA graphs": "identical to tensor parallel 2 eager",
+  "CUDA graphs + torch.compile (vLLM's default), TP=1": "differs (36 of 48 replies diverge)",
+  "CUDA graphs + n-gram speculation, TP=1": "differs from eager and from graphs without speculation"
+ },
+ "eager_baseline_reproducible": "a second eager server after a toolchain change, and the earlier RTX 4090 run on another box, both match the eager baseline at all 8,250 positions",
+ "compiled_mode": {
+  "within one server": "batch-invariant: sequential and 16 concurrent identical",
+  "across restarts": "not reproducible: three compiled server starts (a fresh compile, a compile with the cache cleared, a start reusing the compile cache) produced 8,288, 8,261 and 8,271 tokens and diverged on 29-36 of 48 replies from each other",
+  "one-pass referee": "fails: an eager referee's prefill differs from compiled decode at 8,287 of 8,288 positions; a compiled server's own prefill differs from its decode at 8,067 of 8,288"
+ },
+ "rule_under_speculative_decoding": {
+  "what": "llmverify/vllm_rule.py now masks every logits row (one per draft position) to the rule's choice for its own step; receipts from a server with the rule and n-gram speculation (mean acceptance length 1.09), checked by a plain eager referee without speculation",
+  "with_ngram": {
+   "honest greedy": {
+    "replies": 48,
+    "tokens": 8250,
+    "client_checks_pass": 48,
+    "positions_differ": 0,
+    "replies_flagged": 0,
+    "rule_breaks_on_referee_numbers": 0,
+    "caught_at_flip": 0
+   },
+   "honest t1.0": {
+    "replies": 48,
+    "tokens": 8190,
+    "client_checks_pass": 48,
+    "positions_differ": 0,
+    "replies_flagged": 0,
+    "rule_breaks_on_referee_numbers": 0,
+    "caught_at_flip": 0
+   },
+   "honest t0.7-p0.95": {
+    "replies": 48,
+    "tokens": 8272,
+    "client_checks_pass": 48,
+    "positions_differ": 0,
+    "replies_flagged": 0,
+    "rule_breaks_on_referee_numbers": 0,
+    "caught_at_flip": 0
+   },
+   "tampered greedy": {
+    "replies": 48,
+    "tokens": 8263,
+    "client_checks_pass": 48,
+    "positions_differ": 48,
+    "replies_flagged": 48,
+    "rule_breaks_on_referee_numbers": 48,
+    "caught_at_flip": 48
+   },
+   "tampered t1.0": {
+    "replies": 48,
+    "tokens": 4393,
+    "client_checks_pass": 48,
+    "positions_differ": 48,
+    "replies_flagged": 48,
+    "rule_breaks_on_referee_numbers": 48,
+    "caught_at_flip": 48
+   },
+   "tampered t0.7-p0.95": {
+    "replies": 47,
+    "tokens": 4403,
+    "client_checks_pass": 47,
+    "positions_differ": 47,
+    "replies_flagged": 47,
+    "rule_breaks_on_referee_numbers": 47,
+    "caught_at_flip": 47
+   }
+  },
+  "without_speculation": {
+   "honest greedy": {
+    "replies": 48,
+    "tokens": 8250,
+    "client_checks_pass": 48,
+    "positions_differ": 0,
+    "replies_flagged": 0,
+    "rule_breaks_on_referee_numbers": 0,
+    "caught_at_flip": 0
+   },
+   "honest t1.0": {
+    "replies": 48,
+    "tokens": 8145,
+    "client_checks_pass": 48,
+    "positions_differ": 0,
+    "replies_flagged": 0,
+    "rule_breaks_on_referee_numbers": 0,
+    "caught_at_flip": 0
+   },
+   "honest t0.7-p0.95": {
+    "replies": 48,
+    "tokens": 8345,
+    "client_checks_pass": 48,
+    "positions_differ": 0,
+    "replies_flagged": 0,
+    "rule_breaks_on_referee_numbers": 0,
+    "caught_at_flip": 0
+   },
+   "tampered greedy": {
+    "replies": 48,
+    "tokens": 8263,
+    "client_checks_pass": 48,
+    "positions_differ": 48,
+    "replies_flagged": 48,
+    "rule_breaks_on_referee_numbers": 48,
+    "caught_at_flip": 48
+   },
+   "tampered t1.0": {
+    "replies": 48,
+    "tokens": 4181,
+    "client_checks_pass": 48,
+    "positions_differ": 48,
+    "replies_flagged": 48,
+    "rule_breaks_on_referee_numbers": 48,
+    "caught_at_flip": 48
+   },
+   "tampered t0.7-p0.95": {
+    "replies": 47,
+    "tokens": 4514,
+    "client_checks_pass": 47,
+    "positions_differ": 47,
+    "replies_flagged": 47,
+    "rule_breaks_on_referee_numbers": 47,
+    "caught_at_flip": 47
+   }
+  }
+ },
+ "verdict": "For an exact one-pass tier on vLLM: batch-invariant mode, --enforce-eager, a fixed tensor-parallel size (part of the tier), any prefix caching / chunking / n-gram speculation. CUDA graphs with torch.compile give numbers that are stable within one server lifetime but change on every restart, so no referee can reproduce them; a provider in that mode falls to the statistical tier. Which of compilation or graph capture causes it was not separated."
+}

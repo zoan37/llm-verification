@@ -506,6 +506,35 @@ one pass with 0 differences; all three use torch 2.13.0 and Triton 3.7.1. gpt-os
 0.31.0 and 0.30.0 refuse to serve it batch-invariant on Ampere/Ada (no MXFP4 MoE kernel supports batch invariance
 there), so for gpt-oss the tier starts at 0.32.0.
 
+### Production settings (`vllm-production-settings-qwen3-8b.json`)
+
+Providers do not run eager single-GPU servers. On a 2x RTX 4090 box (Qwen3-8B, batch-invariant), each setting was
+compared with the eager baseline at all 8,250 positions:
+
+| Setting | Exact tier? |
+|---|---|
+| prefix caching off; prefill in 256-token chunks; n-gram speculative decoding | yes: identical to the baseline |
+| tensor parallel 2 (eager, or with CUDA graphs) | its own tier: deterministic, but 28 of 48 replies differ from one GPU |
+| CUDA graphs + torch.compile (vLLM's default) | **no**: stable while a server runs, different after every restart |
+
+Compiled mode is the trap. Within one server it is batch-invariant, but three starts (fresh compile, cache cleared,
+cache reused) produced three different sets of replies (29-36 of 48 diverge), and its prefill does not reproduce its
+decode, so neither a one-pass nor a replaying referee can check it exactly. An exact tier on vLLM today means
+batch-invariant mode plus `--enforce-eager`, with the tensor-parallel size as part of the tier. Which of compilation
+or graph capture causes the drift was not separated.
+
+The llmverify rule now runs under speculative decoding (each draft row is masked to the rule's choice for its own
+step; vLLM's rejection sampler then accepts a draft only where it matches). Receipts made with n-gram speculation and
+checked by an eager referee without it: 0 differing positions on 144 honest replies, 143 of 143 tampered replies
+caught at the edit. Before this the processor refused speculative decoding by raising, which killed the engine.
+
+Two more: vLLM's new PLE disk offload (the n-gram table of Qwen3.8-Flash-Next read from the checkpoint files instead
+of memory) is bit-identical to holding the table in RAM (0 of 7,806 positions, one request at a time;
+`vllm-ple-disk-offload-flash-next.json`), but that model's linear-attention layers refuse batch-invariant mode, so
+hybrid models like it have no exact cross-batch tier in vLLM yet. And FlashInfer autotunes kernels by timing at
+startup, so servers that should be identical can compute differently unless it is disabled
+(`--disable-flashinfer-autotune`) or its cache is shared.
+
 ## Engines on the same weights: Strata vs llama.cpp (Qwen3.6-35B-A3B)
 
 The same UD-Q4_K_XL GGUF on the same RTX 4090, served by llama.cpp (11924d4c1) and by Strata (0.2.9, engine 0.1.47;
