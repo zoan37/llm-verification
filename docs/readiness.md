@@ -40,6 +40,30 @@ Recommended rollout: run these on a sample of replies from day one, show results
 check to enforcement once its false-positive rate on honest providers is measured and acceptable, and act on
 accumulated evidence over many replies, never on one reply.
 
+## Declared serving profiles (allowed, never trusted)
+
+Engines differ in accuracy on the same weights: on one Qwen3.6 4-bit file and one RTX 4090, Strata's output was about
+five times as far from the original model as llama.cpp's (experiments/README.md, Engines). Buyers should not need to
+know engine names, so a network should keep three kinds of information apart:
+
+| Kind | Examples | Used for |
+|---|---|---|
+| Measured | fidelity against the original model, sampler behaviour, determinism | tiers, routing, payment |
+| Checkable | signature, prompt hash, sampling rule, text hash (the exact checks above) | proof of tampering |
+| Declared | engine and version, quantization, weights hash, flags | diagnosis, change detection, consistency checks |
+
+A host may declare a serving profile (for example in the receipt's signed `model` object, so a false claim is
+attributable). The network:
+
+- **Re-measures on change.** A new profile (engine version, file, flags) starts a short probation audit before the host
+  keeps its tier, so versions never need a hand-maintained compatibility matrix.
+- **Never loosens a rule because of a declaration.** Tolerances and tiers are defined against the original model, the
+  same for every host; otherwise a cheater simply declares the noisiest engine.
+- **Flags inconsistency.** Engines leave fingerprints (Strata: a top-64 sampler cap, answers that change with cache
+  state, its own error level), so a declaration that does not match measured behaviour is itself evidence.
+- **Shows it as declared.** Buyers choose a measured tier (exact, reference-grade, standard, lossy); the profile is
+  context, never a verified claim.
+
 ## Known limits (document, do not hide)
 
 - **Tie steering.** Among near-tied tokens the rule's choice can flip with tiny arithmetic differences, so a provider
