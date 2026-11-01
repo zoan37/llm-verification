@@ -523,7 +523,17 @@ Compiled mode is the trap. Within one server it is batch-invariant, but three st
 cache reused) produced three different sets of replies (29-36 of 48 diverge), and its prefill does not reproduce its
 decode, so neither a one-pass nor a replaying referee can check it exactly. An exact tier on vLLM today means
 batch-invariant mode plus `--enforce-eager`, with the tensor-parallel size as part of the tier. Which of compilation
-or graph capture causes the drift was not separated.
+or graph capture causes the drift was not separated (the attempt ran on a faulty machine, below).
+
+What exactness costs, on an RTX 4090 with Qwen3-8B (output tokens/s at 1 / 32 concurrent requests): plain vLLM
+59 / 1,675, plain eager 57 / 1,595, batch-invariant eager 26 / 863. On a dense model the price is batch-invariant
+mode itself, about half the throughput; eager vs compiled is 2-5%. (On gpt-oss-20b's MoE kernels it cost nothing
+measurable at 16 concurrent.)
+
+One rented RTX 4090 was simply faulty: in batch-invariant eager mode it gave four different sets of numbers in eight
+server starts, none matching what every other Ampere/Ada machine computes. Another RTX 4090 on the same driver
+reproduced the canonical numbers exactly. An exact tier therefore needs an admission and calibration probe (fixed
+prompts with known canonical answers): hardware that fails it belongs in the statistical tier, not in a penalty.
 
 The llmverify rule now runs under speculative decoding (each draft row is masked to the rule's choice for its own
 step; vLLM's rejection sampler then accepts a draft only where it matches). Receipts made with n-gram speculation and
