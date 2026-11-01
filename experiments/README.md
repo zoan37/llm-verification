@@ -500,6 +500,12 @@ sequential or 16 concurrent. 143 tampered replies, not 144: one short sampled re
 had a runner-up inside the nucleus. So the exact one-pass tier is not a property of one model: it holds for a MoE MXFP4
 model and a dense BF16 one.
 
+It also survives upgrades, at least within one torch and Triton release (`vllm-versions-qwen3-8b.json`): on an RTX 3090,
+vLLM 0.31.0 and 0.30.0 reproduced the 0.32.0 Qwen3-8B run at all 8,250 positions, and each checked 0.32.0's replies in
+one pass with 0 differences; all three use torch 2.13.0 and Triton 3.7.1. gpt-oss-20b cannot be tested this way:
+0.31.0 and 0.30.0 refuse to serve it batch-invariant on Ampere/Ada (no MXFP4 MoE kernel supports batch invariance
+there), so for gpt-oss the tier starts at 0.32.0.
+
 ## Engines on the same weights: Strata vs llama.cpp (Qwen3.6-35B-A3B)
 
 The same UD-Q4_K_XL GGUF on the same RTX 4090, served by llama.cpp (11924d4c1) and by Strata (0.2.9, engine 0.1.47;

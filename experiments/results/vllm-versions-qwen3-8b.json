@@ -1,0 +1,17 @@
+{
+ "what": "Does the vLLM exact tier survive a vLLM upgrade? Same rented RTX 3090 (Chile), VLLM_BATCH_INVARIANT=1, eager: vLLM 0.31.0 and 0.30.0 each made a determinism run (vllm_determinism.py, 48 prompts, sequential and 16 concurrent) and scored, in one prefill, the vLLM 0.32.0 run made on another RTX 3090 (vllm_onepass_referee.py).",
+ "date": "2026-11-01",
+ "versions": {
+  "0.32.0": "torch 2.13.0 (earlier boxes)",
+  "0.31.0": "torch 2.13.0, triton 3.7.1, flashinfer 0.7.0.post1",
+  "0.30.0": "torch 2.13.0, triton 3.7.1, flashinfer 0.6.18.post1; needed CUDA_HOME set to the pip CUDA toolkit and VLLM_USE_FLASHINFER_SAMPLER=0 (FlashInfer's sampler JIT build fails on the runtime image)"
+ },
+ "qwen3_8b": {
+  "0.31.0 vs 0.32.0": "0 of 8,250 positions differ (sequential and concurrent16)",
+  "0.30.0 vs 0.32.0": "0 of 8,250",
+  "0.30.0 vs 0.31.0": "0 of 8,250",
+  "one_pass_on_0.32.0_run": "0 of 8,250 positions differ on 0.31.0 and on 0.30.0"
+ },
+ "gpt_oss_20b": "0.31.0 and 0.30.0 refuse to serve it in batch-invariant mode on an RTX 3090: 'No MXFP4 MoE backend supports the deployment configuration' (MARLIN: kernel does not support batch invariance; the others do not support the device; EMULATION needs amd-quark). Batch-invariant gpt-oss on Ampere/Ada is new in 0.32.0.",
+ "notes": "For a dense BF16 model the exact tier held across three vLLM releases spanning about a month, all on torch 2.13.0 and Triton 3.7.1: the batch-invariant kernels, not the vLLM version string, fix the numbers. A referee should still pin its version to the provider's and treat a torch/Triton change as a new tier until re-measured."
+}

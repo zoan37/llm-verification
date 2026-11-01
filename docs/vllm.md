@@ -44,7 +44,9 @@ the same kernel family reproduces the committed top-20 exactly by scoring prompt
 (`prompt_logprobs: 20`), so receipts can be checked with zero tolerance: `experiments/vllm_exact_receipts.py check`.
 Measured with gpt-oss-20b, provider RTX 4090, referee RTX 3090: 0 differing positions on 144 honest replies, every
 tampered reply caught at the edited token. The same holds for dense BF16 Qwen3-8B (RTX 4090 and RTX 3090, each checking
-the other's receipts) (experiments/README.md).
+the other's receipts) (experiments/README.md). For Qwen3-8B, vLLM 0.30.0, 0.31.0 and 0.32.0 (all torch 2.13.0, Triton
+3.7.1) gave identical numbers, so a referee need not upgrade in lockstep within that range; batch-invariant gpt-oss on
+Ampere/Ada needs 0.32.0 or later.
 
 ## gpt-oss: reasoning effort and the rendered prompt
 
