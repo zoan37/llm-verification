@@ -43,7 +43,8 @@ Open work, roughly in priority order. Each item says what it would establish.
 - [ ] AMD ROCm/HIP (needs the HIP SDK on Windows).
 - [ ] Referee validation against each model's reference implementation (transformers BF16 on a rented GPU,
       experiments/path_noise.py): gpt-oss-20b done (Spark batched path was off; RTX 4090 fine). Qwen3.8 and Gemma-4
-      (Spark Q8_0) in progress; Qwen3.5 (M5 Max Metal) pending: the Mac had ~66 GB active, too close to its budget.
+      (Spark Q8_0) clean: one-pass scoring as close to BF16 as decoding (experiments/results/referee-validation-q8.json).
+      Qwen3.5 (M5 Max Metal) pending: the Mac had ~66 GB active, too close to its budget.
 - [x] gpt-oss-20b noise: against a BF16 transformers reference, llama.cpp's batched path (> 8 tokens per batch, the
       referee's default) is ~3x less accurate than token-by-token decoding; scoring in batches of 8 fixes it
       (experiments/results/path-noise-gpt-oss-20b.json). Rescore published gpt-oss results with `-b 8`.

@@ -1,0 +1,30 @@
+{
+ "what": "referee validation: Spark (GB10) lv-engine, Q8_0 weights, one-pass scoring (the referee) and token by token, vs Hugging Face transformers 5.22.1 in BF16 on an A100 80GB (Vast.ai), teacher-forced on 24 honest greedy replies of up to 256 tokens generated on the Spark",
+ "qwen/qwen3.8-27b": {
+  "positions": 4515,
+  "referee_one_pass": {
+   "top1_lp_mae": 0.0087,
+   "margin_mae": 0.0866,
+   "top1_differs": 0.0117
+  },
+  "token_by_token": {
+   "top1_lp_mae": 0.0089,
+   "margin_mae": 0.0865,
+   "top1_differs": 0.0115
+  }
+ },
+ "google/gemma-4-26b-a4b-it": {
+  "positions": 5440,
+  "referee_one_pass": {
+   "top1_lp_mae": 0.0158,
+   "margin_mae": 0.3139,
+   "top1_differs": 0.0116
+  },
+  "token_by_token": {
+   "top1_lp_mae": 0.016,
+   "margin_mae": 0.3158,
+   "top1_differs": 0.0127
+  }
+ },
+ "verdict": "both referees as close to the reference implementation as decoding; the remaining gap is Q8_0 vs BF16. Cost $0.59."
+}

@@ -208,7 +208,9 @@ Thresholds come from honest machines (same weights, different hardware/engine/ke
   kernels with low-precision activations: llama.cpp PR #17906 quantizes activations to MXFP4 there), and every prompt a
   GB10 ingests goes through it. Rescored on the RTX 4090, honest gpt-oss-20b machines fell from regret ~0.04 to
   0.0013-0.0035 and the endpoints spread out (fidelity 97 down to 61) where before all sat within honest noise;
-  experiments/README.md (gpt-oss-20b) has the table.
+  experiments/README.md (gpt-oss-20b) has the table. The Q8_0 referees pass the same check: against BF16
+  transformers, Qwen3.8-27B's one-pass scoring differs on 1.17% of top-1 tokens (decoding 1.15%) and Gemma-4-26B's on
+  1.16% (decoding 1.27%) (experiments/results/referee-validation-q8.json).
 - Honest *providers* (vLLM/SGLang/TensorRT, FP8 weights or KV cache, batch-dependent kernels) are noisier than
   honest llama.cpp machines. In black-box mode the published score places each endpoint on a scale from honest
   machines (100) to a smaller sibling model (0); it does not declare FP8 dishonest.
