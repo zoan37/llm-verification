@@ -442,7 +442,11 @@ rank 50 where 14 are expected, which the sampler fingerprint flags on its own; t
 code). It returns no logprobs for Qwen3.6 (its Qwen3.6 engine path writes none), so it was audited on text. For
 the exact verification tier, an answer that depends on cache state means a referee would have to replay the same
 cache path, not just the same tokens.
-One model, one Strata engine version, one GPU; `experiments/results/engines-qwen36-strata-vs-llamacpp.json`.
+Does it change answers? On 300 GSM8K test problems (greedy, thinking off, `task_accuracy.py`) llama.cpp got 284
+right and Strata 285: 3 only llama.cpp solved, 4 only Strata (exact McNemar p = 1.0), although the two engines'
+replies differ in wording on 287 of the 300. At this task the extra deviation costs no measurable accuracy.
+One model, one Strata engine version, one GPU; `experiments/results/engines-qwen36-strata-vs-llamacpp.json`,
+`experiments/results/gsm8k-qwen36-*.json`.
 
 ## gpt-oss-120b (26 endpoints)
 

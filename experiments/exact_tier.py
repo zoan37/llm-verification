@@ -23,17 +23,23 @@ ap = argparse.ArgumentParser()
 ap.add_argument("traces")
 ap.add_argument("--engine", required=True)
 ap.add_argument("--label", default="")
+ap.add_argument("--variants", nargs="*", help="only these variants (default: all)")
+ap.add_argument("--save", help="also write every replayed top-20 here, to compare machines with each other")
 a = ap.parse_args()
 data = json.load(gzip.open(a.traces, "rt"))
 eng = LlamaEngine(shlex.split(a.engine))
 out = {"traces": a.traces, "label": a.label, "variants": {}}
+saved = {}
 for name, v in data["variants"].items():
+    if a.variants and name not in a.variants:
+        continue
     t0, tokens, bad_pos, bad_reps, first = time.time(), 0, 0, 0, []
     for rep in v["replies"]:
         committed = [[tuple(x) for x in t] for t in rep["tops"]]
         replay = [round_top(eng.start(rep["prompt_ids"], 20))]
         for tok in rep["tokens"][:-1]:
             replay.append(round_top(eng.step(tok, 20)))
+        saved.setdefault(name, []).append([[list(x) for x in t] for t in replay])
         diffs = [j for j, (c, r) in enumerate(zip(committed, replay)) if c != r]
         tokens += len(rep["tokens"])
         bad_pos += len(diffs)
@@ -51,4 +57,7 @@ for name, v in data["variants"].items():
 dest = Path("experiments/results") / f"exact-tier-{a.label or Path(a.traces).name.split('.')[0]}.json"
 dest.parent.mkdir(parents=True, exist_ok=True)
 dest.write_text(json.dumps(out, indent=1))
+if a.save:
+    with gzip.open(a.save, "wt") as f:
+        json.dump(saved, f)
 print("wrote", dest)
