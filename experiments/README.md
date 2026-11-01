@@ -439,8 +439,9 @@ again on the same file, with or without its MTP drafting, and the current engine
 request within a run can change the greedy answer (identical repeats on 2 of 4 prompts, llama.cpp 4 of 4) while
 separate runs reproduce exactly, which points at its prompt cache rather than random arithmetic, and its sampler keeps at most 64 candidates whatever top_k says (2 draws past
 rank 50 where 14 are expected, which the sampler fingerprint flags on its own; the cap is documented in its server
-code). It returns no logprobs for Qwen3.6 (its Qwen3.6 engine path writes none), so it was audited on text. A
-nondeterministic engine also rules out the exact verification tier: two honest runs do not even match each other.
+code). It returns no logprobs for Qwen3.6 (its Qwen3.6 engine path writes none), so it was audited on text. For
+the exact verification tier, an answer that depends on cache state means a referee would have to replay the same
+cache path, not just the same tokens.
 One model, one Strata engine version, one GPU; `experiments/results/engines-qwen36-strata-vs-llamacpp.json`.
 
 ## gpt-oss-120b (26 endpoints)
