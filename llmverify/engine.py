@@ -40,14 +40,16 @@ def fp4_referee_problem(meta: dict) -> Optional[str]:
     """Why this engine should not referee: llama.cpp on Blackwell GPUs runs batches of more than 8 tokens of an
     MXFP4/NVFP4 model with FP4 activations, ~3x less accurate than token-by-token decoding against the reference
     implementation (gpt-oss-20b: a different top-1 token on 7% of positions instead of 2%; docs/soundness.md). Score
-    such models with `-b 8` or on another GPU. None when there is no problem (or the engine does not say)."""
+    such models with `-ub 8` (micro-batches of 8; `-b` may stay large) or on another GPU. None when there is no
+    problem (or the engine does not say)."""
     desc = str(meta.get("desc", "")).upper()
     if "MXFP4" not in desc and "NVFP4" not in desc:
         return None
     gpus = [d for d in meta.get("devices") or [] if BLACKWELL.search(str(d))]
-    if gpus and int(meta.get("n_batch") or 0) > 8:
-        return (f"{meta.get('desc')} on {gpus[0]} with batches of {meta['n_batch']}: llama.cpp's FP4 prompt path is "
-                "too inaccurate to referee; pass -b 8 or use another GPU")
+    ubatch = int(meta.get("n_ubatch") or min(int(meta.get("n_batch") or 0), 512))  # the kernels see the micro-batch
+    if gpus and ubatch > 8:
+        return (f"{meta.get('desc')} on {gpus[0]} with micro-batches of {ubatch}: llama.cpp's FP4 prompt path is "
+                "too inaccurate to referee; pass -ub 8 (or -b 8) or use another GPU")
     return None
 
 

@@ -603,7 +603,7 @@ static std::string meta_str(llama_model * model, const char * key) {
 
 int main(int argc, char ** argv) {
     std::string model_path, cache_k = "f16", cache_v = "f16", flash = "auto";
-    int n_ctx = 16384, n_batch = 2048, n_gpu_layers = 99, n_seq = 1;
+    int n_ctx = 16384, n_batch = 2048, n_ubatch = 0, n_gpu_layers = 99, n_seq = 1;
     bool vocab_only = false;
     for (int i = 1; i < argc; i++) {
         std::string a = argv[i];
@@ -615,6 +615,8 @@ int main(int argc, char ** argv) {
         else if (a == "-ctv" && i + 1 < argc) cache_v = argv[++i];  // compresses its cache (f16, q8_0, q4_0)
         else if (a == "-np" && i + 1 < argc) n_seq = std::stoi(argv[++i]);  // parallel sequences for "generate"
         else if (a == "-fa" && i + 1 < argc) flash = argv[++i];  // flash attention: on, off or auto (default)
+        else if (a == "-ub" && i + 1 < argc) n_ubatch = std::stoi(argv[++i]);  // physical batch: the GPU kernels'
+            // row count, separate from -b (how many positions are decoded, and scored in parallel, per call)
         else if (a == "-vocab") vocab_only = true;  // tokenizer only (meta, tokenize, detokenize): no weights, no context
     }
     if (model_path.empty()) {
@@ -634,7 +636,7 @@ int main(int argc, char ** argv) {
     llama_context_params cp = llama_context_default_params();
     cp.n_ctx = n_ctx;
     cp.n_batch = n_batch;
-    cp.n_ubatch = std::min(n_batch, 512);
+    cp.n_ubatch = n_ubatch > 0 ? std::min(n_batch, n_ubatch) : std::min(n_batch, 512);
     auto kv_type = [](const std::string & t) {
         if (t == "q8_0") return GGML_TYPE_Q8_0;
         if (t == "q4_0") return GGML_TYPE_Q4_0;
@@ -683,6 +685,7 @@ int main(int argc, char ** argv) {
                 resp["n_seq_max"] = E.ctx ? (int) llama_n_seq_max(E.ctx) : 0;
                 resp["vocab_only"] = E.ctx == nullptr;
                 resp["n_batch"] = E.n_batch;
+                resp["n_ubatch"] = E.ctx ? (int) llama_n_ubatch(E.ctx) : 0;
                 json devices = json::array();  // GPU names, so a client can spot kernel paths with known accuracy issues
                 for (size_t i = 0; i < ggml_backend_dev_count(); i++) {
                     ggml_backend_dev_t dev = ggml_backend_dev_get(i);
