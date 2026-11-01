@@ -3,8 +3,8 @@
 **Is this endpoint really serving the model it claims?**
 
 When you call "Qwen3.8-27B" or "gpt-oss-20b" through an API, you are trusting the provider. They might serve a
-harsher quantization, a smaller model, skip part of the computation, inject a system prompt, have a bug in
-their output path, or serve a secretly fine-tuned copy that proposes malicious tool calls. This repo checks, as rigorously as the evidence allows, and is explicit about where the
+harsher quantization, a smaller model, skip part of the computation, inject a system prompt, or have a bug in
+their output path. This repo checks, as rigorously as the evidence allows, and is explicit about where the
 checks stop.
 
 Two modes:
