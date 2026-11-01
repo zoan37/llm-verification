@@ -446,7 +446,36 @@ Does it change answers? On 300 GSM8K test problems (greedy, thinking off, `task_
 right and Strata 285: 3 only llama.cpp solved, 4 only Strata (exact McNemar p = 1.0), although the two engines'
 replies differ in wording on 287 of the 300. At this task the extra deviation costs no measurable accuracy.
 One model, one Strata engine version, one GPU; `experiments/results/engines-qwen36-strata-vs-llamacpp.json`,
-`experiments/results/gsm8k-qwen36-*.json`.
+`experiments/results/gsm8k-qwen36-*.json`; the engine scores against the 4-bit referee are in
+`data/scores-engines-q4ref/`.
+
+## Qwen3.6-35B-A3B (10 endpoints)
+
+Collected 2026-11-01 (thinking off, $0.31). Referee: the Q8_0 weights on llama.cpp CUDA on a rented L40S. 100 = an
+honest 6-bit copy (UD-Q6_K, llama.cpp); 0 = a 2-bit copy (UD-Q2_K_XL).
+
+| Endpoint | Regret [95% CI] | Fidelity | Other token | Notes |
+|---|---|---|---|---|
+| honest: UD-Q6_K (sets 100) | 0.0023 [0.0017, 0.0028] | 100 | 1.5% | |
+| Phala | 0.0053 [0.0042, 0.0063] | 75 | 2.2% | broken logprob output |
+| *llama.cpp, 4-bit UD-Q4_K_XL (engine test)* | *0.0056* | *73* | *2.1%* | |
+| DekaLLM | 0.0064 [0.0050, 0.0078] | 69 | 2.4% | broken logprob output |
+| CoreWeave (fp8) | 0.0067 [0.0054, 0.0080] | 68 | 2.4% | |
+| AkashML (fp8) | 0.0071 [0.0058, 0.0084] | 66 | 2.6% | |
+| Parasail (fp8) | 0.0074 [0.0061, 0.0087] | 65 | 2.6% | |
+| Venice (fp8) | 0.0078 [0.0065, 0.0091] | 64 | 2.6% | no logprobs |
+| DeepInfra (fp8) | 0.0088 [0.0074, 0.0101] | 60 | 2.7% | no logprobs |
+| SiliconFlow (fp8) | 0.0193 [0.0132, 0.0279] | 37 | 3.6% | replies up to 1,501 tokens for max_tokens 320 |
+| *Strata, same 4-bit file (engine test)* | *0.0298-0.0312* | *23-24* | *4.9%* | |
+| **AtlasCloud (fp8)** | **0.0535 [0.0470, 0.0601]** | **7** | 7.0% | sampled text fits like the 2-bit copy (excess CE 0.077 vs 0.078) |
+| **Darkbloom (fp4)** | **0.0621 [0.0529, 0.0711]** | **3** | 7.1% | ignores temperature 0: 2.8% of its greedy tokens are not its own top choice |
+| substitute: UD-Q2_K_XL (sets 0) | 0.0678 [0.0568, 0.0785] | 0 | 7.5% | |
+
+Most FP8 endpoints sit where an honest 4-bit file on llama.cpp does. AtlasCloud, labelled fp8, and Darkbloom, labelled
+fp4, are near the 2-bit copy; the prompts are exactly the published template's for both, so this is the model they
+run, not a formatting difference. Darkbloom's own logprobs show it samples at temperature 0 (its gpt-oss-20b injects
+junk tokens when sampling, see the case studies). As on other Qwen models, most endpoints cap sampling at top_k <= 20
+or 40 whatever the request says.
 
 ## gpt-oss-120b (26 endpoints)
 
