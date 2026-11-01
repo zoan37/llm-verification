@@ -459,6 +459,27 @@ So an exact tier (bit-for-bit verification, where any nudge is proof) can span G
 batch-invariant kernels (one group for Ampere and Ada, another for Blackwell), checked in one prefill pass per reply;
 with llama.cpp it needs the same GPU model and a token-by-token replay; on Hopper it did not hold.
 
+## Exact receipts on vLLM, checked in one pass on another GPU
+
+The full cooperative loop with no tolerance (`vllm_exact_receipts.py`; result `vllm-exact-receipts-gpt-oss-20b.json`).
+A provider on the user's RTX 4090 ran vLLM 0.32 in batch-invariant mode with the llmverify logits processor and signed
+receipts for 48 prompts at three sampling settings (greedy; T=1.0; T=0.7 with top-p 0.95). For each reply it also
+made a tampered copy: at the closest near-tie it took the rule's runner-up, lowered the winner's committed logprob just
+enough (the hidden-message attack's edit; median 0.0 nats greedy, 0.02 sampled) and re-signed, so every client-side
+check still passes. A referee on a rented RTX 3090 (vLLM batch-invariant, no processor) scored each reply in one
+prefill and compared the committed top-20 with its own to the last digit.
+
+| | replies | tokens | client checks pass | positions that differ | replies flagged |
+|---|---|---|---|---|---|
+| honest (3 settings) | 144 | 25,791 | 144 | 0 | 0 |
+| tampered (3 settings) | 144 | 17,480 | 144 | 144 | 144, each first at the edited token |
+
+The check took 22 s for 43,271 tokens on the RTX 3090 (40 s on the RTX 4090 itself). So on vLLM, across Ampere and
+Ada, cooperative verification can be exact: no calibration, no false alarms, and any nudge, however small, is
+caught where it was made. Limits: one model and engine version; the referee must run the same vLLM version in
+batch-invariant mode on a GPU of the same kernel family (Hopper was not batch-invariant, Blackwell is its own group);
+tampered sampled replies end at the edit because the rule's step index cannot be resumed through the vLLM API.
+
 ## Engines on the same weights: Strata vs llama.cpp (Qwen3.6-35B-A3B)
 
 The same UD-Q4_K_XL GGUF on the same RTX 4090, served by llama.cpp (11924d4c1) and by Strata (0.2.9, engine 0.1.47;

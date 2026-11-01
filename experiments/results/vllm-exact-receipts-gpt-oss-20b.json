@@ -1,0 +1,77 @@
+{
+ "what": "Exact cooperative mode on vLLM, checked in one pass on another GPU generation (experiments/vllm_exact_receipts.py). Provider: vLLM 0.32.0, VLLM_BATCH_INVARIANT=1, eager, llmverify logits processor (llmverify/vllm_rule.py), gpt-oss-20b, the user's RTX 4090 (Ada, Windows WSL2); signed receipts through UpstreamProvider for 48 prompts x 3 sampling settings (greedy; Gumbel T=1.0; T=0.7 top-p 0.95; seed 7), max 200 tokens. Tampered copies: at each reply's closest near-tie the provider takes the rule's runner-up, lowers the winner's committed logprob just enough (the hidden-message attack's edit) and re-signs; greedy ones continue greedily from the altered prefix, sampled ones end at the flip. Referee: vLLM 0.32.0 batch-invariant without the processor on a rented RTX 3090 (Ampere, Bulgaria), one prefill per reply (prompt_logprobs=20), committed top-20 must equal its own rounded to 1e-4 nats.",
+ "date": "2026-11-01",
+ "referee_rtx3090": {
+  "honest greedy": {
+   "replies": 48,
+   "tokens": 8588,
+   "client_checks_pass": 48,
+   "positions_differ": 0,
+   "replies_flagged": 0,
+   "rule_breaks_on_referee_numbers": 0,
+   "caught_at_flip": 0
+  },
+  "honest t1.0": {
+   "replies": 48,
+   "tokens": 8608,
+   "client_checks_pass": 48,
+   "positions_differ": 0,
+   "replies_flagged": 0,
+   "rule_breaks_on_referee_numbers": 0,
+   "caught_at_flip": 0
+  },
+  "honest t0.7-p0.95": {
+   "replies": 48,
+   "tokens": 8595,
+   "client_checks_pass": 48,
+   "positions_differ": 0,
+   "replies_flagged": 0,
+   "rule_breaks_on_referee_numbers": 0,
+   "caught_at_flip": 0
+  },
+  "tampered greedy": {
+   "replies": 48,
+   "tokens": 8622,
+   "client_checks_pass": 48,
+   "positions_differ": 48,
+   "replies_flagged": 48,
+   "rule_breaks_on_referee_numbers": 48,
+   "caught_at_flip": 48
+  },
+  "tampered t1.0": {
+   "replies": 48,
+   "tokens": 4550,
+   "client_checks_pass": 48,
+   "positions_differ": 48,
+   "replies_flagged": 48,
+   "rule_breaks_on_referee_numbers": 48,
+   "caught_at_flip": 48
+  },
+  "tampered t0.7-p0.95": {
+   "replies": 48,
+   "tokens": 4308,
+   "client_checks_pass": 48,
+   "positions_differ": 48,
+   "replies_flagged": 48,
+   "rule_breaks_on_referee_numbers": 48,
+   "caught_at_flip": 48
+  }
+ },
+ "referee_rtx3090_check_seconds": 22.4,
+ "referee_same_rtx4090": "identical counts (0 honest positions differ; all 144 tampered replies flagged first at the flip), 43,271 tokens in 40 s",
+ "flip_margins_nats": {
+  "greedy": {
+   "median": 0.0,
+   "max": 0.5
+  },
+  "t1.0": {
+   "median": 0.0169,
+   "max": 0.7454
+  },
+  "t0.7-p0.95": {
+   "median": 0.0237,
+   "max": 1.2587
+  }
+ },
+ "notes": "Every tampered receipt passes every client-side check (signature, hashes, rule from the committed numbers); only the referee sees it, and exactly at the edited token. Greedy honest replies are identical to vLLM without the processor (same 8,588 tokens). Median greedy flip margin 0: the edit is 1e-4 nats at a rounded tie and is still caught."
+}

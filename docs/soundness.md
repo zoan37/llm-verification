@@ -185,7 +185,11 @@ lie slightly in its committed logprobs to keep the rule check passing.
   1.8% different top tokens against BF16 transformers, vs 2.5% for llama.cpp. Determinism and accuracy are still
   separate checks: an exact tier pins the arithmetic, a fidelity check against the reference says it is good. (An
   earlier claim that vLLM's decode was far from BF16 and that its prefill differs from its decode was our prompt
-  mismatch; experiments/README.md, Correction.)
+  mismatch; experiments/README.md, Correction.) The whole loop works on vLLM: receipts signed on an RTX 4090 with the
+  llmverify logits processor, checked in one prefill on an RTX 3090 with zero tolerance, gave 0 differing positions
+  on 144 honest replies (three sampling settings, 25,791 tokens) and caught all 144 re-signed tampered replies at the
+  edited token, edits as small as 1e-4 nats; 43,271 tokens in 22 s
+  (experiments/results/vllm-exact-receipts-gpt-oss-20b.json).
 - What it buys an attacker: picking among outputs M itself nearly produced. It cannot make M say something M
   gives low probability, so it cannot inject a malicious tool call; it can bias style or embed a covert watermark.
 - Mitigations: tighter tolerance on `wgap` (the lie is visible in committed logprobs), per-provider evidence

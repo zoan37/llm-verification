@@ -37,6 +37,14 @@ most on a model this small. gpt-oss-20b (Marlin MXFP4 kernels on the 4090): 16 o
 and 256-token requests ran at 989-995 tokens/s with the rule against 1,072-1,143 without at 16 concurrent, and
 1,712-1,749 against 1,815-2,043 at 32 concurrent: about 10% (6-15%).
 
+## Exact checking in one pass
+
+With `VLLM_BATCH_INVARIANT=1` on both sides, a referee running the same vLLM version (no processor needed) on a GPU of
+the same kernel family reproduces the committed top-20 exactly by scoring prompt + reply in one prefill
+(`prompt_logprobs: 20`), so receipts can be checked with zero tolerance: `experiments/vllm_exact_receipts.py check`.
+Measured with gpt-oss-20b, provider RTX 4090, referee RTX 3090: 0 differing positions on 144 honest replies, every
+tampered reply caught at the edited token (experiments/README.md).
+
 ## gpt-oss: reasoning effort and the rendered prompt
 
 vLLM's chat endpoint renders gpt-oss prompts with the harmony library, which reads the request's top-level
