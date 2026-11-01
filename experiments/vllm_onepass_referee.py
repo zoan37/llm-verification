@@ -2,6 +2,8 @@
 prompt (prompt_logprobs, one prefill) and compares the top-20 logprobs at every reply position with the ones the
 provider returned while generating token by token (experiments/vllm_determinism.py run). In batch-invariant mode
 vLLM's prefill and decode give the same numbers, so on the same kernel family they should match bit for bit.
+The prompt is the one the run saved (vLLM's own rendering); older runs without it fall back to /tokenize, which for
+gpt-oss renders a different system prompt than the chat endpoint did (see vllm_determinism.py).
 
     python experiments/vllm_onepass_referee.py vdet-home4090-bi.json.gz --base http://127.0.0.1:8300 \
         --model openai/gpt-oss-20b --chat-kwargs '{"reasoning_effort": "low"}'
@@ -29,12 +31,13 @@ def post(path, body):
 
 
 tid = lambda s: int(str(s).split(":", 1)[1]) if str(s).startswith("token_id:") else int(s)  # noqa: E731
-replies = json.load(gzip.open(a.run, "rt"))[a.mode]
+run = json.load(gzip.open(a.run, "rt"))
+replies, saved_ids = run[a.mode], run.get("prompt_ids")
 prompts = [p["prompt"] if isinstance(p, dict) else p for p in json.loads(Path(a.prompts).read_text())]
 positions = differ = tokens_differ = 0
 t0 = time.time()
 for i, rep in enumerate(replies):
-    ids = post("/tokenize", {"model": a.model, "messages": [{"role": "user", "content": prompts[i]}],
+    ids = saved_ids[i] if saved_ids else post("/tokenize", {"model": a.model, "messages": [{"role": "user", "content": prompts[i]}],
                              "add_generation_prompt": True, "chat_template_kwargs": json.loads(a.chat_kwargs)})["tokens"]
     reply = [tid(step[0]) for step in rep]
     r = post("/v1/completions", {"model": a.model, "prompt": ids + reply, "max_tokens": 1, "temperature": 0,

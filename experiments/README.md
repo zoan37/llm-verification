@@ -438,22 +438,26 @@ user's RTX 4090 (`exact_tier.py`, `vllm_determinism.py`; results `exact-tier-cro
   on itself (3 of 48 replies changed with batching) and matched nothing else. Cost on an RTX 4090 (eager mode): 46 -> 40 tokens/s for
   one request, none measurable at 16 concurrent (644 -> 656).
 
-A one-pass shortcut does not work for this model: scored as a prompt (prompt_logprobs, one prefill), vLLM's numbers
-differ from its own token-by-token decode even on one RTX 3090, by over 5 nats at some positions with an identical
-prompt (`vllm_onepass_referee.py`), so the referee has to replay token by token.
+One pass is enough in batch-invariant mode: scored as a prompt (prompt_logprobs, one prefill), vLLM reproduced the
+top-20 its own token-by-token decode returned at all 8,588 reply positions, on the same RTX 4090 and on an RTX A6000
+scoring the RTX 4090's replies (7 s for all 48 replies; `vllm_onepass_referee.py`). The A6000 also generated the same
+replies bit for bit, so it joins the Ampere/Ada group.
 
-Reproducible is not the same as accurate. Against the original model (transformers, BF16) the logprobs vLLM 0.32
-returned while generating gpt-oss-20b on the RTX 4090 had a different top token at 12.5% of 9,493 positions and a
-top-1 logprob error of 0.26, against 2.7-2.8% and 0.032 for llama.cpp on the same tokens; greedy decoding follows those
-numbers, so vLLM generated words the model rates as unlikely (e.g. a token at -0.78 where the reference has about -6.2).
-vLLM's own one-pass scoring sided with the reference in a spot check. Its Ampere/Ada kernels for this model (Marlin
-MXFP4 MoE, Triton attention) are the likely place; not traced. The six machines that agree bit for bit agree on this
-less accurate computation. Default mode (not batch-invariant) is the same: its decode differs from llama.cpp at
-11.7% of top tokens on another RTX 4090, against 1.6% between llama.cpp's own two paths.
+And it is accurate. Against the original model (transformers, BF16, same prompt ids and tokens) vLLM 0.32's decode on
+the RTX 4090 had a different top token at 1.8% of positions (1.5% in default mode) and a top-1 logprob error of 0.016,
+against 2.1-2.5% and 0.028 for llama.cpp's MXFP4 path on the same tokens.
+
+Correction (2026-11-01): an earlier version of this section said vLLM's decode was far from the reference (12.5%
+different top tokens) and that its prefill does not reproduce its decode. Both were a prompt mismatch in our runs: for
+gpt-oss, vLLM's chat endpoint renders the prompt with the harmony library, which reads the request's top-level
+`reasoning_effort` and ignores `chat_template_kwargs`, so the replies were generated after "Reasoning: medium" while
+the references scored them after "Reasoning: low". `vllm_determinism.py` now sends both and saves the prompt ids vLLM
+rendered, and the referees score those. Machine-to-machine comparisons were unaffected (same rendered prompt on every
+machine).
 
 So an exact tier (bit-for-bit verification, where any nudge is proof) can span GPU generations with vLLM's
-batch-invariant kernels (one group for Ampere and Ada, another for Blackwell); with llama.cpp it needs the same GPU
-model; on Hopper it did not hold.
+batch-invariant kernels (one group for Ampere and Ada, another for Blackwell), checked in one prefill pass per reply;
+with llama.cpp it needs the same GPU model and a token-by-token replay; on Hopper it did not hold.
 
 ## Engines on the same weights: Strata vs llama.cpp (Qwen3.6-35B-A3B)
 

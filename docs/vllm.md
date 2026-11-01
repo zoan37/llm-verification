@@ -36,3 +36,12 @@ per step is roughly fixed (a top-20, SHA-256 noise for up to 20 candidates per r
 most on a model this small. gpt-oss-20b (Marlin MXFP4 kernels on the 4090): 16 of 16 replies passed every exact check,
 and 256-token requests ran at 989-995 tokens/s with the rule against 1,072-1,143 without at 16 concurrent, and
 1,712-1,749 against 1,815-2,043 at 32 concurrent: about 10% (6-15%).
+
+## gpt-oss: reasoning effort and the rendered prompt
+
+vLLM's chat endpoint renders gpt-oss prompts with the harmony library, which reads the request's top-level
+`reasoning_effort` and ignores `chat_template_kwargs`; `/tokenize` with `messages` uses the Jinja template, which reads
+`chat_template_kwargs`. The same request can therefore produce two different system prompts ("Reasoning: medium" vs
+"Reasoning: low"). Anything that scores chat-endpoint replies must use the prompt ids the chat endpoint rendered
+(`"return_token_ids": true` returns them). `llmverify serve --upstream` is not affected: it sends prompt ids to
+`/v1/completions`.
