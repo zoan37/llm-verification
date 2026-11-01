@@ -9,6 +9,7 @@ interface in pure Python for tests.
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import threading
 from typing import List, Optional, Protocol, Sequence
@@ -30,6 +31,24 @@ class Model(Protocol):
 
 def _top(raw) -> TopK:
     return [(int(i), float(lp)) for i, lp in raw]
+
+
+BLACKWELL = re.compile(r"GB10|GB20\d|\bB[12]\d\d\b|RTX 50\d\d|Blackwell", re.I)
+
+
+def fp4_referee_problem(meta: dict) -> Optional[str]:
+    """Why this engine should not referee: llama.cpp on Blackwell GPUs runs batches of more than 8 tokens of an
+    MXFP4/NVFP4 model with FP4 activations, ~3x less accurate than token-by-token decoding against the reference
+    implementation (gpt-oss-20b: a different top-1 token on 7% of positions instead of 2%; docs/soundness.md). Score
+    such models with `-b 8` or on another GPU. None when there is no problem (or the engine does not say)."""
+    desc = str(meta.get("desc", "")).upper()
+    if "MXFP4" not in desc and "NVFP4" not in desc:
+        return None
+    gpus = [d for d in meta.get("devices") or [] if BLACKWELL.search(str(d))]
+    if gpus and int(meta.get("n_batch") or 0) > 8:
+        return (f"{meta.get('desc')} on {gpus[0]} with batches of {meta['n_batch']}: llama.cpp's FP4 prompt path is "
+                "too inaccurate to referee; pass -b 8 or use another GPU")
+    return None
 
 
 class LlamaEngine:

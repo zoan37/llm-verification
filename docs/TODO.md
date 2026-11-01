@@ -41,6 +41,9 @@ Open work, roughly in priority order. Each item says what it would establish.
 - [x] Honest baselines: AMD R9700 Vulkan on Windows (gpt-oss-20b, Qwen3.8), RTX 4090 CUDA on WSL2: all honest.
 - [x] Intel Arc Pro B70 on Linux (Vulkan, Mesa 26.2.5, llama.cpp b12020), gpt-oss-20b: honest.
 - [ ] AMD ROCm/HIP (needs the HIP SDK on Windows).
+- [ ] Referee validation against each model's reference implementation (transformers BF16 on a rented GPU,
+      experiments/path_noise.py): gpt-oss-20b done (Spark batched path was off; RTX 4090 fine). Qwen3.8 and Gemma-4
+      (Spark Q8_0) in progress; Qwen3.5 (M5 Max Metal) pending: the Mac had ~66 GB active, too close to its budget.
 - [x] gpt-oss-20b noise: against a BF16 transformers reference, llama.cpp's batched path (> 8 tokens per batch, the
       referee's default) is ~3x less accurate than token-by-token decoding; scoring in batches of 8 fixes it
       (experiments/results/path-noise-gpt-oss-20b.json). Rescore published gpt-oss results with `-b 8`.

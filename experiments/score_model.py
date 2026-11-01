@@ -15,7 +15,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from llmverify.blackbox import ChatFormat, TokenMap, score_record  # noqa: E402
-from llmverify.engine import LlamaEngine  # noqa: E402
+from llmverify.engine import LlamaEngine, fp4_referee_problem  # noqa: E402
 from llmverify.openrouter import load  # noqa: E402
 
 ap = argparse.ArgumentParser()
@@ -29,6 +29,7 @@ ap.add_argument("--reasoning", action="store_true", help="also score the reasoni
 ap.add_argument("--max-tokens", type=int, default=0)
 ap.add_argument("--raw-root", default="data/raw")
 ap.add_argument("--scores-root", default="data/scores")
+ap.add_argument("--allow-fp4-batch", action="store_true", help="score FP4 weights on Blackwell at full batch anyway")
 ap.add_argument("--pause-cmd", help="shell command run before each endpoint; while it exits 0 the referee is unloaded "
                                     "and scoring waits (e.g. a 'machine is busy' check)")
 a = ap.parse_args()
@@ -54,6 +55,9 @@ def wait_if_busy():
 
 
 eng = LlamaEngine(shlex.split(a.engine))
+problem = fp4_referee_problem(eng.meta)
+if problem and not a.allow_fp4_batch:
+    sys.exit("refusing to score: " + problem)
 meta = eng.meta
 fmt = ChatFormat(kind=a.chat, template=meta.get("chat_template", ""), template_kwargs=json.loads(a.template_kwargs),
                  add_bos=bool(meta.get("add_bos")), bos=int(meta.get("bos", -1)))

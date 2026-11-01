@@ -62,7 +62,7 @@ if a.cmd == "generate":
     signer, info, spec = Signer(), {"name": "hidden-message"}, SamplingSpec()
     msg = a.message.encode()
     variants = {"honest": lambda: VerifiableProvider(eng, signer, info)}
-    for b in a.budgets.split(","):
+    for b in filter(None, a.budgets.split(",")):  # --budgets "": honest traces only
         variants[f"hidden@{b}"] = lambda b=float(b): HiddenMessage(eng, signer, info, msg, budget=b)
     out = {"message": a.message, "max_tokens": a.max_tokens, "variants": {}}
     for name, mk in variants.items():

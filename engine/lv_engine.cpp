@@ -2,7 +2,8 @@
 // on stdin, one JSON reply per line on stdout. Python drives it (llmverify/engine.py).
 //
 //   {"cmd": "meta"}
-//     -> {"n_vocab", "n_ctx", "bos", "eos": [ids], "add_bos", "chat_template", "desc", "trunc_grid"}
+//     -> {"n_vocab", "n_ctx", "bos", "eos": [ids], "add_bos", "chat_template", "desc", "trunc_grid", "n_batch",
+//         "devices": [GPU names]}
 //   {"cmd": "tokenize", "text": "...", "special": false}
 //     -> {"tokens": [ids], "pieces": ["..."]}          (pieces are UTF-8 with invalid bytes replaced)
 //   {"cmd": "detokenize", "tokens": [ids]}
@@ -681,6 +682,14 @@ int main(int argc, char ** argv) {
                 resp["features"] = E.ctx ? json::array({"generate"}) : json::array();
                 resp["n_seq_max"] = E.ctx ? (int) llama_n_seq_max(E.ctx) : 0;
                 resp["vocab_only"] = E.ctx == nullptr;
+                resp["n_batch"] = E.n_batch;
+                json devices = json::array();  // GPU names, so a client can spot kernel paths with known accuracy issues
+                for (size_t i = 0; i < ggml_backend_dev_count(); i++) {
+                    ggml_backend_dev_t dev = ggml_backend_dev_get(i);
+                    if (ggml_backend_dev_type(dev) == GGML_BACKEND_DEVICE_TYPE_GPU)
+                        devices.push_back(ggml_backend_dev_description(dev));
+                }
+                resp["devices"] = devices;
                 resp["trunc_grid"] = {{"top_k", std::vector<int>(std::begin(TOPK_GRID), std::end(TOPK_GRID))},
                                       {"top_p", std::vector<double>(std::begin(TOPP_GRID), std::end(TOPP_GRID))},
                                       {"min_p", std::vector<double>(std::begin(MINP_GRID), std::end(MINP_GRID))}};

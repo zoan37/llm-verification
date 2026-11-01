@@ -24,7 +24,11 @@ kw = {}
 if "gpt-oss" in a.model:
     from transformers import Mxfp4Config
     kw["quantization_config"] = Mxfp4Config(dequantize=True)
-model = AutoModelForCausalLM.from_pretrained(a.model, torch_dtype=torch.bfloat16, device_map={"": 0}, **kw).eval()
+try:
+    model = AutoModelForCausalLM.from_pretrained(a.model, dtype=torch.bfloat16, device_map={"": 0}, **kw).eval()
+except (ValueError, KeyError):  # multimodal checkpoints (Gemma-4) load as image-text models; text input works the same
+    from transformers import AutoModelForImageTextToText
+    model = AutoModelForImageTextToText.from_pretrained(a.model, dtype=torch.bfloat16, device_map={"": 0}, **kw).eval()
 data = json.load(gzip.open(a.traces, "rt"))
 out = []
 with torch.no_grad():

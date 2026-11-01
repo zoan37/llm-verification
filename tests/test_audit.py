@@ -113,3 +113,13 @@ def test_hidden_message_passes_exact_checks_and_reads_back(spec):
     assert all(z == 0 or o == 0 for z, o in same)  # same weights, same arithmetic: every vote agrees
     assert from_bits([int(o > z) for z, o in same]) == b"HI"
     assert from_bits([int(o > z) for z, o in other]) == b"HI"  # a reader on another machine, by majority
+
+
+def test_fp4_referee_guard():
+    from llmverify.engine import fp4_referee_problem
+    gb10 = {"desc": "gpt-oss 20B MXFP4 MoE", "devices": ["NVIDIA GB10"], "n_batch": 2048}
+    assert fp4_referee_problem(gb10)  # Blackwell runs FP4 activations above batch 8
+    assert fp4_referee_problem({**gb10, "n_batch": 8}) is None
+    assert fp4_referee_problem({**gb10, "devices": ["NVIDIA GeForce RTX 4090"]}) is None
+    assert fp4_referee_problem({**gb10, "desc": "qwen3 27B Q8_0"}) is None
+    assert fp4_referee_problem({"desc": "gpt-oss 20B MXFP4 MoE"}) is None  # an older engine that does not say
