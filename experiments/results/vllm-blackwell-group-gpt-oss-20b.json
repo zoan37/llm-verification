@@ -61,5 +61,91 @@
   }
  },
  "check_seconds": 11.6,
- "notes": "Blackwell (sm_120) is one group across consumer and workstation cards, separate from Ampere/Ada. So with vLLM batch-invariant mode there are at least two exact tiers, each spanning several GPU models; a referee must be in the provider's group."
+ "notes": "Blackwell (sm_120) is one group across consumer and workstation cards, separate from Ampere/Ada. So with vLLM batch-invariant mode there are at least two exact tiers, each spanning several GPU models; a referee must be in the provider's group.",
+ "dgx_spark_gb10": {
+  "what": "The user's DGX Spark (GB10, compute capability 12.1, unified memory), vLLM 0.32.0 in the official arm64 container (vllm/vllm-openai:v0.32.0), VLLM_BATCH_INVARIANT=1, eager, gpu-memory-utilization 0.3 next to other workloads; MXFP4 MoE backend 'HUMMING', TRITON_ATTN attention. Determinism run as on the other GPUs, then one-pass scoring of the GB10's, the RTX 5090's and the home RTX 4090's runs.",
+  "date": "2026-11-01",
+  "determinism": "sequential vs 16 concurrent: 0 of 8,564 positions differ; GB10 vs RTX 5090: 0 replies diverge, 0 of 8,564 positions differ (so also identical to the RTX PRO 6000)",
+  "onepass": "GB10 scoring its own run and the RTX 5090's: 0 of 8,564 positions differ (18-22 s); the RTX 4090's run: 8,587 of 8,588 differ (other group)",
+  "rule_at_more_settings": {
+   "what": "the GB10 with the llmverify logits processor signed receipts at greedy, T=0.2, T=1.5 and T=1.0 with top-k 10 and min-p 0.05 (plus tampered copies) and checked them itself in one pass",
+   "summary": {
+    "honest greedy": {
+     "replies": 48,
+     "tokens": 8564,
+     "client_checks_pass": 48,
+     "positions_differ": 0,
+     "replies_flagged": 0,
+     "rule_breaks_on_referee_numbers": 0,
+     "caught_at_flip": 0
+    },
+    "honest t0.2": {
+     "replies": 48,
+     "tokens": 8577,
+     "client_checks_pass": 48,
+     "positions_differ": 0,
+     "replies_flagged": 0,
+     "rule_breaks_on_referee_numbers": 0,
+     "caught_at_flip": 0
+    },
+    "honest t1.5": {
+     "replies": 48,
+     "tokens": 8476,
+     "client_checks_pass": 48,
+     "positions_differ": 0,
+     "replies_flagged": 0,
+     "rule_breaks_on_referee_numbers": 0,
+     "caught_at_flip": 0
+    },
+    "honest t1.0-k10-minp0.05": {
+     "replies": 48,
+     "tokens": 8603,
+     "client_checks_pass": 48,
+     "positions_differ": 0,
+     "replies_flagged": 0,
+     "rule_breaks_on_referee_numbers": 0,
+     "caught_at_flip": 0
+    },
+    "tampered greedy": {
+     "replies": 48,
+     "tokens": 8687,
+     "client_checks_pass": 48,
+     "positions_differ": 48,
+     "replies_flagged": 48,
+     "rule_breaks_on_referee_numbers": 48,
+     "caught_at_flip": 48
+    },
+    "tampered t0.2": {
+     "replies": 48,
+     "tokens": 4505,
+     "client_checks_pass": 48,
+     "positions_differ": 48,
+     "replies_flagged": 48,
+     "rule_breaks_on_referee_numbers": 48,
+     "caught_at_flip": 48
+    },
+    "tampered t1.5": {
+     "replies": 48,
+     "tokens": 3782,
+     "client_checks_pass": 48,
+     "positions_differ": 48,
+     "replies_flagged": 48,
+     "rule_breaks_on_referee_numbers": 48,
+     "caught_at_flip": 48
+    },
+    "tampered t1.0-k10-minp0.05": {
+     "replies": 48,
+     "tokens": 3953,
+     "client_checks_pass": 47,
+     "positions_differ": 48,
+     "replies_flagged": 48,
+     "rule_breaks_on_referee_numbers": 48,
+     "caught_at_flip": 48
+    }
+   },
+   "check_seconds": 64.3,
+   "note": "one tampered top-k/min-p receipt already fails a client-side check: lowering the winner's committed logprob also moves the min-p threshold, so the edit breaks the rule recomputed from the committed numbers"
+  },
+  "verdict": "Blackwell is one exact group from a workstation card to the DGX Spark: RTX 5090, RTX PRO 6000 and GB10 compute the same numbers, so a Spark can referee RTX 5090 / PRO 6000 providers in one pass. The rule is exact at low and high temperatures and with top-k / min-p truncation."
+ }
 }

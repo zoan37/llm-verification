@@ -436,7 +436,8 @@ user's RTX 4090 (`exact_tier.py`, `vllm_determinism.py`; results `exact-tier-cro
   identical, one at a time or 16 at once, at all 9,493 positions. An RTX 5090 (Blackwell) was batch-invariant on itself
   but formed its own group (46 of 48 replies differ from the Ampere/Ada group), and an RTX PRO 6000 Blackwell
   Workstation Edition matched it exactly (0 of 8,564 positions differ), so Blackwell is one group across consumer and
-  workstation cards (`vllm-blackwell-group-gpt-oss-20b.json`); an H100 was not even batch-invariant
+  workstation cards, and a DGX Spark (GB10) joins it too: identical at all 8,564 positions and able to check an
+  RTX 5090's replies in one pass (`vllm-blackwell-group-gpt-oss-20b.json`); an H100 was not even batch-invariant
   on itself (3 of 48 replies changed with batching) and matched nothing else. Cost on an RTX 4090 (eager mode): 46 -> 40 tokens/s for
   one request, none measurable at 16 concurrent (644 -> 656).
 
@@ -483,7 +484,8 @@ Ada, cooperative verification can be exact: no calibration, no false alarms, and
 caught where it was made. Limits: one engine version (a second model below); the referee must run the same vLLM version in
 batch-invariant mode on a GPU of the same kernel family (Hopper was not batch-invariant, Blackwell is its own group:
 receipts signed on an RTX 5090 and checked on an RTX PRO 6000 gave the same clean result, 0 of 25,703 honest positions
-differ and 144 of 144 forgeries caught at the edit, 42,286 tokens in 12 s);
+differ and 144 of 144 forgeries caught at the edit, 42,286 tokens in 12 s; on the DGX Spark the rule was also exact at
+T=0.2, T=1.5 and T=1.0 with top-k 10 / min-p 0.05: 0 false alarms in 192 honest replies, 192 of 192 forgeries caught);
 tampered sampled replies end at the edit because the rule's step index cannot be resumed through the vLLM API.
 
 The same test on a dense BF16 model, Qwen3-8B with thinking off (result `vllm-exact-receipts-qwen3-8b.json`), on two

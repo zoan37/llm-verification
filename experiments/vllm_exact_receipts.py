@@ -34,7 +34,11 @@ from llmverify.sampling import SamplingSpec, choose, margin  # noqa: E402
 
 SPECS = {"greedy": SamplingSpec(),
          "t1.0": SamplingSpec(mode="gumbel", temperature=1.0, seed=7),
-         "t0.7-p0.95": SamplingSpec(mode="gumbel", temperature=0.7, top_p=0.95, seed=7)}
+         "t0.7-p0.95": SamplingSpec(mode="gumbel", temperature=0.7, top_p=0.95, seed=7),
+         "t0.2": SamplingSpec(mode="gumbel", temperature=0.2, seed=7),
+         "t1.5": SamplingSpec(mode="gumbel", temperature=1.5, seed=7),
+         "t1.0-k10-minp0.05": SamplingSpec(mode="gumbel", temperature=1.0, top_k=10, min_p=0.05, seed=7)}
+DEFAULT_SPECS = "greedy,t1.0,t0.7-p0.95"
 
 ap = argparse.ArgumentParser()
 sub = ap.add_subparsers(dest="cmd", required=True)
@@ -43,6 +47,7 @@ g.add_argument("--base", required=True)
 g.add_argument("--model", required=True)
 g.add_argument("--prompt-ids", required=True, help="a vllm_determinism.py run (its saved prompt_ids)")
 g.add_argument("--max-tokens", type=int, default=200)
+g.add_argument("--specs", default=DEFAULT_SPECS, help="comma-separated names from SPECS")
 g.add_argument("--out", required=True)
 c = sub.add_parser("check")
 c.add_argument("receipts")
@@ -59,7 +64,8 @@ if a.cmd == "generate":
     prompts = json.load(gzip.open(a.prompt_ids, "rt"))["prompt_ids"]
     out = {"provider_key": signer.public_hex, "replies": []}
     t0 = time.time()
-    for name, spec in SPECS.items():
+    for name in a.specs.split(","):
+        spec = SPECS[name]
         gens = prov.generate_batch([(ids, spec, a.max_tokens) for ids in prompts])
         for i, gen in enumerate(gens):
             out["replies"].append({"i": i, "spec": name, "variant": "honest", "trace": gen.trace.to_dict(),
