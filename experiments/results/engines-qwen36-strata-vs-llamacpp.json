@@ -31,6 +31,17 @@
    "disagree": 0.0422,
    "likelihood_p": 0.0,
    "greedy_repeats_identical": 0.5
+  },
+  "strata_engine_0_1_55": {
+   "regret": 0.0264,
+   "ci": [
+    0.02125,
+    0.03142
+   ],
+   "disagree": 0.0422,
+   "likelihood_p": 0.0,
+   "greedy_repeats_identical": 0.5,
+   "note": "byte-identical to engine 0.1.47 with drafting off on all 48 greedy and 48 sampled replies; drafting did not engage ('drafts accepted 0 of 0')"
   }
  },
  "vs_bf16_original_transformers": {
@@ -63,5 +74,5 @@
    "not_reference_top": 0.0449
   }
  },
- "conclusion": "On the same weights and GPU, Strata's output is ~5x as far from the original model as llama.cpp's (llama.cpp's distance is about the 4-bit quantization alone); not caused by MTP drafting; Strata's greedy output is not deterministic across identical requests. Cost of the BF16 reference: $2.59 (72 GB download at $0.039/GB)."
+ "conclusion": "On the same weights and GPU, Strata's output is ~5x as far from the original model as llama.cpp's (llama.cpp's distance is about the 4-bit quantization alone); not caused by MTP drafting; Strata's greedy output is not deterministic across identical requests. Cost of the BF16 reference: $2.59 (72 GB download at $0.039/GB). Holds for the current engine (0.1.55): its replies are byte-identical to 0.1.47 without drafting. Separate runs reproduce exactly while repeats within a run differ, which points at the prompt cache rather than random arithmetic (not checked in the code)."
 }

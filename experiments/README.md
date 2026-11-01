@@ -434,8 +434,10 @@ and by the original model, Qwen3.6-35B-A3B in BF16 in transformers (`export_repl
 | Strata, drafting off | 0.0264 [0.0213, 0.0314] | 4.2% | does not fit | 0.0302 [0.0214, 0.0335] | 4.49% |
 
 llama.cpp's distance from the original is about the 4-bit quantization alone; Strata adds about four times as much
-again on the same file, with or without its MTP drafting. Its greedy output is not deterministic (identical repeats
-on 2 of 4 prompts, llama.cpp 4 of 4), and its sampler keeps at most 64 candidates whatever top_k says (2 draws past
+again on the same file, with or without its MTP drafting, and the current engine (0.1.55, updated with
+`strata update`) gives byte-identical replies to 0.1.47 without drafting (48 of 48 greedy and sampled). Repeating a
+request within a run can change the greedy answer (identical repeats on 2 of 4 prompts, llama.cpp 4 of 4) while
+separate runs reproduce exactly, which points at its prompt cache rather than random arithmetic, and its sampler keeps at most 64 candidates whatever top_k says (2 draws past
 rank 50 where 14 are expected, which the sampler fingerprint flags on its own; the cap is documented in its server
 code). It returns no logprobs for Qwen3.6 (its Qwen3.6 engine path writes none), so it was audited on text. A
 nondeterministic engine also rules out the exact verification tier: two honest runs do not even match each other.
