@@ -26,6 +26,8 @@ Open work, roughly in priority order. Each item says what it would establish.
 - [x] **Scheduled snapshots** (`experiments/snapshot.py`): weekly Qwen3.8 snapshot on the Spark (systemd user timer
       `lv-snapshot.timer`, ~$0.40 a run), each compared with the previous. Next: more models, time-of-day variation.
 - [ ] **Effective temperature** for every endpoint (Darkbloom first).
+- [ ] **Modified-model demo (parked 2026-11-01)**: show end to end that a referee flags replies from a covertly
+      modified copy of the claimed model in an agent setting. Parked; revisit with a different setup.
 
 ## Cooperative mode in production
 - [x] **Challenge-only traces** (receipt v2): `trace: "deferred"`, rolling buffer, private client challenges, text
