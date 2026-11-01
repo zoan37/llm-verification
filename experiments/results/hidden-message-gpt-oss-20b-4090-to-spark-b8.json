@@ -1,0 +1,163 @@
+{
+ "traces": "hm-4090.json.gz",
+ "label": "gpt-oss-20b-4090-to-spark-b8",
+ "message": "HELLO",
+ "flip_curve": [
+  [
+   0.01,
+   0.575
+  ],
+  [
+   0.03,
+   0.46774193548387094
+  ],
+  [
+   0.05,
+   0.4861111111111111
+  ],
+  [
+   0.1,
+   0.21666666666666667
+  ],
+  [
+   0.2,
+   0.14156626506024098
+  ],
+  [
+   0.5,
+   0.022388059701492536
+  ],
+  [
+   1000000000.0,
+   0.00036965843560550054
+  ]
+ ],
+ "variants": {
+  "honest": {
+   "replies": 24,
+   "tokens": 6793,
+   "exact_ok": 48,
+   "carried_per_1k": 0.0,
+   "steering": {
+    "observed": 104,
+    "expected": 97.40450090137848,
+    "z": 0.776769772386341,
+    "n": 6793
+   },
+   "warned_after_tokens": null,
+   "decoded": "\u0081\u0098\u0002\u001c\u008a",
+   "decoded_for_good_after_tokens": null,
+   "means": {
+    "regret": 0.0021300417640222184,
+    "wgap": 0.02502146461000722,
+    "topk": 0.1158277108205792
+   },
+   "status": "UNCALIBRATED"
+  },
+  "hidden@0.01": {
+   "replies": 24,
+   "tokens": 6892,
+   "exact_ok": 48,
+   "carried_per_1k": 1.7239001517032133,
+   "steering": {
+    "observed": 108,
+    "expected": 99.69404405425088,
+    "z": 0.9698093043043463,
+    "n": 6892
+   },
+   "warned_after_tokens": null,
+   "decoded": "\u0080\u0000\"@\u0000",
+   "decoded_for_good_after_tokens": null,
+   "means": {
+    "regret": 0.0019443695170202715,
+    "wgap": 0.024918212065418614,
+    "topk": 0.117067463328353
+   },
+   "status": "UNCALIBRATED"
+  },
+  "hidden@0.03": {
+   "replies": 24,
+   "tokens": 6805,
+   "exact_ok": 48,
+   "carried_per_1k": 7.484407484407485,
+   "steering": {
+    "observed": 97,
+    "expected": 95.165602811188,
+    "z": 0.22025687603726743,
+    "n": 6805
+   },
+   "warned_after_tokens": null,
+   "decoded": "\u0001\u0018\t\u0018j",
+   "decoded_for_good_after_tokens": null,
+   "means": {
+    "regret": 0.001967415119426203,
+    "wgap": 0.024666658362555348,
+    "topk": 0.11478595679646562
+   },
+   "status": "UNCALIBRATED"
+  },
+  "hidden@0.05": {
+   "replies": 24,
+   "tokens": 6777,
+   "exact_ok": 48,
+   "carried_per_1k": 11.940298507462687,
+   "steering": {
+    "observed": 97,
+    "expected": 93.00647516144448,
+    "z": 0.4830200539231654,
+    "n": 6777
+   },
+   "warned_after_tokens": null,
+   "decoded": "\u00c4\b\t\bh",
+   "decoded_for_good_after_tokens": null,
+   "means": {
+    "regret": 0.0017703060416392879,
+    "wgap": 0.023380688532008274,
+    "topk": 0.11454821691294868
+   },
+   "status": "UNCALIBRATED"
+  },
+  "hidden@0.1": {
+   "replies": 24,
+   "tokens": 6695,
+   "exact_ok": 48,
+   "carried_per_1k": 24.748322147651006,
+   "steering": {
+    "observed": 127,
+    "expected": 98.9719923275245,
+    "z": 3.313721924180441,
+    "n": 6695
+   },
+   "warned_after_tokens": null,
+   "decoded": "\u0098oD\u00d5j",
+   "decoded_for_good_after_tokens": null,
+   "means": {
+    "regret": 0.002478989137474328,
+    "wgap": 0.02435650158465608,
+    "topk": 0.12015450050314898
+   },
+   "status": "UNCALIBRATED"
+  },
+  "hidden@0.2": {
+   "replies": 24,
+   "tokens": 6781,
+   "exact_ok": 48,
+   "carried_per_1k": 46.79014064893469,
+   "steering": {
+    "observed": 199,
+    "expected": 93.28490950546397,
+    "z": 12.724460924570499,
+    "n": 6781
+   },
+   "warned_after_tokens": 623,
+   "decoded": "\u0005\u0005\f\u00ce\u0007",
+   "decoded_for_good_after_tokens": null,
+   "means": {
+    "regret": 0.004373160000660307,
+    "wgap": 0.02532732127513534,
+    "topk": 0.11688477532048921
+   },
+   "status": "UNCALIBRATED"
+  }
+ }
+}

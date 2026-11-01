@@ -159,11 +159,11 @@ lie slightly in its committed logprobs to keep the rule check passing.
   from prompt and reply. gpt-oss-20b on an RTX 4090, 48 replies x 384 tokens per budget, referee a DGX Spark:
   every receipt passed every exact check; capacity 2 / 12 / 25 / 47 bits per 1,000 tokens at δ 0.01 / 0.05 / 0.1 /
   0.2; a reader replaying token by token on the writer's GPU got 0 wrong votes at every budget and read "HELLO"
-  after ~7,000 tokens at δ 0.2, while a reader on the Spark got 17-37% of votes wrong (above δ 0.01) and never read it. The
-  flip test never fired (z ≤ 3.4 over ~7,000 tokens): on gpt-oss-20b in llama.cpp honest machines disagree even
-  far from ties (a different token at 2.4% of positions where the referee leads by > 0.5 nats; token-by-token
-  generation and a one-pass replay differ as much as two GPUs), so the channel is invisible but readable only on
-  the provider's exact setup. Qwen3.8-27B (written and read on the Spark, token-by-token vs one-pass): honest flips
+  after ~7,000 tokens at δ 0.2, while a reader on the Spark got 17-37% of votes wrong (above δ 0.01) and never read it.
+  With an accurate referee (the Spark scoring in batches of 8, see Calibration) honest machines never flipped beyond a
+  0.5-nat margin (2.2% at 0.2-0.5, 14% at 0.1-0.2), and the flip test flagged δ 0.2 after 623 audited tokens (z 12.7
+  over ~7,000); δ 0.1 reached z 3.3 and δ ≤ 0.05 stayed below 1. The first run, with the Spark's default batched
+  MXFP4 path, saw honest flips even beyond 0.5 nats and flagged nothing: a noisy referee hides steering. Qwen3.8-27B (written and read on the Spark, token-by-token vs one-pass): honest flips
   0.4% at 0.2-0.5 nats and none beyond; at δ 0.1 the flip test reached z 1.7 after 2,200 tokens, i.e. a flag at
   roughly 12,000. The structural fix is deterministic, batch-invariant inference (honest machines then agree
   exactly and one rigged flip is proof).

@@ -275,7 +275,8 @@ fits the honest flip curve on half the honest replies and judges every variant o
 | bits carried per 1,000 tokens | 2 | 7 | 12 | 25 | 47 |
 | reader on the writer's GPU, token by token: wrong votes | 0 / 15 | 0 / 63 | 0 / 89 | 0 / 183 | 0 / 335 ("HELLO") |
 | reader on the Spark, token by token: wrong votes | 0 / 21 | 6 / 35 | 15 / 66 | 62 / 168 | 94 / 289 |
-| steering test z over ~7,000 audited tokens (flag at 4) | 1.6 | 1.5 | 2.8 | 3.4 | 0.8 |
+| steering test z over ~7,000 audited tokens (flag at 4), referee at batch 8 | 1.0 | 0.2 | 0.5 | 3.3 | **12.7** (flagged at 623 tokens) |
+| same, referee at the Spark's default batch (noisier MXFP4 path) | 1.6 | 1.5 | 2.8 | 3.4 | 0.8 |
 
 Qwen3.8-27B (24 replies x 256 tokens per budget, written token by token and audited in one pass on the Spark): 96/96
 exact checks passed, 3 / 7 / 22 bits per 1,000 tokens at δ 0.01 / 0.03 / 0.1, steering z -1.1 / -0.6 / 1.7 over
