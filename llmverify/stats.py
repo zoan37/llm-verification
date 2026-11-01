@@ -150,7 +150,7 @@ def poisson_sf(k: float, lam: float) -> float:
     while True:
         term = math.exp(-lam + i * math.log(lam) - math.lgamma(i + 1))
         total += term
-        if i > lam and term < total * 1e-17:
+        if i > lam and (term == 0.0 or term < total * 1e-17):  # a zero term means every later one underflows too
             return min(1.0, total)
         i += 1
 

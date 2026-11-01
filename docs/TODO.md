@@ -12,7 +12,7 @@ Open work, roughly in priority order. Each item says what it would establish.
       after those done. Paused 2026-10-30: needs ~148 GB of weights (Q8 referee, Q6_K honest, Q2_K_XL substitute)
       over home wifi; `~/lv/fetch_new.sh` on the Spark resumes it. Qwen3.8-Flash-Next (180B, Alibaba-only on
       OpenRouter) and DeepSeek V4.1 Flash (763B) are too big for a local referee: referee-free checks only.
-- [ ] **gpt-oss-120b** full rescore on one referee (deferred: slow).
+- [x] **gpt-oss-120b** full rescore on one referee (DGX Spark, -ub 8; 2026-11-01).
 - [x] **Tie steering** on real weights (`experiments/tie_steering.py`): 2-4% of tokens steerable inside same-weights
       honest noise (docs/soundness.md); a near-tie flip-rate test detects steering beyond the closest ~1% of ties
       (`experiments/steering_detection.py`), now an opt-in Ledger warning (`flip_curve`).

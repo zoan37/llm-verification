@@ -565,6 +565,55 @@ or 40 whatever the request says.
 
 ## gpt-oss-120b (26 endpoints)
 
-Deferred: the largest and slowest model to score (reasoning text plus 63 GB of weights). Replies from all 26 endpoints
-and two references (honest CUDA run, gpt-oss-20b substitute) are collected; referee-free checks are in the findings
-above (prompt-size differences, dropped tokens, temperature-0 sampling).
+Referee: the MXFP4 release weights on llama.cpp CUDA on the DGX Spark at micro-batch 8 (`-ub 8`, rescored 2026-11-01;
+at larger batches the Blackwell MXFP4 path is less accurate and hides differences, see gpt-oss-20b above). 100 = an
+honest llama.cpp CUDA run on an RTX PRO 6000; 0 = gpt-oss-20b served as 120b. 25 endpoints answered (DeepInfra fp8
+failed every request).
+
+| Endpoint | Regret [95% CI] | x honest | Fidelity | Other token |
+|---|---|---|---|---|
+| coreweave/fp4 | 0.0093 [0.0072, 0.0114] | 0.7 | 100 | 2.4% |
+| nebius/fp4 | 0.0107 [0.0083, 0.0136] | 0.8 | 100 | 2.3% |
+| mara | 0.0109 [0.0086, 0.0134] | 0.8 | 100 | 2.5% |
+| sail-research/fp4 | 0.0114 [0.0089, 0.0140] | 0.9 | 100 | 2.5% |
+| amazon-bedrock/eu-west-1 | 0.0116 [0.0088, 0.0148] | 0.9 | 100 | 2.6% |
+| akashml/bf16 | 0.0116 [0.0092, 0.0143] | 0.9 | 100 | 2.6% |
+| sambanova | 0.0118 [0.0093, 0.0146] | 0.9 | 100 | 2.5% |
+| google-vertex/global | 0.0126 [0.0095, 0.0162] | 1.0 | 100 | 2.7% |
+| honest: RTX PRO 6000 (llama.cpp CUDA, sets 100) | 0.0130 [0.0111, 0.0150] | 1.0 | 100 | 2.8% |
+| amazon-bedrock | 0.0145 [0.0121, 0.0170] | 1.1 | 97 | 3.1% |
+| together | 0.0169 [0.0138, 0.0202] | 1.3 | 93 | 3.0% |
+| groq | 0.0174 [0.0143, 0.0210] | 1.3 | 93 | 3.2% |
+| mancer/fp8 | 0.0213 [0.0163, 0.0267] | 1.6 | 88 | 3.3% |
+| parasail/fp4 | 0.0224 [0.0176, 0.0275] | 1.7 | 86 | 3.6% |
+| crusoe/bf16 | 0.0251 [0.0204, 0.0300] | 1.9 | 84 | 3.8% |
+| near-ai/fp4 | 0.0295 [0.0217, 0.0378] | 2.3 | 79 | 3.6% |
+| novita/fp4 | 0.0308 [0.0260, 0.0366] | 2.4 | 78 | 4.1% |
+| baseten/fp4 | 0.0308 [0.0257, 0.0360] | 2.4 | 78 | 4.0% |
+| siliconflow/fp8 | 0.0315 [0.0264, 0.0361] | 2.4 | 78 | 4.8% |
+| phala | 0.0323 [0.0272, 0.0374] | 2.5 | 77 | 4.2% |
+| baseten/fp4/us | 0.0325 [0.0272, 0.0380] | 2.5 | 77 | 4.2% |
+| venice/int4 | 0.0456 [0.0390, 0.0521] | 3.5 | 68 | 5.4% |
+| deepinfra/bf16 | 0.0480 [0.0366, 0.0634] | 3.7 | 67 | 5.2% |
+| cerebras/fp16 | 0.0633 [0.0535, 0.0734] | 4.9 | 60 | 6.5% |
+| dekallm/bf16 | 0.1190 [0.0798, 0.1672] | 9.1 | 44 | 3.6% |
+| digitalocean | 0.2543 [0.2041, 0.3126] | 19.5 | 25 | 10.1% |
+| substitute: gpt-oss-20b | 0.6874 [0.6101, 0.7645] | 52.8 | 0 | 19.7% |
+
+- Nine endpoints are indistinguishable from the honest run (fidelity 100), including Mara and SambaNova, which serve
+  byte-identical greedy replies (finding 7) and score alike here.
+- **DigitalOcean (25)** samples when asked for temperature 0 (8.2% of its greedy tokens are not its own top choice)
+  and drops tokens from its output (49 re-inserted); **DekaLLM (44)** drops tokens too (53 re-inserted). Their low
+  fidelity is mostly these defects, not a different model.
+- Cerebras (fp16, 60), DeepInfra (bf16, 67, a prompt 13 tokens shorter than the template) and Venice (int4, 68) are the
+  furthest of the rest; none is near the substitute.
+- **Baseten drops the first token of the reasoning on every reply** (104 of 104 start mid-sentence, " to explain
+  simply with example." where every other endpoint returns "Need to explain simply with example."), on both its
+  endpoints. In sampled replies this shows up as long-tail tokens (54 where 0.08 are expected): the referee scores the
+  clipped text as if it were the start of the reasoning.
+- Novita, Phala and SiliconFlow also show many long-tail tokens in sampled reasoning (191, 173 and 201 against about
+  1 expected). These are the endpoints that ignore `reasoning_effort: low` (finding above): they reason about 7x
+  longer than the low-effort prompt the referee scores against, so the excess measures the prompt mismatch, not
+  junk sampling.
+- Fixed while building this table: `stats.poisson_sf` looped forever when the observed count was so far above the
+  expected one that every Poisson term underflowed (the gpt-oss-20b substitute's 507 long-tail tokens against 2.5).

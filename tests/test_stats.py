@@ -94,6 +94,7 @@ def test_tail_poisson_exact_at_small_counts():
     assert 5e-4 < poisson_sf(5, 0.78) < 2e-3
     assert abs(poisson_cdf(0, 8.83) - math.exp(-8.83)) < 1e-12
     assert abs(poisson_cdf(3, 2.0) + poisson_sf(4, 2.0) - 1) < 1e-12
+    assert poisson_sf(5000, 0.5) == 0.0  # every term underflows: must return, not loop
     assert 0 < poisson_sf(93, 30.0) < 1e-14  # far tail keeps its precision
 
 
