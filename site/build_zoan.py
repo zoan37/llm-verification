@@ -187,6 +187,22 @@ for cf in sorted((root / "results" / "cache").glob("*.json")):
     cache_rows.append(f"<tr><td>{c['model']}</td><td class='num'>{len(tested)}</td>"
                       f"<td>{'<br>'.join(bad) or '<span class=sub>none</span>'}</td></tr>")
 
+off_rows = []
+for of in sorted((root / "results" / "reasoning_off").glob("*.json")) if (root / "results" / "reasoning_off").exists() else []:
+    o = json.loads(of.read_text())
+    eps = {k: v for k, v in o["endpoints"].items() if (v.get("modes") or {}).get("off")}
+    honour = sum(1 for v in eps.values() if not any(f.startswith("off:") for f in v["flags"]))
+    json_ok = sum(1 for v in eps.values() if v["modes"]["off"].get("strict_json") == 1.0)
+    bad = []
+    for k, v in sorted(eps.items()):
+        for f in v["flags"]:
+            if f.startswith("off:"):
+                ratio = v["modes"]["off"].get("completion_vs_crowd_median")
+                bad.append(f"<b>{ep_name(k)}</b>: still reasons with reasoning disabled"
+                           + (f" ({ratio:.1f}× the crowd's tokens)" if ratio else ""))
+    off_rows.append(f"<tr><td>{o['model']}</td><td class='num'>{len(eps)}</td><td class='num'>{honour}</td>"
+                    f"<td class='num'>{json_ok}</td><td>{'<br>'.join(bad) or '<span class=sub>none</span>'}</td></tr>")
+
 vision_rows = []
 for vf in sorted((root / "results" / "vision").glob("*.json")):
     v = json.loads(vf.read_text())
@@ -255,10 +271,18 @@ serving_html = f"""<section class="coop" aria-label="Serving behaviour">
     <p class="lede" style="font-size:14px;max-width:80ch"><b>Reasoning effort.</b> 12 maths problems at effort low,
       medium and high (temperature 0), measured by the reasoning each endpoint returns. On gpt-oss, endpoints reason
       roughly twice as long at each step up; Qwen3.8 barely changes on any endpoint, so nothing can be flagged there.
-      Flagged: a level that reasons like everyone else's other level.</p>
+      Flagged: a level that reasons like everyone else's other level. On DeepSeek V4.1 Flash the setting changes
+      nothing on any endpoint.</p>
     <div class="ledger"><table class="small">
       <thead><tr><th>Model</th><th>Median reasoning low / medium / high</th><th>Not flagged</th><th>Problems</th></tr></thead>
       <tbody>{''.join(effort_rows)}</tbody></table></div>
+    {f"""<p class="lede" style="font-size:14px;max-width:80ch"><b>Reasoning off, JSON mode.</b> 12 short extraction
+      tasks with reasoning disabled and <code>response_format: json_object</code> (temperature 0.1): does the endpoint
+      stop reasoning (none returned, none billed), and is the reply valid JSON? An endpoint that keeps reasoning bills
+      the hidden tokens and answers slower.</p>
+    <div class="ledger"><table class="small">
+      <thead><tr><th>Model</th><th>Endpoints</th><th>Reasoning off honoured</th><th>Valid JSON every time</th><th>Problems</th></tr></thead>
+      <tbody>{''.join(off_rows)}</tbody></table></div>""" if off_rows else ""}
     <p class="lede" style="font-size:14px;max-width:80ch"><b>Repeated replies.</b> The same 100-word creative prompt three
       times at temperature 1. Honest sampling never repeats such a reply byte for byte; an endpoint that does returns the
       same text to retries and best-of-n (a response cache or a fixed sampling seed). Near-duplicate prompts (17×23 then
