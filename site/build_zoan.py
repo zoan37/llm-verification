@@ -25,6 +25,7 @@ nav = """<header class="lv-top"><nav>
   <a href="results.html" aria-current="page"><span class="long">Results</span><span class="short">Results</span></a>
   <a href="case-studies.html"><span class="long">Case studies</span><span class="short">Cases</span></a>
   <a href="method.html"><span class="long">Method &amp; limits</span><span class="short">Method</span></a>
+  <a class="ext" href="https://github.com/zoan37/llm-verification">GitHub&nbsp;↗</a>
 </nav></header>
 """
 # Same bar as the other pages (llm-verification/style.css). The template styles bare `header` elements for its hero,
