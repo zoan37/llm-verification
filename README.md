@@ -7,7 +7,7 @@ harsher quantization, a smaller model, skip part of the computation, inject a sy
 their output path. This repo checks, as rigorously as the evidence allows, and is explicit about where the
 checks stop.
 
-Two modes:
+Two modes, the second with a stricter exact tier:
 
 - **Black-box audits** of any OpenAI-compatible endpoint (e.g. every provider of a model on OpenRouter). A
   referee running the true weights replays each reply and measures how well the tokens (and logprobs, when
