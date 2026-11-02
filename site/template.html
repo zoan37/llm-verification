@@ -56,6 +56,7 @@ td.num { font-family: var(--mono); font-size: 13px; white-space: nowrap; }
 .flags { max-width: 300px; }
 td.verdict { min-width: 190px; max-width: 260px; }
 .why { font-size: 12.5px; color: var(--muted); line-height: 1.35; margin-top: 2px; }
+.why.lab-good { color: var(--good); } .why.lab-warn { color: var(--warn); } .why.lab-bad { color: var(--bad); }
 .howto { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; margin: 0 0 16px;
   font-size: 14px; display: grid; gap: 6px; max-width: 90ch; }
 .howto b { font-weight: 600; }
@@ -188,6 +189,35 @@ function verdict(r) {
   return `<span class="pill ${cls}">${label}</span><div class="why">${esc(v.text)}</div>`;
 }
 
+// The precision the provider declares on OpenRouter, and whether the measured fidelity fits it. A bf16/fp16 label, or
+// the model's release precision (MXFP4 for gpt-oss), should be as close to the real model as the honest reference;
+// "below" needs the endpoint's confidence interval to exclude the honest level. fp8 can legitimately cost a little
+// (no honest FP8 reference has been measured), so it is only called out near a heavily quantized copy. A 4-bit label
+// on a model released in higher precision makes lower fidelity expected.
+function labelCell(r, m) {
+  if (r.local) return '<span class="sub">–</span>';
+  const q = String(r.quantization || 'unknown').toLowerCase();
+  if (q === 'unknown') return '<div>not stated</div>';
+  const native = /gpt-oss/.test(m.model) ? 'fp4' : 'bf16';
+  const full = ['bf16', 'fp16', 'fp32'].includes(q) || q === native;
+  const fid = r.fidelity, lo = r.greedy.regret.lo;
+  const sep = lo != null && m.honest_regret != null && lo > m.honest_regret;
+  const defect = (r.flags || []).some(f => /samples at temperature 0|drops tokens|logprob output is broken/.test(f));
+  let cls = '', txt = '';
+  if (fid == null) txt = '';
+  else if (fid < 15 && (full || q === 'fp8')) { cls = 'bad'; txt = 'far below its label: near a heavily quantized copy'; }
+  else if (full) {
+    if (fid >= 80 || !sep) { cls = 'good'; txt = 'matches its label'; }
+    else { cls = 'warn'; txt = 'below its label'; }
+  } else if (q === 'fp8') {
+    txt = fid >= 80 ? 'as close as the near-lossless reference' : 'further than the near-lossless reference (fp8 may cost a little)';
+  } else {
+    txt = fid >= 80 ? 'as close as the honest reference' : 'lower fidelity expected for this label';
+  }
+  if (defect && cls !== 'good' && txt) txt += ', with output defects (see flags)';
+  return `<div>${esc(q)}</div>` + (txt ? `<div class="why ${cls ? 'lab-' + cls : ''}">${esc(txt)}</div>` : '');
+}
+
 function flagCell(r) {
   return r.flags.filter(f => !f.startsWith('no logprobs')).map(f => `<div class="flag">${esc(f)}</div>`).join('') || '<span class="sub">none</span>';
 }
@@ -208,6 +238,10 @@ function head(m, providers) {
       <div><b>How to read this tab.</b> Start with <b>Fidelity</b> and the <b>Verdict</b>: 100 means as close to the real
         model as an honest machine, 0 means as far as the named substitute. Lower is lossier, not necessarily dishonest:
         heavier quantization, a compressed cache or different kernels all move it.</div>
+      <div><b>Label</b> is the precision the provider declares on OpenRouter. A bf16 or fp16 label (or the model's own
+        release precision) should score like the honest reference; "below its label" means the gap is outside the
+        error bars. An fp8 label may cost a little, and no honest fp8 run was measured, so fp8 is only called out near a
+        heavily quantized copy.</div>
       <div><b>Flags</b> are separate problems in what the endpoint returns (dropped tokens, edited prompts, broken
         logprobs, undisclosed sampling defaults). Shaded rows are our own reference runs.</div>`}
     </div>`;
@@ -254,7 +288,8 @@ function render(key) {
     const det = r.integrity.determinism;
     return `<tr class="${r.local ? 'ref' : ''}">
       <td><div class="name">${esc(r.local ? (r.label || r.tag) : r.provider)}</div>
-        <div class="sub">${esc(r.tag)}${r.quantization && !r.local ? ' · ' + esc(r.quantization) : ''}</div></td>
+        <div class="sub">${esc(r.tag)}</div></td>
+      <td>${labelCell(r, m)}</td>
       <td><div class="score">${r.fidelity == null ? '–' : Math.round(r.fidelity)}</div></td>
       <td class="verdict">${verdict(r)}</td>
       <td class="num">${fmt(g.regret.mean)}<div class="sub">[${fmt(g.regret.lo)}, ${fmt(g.regret.hi)}]</div>${scaleBar(r, m)}</td>
@@ -268,7 +303,7 @@ function render(key) {
   }).join('');
   document.getElementById('model').innerHTML = head(m, providers) + `
     <div class="ledger"><table>
-      <thead><tr><th>Endpoint</th><th>Fidelity</th><th>Verdict</th><th>Regret (nats/token)</th><th>× honest</th><th>Other token</th>
+      <thead><tr><th>Endpoint</th><th>Label (OpenRouter)</th><th>Fidelity</th><th>Verdict</th><th>Regret (nats/token)</th><th>× honest</th><th>Other token</th>
         <th>Sampled fit (PIT)</th><th>Peer agreement</th><th>Same reply at T=0</th><th>Flags</th></tr></thead>
       <tbody>${body}</tbody></table></div>`;
   try { localStorage.setItem('lv-model', key); } catch (e) {}
