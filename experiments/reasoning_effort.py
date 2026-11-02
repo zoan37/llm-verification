@@ -30,7 +30,8 @@ spec.loader.exec_module(rc)
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--model", required=True)
-ap.add_argument("--budget-usd", type=float, required=True)
+ap.add_argument("--budget-usd", type=float, required=True,
+                help="cap on the key's TOTAL spend (openrouter.usage_usd), not this run's")
 ap.add_argument("--efforts", default="low,medium,high")
 ap.add_argument("--max-tokens", type=int, default=6000)
 ap.add_argument("--workers", type=int, default=10)

@@ -44,7 +44,8 @@ MODES = {"off": {"reasoning": {"enabled": False}}, "default": {}}
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--model", required=True)
-ap.add_argument("--budget-usd", type=float, required=True)
+ap.add_argument("--budget-usd", type=float, required=True,
+                help="cap on the key's TOTAL spend (openrouter.usage_usd), not this run's")
 ap.add_argument("--workers", type=int, default=10)
 ap.add_argument("--temperature", type=float, default=0.1)
 ap.add_argument("--max-tokens", type=int, default=1200)
