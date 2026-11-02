@@ -560,6 +560,26 @@ hybrid models like it have no exact cross-batch tier in vLLM yet. And FlashInfer
 startup, so servers that should be identical can compute differently unless it is disabled
 (`--disable-flashinfer-autotune`) or its cache is shared.
 
+## AkashML's fp4 Gemma vs NVIDIA's NVFP4
+
+AkashML labels its Gemma-4-26B-A4B endpoint fp4 and scored 0 on the fidelity scale, as far as the Q4_0 copy. Is that
+simply what 4-bit costs on this model? On one referee (Q8_0, RTX PRO 6000), with NVIDIA's official FP4 checkpoint
+served by vLLM and a Q4_K_M GGUF as comparisons (`akashml-gemma-fp4-vs-nvfp4.json`):
+
+| Gemma-4-26B-A4B | Regret [95% CI] | Other top token |
+|---|---|---|
+| honest BF16 (vLLM) | 0.0026 [0.0017, 0.0035] | 1.0% |
+| NVIDIA NVFP4 (vLLM) | 0.0447 [0.0373, 0.0523] | 4.3% |
+| Q4_K_M GGUF | 0.0786 [0.0641, 0.0925] | 5.7% |
+| Q4_0 GGUF | 0.1150 [0.0970, 0.1322] | 6.6% |
+| AkashML fp4 | 0.1487 [0.1219, 0.1768] | 7.8% |
+
+4-bit does cost this model a lot (even NVIDIA's checkpoint is 17x the honest distance), but AkashML's endpoint is
+about 3.3x further again than NVIDIA's FP4, further than a Q4_K_M copy and at least as far as Q4_0. The loss is
+disclosed by the label; its size is not what the standard FP4 release gives. Replies alone cannot say why (a
+different 4-bit quantization, a compressed KV cache, other serving changes); its replies match none of the references
+word for word. One model; AkashML's replies are from 2026-10-30.
+
 ## Strix Halo (EVO X3): reproducible only without cooperative-matrix shaders
 
 First test on the user's GMKtec EVO X3 (Ryzen AI Max+ 395, Radeon 8060S / gfx1151, Windows 11), llama.cpp b12032

@@ -1,0 +1,53 @@
+{
+ "what": "Is AkashML's 'fp4' Gemma-4-26B-A4B unusually lossy for 4-bit? All five sets of replies re-scored on one referee: Gemma-4-26B-A4B Q8_0 (ggml-org GGUF), lv-engine on llama.cpp 11924d4c1 CUDA, one rented RTX PRO 6000 (Spain). AkashML's, the BF16 honest reference's and the Q4_0 substitute's replies are the ones collected 2026-10-30 (same 48 prompts, greedy, 256 tokens); NVIDIA's official NVFP4 checkpoint (nvidia/Gemma-4-26B-A4B-NVFP4) was served with vLLM 0.32 on the same GPU type as the BF16 reference and collected through the same request path (collect_local_api.py); a Q4_K_M GGUF (lmstudio-community) was generated with lv-engine like the Q4_0 substitute.",
+ "date": "2026-11-02",
+ "greedy_regret_nats_per_token": {
+  "honest BF16 (vLLM)": {
+   "mean": 0.0026,
+   "ci95": [
+    0.0017,
+    0.0035
+   ],
+   "other_top_token": "1.0%"
+  },
+  "NVIDIA NVFP4 (vLLM)": {
+   "mean": 0.0447,
+   "ci95": [
+    0.0373,
+    0.0523
+   ],
+   "other_top_token": "4.3%"
+  },
+  "Q4_K_M GGUF": {
+   "mean": 0.0786,
+   "ci95": [
+    0.0641,
+    0.0925
+   ],
+   "other_top_token": "5.7%"
+  },
+  "Q4_0 GGUF (the published anchor)": {
+   "mean": 0.115,
+   "ci95": [
+    0.097,
+    0.1322
+   ],
+   "other_top_token": "6.6%"
+  },
+  "AkashML fp4": {
+   "mean": 0.1487,
+   "ci95": [
+    0.1219,
+    0.1768
+   ],
+   "other_top_token": "7.8%"
+  }
+ },
+ "greedy_text_overlap_with_bf16": {
+  "identical replies": "NVFP4 1/48, Q4_K_M 1/48, Q4_0 0/48, AkashML 0/48",
+  "mean shared-prefix fraction": "0.14, 0.11, 0.10, 0.08",
+  "note": "AkashML matches no reference word for word (0/48 vs NVFP4); Gemma's replies diverge early under any 4-bit quantization, so this fingerprint is inconclusive"
+ },
+ "verdict": "AkashML's endpoint is labelled fp4, so a loss is disclosed, but it is about 3.3x further from the released model than NVIDIA's own FP4 checkpoint (confidence intervals far apart), further than a Q4_K_M GGUF, and at least as far as the crudest 4-bit format (Q4_0). Whatever it runs is not the standard NVFP4 release served the usual way: possibly a different 4-bit quantization, an additionally compressed KV cache, or other serving changes; replies alone cannot say which. One model, replies from 2026-10-30.",
+ "data": "data/raw-fp4ref/ (NVFP4 and Q4_K_M replies), data/scores-fp4ref/ (all five on this referee)"
+}
