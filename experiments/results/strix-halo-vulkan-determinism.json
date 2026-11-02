@@ -1,0 +1,23 @@
+{
+ "what": "First calibration of a Strix Halo: the user's GMKtec EVO X3 (Ryzen AI Max+ 395, Radeon 8060S gfx1151, 128 GB, Windows 11 Pro, AMD driver 32.0.22029.1019), llama.cpp b12032 prebuilt Vulkan build, gpt-oss-20b MXFP4 GGUF, llama-server -np 1, greedy, calibration_probe.py record twice per server (16 prompts x ~64 tokens).",
+ "date": "2026-11-01",
+ "default": {
+  "identical_between_two_runs": "0 of 16 prompts (same server, one request at a time, prompt cache off)",
+  "size": "chosen-token logprob differences median 0.0005, p90 0.021, max 0.23; 5 of 16 replies change words",
+  "stability": "one of four server sessions died with 'ggml_vulkan: device lost' on its fourth request"
+ },
+ "flash_attention_off": "10 of 16 identical",
+ "GGML_VK_DISABLE_COOPMAT=1": "16 of 16 identical between runs and across a server restart (with or without flash attention, which give different but each reproducible numbers)",
+ "speed_llama_bench": {
+  "default": {
+   "pp512": 2075,
+   "tg128": 78.0
+  },
+  "coopmat_off": {
+   "pp512": 1373,
+   "tg128": 77.2
+  }
+ },
+ "rocm_windows": "the b12032 ROCm 10.0 Windows build lists no device on this machine",
+ "verdict": "On Strix Halo the Vulkan cooperative-matrix (WMMA) shaders are not reproducible; with them off llama.cpp is exact run to run and across restarts at the cost of about a third of prompt-processing speed and ~1% of generation. That makes an exact group of identical Strix Halo boxes possible (pending a second box); the canonical answers are in calibration/."
+}
