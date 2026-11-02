@@ -183,10 +183,17 @@ function scaleBar(r, m) {
 
 const LEVEL = {ok: ['good', 'consistent'], lossy: ['warn', 'lossy'], far: ['bad', 'far off'],
   broken: ['bad', 'broken output'], check: ['warn', 'check'], reference: ['ref', 'reference']};
-function verdict(r) {
+function verdict(r, m) {
   const v = r.verdict || {level: 'check', text: ''};
-  const [cls, label] = LEVEL[v.level] || ['warn', v.level];
-  return `<span class="pill ${cls}">${label}</span><div class="why">${esc(v.text)}</div>`;
+  let [cls, label] = LEVEL[v.level] || ['warn', v.level];
+  let text = v.text;
+  // an endpoint that says it serves a 4-bit (or lower) version is lossy by its own label, not by surprise
+  const q = String(r.quantization || '').toLowerCase(), native = m && /gpt-oss/.test(m.model) ? 'fp4' : 'bf16';
+  if (!r.local && ['fp4', 'int4', 'fp6', 'int8'].includes(q) && q !== native && (v.level === 'lossy' || v.level === 'far')) {
+    cls = 'warn'; label = `disclosed ${q}`;
+    text = `${text}; the provider labels it ${q}, so a loss is expected`;
+  }
+  return `<span class="pill ${cls}">${label}</span><div class="why">${esc(text)}</div>`;
 }
 
 // The precision the provider declares on OpenRouter, and whether the measured fidelity fits it. A bf16/fp16 label, or
@@ -254,7 +261,7 @@ function renderRefereeFree(m) {
     return `<tr class="${r.local ? 'ref' : ''}">
       <td><div class="name">${esc(r.local ? (r.label || r.tag) : r.provider)}</div>
         <div class="sub">${esc(r.tag)}${r.quantization && !r.local ? ' · ' + esc(r.quantization) : ''}</div></td>
-      <td class="verdict">${verdict(r)}</td>
+      <td class="verdict">${verdict(r, m)}</td>
       <td class="num">${r.peer_agreement == null ? '–' : r.peer_agreement.toFixed(2)}</td>
       <td class="num">${det ? Math.round(100 * det.identical_share) + '%' : '–'}</td>
       <td class="num">${i.own_top_miss == null ? '–' : (100 * i.own_top_miss).toFixed(1) + '%'}</td>
@@ -291,7 +298,7 @@ function render(key) {
         <div class="sub">${esc(r.tag)}</div></td>
       <td>${labelCell(r, m)}</td>
       <td><div class="score">${r.fidelity == null ? '–' : Math.round(r.fidelity)}</div></td>
-      <td class="verdict">${verdict(r)}</td>
+      <td class="verdict">${verdict(r, m)}</td>
       <td class="num">${fmt(g.regret.mean)}<div class="sub">[${fmt(g.regret.lo)}, ${fmt(g.regret.hi)}]</div>${scaleBar(r, m)}</td>
       <td class="num">${r.x_honest == null ? '–' : r.x_honest.toFixed(1) + '×'}</td>
       <td class="num">${g.disagree.mean == null ? '–' : (100 * g.disagree.mean).toFixed(1) + '%'}<div class="sub">${g.big_miss_per_1k == null ? '' : g.big_miss_per_1k.toFixed(1) + ' big/1k'}</div></td>
