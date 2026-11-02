@@ -563,13 +563,13 @@ startup, so servers that should be identical can compute differently unless it i
 ## Strix Halo (EVO X3): reproducible only without cooperative-matrix shaders
 
 First test on the user's GMKtec EVO X3 (Ryzen AI Max+ 395, Radeon 8060S / gfx1151, Windows 11), llama.cpp b12032
-Vulkan, gpt-oss-20b, one request at a time (). By default the same prompts gave
+Vulkan, gpt-oss-20b, one request at a time (`strix-halo-vulkan-determinism.json`). By default the same prompts gave
 different numbers on two consecutive runs of the same server (0 of 16 identical; differences of honest-noise size,
 median 0.0005 nats), and one server died with a Vulkan "device lost". The Vulkan cooperative-matrix (WMMA) shaders are
-the cause: with  every run, and a run after a restart, was identical (16 of 16), at a cost
+the cause: with `GGML_VK_DISABLE_COOPMAT=1` every run, and a run after a restart, was identical (16 of 16), at a cost
 of about a third of prompt-processing speed (2,075 to 1,373 tokens/s) and 1% of generation (78.0 to 77.2). So a fleet
 of identical Strix Halo boxes could form an exact llama.cpp group with that setting; the canonical answers are in
-, and a second box is needed to confirm cross-machine identity. The ROCm build for Windows saw no device.
+`calibration/`, and a second box is needed to confirm cross-machine identity. The ROCm build for Windows saw no device.
 
 ## Engines on the same weights: Strata vs llama.cpp (Qwen3.6-35B-A3B)
 
