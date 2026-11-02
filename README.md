@@ -18,10 +18,18 @@ Two modes:
   the exact prompt tokens, output tokens and top-20 logprobs, sampled with a public seeded rule the client
   controls. Tampering, hidden prompts, laundered logprobs and grinding become *exact* failures, not statistics,
   and any reply can be re-checked by any referee later.
+- **Exact tier**, for cooperative providers on vLLM in batch-invariant mode: a referee on any GPU of the same group
+  (Ampere/Ada: RTX 3090/4090, A6000, A100, L40S; Blackwell: RTX 5090, RTX PRO 6000, DGX Spark) reproduces every
+  committed number to the last digit in one scoring pass. Measured: 0 false alarms in over 300,000 honest tokens,
+  every edited reply caught at the edited token. See [docs/exact-tier.md](docs/exact-tier.md) and [docs/vllm.md](docs/vllm.md).
 
 [What this can and cannot prove](docs/soundness.md) is the most important document here. Results so far:
-[experiments/README.md](experiments/README.md). Guides: [black-box method](docs/black-box.md), [deployment readiness](docs/readiness.md), [running an exact tier](docs/exact-tier.md),
-[cooperative mode](docs/cooperative.md), [receipt spec](docs/receipt-spec.md).
+[experiments/README.md](experiments/README.md), and as a website at
+[zoan.space/llm-verification](https://zoan.space/llm-verification/).
+
+Guides: [black-box method](docs/black-box.md), [cooperative mode](docs/cooperative.md),
+[receipt spec](docs/receipt-spec.md), [vLLM integration](docs/vllm.md), [running an exact tier](docs/exact-tier.md),
+[deployment readiness](docs/readiness.md).
 
 ## How it works (one paragraph)
 
@@ -29,8 +37,9 @@ At every step a language model assigns probabilities to every possible next toke
 weights can compute those probabilities for an existing reply in one forward pass (much cheaper than generating
 it), then ask: are these the tokens this model would choose (`regret`)? Do the provider's reported probabilities
 match (`wgap`)? Is sampled text distributed like this model's samples (PIT and likelihood tests, which need no
-calibration)? Honest machines never agree bit-for-bit (floating-point order differs across hardware), so every
-verdict compares against measured honest noise and known cheats run through the same pipeline.
+calibration)? Different hardware usually computes slightly different numbers (floating-point order differs), so
+these verdicts compare against measured honest noise and known cheats run through the same pipeline. Where provider
+and referee run batch-invariant kernels on GPUs of one group, the numbers agree exactly and any difference is proof.
 
 ## Layout
 
@@ -39,12 +48,14 @@ verdict compares against measured honest noise and known cheats run through the 
 | `llmverify/sampling.py` | public decoding rule: greedy or seeded Gumbel-max |
 | `llmverify/metrics.py`, `stats.py` | per-token metrics; bootstrap CIs, PIT/likelihood tests, anytime-valid e-processes, calibration |
 | `llmverify/receipt.py`, `provider.py`, `server.py`, `client.py` | cooperative mode: signed receipts, generation, OpenAI-compatible server, verifying client |
+| `llmverify/vllm_rule.py`, `upstream.py` | the sampling rule as a vLLM logits processor (speculative decoding supported); signing front end for vLLM or llama-server |
 | `llmverify/audit.py` | challenges, referee audits, per-provider evidence ledger |
 | `llmverify/attacks.py` | cheating providers (laundering, confident draft, prompt injection, grinding, tie steering, part-time) |
 | `llmverify/openrouter.py`, `blackbox.py`, `localgen.py`, `report.py` | black-box audits of OpenRouter endpoints |
 | `llmverify/toy.py` | tiny synthetic LM with the engine interface, for tests |
 | `engine/lv_engine.cpp` | llama.cpp front end: one-pass scoring with full-vocabulary statistics, step-wise generation |
-| `experiments/` | collection/scoring/report scripts and results per model |
+| `experiments/` | collection/scoring/report scripts and results per model; `vllm_exact_receipts.py`, `calibration_probe.py` for the exact tier |
+| `calibration/` | canonical answers per model and GPU group, for admitting nodes to an exact tier |
 | `site/` | static results site generated from `results/` |
 | `docs/` | soundness and threat model, receipt spec |
 
