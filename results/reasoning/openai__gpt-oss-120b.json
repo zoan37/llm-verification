@@ -46,6 +46,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.08,
    "reasoning_chars_longest": 5985
   },
   "amazon-bedrock": {
@@ -86,6 +87,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.94,
    "reasoning_chars_longest": 5358
   },
   "amazon-bedrock__eu-west-1": {
@@ -126,6 +128,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.11,
    "reasoning_chars_longest": 10260
   },
   "baseten__fp4": {
@@ -163,6 +166,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.99,
    "reasoning_chars_longest": 4305
   },
   "baseten__fp4__us": {
@@ -200,6 +204,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.95,
    "reasoning_chars_longest": 5497
   },
   "cerebras__fp16": {
@@ -240,6 +245,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.09,
    "reasoning_chars_longest": 10220
   },
   "coreweave__fp4": {
@@ -280,6 +286,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.0,
    "reasoning_chars_longest": 4867
   },
   "crusoe__bf16": {
@@ -320,6 +327,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.01,
    "reasoning_chars_longest": 5053
   },
   "deepinfra__bf16": {
@@ -360,6 +368,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.99,
    "reasoning_chars_longest": 6378
   },
   "deepinfra__fp8": {
@@ -400,6 +409,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.97,
    "reasoning_chars_longest": 5067
   },
   "dekallm__bf16": {
@@ -440,6 +450,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.32,
    "reasoning_chars_longest": 5293
   },
   "digitalocean": {
@@ -485,6 +496,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.91,
    "reasoning_chars_longest": 6621
   },
   "groq": {
@@ -525,6 +537,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.96,
    "reasoning_chars_longest": 4668
   },
   "mancer__fp8": {
@@ -565,6 +578,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.05,
    "reasoning_chars_longest": 4851
   },
   "mara": {
@@ -605,6 +619,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.97,
    "reasoning_chars_longest": 5067
   },
   "near-ai__fp4": {
@@ -645,6 +660,7 @@
    },
    "errors": 1,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.01,
    "reasoning_chars_longest": 4801
   },
   "nebius__fp4": {
@@ -685,6 +701,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.05,
    "reasoning_chars_longest": 5445
   },
   "novita__fp4": {
@@ -727,6 +744,7 @@
    "flags": [
     "'low' reasons like everyone else's 'medium' (456 vs 470 median chars)"
    ],
+   "reasoning_vs_crowd_on_long_problems": 1.03,
    "reasoning_chars_longest": 7232
   },
   "parasail__fp4": {
@@ -767,6 +785,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.17,
    "reasoning_chars_longest": 20472
   },
   "phala": {
@@ -809,6 +828,7 @@
    "flags": [
     "'low' reasons like everyone else's 'medium' (536 vs 470 median chars)"
    ],
+   "reasoning_vs_crowd_on_long_problems": 0.97,
    "reasoning_chars_longest": 4595
   },
   "sail-research__fp4": {
@@ -854,6 +874,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.97,
    "reasoning_chars_longest": 5067
   },
   "siliconflow__fp8": {
@@ -899,6 +920,7 @@
     "'high' reasons like everyone else's 'medium' (458 vs 470 median chars)",
     "stops reasoning early: its longest reasoning is 1,764 characters where the other endpoints' runs to 5,180; 0 of its replies hit the token limit, 0 for a typical endpoint"
    ],
+   "reasoning_vs_crowd_on_long_problems": 0.34,
    "reasoning_chars_longest": 1764
   },
   "together": {
@@ -939,6 +961,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.89,
    "reasoning_chars_longest": 4484
   },
   "venice__int4": {
@@ -979,6 +1002,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.04,
    "reasoning_chars_longest": 5682
   }
  }

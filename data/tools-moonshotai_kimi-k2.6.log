@@ -1,0 +1,21 @@
+moonshotai/kimi-k2.6: 17 endpoints advertise tools
+spent $0.4455
+endpoint                         pass  replies  errors  flaky  top problems
+atlas-cloud__int4                100%       48       0      0  
+baidu__fp4                       100%       48       0      0  
+chutes__int4                     100%       48       0      0  
+cloudflare                       100%       48       0      0  
+coreweave__fp4                   100%       48       0      0  
+crusoe__bf16                     100%       48       0      0  
+digitalocean                     100%       48       0      0  
+novita                           100%       48       0      0  
+parasail__int4                   100%       48       0      0  
+phala                            100%       48       0      0  
+streamlake__fp8                  100%       48       0      0  
+siliconflow__fp8                  94%       48       0      0  filters.max_price ×3; filters.in_stock ×3; sort ×1
+venice__int4                      94%       48       0      0  answered in text instead of calling a tool ×3
+inceptron__int4                   81%       48       0      0  attendees ×3; filters.max_price ×3; filters.in_stock ×3
+deepinfra__fp4                      -        0       6      0  
+gmicloud__fp8                       -        0       6      0  
+moonshotai                          -        0       6      0  
+wrote results/tools/moonshotai__kimi-k2.6.json

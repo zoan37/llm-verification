@@ -48,6 +48,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.0,
    "reasoning_chars_longest": 1117
   },
   "alibaba": {
@@ -88,6 +89,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.92,
    "reasoning_chars_longest": 1002
   },
   "cerebras__fp16": {
@@ -128,6 +130,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.02,
    "reasoning_chars_longest": 1063
   },
   "chutes__fp8": {
@@ -165,6 +168,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.02,
    "reasoning_chars_longest": 1129
   },
   "cloudflare": {
@@ -205,6 +209,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.02,
    "reasoning_chars_longest": 1121
   },
   "coreweave__fp8": {
@@ -245,6 +250,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.1,
    "reasoning_chars_longest": 1132
   },
   "darkbloom__fp4": {
@@ -285,6 +291,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.12,
    "reasoning_chars_longest": 1934
   },
   "deepinfra__bf16": {
@@ -325,6 +332,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.95,
    "reasoning_chars_longest": 1071
   },
   "dekallm": {
@@ -365,6 +373,7 @@
    },
    "errors": 5,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.03,
    "reasoning_chars_longest": 1114
   },
   "ionstream__fp8": {
@@ -405,6 +414,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.99,
    "reasoning_chars_longest": 1336
   },
   "mancer__fp8": {
@@ -445,6 +455,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.05,
    "reasoning_chars_longest": 1375
   },
   "modal": {
@@ -485,6 +496,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.98,
    "reasoning_chars_longest": 1121
   },
   "modelrun__fp4": {
@@ -525,6 +537,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.02,
    "reasoning_chars_longest": 1617
   },
   "near-ai__fp8": {
@@ -565,6 +578,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.04,
    "reasoning_chars_longest": 1179
   },
   "novita": {
@@ -605,6 +619,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.8,
    "reasoning_chars_longest": 874
   },
   "parasail__fp8": {
@@ -645,6 +660,7 @@
    },
    "errors": 17,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.07,
    "reasoning_chars_longest": 1069
   },
   "phala": {
@@ -685,6 +701,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.8,
    "reasoning_chars_longest": 1076
   },
   "reka__fp8": {
@@ -725,6 +742,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.01,
    "reasoning_chars_longest": 1130
   },
   "tenstorrent__fp4": {
@@ -765,6 +783,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.05,
    "reasoning_chars_longest": 1122
   },
   "venice__fp8": {
@@ -805,6 +824,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.88,
    "reasoning_chars_longest": 1272
   },
   "wafer__fp8": {
@@ -845,6 +865,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.95,
    "reasoning_chars_longest": 1175
   }
  }

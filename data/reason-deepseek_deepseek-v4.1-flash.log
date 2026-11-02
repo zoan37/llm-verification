@@ -1,0 +1,45 @@
+deepseek/deepseek-v4.1-flash: 41 endpoints support reasoning
+spent $0.5015
+endpoint                                              low                     medium                       high  flags
+alibaba                            acc 92% tok 176 rc 332    acc 100% tok 156 rc 272     acc 92% tok 137 rc 244  
+atlas-cloud__fp8                  acc 100% tok 164 rc 295    acc 100% tok 205 rc 400     acc 92% tok 193 rc 337  
+baidu__fp8                         acc 92% tok 222 rc 392    acc 100% tok 171 rc 357     acc 92% tok 207 rc 464  
+baseten                           acc 100% tok 180 rc 326    acc 100% tok 180 rc 345    acc 100% tok 162 rc 284  stops reasoning early: its longest reasoning is 1,117 characters where the other endpoints' runs to 2,799; 0 of its replies hit the token limit, 0 for a typical endpoint
+baseten__us                       acc 100% tok 194 rc 301    acc 100% tok 167 rc 288     acc 92% tok 166 rc 305   (errors 1)
+cohere                             acc 92% tok 166 rc 282    acc 100% tok 168 rc 311    acc 100% tok 168 rc 332  
+coreweave__fp8                    acc 100% tok 166 rc 288    acc 100% tok 168 rc 313     acc 92% tok 200 rc 316  
+crusoe__fp8                       acc 100% tok 159 rc 249    acc 100% tok 148 rc 232    acc 100% tok 163 rc 254  
+decart__fp4                       acc 100% tok 186 rc 354    acc 100% tok 201 rc 340     acc 92% tok 180 rc 308  
+deepinfra__fp8                    acc 100% tok 154 rc 280    acc 100% tok 153 rc 260    acc 100% tok 155 rc 296  stops reasoning early: its longest reasoning is 898 characters where the other endpoints' runs to 2,799; 0 of its replies hit the token limit, 0 for a typical endpoint
+deepinfra__fp8__flex              acc 100% tok 157 rc 250    acc 100% tok 162 rc 284     acc 92% tok 193 rc 332  
+deepinfra__fp8__priority          acc 100% tok 152 rc 270    acc 100% tok 149 rc 249     acc 92% tok 225 rc 465  
+digitalocean                       acc 92% tok 182 rc 294     acc 92% tok 181 rc 340    acc 100% tok 194 rc 385  
+fireworks                         acc 100% tok 178 rc 316    acc 100% tok 163 rc 308     acc 92% tok 201 rc 326  
+fireworks__spot                   acc 100% tok 174 rc 324    acc 100% tok 174 rc 320    acc 100% tok 190 rc 294  
+fireworks__us                     acc 100% tok 166 rc 333    acc 100% tok 184 rc 316    acc 100% tok 187 rc 306  
+gmicloud__fp8                     acc 100% tok 154 rc 282    acc 100% tok 162 rc 293    acc 100% tok 182 rc 298  stops reasoning early: its longest reasoning is 933 characters where the other endpoints' runs to 2,799; 0 of its replies hit the token limit, 0 for a typical endpoint
+google-vertex__global             acc 100% tok 160 rc 286    acc 100% tok 158 rc 270     acc 92% tok 178 rc 298  
+inference-net__fp8                acc 100% tok 163 rc 309    acc 100% tok 153 rc 346    acc 100% tok 210 rc 364   (errors 5)
+inference-net__us                 acc 100% tok 192 rc 380    acc 100% tok 179 rc 292    acc 100% tok 190 rc 335  stops reasoning early: its longest reasoning is 981 characters where the other endpoints' runs to 2,799; 0 of its replies hit the token limit, 0 for a typical endpoint
+makora__fp8                        acc 92% tok 184 rc 335     acc 92% tok 186 rc 298     acc 83% tok 194 rc 324  
+mancer__fp8                       acc 100% tok 151 rc 248    acc 100% tok 151 rc 234     acc 92% tok 159 rc 270  
+modal                             acc 100% tok 167 rc 255    acc 100% tok 180 rc 298    acc 100% tok 187 rc 314   (errors 3)
+morph__fp8                        acc 100% tok 154 rc 264    acc 100% tok 144 rc 224    acc 100% tok 152 rc 248  stops reasoning early: its longest reasoning is 1,338 characters where the other endpoints' runs to 2,799; 0 of its replies hit the token limit, 0 for a typical endpoint
+nebius__fp8                       acc 100% tok 151 rc 250    acc 100% tok 146 rc 274    acc 100% tok 170 rc 305  stops reasoning early: its longest reasoning is 1,229 characters where the other endpoints' runs to 2,799; 0 of its replies hit the token limit, 0 for a typical endpoint
+novita__fp8                        acc 92% tok 172 rc 306    acc 100% tok 177 rc 301    acc 100% tok 188 rc 335  
+open-inference__fp4               acc 100% tok 162 rc 270     acc 92% tok 148 rc 235     acc 92% tok 182 rc 376  
+parasail__fp8                     acc 100% tok 176 rc 303    acc 100% tok 184 rc 329     acc 92% tok 200 rc 306  
+phala                             acc 100% tok 174 rc 367     acc 92% tok 172 rc 273    acc 100% tok 204 rc 332  
+primeintellect                    acc 100% tok 182 rc 308    acc 100% tok 167 rc 292    acc 100% tok 166 rc 308  
+reka                               acc 92% tok 197 rc 401    acc 100% tok 162 rc 306    acc 100% tok 202 rc 341  
+relace__fast                      acc 100% tok 195 rc 357    acc 100% tok 169 rc 251     acc 88% tok 174 rc 305   (errors 9)
+relace__fp4                        acc 92% tok 163 rc 320    acc 100% tok 168 rc 320    acc 100% tok 196 rc 370  
+sail-research__fp4                acc 100% tok 178 rc 308    acc 100% tok 178 rc 308    acc 100% tok 164 rc 302  
+sail-research__fp4__us            acc 100% tok 178 rc 308    acc 100% tok 164 rc 287    acc 100% tok 164 rc 302  
+siliconflow__fp8                   acc 92% tok 137 rc 244    acc 100% tok 170 rc 360     acc 92% tok 196 rc 277  
+streamlake__fp8                   acc 100% tok 180 rc 333     acc 92% tok 184 rc 298     acc 92% tok 171 rc 358  stops reasoning early: its longest reasoning is 1,384 characters where the other endpoints' runs to 2,799; 0 of its replies hit the token limit, 0 for a typical endpoint
+together                          acc 100% tok 147 rc 291     acc 92% tok 158 rc 289     acc 92% tok 182 rc 274  
+venice__fp8                       acc 100% tok 199 rc 380    acc 100% tok 178 rc 290    acc 100% tok 166 rc 288  
+wafer__mxfp4                      acc 100% tok 154 rc 274    acc 100% tok 151 rc 279    acc 100% tok 182 rc 308  stops reasoning early: its longest reasoning is 842 characters where the other endpoints' runs to 2,799; 0 of its replies hit the token limit, 0 for a typical endpoint
+wafer__us                         acc 100% tok 152 rc 270    acc 100% tok 136 rc 239    acc 100% tok 183 rc 320  
+wrote results/reasoning/deepseek__deepseek-v4.1-flash.json

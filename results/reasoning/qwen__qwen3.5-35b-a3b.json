@@ -48,6 +48,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.98,
    "reasoning_chars_longest": 29883
   },
   "atlas-cloud__fp8": {
@@ -88,6 +89,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.1,
    "reasoning_chars_longest": 30863
   },
   "darkbloom__fp4": {
@@ -128,6 +130,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.01,
    "reasoning_chars_longest": 17593
   },
   "deepinfra__fp8": {
@@ -168,6 +171,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.76,
    "reasoning_chars_longest": 10856
   },
   "parasail__fp8": {
@@ -208,6 +212,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.92,
    "reasoning_chars_longest": 17763
   },
   "siliconflow__fp8": {
@@ -248,6 +253,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.25,
    "reasoning_chars_longest": 30849
   },
   "venice": {
@@ -288,6 +294,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.02,
    "reasoning_chars_longest": 18421
   }
  }

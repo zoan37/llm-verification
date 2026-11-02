@@ -173,13 +173,30 @@ has one ill-posed case, "1/n" with n = 7.5, on which honest high-effort runs rea
 | Qwen3.8-27B (21 answering) | 465 / 534 / 531 | the model barely responds to the setting anywhere |
 | Qwen3.5-35B-A3B (7) | 4,053 / 4,053 / 3,664 | the model does not respond to the setting anywhere |
 | Gemma-4-26B (15) | 5,660 / 5,224 / 5,095 | the model does not respond to the setting anywhere |
+| DeepSeek V4.1 Flash (41) | 303 / 293 / 308 | the model does not respond to the setting anywhere; accuracy 83-100% per endpoint and level |
 
 Reasoning cut short. DeepInfra and Venice end Gemma-4-26B's reasoning at about 2,200-2,550 tokens at every effort and
 then answer; on the other 13 endpoints the model reasons until the 6,000-token limit on a third of the problems (1-2
 truncated replies of 36 vs 7-18). Under that limit the two score higher (92-100% vs 50-75%; every miss elsewhere is
 a reply cut off before its answer), but they are not running the model's own reasoning length, and on harder
 problems a shortened budget may cost accuracy. On gpt-oss, SiliconFlow and Darkbloom's short reasoning shows the
-same way (`stops reasoning early` in `results/reasoning/`).
+same way (`stops reasoning early` in `results/reasoning/`). The flag now also requires shorter reasoning problem by problem at the same effort,
+on the third of problems where the crowd reasons longest (`reasoning_vs_crowd_on_long_problems`): a lower maximum
+alone can be the crowd's long tail. Honest endpoints sit at 0.85-1.2 of the crowd there; the flagged ones at
+0.34-0.72. Every earlier flag holds; on DeepSeek V4.1 Flash the maximum-only rule flagged 8 endpoints whose per-problem
+lengths match the crowd (0.79-1.0), and none is flagged.
+
+Reasoning off and JSON mode (`experiments/reasoning_off.py` + `prompts/json_cases.py`). A common pattern for cheap
+gate calls is reasoning disabled (`{"reasoning": {"enabled": false}}`), `response_format` json_object, temperature
+0.1. Twelve short extraction cases with known answers, in that mode and with no reasoning field at all, on every
+endpoint. Hidden output is measured as billed completion tokens against the crowd's for the same case (the visible
+answers are 20-30 tokens everywhere). On DeepSeek V4.1 Flash (41 endpoints, $0.34): 40
+honour "off" (0 reasoning tokens, 24-28 completion tokens, 100% strict JSON). **Novita still reasons with reasoning
+disabled** (returned reasoning on 12 of 12, 52 billed reasoning tokens, 3.3x the crowd's completion tokens). With
+no reasoning field every endpoint reasons (median 45-81 reasoning tokens; Open-Inference 242), so "off" has to be
+sent explicitly. JSON mode held everywhere; answers were right on 100% except Open-Inference (92%). Latency for these
+replies: p50 0.4-1.2 s on most endpoints; slower: Fireworks spot (4.8 s), DeepInfra flex (2.7 s), GMICloud (2.3 s,
+p90 9.0 s). Results in `results/reasoning_off/`.
 
 ## Qwen3.5-35B-A3B (7 endpoints)
 
@@ -219,6 +236,7 @@ no call when none is needed). 64 of 68 endpoints pass every check.
 | Gemma-4-26B | 12 | 12 | (Novita: request errors) |
 | gpt-oss-120b | 21 | 19 | **Nebius: tool-call arguments truncated before the closing brace in 71% of calls**, reported as complete; Novita: one call with the same truncation |
 | gpt-oss-20b | 9 | 9 | (DeepInfra: most requests failed) |
+| Kimi K2.6 | 14 answering of 17 | 11 | Inceptron (int4): 81%, drops `filters.max_price` / `filters.in_stock` and `attendees` (3/3 each); SiliconFlow: 94%, same filters; Venice: answers in text instead of calling the tool (3/3). (Moonshot's own endpoint rejects any temperature but 0.6; DeepInfra and GMICloud: capacity errors) |
 
 ## Long context (Qwen3.5-35B-A3B)
 

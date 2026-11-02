@@ -45,6 +45,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.98,
    "reasoning_chars_longest": 24067
   },
   "amazon-bedrock": {
@@ -85,6 +86,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.0,
    "reasoning_chars_longest": 20366
   },
   "amazon-bedrock__eu-west-1": {
@@ -125,6 +127,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.05,
    "reasoning_chars_longest": 21914
   },
   "coreweave__fp4": {
@@ -165,6 +168,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.0,
    "reasoning_chars_longest": 19217
   },
   "darkbloom__fp8": {
@@ -208,6 +212,7 @@
     "'high' reasons like everyone else's 'medium' (598 vs 607 median chars)",
     "stops reasoning early: its longest reasoning is 1,669 characters where the other endpoints' runs to 20,366; 0 of its replies hit the token limit, 1 for a typical endpoint"
    ],
+   "reasoning_vs_crowd_on_long_problems": 0.72,
    "reasoning_chars_longest": 1669
   },
   "deepinfra__bf16": {
@@ -253,6 +258,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.03,
    "reasoning_chars_longest": 19329
   },
   "groq": {
@@ -293,6 +299,7 @@
    },
    "errors": 1,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.2,
    "reasoning_chars_longest": 26207
   },
   "parasail__fp4": {
@@ -333,6 +340,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.03,
    "reasoning_chars_longest": 21470
   },
   "siliconflow__fp8": {
@@ -378,6 +386,7 @@
     "'high' reasons like everyone else's 'medium' (660 vs 607 median chars)",
     "stops reasoning early: its longest reasoning is 4,452 characters where the other endpoints' runs to 20,366; 0 of its replies hit the token limit, 1 for a typical endpoint"
    ],
+   "reasoning_vs_crowd_on_long_problems": 0.72,
    "reasoning_chars_longest": 4452
   }
  }

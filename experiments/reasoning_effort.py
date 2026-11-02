@@ -153,13 +153,30 @@ for f in sorted(raw_dir.glob("*.jsonl.gz")):
             v["reasoning_chars_per_billed_token"] = round(chars_per_tok, 2)
             if chars_per_tok < 1.5:
                 flags.append(f"{eff}: billed reasoning tokens exceed the returned reasoning ({chars_per_tok:.2f} chars per token)")
-    summary[f.name[: -len(".jsonl.gz")]] = {"efforts": row, "errors": sum(1 for r in recs if "error" in r), "flags": flags}
+    case_len = {}
+    for r in recs:
+        if "error" not in r:
+            case_len.setdefault(f'{r["effort"]}/{r["case"]}', []).append(len(r.get("reasoning") or ""))
+    summary[f.name[: -len(".jsonl.gz")]] = {"efforts": row, "errors": sum(1 for r in recs if "error" in r), "flags": flags,
+                                            "_case_len": {c: st.median(v) for c, v in case_len.items()}}
 crowd = crowd_levels(summary)
 for s in summary.values():
     s["flags"] += effort_flags(s["efforts"], crowd)
 # Reasoning cut short: the longest reasoning an endpoint ever returns, against the other endpoints' longest.
 longest = {k: max((v.get("reasoning_chars_max") or 0) for v in s["efforts"].values()) for k, s in summary.items()
            if s["efforts"]}
+crowd_case = {}
+for s_ in summary.values():
+    for c, v in s_["_case_len"].items():
+        crowd_case.setdefault(c, []).append(v)
+crowd_case = {c: st.median(v) for c, v in crowd_case.items() if len(v) >= 3}
+long_cases = sorted(crowd_case, key=crowd_case.get)[-max(1, len(crowd_case) // 3):]
+case_ratio = {}
+for k, s_ in summary.items():
+    rs_ = [s_["_case_len"][c] / crowd_case[c] for c in long_cases if c in s_["_case_len"] and crowd_case[c]]
+    if rs_:
+        case_ratio[k] = round(st.median(rs_), 2)
+        s_["reasoning_vs_crowd_on_long_problems"] = case_ratio[k]
 if len(longest) >= 4:
     typical = st.median(longest.values())
     trunc = {k: sum(v["truncated"] for v in summary[k]["efforts"].values()) for k in longest}
@@ -168,11 +185,17 @@ if len(longest) >= 4:
         summary[k]["reasoning_chars_longest"] = m
         # where the others' long runs are themselves cut by the token limit, "early" shows as rarely hitting it
         capped = typical_trunc >= 5 and trunc[k] <= 0.25 * typical_trunc and m < 0.8 * typical
-        if 0 < m < 0.5 * typical or capped:
+        # A lower maximum alone can be the crowd's long tail (a few very long runs on one problem). Require the
+        # endpoint to also reason shorter problem by problem (same effort), where the crowd reasons longest.
+        # Honest endpoints sit at 0.85-1.2 of the crowd there (6 models); the short-stopping ones at 0.34-0.72.
+        shorter = case_ratio.get(k)
+        if (0 < m < 0.5 * typical or capped) and (shorter is None or shorter < 0.75):
             n_trunc = sum(v["truncated"] for v in summary[k]["efforts"].values())
             summary[k]["flags"].append(f"stops reasoning early: its longest reasoning is {m:,} characters where the "
                                        f"other endpoints' runs to {typical:,.0f}; {n_trunc} of its replies hit the token "
                                        f"limit, {typical_trunc:.0f} for a typical endpoint")
+for s_ in summary.values():
+    s_.pop("_case_len", None)
 dest = Path("results/reasoning") / f"{key}.json"
 dest.parent.mkdir(parents=True, exist_ok=True)
 dest.write_text(json.dumps({"model": a.model, "cases": len(CASES), "crowd_tokens": crowd, "endpoints": summary}, indent=1))

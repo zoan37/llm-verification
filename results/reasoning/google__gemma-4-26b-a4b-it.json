@@ -48,6 +48,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.99,
    "reasoning_chars_longest": 16359
   },
   "cloudflare": {
@@ -88,6 +89,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.01,
    "reasoning_chars_longest": 15370
   },
   "coreweave__bf16": {
@@ -128,6 +130,7 @@
    },
    "errors": 1,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.0,
    "reasoning_chars_longest": 15034
   },
   "darkbloom": {
@@ -168,6 +171,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.0,
    "reasoning_chars_longest": 16352
   },
   "deepinfra__fp8": {
@@ -210,6 +214,7 @@
    "flags": [
     "stops reasoning early: its longest reasoning is 9,384 characters where the other endpoints' runs to 15,034; 2 of its replies hit the token limit, 12 for a typical endpoint"
    ],
+   "reasoning_vs_crowd_on_long_problems": 0.62,
    "reasoning_chars_longest": 9384
   },
   "dekallm__bf16": {
@@ -250,6 +255,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.01,
    "reasoning_chars_longest": 15235
   },
   "google-vertex__global": {
@@ -290,6 +296,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.99,
    "reasoning_chars_longest": 14867
   },
   "io-net__bf16": {
@@ -330,6 +337,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.01,
    "reasoning_chars_longest": 14299
   },
   "makora": {
@@ -370,6 +378,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.01,
    "reasoning_chars_longest": 15415
   },
   "nextbit__bf16": {
@@ -410,6 +419,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.02,
    "reasoning_chars_longest": 14818
   },
   "novita__bf16": {
@@ -450,6 +460,7 @@
    },
    "errors": 12,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.01,
    "reasoning_chars_longest": 15042
   },
   "parasail__bf16": {
@@ -490,6 +501,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 0.99,
    "reasoning_chars_longest": 15193
   },
   "primeintellect__bf16": {
@@ -530,6 +542,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.01,
    "reasoning_chars_longest": 14961
   },
   "siliconflow__fp8": {
@@ -570,6 +583,7 @@
    },
    "errors": 0,
    "flags": [],
+   "reasoning_vs_crowd_on_long_problems": 1.0,
    "reasoning_chars_longest": 14893
   },
   "venice__bf16": {
@@ -612,6 +626,7 @@
    "flags": [
     "stops reasoning early: its longest reasoning is 9,991 characters where the other endpoints' runs to 15,034; 1 of its replies hit the token limit, 12 for a typical endpoint"
    ],
+   "reasoning_vs_crowd_on_long_problems": 0.61,
    "reasoning_chars_longest": 9991
   }
  }
