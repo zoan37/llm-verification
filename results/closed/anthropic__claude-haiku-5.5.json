@@ -1,0 +1,2219 @@
+{
+ "model": "anthropic/claude-haiku-5.5",
+ "date": "2026-11-08-r2",
+ "endpoints": {
+  "amazon-bedrock": {
+   "fingerprint_samples": 1209,
+   "errors": {},
+   "reasoning": {
+    "n": 12,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 136.0,
+    "reasoning_tokens_mean": 152,
+    "reasoning_chars_median": 147.5,
+    "completion_tokens_median": 315.5
+   },
+   "reasoning_tokens_fingerprint_median": 0
+  },
+  "amazon-bedrock/eu-west-1": {
+   "fingerprint_samples": 1215,
+   "errors": {},
+   "reasoning": {
+    "n": 11,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 156,
+    "reasoning_tokens_mean": 142,
+    "reasoning_chars_median": 169,
+    "completion_tokens_median": 298
+   },
+   "reasoning_tokens_fingerprint_median": 0
+  },
+  "amazon-bedrock/us-east-1": {
+   "fingerprint_samples": 1214,
+   "errors": {},
+   "reasoning": {
+    "n": 11,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 69,
+    "reasoning_tokens_mean": 122,
+    "reasoning_chars_median": 140,
+    "completion_tokens_median": 264
+   },
+   "reasoning_tokens_fingerprint_median": 0.0
+  },
+  "anthropic": {
+   "fingerprint_samples": 1222,
+   "errors": {},
+   "reasoning": {
+    "n": 12,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 132.0,
+    "reasoning_tokens_mean": 143,
+    "reasoning_chars_median": 253.5,
+    "completion_tokens_median": 305.5
+   },
+   "reasoning_tokens_fingerprint_median": 0.0
+  },
+  "azure/global": {
+   "fingerprint_samples": 1222,
+   "errors": {},
+   "reasoning": {
+    "n": 12,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 99.0,
+    "reasoning_tokens_mean": 125,
+    "reasoning_chars_median": 233.5,
+    "completion_tokens_median": 270.5
+   },
+   "reasoning_tokens_fingerprint_median": 0.0
+  },
+  "azure/us": {
+   "fingerprint_samples": 1205,
+   "errors": {},
+   "reasoning": {
+    "n": 10,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 102.5,
+    "reasoning_tokens_mean": 139,
+    "reasoning_chars_median": 239.0,
+    "completion_tokens_median": 274.0
+   },
+   "reasoning_tokens_fingerprint_median": 0
+  },
+  "claude-on-aws": {
+   "fingerprint_samples": 1193,
+   "errors": {},
+   "reasoning": {
+    "n": 12,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 125.0,
+    "reasoning_tokens_mean": 141,
+    "reasoning_chars_median": 224.0,
+    "completion_tokens_median": 290.0
+   },
+   "reasoning_tokens_fingerprint_median": 0
+  },
+  "google-vertex/europe": {
+   "fingerprint_samples": 1209,
+   "errors": {},
+   "reasoning": {
+    "n": 11,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 93,
+    "reasoning_tokens_mean": 109,
+    "reasoning_chars_median": 133,
+    "completion_tokens_median": 248
+   },
+   "reasoning_tokens_fingerprint_median": 0
+  },
+  "google-vertex/global": {
+   "fingerprint_samples": 1207,
+   "errors": {},
+   "reasoning": {
+    "n": 10,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 101.5,
+    "reasoning_tokens_mean": 108,
+    "reasoning_chars_median": 134.5,
+    "completion_tokens_median": 216.0
+   },
+   "reasoning_tokens_fingerprint_median": 0
+  },
+  "google-vertex/us": {
+   "fingerprint_samples": 1224,
+   "errors": {},
+   "reasoning": {
+    "n": 10,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 131.5,
+    "reasoning_tokens_mean": 140,
+    "reasoning_chars_median": 131.5,
+    "completion_tokens_median": 305.0
+   },
+   "reasoning_tokens_fingerprint_median": 0.0
+  }
+ },
+ "pairs": [
+  {
+   "a": "anthropic",
+   "b": "amazon-bedrock",
+   "stat": 5.871,
+   "p": 0.000999000999000999,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Make up a word and define it in one sentence.",
+     "tv": 0.82,
+     "a": [
+      [
+       "glimmerwhisk n",
+       3
+      ],
+      [
+       "flumbrate verb",
+       2
+      ],
+      [
+       "flimbersnatch noun",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "glimmerwhisk noun",
+       3
+      ],
+      [
+       "glimmerwhisk n",
+       2
+      ],
+      [
+       "flumbrate verb",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.71,
+     "a": [
+      [
+       "how about",
+       7
+      ],
+      [
+       "veloria prime",
+       5
+      ],
+      [
+       "veloria kessandra",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "veloria prime",
+       3
+      ],
+      [
+       "veloran prime",
+       3
+      ],
+      [
+       "velmara prime",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Suggest a team name for a trivia night.",
+     "tv": 0.59,
+     "a": [
+      [
+       "here are",
+       24
+      ],
+      [
+       "how about",
+       5
+      ]
+     ],
+     "b": [
+      [
+       "how about",
+       23
+      ],
+      [
+       "here are",
+       7
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "amazon-bedrock/eu-west-1",
+   "stat": 6.546,
+   "p": 0.000999000999000999,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Make up a word and define it in one sentence.",
+     "tv": 0.93,
+     "a": [
+      [
+       "glimmerwhisk n",
+       3
+      ],
+      [
+       "flumbrate verb",
+       2
+      ],
+      [
+       "flimbersnatch noun",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "glimmerwhisk noun",
+       5
+      ],
+      [
+       "glimmerwhisk n",
+       2
+      ],
+      [
+       "glimmerfen noun",
+       1
+      ]
+     ]
+    },
+    {
+     "prompt": "Suggest a team name for a trivia night.",
+     "tv": 0.79,
+     "a": [
+      [
+       "here are",
+       24
+      ],
+      [
+       "how about",
+       5
+      ]
+     ],
+     "b": [
+      [
+       "how about",
+       24
+      ],
+      [
+       "here are",
+       1
+      ]
+     ]
+    },
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.69,
+     "a": [
+      [
+       "how about",
+       7
+      ],
+      [
+       "veloria prime",
+       5
+      ],
+      [
+       "veloria kessandra",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "velmora prime",
+       3
+      ],
+      [
+       "veloria prime",
+       3
+      ],
+      [
+       "veloran prime",
+       2
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "amazon-bedrock/us-east-1",
+   "stat": 6.069,
+   "p": 0.000999000999000999,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Make up a word and define it in one sentence.",
+     "tv": 0.9,
+     "a": [
+      [
+       "glimmerwhisk n",
+       3
+      ],
+      [
+       "flumbrate verb",
+       2
+      ],
+      [
+       "flimbersnatch noun",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "glimmerwhisk noun",
+       3
+      ],
+      [
+       "glimmerwhisk n",
+       2
+      ],
+      [
+       "flumberate verb",
+       1
+      ]
+     ]
+    },
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.66,
+     "a": [
+      [
+       "how about",
+       7
+      ],
+      [
+       "veloria prime",
+       5
+      ],
+      [
+       "veloria kessandra",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "veloria prime",
+       6
+      ],
+      [
+       "veloryn prime",
+       2
+      ],
+      [
+       "velmara prime",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Suggest a team name for a trivia night.",
+     "tv": 0.62,
+     "a": [
+      [
+       "here are",
+       24
+      ],
+      [
+       "how about",
+       5
+      ]
+     ],
+     "b": [
+      [
+       "how about",
+       23
+      ],
+      [
+       "here are",
+       6
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "azure/global",
+   "stat": 5.347,
+   "p": 0.000999000999000999,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Make up a word and define it in one sentence.",
+     "tv": 0.9,
+     "a": [
+      [
+       "glimmerwhisk n",
+       3
+      ],
+      [
+       "flumbrate verb",
+       2
+      ],
+      [
+       "flimbersnatch noun",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "glimmerwhisk noun",
+       2
+      ],
+      [
+       "flimbersnatch n",
+       2
+      ],
+      [
+       "flumberwick noun",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.56,
+     "a": [
+      [
+       "how about",
+       7
+      ],
+      [
+       "veloria prime",
+       5
+      ],
+      [
+       "veloria kessandra",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "how about",
+       6
+      ],
+      [
+       "veloria prime",
+       4
+      ],
+      [
+       "vesperia nox",
+       1
+      ]
+     ]
+    },
+    {
+     "prompt": "Name a gemstone.",
+     "tv": 0.53,
+     "a": [
+      [
+       "ruby",
+       17
+      ],
+      [
+       "diamond",
+       13
+      ]
+     ],
+     "b": [
+      [
+       "diamond",
+       18
+      ],
+      [
+       "emerald",
+       4
+      ],
+      [
+       "sapphire",
+       3
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "azure/us",
+   "stat": 5.394,
+   "p": 0.000999000999000999,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Make up a word and define it in one sentence.",
+     "tv": 0.86,
+     "a": [
+      [
+       "glimmerwhisk n",
+       3
+      ],
+      [
+       "flumbrate verb",
+       2
+      ],
+      [
+       "flimbersnatch noun",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "flumbrate verb",
+       3
+      ],
+      [
+       "glimmerfrost noun",
+       2
+      ],
+      [
+       "glimmerwhisk n",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Complete with one word: She opened the box and found a ___.",
+     "tv": 0.57,
+     "a": [
+      [
+       "treasure",
+       17
+      ],
+      [
+       "surprise",
+       11
+      ],
+      [
+       "gift",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "surprise",
+       18
+      ],
+      [
+       "gift",
+       9
+      ]
+     ]
+    },
+    {
+     "prompt": "Name a gemstone.",
+     "tv": 0.49,
+     "a": [
+      [
+       "ruby",
+       17
+      ],
+      [
+       "diamond",
+       13
+      ]
+     ],
+     "b": [
+      [
+       "diamond",
+       17
+      ],
+      [
+       "emerald",
+       5
+      ],
+      [
+       "sapphire",
+       2
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "claude-on-aws",
+   "stat": 6.506,
+   "p": 0.000999000999000999,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Make up a word and define it in one sentence.",
+     "tv": 0.96,
+     "a": [
+      [
+       "glimmerwhisk n",
+       3
+      ],
+      [
+       "flumbrate verb",
+       2
+      ],
+      [
+       "flimbersnatch noun",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "glimmerbask verb",
+       2
+      ],
+      [
+       "flimbrate verb",
+       2
+      ],
+      [
+       "glimmerfen noun",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.73,
+     "a": [
+      [
+       "how about",
+       7
+      ],
+      [
+       "veloria prime",
+       5
+      ],
+      [
+       "veloria kessandra",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "how about",
+       24
+      ],
+      [
+       "veltharis prime",
+       1
+      ],
+      [
+       "veloria prime",
+       1
+      ]
+     ]
+    },
+    {
+     "prompt": "Complete with one word: She opened the box and found a ___.",
+     "tv": 0.47,
+     "a": [
+      [
+       "treasure",
+       17
+      ],
+      [
+       "surprise",
+       11
+      ],
+      [
+       "gift",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "surprise",
+       21
+      ],
+      [
+       "treasure",
+       4
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "google-vertex/europe",
+   "stat": 3.365,
+   "p": 0.7362637362637363,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Make up a word and define it in one sentence.",
+     "tv": 0.89,
+     "a": [
+      [
+       "glimmerwhisk n",
+       3
+      ],
+      [
+       "flumbrate verb",
+       2
+      ],
+      [
+       "flimbersnatch noun",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "glimmerwhisk n",
+       2
+      ],
+      [
+       "glimmerwhisk noun",
+       2
+      ],
+      [
+       "flimsterate verb",
+       1
+      ]
+     ]
+    },
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.52,
+     "a": [
+      [
+       "how about",
+       7
+      ],
+      [
+       "veloria prime",
+       5
+      ],
+      [
+       "veloria kessandra",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "how about",
+       7
+      ],
+      [
+       "veloria prime",
+       4
+      ],
+      [
+       "veyrath prime",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Name a gemstone.",
+     "tv": 0.27,
+     "a": [
+      [
+       "ruby",
+       17
+      ],
+      [
+       "diamond",
+       13
+      ]
+     ],
+     "b": [
+      [
+       "ruby",
+       14
+      ],
+      [
+       "diamond",
+       8
+      ],
+      [
+       "sapphire",
+       7
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "google-vertex/global",
+   "stat": 3.462,
+   "p": 0.4975024975024975,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Make up a word and define it in one sentence.",
+     "tv": 0.89,
+     "a": [
+      [
+       "glimmerwhisk n",
+       3
+      ],
+      [
+       "flumbrate verb",
+       2
+      ],
+      [
+       "flimbersnatch noun",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "flumbrix noun",
+       3
+      ],
+      [
+       "glimmerwhisk n",
+       3
+      ],
+      [
+       "glimmerwhisk noun",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.49,
+     "a": [
+      [
+       "how about",
+       7
+      ],
+      [
+       "veloria prime",
+       5
+      ],
+      [
+       "veloria kessandra",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "how about",
+       7
+      ],
+      [
+       "veloria prime",
+       4
+      ],
+      [
+       "velmora prime",
+       3
+      ]
+     ]
+    },
+    {
+     "prompt": "Name a gemstone.",
+     "tv": 0.25,
+     "a": [
+      [
+       "ruby",
+       17
+      ],
+      [
+       "diamond",
+       13
+      ]
+     ],
+     "b": [
+      [
+       "ruby",
+       13
+      ],
+      [
+       "diamond",
+       8
+      ],
+      [
+       "sapphire",
+       7
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "google-vertex/us",
+   "stat": 3.795,
+   "p": 0.07892107892107893,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Make up a word and define it in one sentence.",
+     "tv": 0.9,
+     "a": [
+      [
+       "glimmerwhisk n",
+       3
+      ],
+      [
+       "flumbrate verb",
+       2
+      ],
+      [
+       "flimbersnatch noun",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "glimmerwhisk noun",
+       2
+      ],
+      [
+       "plorvance n",
+       1
+      ],
+      [
+       "snorkelwhim noun",
+       1
+      ]
+     ]
+    },
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.47,
+     "a": [
+      [
+       "how about",
+       7
+      ],
+      [
+       "veloria prime",
+       5
+      ],
+      [
+       "veloria kessandra",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "how about",
+       10
+      ],
+      [
+       "veloria prime",
+       6
+      ],
+      [
+       "veythara prime",
+       1
+      ]
+     ]
+    },
+    {
+     "prompt": "Name a gemstone.",
+     "tv": 0.27,
+     "a": [
+      [
+       "ruby",
+       17
+      ],
+      [
+       "diamond",
+       13
+      ]
+     ],
+     "b": [
+      [
+       "ruby",
+       15
+      ],
+      [
+       "diamond",
+       7
+      ],
+      [
+       "sapphire",
+       7
+      ]
+     ]
+    }
+   ]
+  }
+ ],
+ "self": {
+  "amazon-bedrock": 0.7892107892107892,
+  "amazon-bedrock/eu-west-1": 0.5534465534465535,
+  "amazon-bedrock/us-east-1": 0.4905094905094905,
+  "anthropic": 0.45754245754245754,
+  "azure/global": 0.8471528471528471,
+  "azure/us": 0.34065934065934067,
+  "claude-on-aws": 0.4405594405594406,
+  "google-vertex/europe": 0.44655344655344653,
+  "google-vertex/global": 0.4565434565434565,
+  "google-vertex/us": 0.27672327672327673
+ },
+ "drift": {
+  "from": "2026-11-08-r1",
+  "to": "2026-11-08-r2",
+  "endpoints": {
+   "amazon-bedrock": {
+    "stat": 2.929,
+    "p": 0.958041958041958,
+    "prompts": 44,
+    "top": [
+     {
+      "prompt": "Make up a word and define it in one sentence.",
+      "tv": 0.8,
+      "a": [
+       [
+        "glimmerwhisk noun",
+        3
+       ],
+       [
+        "flimbrook noun",
+        1
+       ],
+       [
+        "flumbrasket noun",
+        1
+       ]
+      ],
+      "b": [
+       [
+        "glimmerwhisk noun",
+        3
+       ],
+       [
+        "glimmerwhisk n",
+        2
+       ],
+       [
+        "flumbrate verb",
+        2
+       ]
+      ]
+     },
+     {
+      "prompt": "Invent a name for a fictional planet.",
+      "tv": 0.65,
+      "a": [
+       [
+        "veloria prime",
+        6
+       ],
+       [
+        "veloran prime",
+        2
+       ],
+       [
+        "how about",
+        2
+       ]
+      ],
+      "b": [
+       [
+        "veloria prime",
+        3
+       ],
+       [
+        "veloran prime",
+        3
+       ],
+       [
+        "velmara prime",
+        2
+       ]
+      ]
+     },
+     {
+      "prompt": "Give a first name for a fictional detective.",
+      "tv": 0.13,
+      "a": [
+       [
+        "sherlock",
+        25
+       ],
+       [
+        "elias",
+        1
+       ],
+       [
+        "miles",
+        1
+       ]
+      ],
+      "b": [
+       [
+        "sherlock",
+        27
+       ],
+       [
+        "miles",
+        1
+       ]
+      ]
+     }
+    ],
+    "reasoning_then": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 90.0,
+     "reasoning_tokens_mean": 128,
+     "reasoning_chars_median": 150.0,
+     "completion_tokens_median": 214.5
+    },
+    "reasoning_now": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 136.0,
+     "reasoning_tokens_mean": 152,
+     "reasoning_chars_median": 147.5,
+     "completion_tokens_median": 315.5
+    }
+   },
+   "amazon-bedrock/eu-west-1": {
+    "stat": 3.296,
+    "p": 0.7522477522477522,
+    "prompts": 44,
+    "top": [
+     {
+      "prompt": "Make up a word and define it in one sentence.",
+      "tv": 0.7,
+      "a": [
+       [
+        "glimmerwhisk noun",
+        6
+       ],
+       [
+        "glimmerwhisk n",
+        3
+       ],
+       [
+        "flimbersnatch n",
+        2
+       ]
+      ],
+      "b": [
+       [
+        "glimmerwhisk noun",
+        5
+       ],
+       [
+        "glimmerwhisk n",
+        2
+       ],
+       [
+        "glimmerfen noun",
+        1
+       ]
+      ]
+     },
+     {
+      "prompt": "Invent a name for a fictional planet.",
+      "tv": 0.62,
+      "a": [
+       [
+        "velmora prime",
+        4
+       ],
+       [
+        "how about",
+        3
+       ],
+       [
+        "velthara prime",
+        3
+       ]
+      ],
+      "b": [
+       [
+        "velmora prime",
+        3
+       ],
+       [
+        "veloria prime",
+        3
+       ],
+       [
+        "veloran prime",
+        2
+       ]
+      ]
+     },
+     {
+      "prompt": "Complete with one word: She opened the box and found a ___.",
+      "tv": 0.19,
+      "a": [
+       [
+        "surprise",
+        18
+       ],
+       [
+        "treasure",
+        5
+       ],
+       [
+        "letter",
+        4
+       ]
+      ],
+      "b": [
+       [
+        "surprise",
+        23
+       ],
+       [
+        "treasure",
+        3
+       ],
+       [
+        "gift",
+        1
+       ]
+      ]
+     }
+    ],
+    "reasoning_then": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 136.5,
+     "reasoning_tokens_mean": 148,
+     "reasoning_chars_median": 142.5,
+     "completion_tokens_median": 274.5
+    },
+    "reasoning_now": {
+     "n": 11,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 156,
+     "reasoning_tokens_mean": 142,
+     "reasoning_chars_median": 169,
+     "completion_tokens_median": 298
+    }
+   },
+   "amazon-bedrock/us-east-1": {
+    "stat": 3.441,
+    "p": 0.7282717282717283,
+    "prompts": 44,
+    "top": [
+     {
+      "prompt": "Make up a word and define it in one sentence.",
+      "tv": 0.77,
+      "a": [
+       [
+        "glimmerfen n",
+        2
+       ],
+       [
+        "flumbrage noun",
+        2
+       ],
+       [
+        "glimmerwhisk n",
+        2
+       ]
+      ],
+      "b": [
+       [
+        "glimmerwhisk noun",
+        3
+       ],
+       [
+        "glimmerwhisk n",
+        2
+       ],
+       [
+        "flumberate verb",
+        1
+       ]
+      ]
+     },
+     {
+      "prompt": "Invent a name for a fictional planet.",
+      "tv": 0.66,
+      "a": [
+       [
+        "veloria prime",
+        4
+       ],
+       [
+        "veloran prime",
+        3
+       ],
+       [
+        "veloryn prime",
+        2
+       ]
+      ],
+      "b": [
+       [
+        "veloria prime",
+        6
+       ],
+       [
+        "veloryn prime",
+        2
+       ],
+       [
+        "velmara prime",
+        2
+       ]
+      ]
+     },
+     {
+      "prompt": "Name a hobby someone could start this weekend.",
+      "tv": 0.28,
+      "a": [
+       [
+        "birdwatching all",
+        25
+       ],
+       [
+        "try birdwatching",
+        5
+       ]
+      ],
+      "b": [
+       [
+        "birdwatching all",
+        18
+       ],
+       [
+        "birdwatching you",
+        6
+       ],
+       [
+        "try birdwatching",
+        3
+       ]
+      ]
+     }
+    ],
+    "reasoning_then": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 132.5,
+     "reasoning_tokens_mean": 132,
+     "reasoning_chars_median": 144.5,
+     "completion_tokens_median": 308.5
+    },
+    "reasoning_now": {
+     "n": 11,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 69,
+     "reasoning_tokens_mean": 122,
+     "reasoning_chars_median": 140,
+     "completion_tokens_median": 264
+    }
+   },
+   "anthropic": {
+    "stat": 3.447,
+    "p": 0.2867132867132867,
+    "prompts": 44,
+    "top": [
+     {
+      "prompt": "Make up a word and define it in one sentence.",
+      "tv": 1.0,
+      "a": [
+       [
+        "glimmerwhisk noun",
+        6
+       ],
+       [
+        "glimmerfen n",
+        2
+       ],
+       [
+        "flimbersnatch n",
+        2
+       ]
+      ],
+      "b": [
+       [
+        "glimmerwhisk n",
+        3
+       ],
+       [
+        "flumbrate verb",
+        2
+       ],
+       [
+        "flimbersnatch noun",
+        2
+       ]
+      ]
+     },
+     {
+      "prompt": "Invent a name for a fictional planet.",
+      "tv": 0.53,
+      "a": [
+       [
+        "how about",
+        11
+       ],
+       [
+        "veloria prime",
+        4
+       ],
+       [
+        "veloran prime",
+        2
+       ]
+      ],
+      "b": [
+       [
+        "how about",
+        7
+       ],
+       [
+        "veloria prime",
+        5
+       ],
+       [
+        "veloria kessandra",
+        2
+       ]
+      ]
+     },
+     {
+      "prompt": "Pick a random integer from 1 to 100.",
+      "tv": 0.28,
+      "a": [
+       [
+        "37",
+        20
+       ],
+       [
+        "47",
+        9
+       ],
+       [
+        "42",
+        1
+       ]
+      ],
+      "b": [
+       [
+        "37",
+        15
+       ],
+       [
+        "73",
+        8
+       ],
+       [
+        "47",
+        5
+       ]
+      ]
+     }
+    ],
+    "reasoning_then": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 116.5,
+     "reasoning_tokens_mean": 137,
+     "reasoning_chars_median": 231.5,
+     "completion_tokens_median": 304.0
+    },
+    "reasoning_now": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 132.0,
+     "reasoning_tokens_mean": 143,
+     "reasoning_chars_median": 253.5,
+     "completion_tokens_median": 305.5
+    }
+   },
+   "azure/global": {
+    "stat": 3.217,
+    "p": 0.8141858141858141,
+    "prompts": 44,
+    "top": [
+     {
+      "prompt": "Make up a word and define it in one sentence.",
+      "tv": 0.9,
+      "a": [
+       [
+        "snoozlefrap noun",
+        1
+       ],
+       [
+        "glimmerwhisk n",
+        1
+       ],
+       [
+        "quistry noun",
+        1
+       ]
+      ],
+      "b": [
+       [
+        "glimmerwhisk noun",
+        2
+       ],
+       [
+        "flimbersnatch n",
+        2
+       ],
+       [
+        "flumberwick noun",
+        2
+       ]
+      ]
+     },
+     {
+      "prompt": "Invent a name for a fictional planet.",
+      "tv": 0.6,
+      "a": [
+       [
+        "how about",
+        6
+       ],
+       [
+        "veloria prime",
+        3
+       ],
+       [
+        "veloran prime",
+        3
+       ]
+      ],
+      "b": [
+       [
+        "how about",
+        6
+       ],
+       [
+        "veloria prime",
+        4
+       ],
+       [
+        "vesperia nox",
+        1
+       ]
+      ]
+     },
+     {
+      "prompt": "Give one piece of advice for a new programmer, in one sentence.",
+      "tv": 0.2,
+      "a": [
+       [
+        "write code",
+        22
+       ],
+       [
+        "build small",
+        5
+       ],
+       [
+        "write small",
+        3
+       ]
+      ],
+      "b": [
+       [
+        "write code",
+        26
+       ],
+       [
+        "build small",
+        2
+       ],
+       [
+        "read other",
+        1
+       ]
+      ]
+     }
+    ],
+    "reasoning_then": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 124.0,
+     "reasoning_tokens_mean": 151,
+     "reasoning_chars_median": 214.5,
+     "completion_tokens_median": 296.0
+    },
+    "reasoning_now": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 99.0,
+     "reasoning_tokens_mean": 125,
+     "reasoning_chars_median": 233.5,
+     "completion_tokens_median": 270.5
+    }
+   },
+   "azure/us": {
+    "stat": 3.336,
+    "p": 0.8411588411588412,
+    "prompts": 44,
+    "top": [
+     {
+      "prompt": "Make up a word and define it in one sentence.",
+      "tv": 0.86,
+      "a": [
+       [
+        "glimmerwhisk n",
+        3
+       ],
+       [
+        "flumbrix noun",
+        2
+       ],
+       [
+        "glimmerwhisk noun",
+        2
+       ]
+      ],
+      "b": [
+       [
+        "flumbrate verb",
+        3
+       ],
+       [
+        "glimmerfrost noun",
+        2
+       ],
+       [
+        "glimmerwhisk n",
+        2
+       ]
+      ]
+     },
+     {
+      "prompt": "Invent a name for a fictional planet.",
+      "tv": 0.61,
+      "a": [
+       [
+        "veloria prime",
+        7
+       ],
+       [
+        "how about",
+        5
+       ],
+       [
+        "veloran prime",
+        2
+       ]
+      ],
+      "b": [
+       [
+        "how about",
+        4
+       ],
+       [
+        "velmara prime",
+        3
+       ],
+       [
+        "veloria prime",
+        3
+       ]
+      ]
+     },
+     {
+      "prompt": "Write the opening line of a poem about rain.",
+      "tv": 0.17,
+      "a": [
+       [
+        "the rain",
+        25
+       ],
+       [
+        "rain arrives",
+        3
+       ],
+       [
+        "the sky",
+        2
+       ]
+      ],
+      "b": [
+       [
+        "the rain",
+        29
+       ]
+      ]
+     }
+    ],
+    "reasoning_then": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 141.5,
+     "reasoning_tokens_mean": 145,
+     "reasoning_chars_median": 270.5,
+     "completion_tokens_median": 333.0
+    },
+    "reasoning_now": {
+     "n": 10,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 102.5,
+     "reasoning_tokens_mean": 139,
+     "reasoning_chars_median": 239.0,
+     "completion_tokens_median": 274.0
+    }
+   },
+   "claude-on-aws": {
+    "stat": 3.722,
+    "p": 0.060939060939060936,
+    "prompts": 44,
+    "top": [
+     {
+      "prompt": "Make up a word and define it in one sentence.",
+      "tv": 0.83,
+      "a": [
+       [
+        "flumberwick noun",
+        4
+       ],
+       [
+        "glimmerwhisk n",
+        4
+       ],
+       [
+        "flimbrous adjective",
+        2
+       ]
+      ],
+      "b": [
+       [
+        "glimmerbask verb",
+        2
+       ],
+       [
+        "flimbrate verb",
+        2
+       ],
+       [
+        "glimmerfen noun",
+        2
+       ]
+      ]
+     },
+     {
+      "prompt": "Give one word that rhymes with 'light'.",
+      "tv": 0.38,
+      "a": [
+       [
+        "night",
+        26
+       ],
+       [
+        "bright",
+        2
+       ],
+       [
+        "bite",
+        1
+       ]
+      ],
+      "b": [
+       [
+        "night",
+        13
+       ],
+       [
+        "bright",
+        11
+       ],
+       [
+        "right",
+        1
+       ]
+      ]
+     },
+     {
+      "prompt": "Give one piece of advice for a new programmer, in one sentence.",
+      "tv": 0.37,
+      "a": [
+       [
+        "write code",
+        25
+       ],
+       [
+        "build small",
+        4
+       ],
+       [
+        "write small",
+        1
+       ]
+      ],
+      "b": [
+       [
+        "write code",
+        14
+       ],
+       [
+        "build small",
+        14
+       ]
+      ]
+     }
+    ],
+    "reasoning_then": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 137.5,
+     "reasoning_tokens_mean": 140,
+     "reasoning_chars_median": 228.5,
+     "completion_tokens_median": 295.0
+    },
+    "reasoning_now": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 125.0,
+     "reasoning_tokens_mean": 141,
+     "reasoning_chars_median": 224.0,
+     "completion_tokens_median": 290.0
+    }
+   },
+   "google-vertex/europe": {
+    "stat": 3.663,
+    "p": 0.19880119880119881,
+    "prompts": 44,
+    "top": [
+     {
+      "prompt": "Make up a word and define it in one sentence.",
+      "tv": 0.79,
+      "a": [
+       [
+        "glimmerwhisk noun",
+        3
+       ],
+       [
+        "quorble noun",
+        2
+       ],
+       [
+        "flimbertide noun",
+        2
+       ]
+      ],
+      "b": [
+       [
+        "glimmerwhisk n",
+        2
+       ],
+       [
+        "glimmerwhisk noun",
+        2
+       ],
+       [
+        "flimsterate verb",
+        1
+       ]
+      ]
+     },
+     {
+      "prompt": "Invent a name for a fictional planet.",
+      "tv": 0.64,
+      "a": [
+       [
+        "how about",
+        12
+       ],
+       [
+        "veloria prime",
+        2
+       ],
+       [
+        "velmora prime",
+        1
+       ]
+      ],
+      "b": [
+       [
+        "how about",
+        7
+       ],
+       [
+        "veloria prime",
+        4
+       ],
+       [
+        "veyrath prime",
+        2
+       ]
+      ]
+     },
+     {
+      "prompt": "Complete with one word: She opened the box and found a ___.",
+      "tv": 0.23,
+      "a": [
+       [
+        "treasure",
+        17
+       ],
+       [
+        "surprise",
+        10
+       ],
+       [
+        "gift",
+        2
+       ]
+      ],
+      "b": [
+       [
+        "surprise",
+        14
+       ],
+       [
+        "treasure",
+        10
+       ],
+       [
+        "gift",
+        1
+       ]
+      ]
+     }
+    ],
+    "reasoning_then": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 133.0,
+     "reasoning_tokens_mean": 148,
+     "reasoning_chars_median": 136.5,
+     "completion_tokens_median": 295.5
+    },
+    "reasoning_now": {
+     "n": 11,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 93,
+     "reasoning_tokens_mean": 109,
+     "reasoning_chars_median": 133,
+     "completion_tokens_median": 248
+    }
+   },
+   "google-vertex/global": {
+    "stat": 3.453,
+    "p": 0.42857142857142855,
+    "prompts": 44,
+    "top": [
+     {
+      "prompt": "Make up a word and define it in one sentence.",
+      "tv": 0.79,
+      "a": [
+       [
+        "glimmerwhisk noun",
+        3
+       ],
+       [
+        "flumberwick noun",
+        2
+       ],
+       [
+        "glimmerwhisk n",
+        2
+       ]
+      ],
+      "b": [
+       [
+        "flumbrix noun",
+        3
+       ],
+       [
+        "glimmerwhisk n",
+        3
+       ],
+       [
+        "glimmerwhisk noun",
+        2
+       ]
+      ]
+     },
+     {
+      "prompt": "Invent a name for a fictional planet.",
+      "tv": 0.41,
+      "a": [
+       [
+        "how about",
+        8
+       ],
+       [
+        "veloria prime",
+        5
+       ],
+       [
+        "velmora prime",
+        3
+       ]
+      ],
+      "b": [
+       [
+        "how about",
+        7
+       ],
+       [
+        "veloria prime",
+        4
+       ],
+       [
+        "velmora prime",
+        3
+       ]
+      ]
+     },
+     {
+      "prompt": "Pick a random integer from 1 to 100.",
+      "tv": 0.31,
+      "a": [
+       [
+        "37",
+        22
+       ],
+       [
+        "47",
+        5
+       ],
+       [
+        "73",
+        3
+       ]
+      ],
+      "b": [
+       [
+        "37",
+        11
+       ],
+       [
+        "47",
+        9
+       ],
+       [
+        "73",
+        5
+       ]
+      ]
+     }
+    ],
+    "reasoning_then": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 114.5,
+     "reasoning_tokens_mean": 141,
+     "reasoning_chars_median": 141.0,
+     "completion_tokens_median": 327.5
+    },
+    "reasoning_now": {
+     "n": 10,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 101.5,
+     "reasoning_tokens_mean": 108,
+     "reasoning_chars_median": 134.5,
+     "completion_tokens_median": 216.0
+    }
+   },
+   "google-vertex/us": {
+    "stat": 3.519,
+    "p": 0.21578421578421578,
+    "prompts": 44,
+    "top": [
+     {
+      "prompt": "Make up a word and define it in one sentence.",
+      "tv": 0.9,
+      "a": [
+       [
+        "glimmerwhisk noun",
+        3
+       ],
+       [
+        "flumbrige verb",
+        2
+       ],
+       [
+        "glimmerwhisk n",
+        2
+       ]
+      ],
+      "b": [
+       [
+        "glimmerwhisk noun",
+        2
+       ],
+       [
+        "plorvance n",
+        1
+       ],
+       [
+        "snorkelwhim noun",
+        1
+       ]
+      ]
+     },
+     {
+      "prompt": "Invent a name for a fictional planet.",
+      "tv": 0.49,
+      "a": [
+       [
+        "how about",
+        10
+       ],
+       [
+        "veloran prime",
+        3
+       ],
+       [
+        "veloria prime",
+        3
+       ]
+      ],
+      "b": [
+       [
+        "how about",
+        10
+       ],
+       [
+        "veloria prime",
+        6
+       ],
+       [
+        "veythara prime",
+        1
+       ]
+      ]
+     },
+     {
+      "prompt": "Pick a random integer from 1 to 100.",
+      "tv": 0.31,
+      "a": [
+       [
+        "37",
+        25
+       ],
+       [
+        "73",
+        3
+       ],
+       [
+        "47",
+        2
+       ]
+      ],
+      "b": [
+       [
+        "37",
+        14
+       ],
+       [
+        "47",
+        9
+       ],
+       [
+        "73",
+        4
+       ]
+      ]
+     }
+    ],
+    "reasoning_then": {
+     "n": 12,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 127.0,
+     "reasoning_tokens_mean": 145,
+     "reasoning_chars_median": 124.0,
+     "completion_tokens_median": 307.0
+    },
+    "reasoning_now": {
+     "n": 10,
+     "accuracy": 1.0,
+     "reasoning_tokens_median": 131.5,
+     "reasoning_tokens_mean": 140,
+     "reasoning_chars_median": 131.5,
+     "completion_tokens_median": 305.0
+    }
+   }
+  }
+ }
+}

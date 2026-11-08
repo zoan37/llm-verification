@@ -1,0 +1,1194 @@
+{
+ "model": "anthropic/claude-opus-5.5",
+ "date": "2026-11-08",
+ "endpoints": {
+  "amazon-bedrock": {
+   "fingerprint_samples": 966,
+   "errors": {},
+   "reasoning": {
+    "n": 18,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 52.0,
+    "reasoning_tokens_mean": 67,
+    "reasoning_chars_median": 127.0,
+    "completion_tokens_median": 268.5
+   },
+   "reasoning_tokens_fingerprint_median": 0.0
+  },
+  "amazon-bedrock/eu-west-1": {
+   "fingerprint_samples": 963,
+   "errors": {},
+   "reasoning": {
+    "n": 14,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 50.0,
+    "reasoning_tokens_mean": 66,
+    "reasoning_chars_median": 140.0,
+    "completion_tokens_median": 280.5
+   },
+   "reasoning_tokens_fingerprint_median": 0
+  },
+  "amazon-bedrock/us-east-1": {
+   "fingerprint_samples": 974,
+   "errors": {},
+   "reasoning": {
+    "n": 18,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 46.0,
+    "reasoning_tokens_mean": 55,
+    "reasoning_chars_median": 114.0,
+    "completion_tokens_median": 242.5
+   },
+   "reasoning_tokens_fingerprint_median": 0.0
+  },
+  "anthropic": {
+   "fingerprint_samples": 959,
+   "errors": {},
+   "reasoning": {
+    "n": 20,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 51.0,
+    "reasoning_tokens_mean": 66,
+    "reasoning_chars_median": 160.5,
+    "completion_tokens_median": 247.5
+   },
+   "reasoning_tokens_fingerprint_median": 0
+  },
+  "anthropic/fast": {
+   "fingerprint_samples": 980,
+   "errors": {},
+   "reasoning": {
+    "n": 19,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 45,
+    "reasoning_tokens_mean": 65,
+    "reasoning_chars_median": 166,
+    "completion_tokens_median": 263
+   },
+   "reasoning_tokens_fingerprint_median": 0.0
+  },
+  "azure/global": {
+   "fingerprint_samples": 928,
+   "errors": {},
+   "reasoning": {
+    "n": 19,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 41,
+    "reasoning_tokens_mean": 66,
+    "reasoning_chars_median": 172,
+    "completion_tokens_median": 264
+   },
+   "reasoning_tokens_fingerprint_median": 0.0
+  },
+  "azure/us": {
+   "fingerprint_samples": 951,
+   "errors": {},
+   "reasoning": {
+    "n": 18,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 54.0,
+    "reasoning_tokens_mean": 72,
+    "reasoning_chars_median": 180.5,
+    "completion_tokens_median": 319.0
+   },
+   "reasoning_tokens_fingerprint_median": 0
+  },
+  "claude-on-aws": {
+   "fingerprint_samples": 983,
+   "errors": {},
+   "reasoning": {
+    "n": 16,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 51.0,
+    "reasoning_tokens_mean": 57,
+    "reasoning_chars_median": 171.5,
+    "completion_tokens_median": 275.5
+   },
+   "reasoning_tokens_fingerprint_median": 0
+  },
+  "google-vertex/europe": {
+   "fingerprint_samples": 978,
+   "errors": {},
+   "reasoning": {
+    "n": 17,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 50,
+    "reasoning_tokens_mean": 63,
+    "reasoning_chars_median": 120,
+    "completion_tokens_median": 289
+   },
+   "reasoning_tokens_fingerprint_median": 0.0
+  },
+  "google-vertex/global": {
+   "fingerprint_samples": 981,
+   "errors": {},
+   "reasoning": {
+    "n": 18,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 45.0,
+    "reasoning_tokens_mean": 59,
+    "reasoning_chars_median": 127.5,
+    "completion_tokens_median": 265.5
+   },
+   "reasoning_tokens_fingerprint_median": 0
+  },
+  "google-vertex/us": {
+   "fingerprint_samples": 971,
+   "errors": {},
+   "reasoning": {
+    "n": 20,
+    "accuracy": 1.0,
+    "reasoning_tokens_median": 48.5,
+    "reasoning_tokens_mean": 70,
+    "reasoning_chars_median": 127.0,
+    "completion_tokens_median": 321.0
+   },
+   "reasoning_tokens_fingerprint_median": 0
+  }
+ },
+ "pairs": [
+  {
+   "a": "anthropic",
+   "b": "amazon-bedrock",
+   "stat": 6.189,
+   "p": 0.000999000999000999,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Give a title for a mystery novel.",
+     "tv": 0.73,
+     "a": [
+      [
+       "the clockmaker",
+       14
+      ],
+      [
+       "the last",
+       5
+      ]
+     ],
+     "b": [
+      [
+       "the silence",
+       16
+      ],
+      [
+       "the clockmaker",
+       4
+      ],
+      [
+       "the last",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Write the first sentence of a fantasy novel.",
+     "tv": 0.73,
+     "a": [
+      [
+       "the night",
+       18
+      ],
+      [
+       "the last",
+       3
+      ],
+      [
+       "the day",
+       1
+      ]
+     ],
+     "b": [
+      [
+       "the last",
+       16
+      ],
+      [
+       "on the",
+       3
+      ],
+      [
+       "the night",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Complete with one word: She opened the box and found a ___.",
+     "tv": 0.63,
+     "a": [
+      [
+       "letter",
+       10
+      ],
+      [
+       "ring",
+       6
+      ],
+      [
+       "key",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "key",
+       10
+      ],
+      [
+       "ring",
+       9
+      ],
+      [
+       "kitten",
+       1
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "amazon-bedrock/eu-west-1",
+   "stat": 6.431,
+   "p": 0.000999000999000999,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Write the first sentence of a fantasy novel.",
+     "tv": 0.78,
+     "a": [
+      [
+       "the night",
+       18
+      ],
+      [
+       "the last",
+       3
+      ],
+      [
+       "the day",
+       1
+      ]
+     ],
+     "b": [
+      [
+       "the last",
+       15
+      ],
+      [
+       "on the",
+       5
+      ],
+      [
+       "the night",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Write a six-word story.",
+     "tv": 0.6,
+     "a": [
+      [
+       "wrong number",
+       5
+      ],
+      [
+       "last human",
+       4
+      ],
+      [
+       "last breath",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "last human",
+       8
+      ],
+      [
+       "taught him",
+       2
+      ],
+      [
+       "grandpa s",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Give a first name for a fictional detective.",
+     "tv": 0.55,
+     "a": [
+      [
+       "margot",
+       10
+      ],
+      [
+       "marlowe",
+       5
+      ],
+      [
+       "mara",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "marlowe",
+       13
+      ],
+      [
+       "margot",
+       3
+      ],
+      [
+       "theodora",
+       2
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "amazon-bedrock/us-east-1",
+   "stat": 5.972,
+   "p": 0.000999000999000999,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Write the first sentence of a fantasy novel.",
+     "tv": 0.72,
+     "a": [
+      [
+       "the night",
+       18
+      ],
+      [
+       "the last",
+       3
+      ],
+      [
+       "the day",
+       1
+      ]
+     ],
+     "b": [
+      [
+       "the last",
+       15
+      ],
+      [
+       "on the",
+       3
+      ],
+      [
+       "the night",
+       3
+      ]
+     ]
+    },
+    {
+     "prompt": "Give a title for a mystery novel.",
+     "tv": 0.67,
+     "a": [
+      [
+       "the clockmaker",
+       14
+      ],
+      [
+       "the last",
+       5
+      ]
+     ],
+     "b": [
+      [
+       "the silence",
+       16
+      ],
+      [
+       "the last",
+       4
+      ],
+      [
+       "the clockmaker",
+       4
+      ]
+     ]
+    },
+    {
+     "prompt": "Write a six-word story.",
+     "tv": 0.66,
+     "a": [
+      [
+       "wrong number",
+       5
+      ],
+      [
+       "last human",
+       4
+      ],
+      [
+       "last breath",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "last human",
+       8
+      ],
+      [
+       "last message",
+       3
+      ],
+      [
+       "the lighthouse",
+       2
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "anthropic/fast",
+   "stat": 5.346,
+   "p": 0.000999000999000999,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.65,
+     "a": [
+      [
+       "veloria prime",
+       5
+      ],
+      [
+       "vethara prime",
+       3
+      ],
+      [
+       "velmaris prime",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "veloria prime",
+       12
+      ],
+      [
+       "veyruun",
+       2
+      ],
+      [
+       "velmora prime",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Complete with one word: She opened the box and found a ___.",
+     "tv": 0.49,
+     "a": [
+      [
+       "letter",
+       10
+      ],
+      [
+       "ring",
+       6
+      ],
+      [
+       "key",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "ring",
+       9
+      ],
+      [
+       "gift",
+       7
+      ],
+      [
+       "key",
+       3
+      ]
+     ]
+    },
+    {
+     "prompt": "Name a hobby someone could start this weekend.",
+     "tv": 0.45,
+     "a": [
+      [
+       "sketching is",
+       9
+      ],
+      [
+       "sketching all",
+       3
+      ],
+      [
+       "birdwatching is",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "birdwatching is",
+       8
+      ],
+      [
+       "hiking is",
+       5
+      ],
+      [
+       "sketching is",
+       3
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "azure/global",
+   "stat": 5.28,
+   "p": 0.003996003996003996,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Give a title for a mystery novel.",
+     "tv": 0.6,
+     "a": [
+      [
+       "the clockmaker",
+       14
+      ],
+      [
+       "the last",
+       5
+      ]
+     ],
+     "b": [
+      [
+       "the last",
+       11
+      ],
+      [
+       "the silence",
+       7
+      ],
+      [
+       "the clockmaker",
+       3
+      ]
+     ]
+    },
+    {
+     "prompt": "Write a six-word story.",
+     "tv": 0.54,
+     "a": [
+      [
+       "wrong number",
+       5
+      ],
+      [
+       "last human",
+       4
+      ],
+      [
+       "last breath",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "last text",
+       4
+      ],
+      [
+       "last human",
+       4
+      ],
+      [
+       "for sale",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.52,
+     "a": [
+      [
+       "veloria prime",
+       5
+      ],
+      [
+       "vethara prime",
+       3
+      ],
+      [
+       "velmaris prime",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "veloria prime",
+       9
+      ],
+      [
+       "veloria thane",
+       2
+      ],
+      [
+       "veyrathis",
+       2
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "azure/us",
+   "stat": 4.924,
+   "p": 0.007992007992007992,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.57,
+     "a": [
+      [
+       "veloria prime",
+       5
+      ],
+      [
+       "vethara prime",
+       3
+      ],
+      [
+       "velmaris prime",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "veloria prime",
+       6
+      ],
+      [
+       "veydris prime",
+       2
+      ],
+      [
+       "veyrathis",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Give a title for a mystery novel.",
+     "tv": 0.56,
+     "a": [
+      [
+       "the clockmaker",
+       14
+      ],
+      [
+       "the last",
+       5
+      ]
+     ],
+     "b": [
+      [
+       "the silence",
+       11
+      ],
+      [
+       "the last",
+       7
+      ],
+      [
+       "the clockmaker",
+       4
+      ]
+     ]
+    },
+    {
+     "prompt": "Write the first sentence of a fantasy novel.",
+     "tv": 0.54,
+     "a": [
+      [
+       "the night",
+       18
+      ],
+      [
+       "the last",
+       3
+      ],
+      [
+       "the day",
+       1
+      ]
+     ],
+     "b": [
+      [
+       "the last",
+       15
+      ],
+      [
+       "the night",
+       7
+      ],
+      [
+       "on the",
+       2
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "claude-on-aws",
+   "stat": 6.3,
+   "p": 0.000999000999000999,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Give a title for a mystery novel.",
+     "tv": 0.61,
+     "a": [
+      [
+       "the clockmaker",
+       14
+      ],
+      [
+       "the last",
+       5
+      ]
+     ],
+     "b": [
+      [
+       "the silence",
+       14
+      ],
+      [
+       "the clockmaker",
+       6
+      ],
+      [
+       "the last",
+       3
+      ]
+     ]
+    },
+    {
+     "prompt": "Complete with one word: She opened the box and found a ___.",
+     "tv": 0.59,
+     "a": [
+      [
+       "letter",
+       10
+      ],
+      [
+       "ring",
+       6
+      ],
+      [
+       "key",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "key",
+       8
+      ],
+      [
+       "ring",
+       7
+      ],
+      [
+       "gift",
+       5
+      ]
+     ]
+    },
+    {
+     "prompt": "Write a six-word story.",
+     "tv": 0.51,
+     "a": [
+      [
+       "wrong number",
+       5
+      ],
+      [
+       "last human",
+       4
+      ],
+      [
+       "last breath",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "last human",
+       9
+      ],
+      [
+       "wrong number",
+       3
+      ],
+      [
+       "found my",
+       2
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "google-vertex/europe",
+   "stat": 6.013,
+   "p": 0.000999000999000999,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Write a six-word story.",
+     "tv": 0.7,
+     "a": [
+      [
+       "wrong number",
+       5
+      ],
+      [
+       "last human",
+       4
+      ],
+      [
+       "last breath",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "last human",
+       13
+      ],
+      [
+       "last message",
+       3
+      ],
+      [
+       "wrong number",
+       1
+      ]
+     ]
+    },
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.7,
+     "a": [
+      [
+       "veloria prime",
+       5
+      ],
+      [
+       "vethara prime",
+       3
+      ],
+      [
+       "velmaris prime",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "veloria prime",
+       16
+      ],
+      [
+       "velmora prime",
+       2
+      ],
+      [
+       "veylith prime",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Complete with one word: She opened the box and found a ___.",
+     "tv": 0.56,
+     "a": [
+      [
+       "letter",
+       10
+      ],
+      [
+       "ring",
+       6
+      ],
+      [
+       "key",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "gift",
+       12
+      ],
+      [
+       "letter",
+       3
+      ],
+      [
+       "ring",
+       2
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "google-vertex/global",
+   "stat": 5.557,
+   "p": 0.000999000999000999,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Write a six-word story.",
+     "tv": 0.75,
+     "a": [
+      [
+       "wrong number",
+       5
+      ],
+      [
+       "last human",
+       4
+      ],
+      [
+       "last breath",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "last human",
+       11
+      ],
+      [
+       "last message",
+       4
+      ],
+      [
+       "last words",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.63,
+     "a": [
+      [
+       "veloria prime",
+       5
+      ],
+      [
+       "vethara prime",
+       3
+      ],
+      [
+       "velmaris prime",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "veloria prime",
+       8
+      ],
+      [
+       "vethara prime",
+       2
+      ],
+      [
+       "veyrith prime",
+       1
+      ]
+     ]
+    },
+    {
+     "prompt": "Complete with one word: She opened the box and found a ___.",
+     "tv": 0.58,
+     "a": [
+      [
+       "letter",
+       10
+      ],
+      [
+       "ring",
+       6
+      ],
+      [
+       "key",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "gift",
+       8
+      ],
+      [
+       "key",
+       6
+      ],
+      [
+       "ring",
+       4
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "a": "anthropic",
+   "b": "google-vertex/us",
+   "stat": 5.261,
+   "p": 0.002997002997002997,
+   "prompts": 44,
+   "top": [
+    {
+     "prompt": "Write a six-word story.",
+     "tv": 0.65,
+     "a": [
+      [
+       "wrong number",
+       5
+      ],
+      [
+       "last human",
+       4
+      ],
+      [
+       "last breath",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "last human",
+       11
+      ],
+      [
+       "last message",
+       3
+      ],
+      [
+       "last words",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Complete with one word: She opened the box and found a ___.",
+     "tv": 0.59,
+     "a": [
+      [
+       "letter",
+       10
+      ],
+      [
+       "ring",
+       6
+      ],
+      [
+       "key",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "gift",
+       11
+      ],
+      [
+       "key",
+       6
+      ],
+      [
+       "ring",
+       5
+      ]
+     ]
+    },
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.53,
+     "a": [
+      [
+       "veloria prime",
+       5
+      ],
+      [
+       "vethara prime",
+       3
+      ],
+      [
+       "velmaris prime",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "veloria prime",
+       6
+      ],
+      [
+       "velmaris prime",
+       2
+      ],
+      [
+       "veyrath prime",
+       1
+      ]
+     ]
+    }
+   ]
+  }
+ ],
+ "self": {
+  "amazon-bedrock": 0.14185814185814186,
+  "amazon-bedrock/eu-west-1": 0.8131868131868132,
+  "amazon-bedrock/us-east-1": 0.9200799200799201,
+  "anthropic": 0.4065934065934066,
+  "anthropic/fast": 0.989010989010989,
+  "azure/global": 0.47152847152847155,
+  "azure/us": 0.9230769230769231,
+  "claude-on-aws": 0.5884115884115884,
+  "google-vertex/europe": 0.4725274725274725,
+  "google-vertex/global": 0.5924075924075924,
+  "google-vertex/us": 0.1028971028971029
+ }
+}
