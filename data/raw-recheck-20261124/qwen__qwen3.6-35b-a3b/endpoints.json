@@ -1,0 +1,809 @@
+[
+ {
+  "name": "Darkbloom | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.00000005",
+   "completion": "0.0000007",
+   "input_cache_read": "0.000000025",
+   "discount": 0
+  },
+  "provider_name": "Darkbloom",
+  "tag": "darkbloom/fp4",
+  "service_tier": null,
+  "quantization": "fp4",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "top_k",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "stop",
+   "seed",
+   "max_tokens",
+   "response_format",
+   "structured_outputs",
+   "logprobs",
+   "top_logprobs",
+   "tools",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.93011879804332,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 437,
+   "p75": 768,
+   "p90": 1779,
+   "p99": 5350.360000000001
+  },
+  "throughput_last_30m": {
+   "p50": 58,
+   "p75": 45,
+   "p90": 35,
+   "p99": 20
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 437,
+     "p75": 768,
+     "p90": 1779,
+     "p99": 5350.360000000001
+    },
+    "throughput": {
+     "p50": 58,
+     "p75": 45,
+     "p90": 35,
+     "p99": 20
+    },
+    "request_count": 30047
+   }
+  }
+ },
+ {
+  "name": "DeepInfra | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.00000008",
+   "completion": "0.00000076",
+   "input_cache_read": "0.00000008",
+   "discount": 0
+  },
+  "provider_name": "DeepInfra",
+  "tag": "deepinfra/fp8/flex",
+  "service_tier": "flex",
+  "quantization": "fp8",
+  "max_completion_tokens": 65536,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "top_k",
+   "seed",
+   "min_p",
+   "logit_bias",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1433,
+   "p75": 1706,
+   "p90": 2494.7000000000016,
+   "p99": 3729.170000000002
+  },
+  "throughput_last_30m": {
+   "p50": 19,
+   "p75": 18,
+   "p90": 17,
+   "p99": 13
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1433,
+     "p75": 1706,
+     "p90": 2494.7000000000016,
+     "p99": 3729.170000000002
+    },
+    "throughput": {
+     "p50": 19,
+     "p75": 18,
+     "p90": 17,
+     "p99": 13
+    },
+    "request_count": 53762
+   }
+  }
+ },
+ {
+  "name": "CoreWeave | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.0000001",
+   "completion": "0.00000089",
+   "input_cache_read": "0.000000035",
+   "discount": 0
+  },
+  "provider_name": "CoreWeave",
+  "tag": "coreweave/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "top_k",
+   "repetition_penalty",
+   "frequency_penalty",
+   "presence_penalty",
+   "stop",
+   "seed",
+   "response_format",
+   "structured_outputs",
+   "logprobs",
+   "top_logprobs"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 490,
+   "p75": 541,
+   "p90": 616,
+   "p99": 995.2700000000004
+  },
+  "throughput_last_30m": {
+   "p50": 61,
+   "p75": 58,
+   "p90": 55,
+   "p99": 47
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 490,
+     "p75": 541,
+     "p90": 616,
+     "p99": 995.2700000000004
+    },
+    "throughput": {
+     "p50": 61,
+     "p75": 58,
+     "p90": 55,
+     "p99": 47
+    },
+    "request_count": 635543
+   }
+  }
+ },
+ {
+  "name": "Ambient | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.0000001",
+   "completion": "0.0000009",
+   "input_cache_read": "0.00000004",
+   "discount": 0
+  },
+  "provider_name": "Ambient",
+  "tag": "ambient/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "max_tokens",
+   "frequency_penalty",
+   "logit_bias",
+   "min_p",
+   "presence_penalty",
+   "repetition_penalty",
+   "seed",
+   "stop",
+   "top_k",
+   "top_p",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "logprobs",
+   "top_logprobs",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.78828510938604,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 986,
+   "p75": 1121,
+   "p90": 1320,
+   "p99": 2069.630000000001
+  },
+  "throughput_last_30m": {
+   "p50": 15,
+   "p75": 15,
+   "p90": 14,
+   "p99": 14
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 986,
+     "p75": 1121,
+     "p90": 1320,
+     "p99": 2069.630000000001
+    },
+    "throughput": {
+     "p50": 15,
+     "p75": 15,
+     "p90": 14,
+     "p99": 14
+    },
+    "request_count": 64499
+   }
+  }
+ },
+ {
+  "name": "AkashML | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.0000001",
+   "completion": "0.0000009",
+   "input_cache_read": "0.00000005",
+   "discount": 0
+  },
+  "provider_name": "AkashML",
+  "tag": "akashml/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "top_k",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "seed",
+   "max_tokens",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "logprobs",
+   "top_logprobs"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 1574.5,
+   "p75": 1756,
+   "p90": 1972,
+   "p99": 3030.720000000001
+  },
+  "throughput_last_30m": {
+   "p50": 25,
+   "p75": 23,
+   "p90": 22,
+   "p99": 17
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 1574.5,
+     "p75": 1756,
+     "p90": 1972,
+     "p99": 3030.720000000001
+    },
+    "throughput": {
+     "p50": 25,
+     "p75": 23,
+     "p90": 22,
+     "p99": 17
+    },
+    "request_count": 231129
+   }
+  }
+ },
+ {
+  "name": "DeepInfra | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.0000001",
+   "completion": "0.00000095",
+   "input_cache_read": "0.0000001",
+   "discount": 0
+  },
+  "provider_name": "DeepInfra",
+  "tag": "deepinfra/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 65536,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "top_k",
+   "seed",
+   "min_p",
+   "structured_outputs",
+   "tools",
+   "tool_choice",
+   "response_format",
+   "logit_bias"
+  ],
+  "supports_tool_choice": {
+   "none": false,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 750,
+   "p75": 944,
+   "p90": 1978.800000000001,
+   "p99": 3004.2700000000004
+  },
+  "throughput_last_30m": {
+   "p50": 21,
+   "p75": 20,
+   "p90": 18,
+   "p99": 13
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 750,
+     "p75": 944,
+     "p90": 1978.800000000001,
+     "p99": 3004.2700000000004
+    },
+    "throughput": {
+     "p50": 21,
+     "p75": 20,
+     "p90": 18,
+     "p99": 13
+    },
+    "request_count": 173028
+   }
+  }
+ },
+ {
+  "name": "Venice | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 256000,
+  "pricing": {
+   "prompt": "0.0000001",
+   "completion": "0.000001",
+   "discount": 0
+  },
+  "provider_name": "Venice",
+  "tag": "venice/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 65536,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "top_k",
+   "tools",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": false,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": false,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 831,
+   "p75": 1085.75,
+   "p90": 1618.8000000000006,
+   "p99": 4398.199999999988
+  },
+  "throughput_last_30m": {
+   "p50": 23,
+   "p75": 20,
+   "p90": 18,
+   "p99": 12
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 831,
+     "p75": 1085.75,
+     "p90": 1618.8000000000006,
+     "p99": 4398.199999999988
+    },
+    "throughput": {
+     "p50": 23,
+     "p75": 20,
+     "p90": 18,
+     "p99": 12
+    },
+    "request_count": 558
+   }
+  }
+ },
+ {
+  "name": "DeepInfra | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.00000015",
+   "completion": "0.000001425",
+   "input_cache_read": "0.00000015",
+   "discount": 0
+  },
+  "provider_name": "DeepInfra",
+  "tag": "deepinfra/fp8/priority",
+  "service_tier": "priority",
+  "quantization": "fp8",
+  "max_completion_tokens": 65536,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "stop",
+   "frequency_penalty",
+   "presence_penalty",
+   "repetition_penalty",
+   "top_k",
+   "seed",
+   "min_p",
+   "logit_bias",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 99.85754985754986,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 732,
+   "p75": 909,
+   "p90": 1918,
+   "p99": 2941.4500000000007
+  },
+  "throughput_last_30m": {
+   "p50": 21,
+   "p75": 20,
+   "p90": 18,
+   "p99": 14
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 732,
+     "p75": 909,
+     "p90": 1918,
+     "p99": 2941.4500000000007
+    },
+    "throughput": {
+     "p50": 21,
+     "p75": 20,
+     "p90": 18,
+     "p99": 14
+    },
+    "request_count": 29367
+   }
+  }
+ },
+ {
+  "name": "PrimeIntellect | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.00000019",
+   "completion": "0.000001697",
+   "input_cache_read": "0.00000017",
+   "discount": 0
+  },
+  "provider_name": "PrimeIntellect",
+  "tag": "primeintellect/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 65536,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "frequency_penalty",
+   "logit_bias",
+   "max_tokens",
+   "min_p",
+   "presence_penalty",
+   "repetition_penalty",
+   "seed",
+   "stop",
+   "temperature",
+   "top_k",
+   "top_p",
+   "response_format",
+   "structured_outputs",
+   "tools",
+   "tool_choice"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 100,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 504,
+   "p75": 720,
+   "p90": 1045,
+   "p99": 1909.2700000000004
+  },
+  "throughput_last_30m": {
+   "p50": 148,
+   "p75": 132,
+   "p90": 116,
+   "p99": 80
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 504,
+     "p75": 720,
+     "p90": 1045,
+     "p99": 1909.2700000000004
+    },
+    "throughput": {
+     "p50": 148,
+     "p75": 132,
+     "p90": 116,
+     "p99": 80
+    },
+    "request_count": 70219
+   }
+  }
+ },
+ {
+  "name": "SiliconFlow | qwen/qwen3.6-35b-a3b-20260415",
+  "model_id": "qwen/qwen3.6-35b-a3b",
+  "model_name": "Qwen: Qwen3.6 35B A3B",
+  "context_length": 262144,
+  "pricing": {
+   "prompt": "0.00000024",
+   "completion": "0.0000018",
+   "input_cache_read": "0.00000015",
+   "discount": 0
+  },
+  "provider_name": "SiliconFlow",
+  "tag": "siliconflow/fp8",
+  "service_tier": null,
+  "quantization": "fp8",
+  "max_completion_tokens": 235929,
+  "max_prompt_tokens": null,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "temperature",
+   "top_p",
+   "top_k",
+   "frequency_penalty",
+   "repetition_penalty",
+   "presence_penalty",
+   "max_tokens",
+   "structured_outputs",
+   "response_format"
+  ],
+  "supports_tool_choice": {
+   "none": true,
+   "auto": true,
+   "required": true,
+   "function": true
+  },
+  "status": 0,
+  "uptime_last_30m": 100,
+  "uptime_last_5m": 100,
+  "uptime_last_1d": 74.079754601227,
+  "supports_implicit_caching": true,
+  "native_tools": {},
+  "supports_voice_cloning": false,
+  "supports_multiple_audio_references": false,
+  "supports_image_reference": false,
+  "supports_diarization": false,
+  "latency_last_30m": {
+   "p50": 753,
+   "p75": 935.25,
+   "p90": 1245.6000000000001,
+   "p99": 5329.150000000003
+  },
+  "throughput_last_30m": {
+   "p50": 48.5,
+   "p75": 37,
+   "p90": 31,
+   "p99": 24
+  },
+  "perf_last_30m_by_workload": {
+   "text_generation": {
+    "latency": {
+     "p50": 753,
+     "p75": 935.25,
+     "p90": 1245.6000000000001,
+     "p99": 5329.150000000003
+    },
+    "throughput": {
+     "p50": 48.5,
+     "p75": 37,
+     "p90": 31,
+     "p99": 24
+    },
+    "request_count": 528
+   }
+  }
+ }
+]

@@ -435,6 +435,13 @@ bf16 ones 86 to 79. The sampling findings are unchanged:
   this is a sampling-path defect (e.g. low-precision softmax), not a different model. Effective-temperature scans
   (`experiments/effective_temperature.py`) and junk counts are in `experiments/results/`. Side note: asked for 0.5,
   Darkbloom and Bedrock both behave like ~0.6.
+  - **Update 2026-11-24:** cause found by Darkbloom: Float32 `-log(1-u)` in its exponential-race sampler (1-u rounds to 1
+    for u <= 2^-25, so a random vocabulary token wins; 201,088 x 2^-25 = 0.6% of tokens). Fix `-log1p(-u)` merged
+    (Layr-Labs/mlx-swift-lm#505, d-inference#2539); reproduced with MLX's RNG (`experiments/sampler_float32_race.py`:
+    old 54 per 10k, new 0 of 30,000). Not deployed as of 2026-11-24 (latest release v0.10.17): the live endpoint, now
+    labelled fp4, gave 53/51/49 per 10k at T 0.9/1.0/1.1 by its own logprobs (`data/raw-recheck-20261124`). Darkbloom's
+    Qwen3.6 still picks a non-top token (own logprobs) on 3.6% of T 0 and 3.4% of T 0.01 tokens, always within 1.5 nats
+    (`data/raw-recheck-20261124-t001`); its other models are at 0%.
 - **Groq** truncates the tail (0 vs 14.3 expected) and bills 4 extra prompt tokens; **DeepInfra (bf16)** failed 81
   of 104 requests and bills 13 fewer prompt tokens than the published template.
 
