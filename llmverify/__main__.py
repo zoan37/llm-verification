@@ -69,15 +69,34 @@ def cmd_verify(a):
     from .audit import audit_trace
     from .engine import LlamaEngine
     from .metrics import means
-    from .receipt import Receipt, Trace, check_receipt
+    from .receipt import Receipt, Trace, check_receipt, text_digest
     from .sampling import SamplingSpec
     d = json.loads(Path(a.reply).read_text())
     v = d.get("verification", d)
     receipt, trace = Receipt.from_dict(v["receipt"]), Trace.from_dict(v["trace"])
-    chk = check_receipt(receipt, trace, pinned_key=a.key)
-    print(json.dumps({"exact_checks_ok": chk.ok, "problems": chk.problems}, indent=1))
-    if a.referee and chk.ok:
-        ref = LlamaEngine(shlex.split(a.referee))
+    # The referee's tokenizer supplies what the trace alone cannot: end-of-generation ids (padding and truncation
+    # checks), the vocabulary size and the detokenized text. Without one, only the text hash ties text to receipt.
+    ref = LlamaEngine(shlex.split(a.referee)) if a.referee else None
+    eos = list(ref.eos_ids) if ref else []
+    chk = check_receipt(receipt, trace, pinned_key=a.key, eos_ids=eos, vocab=ref.n_vocab if ref else None)
+    if "choices" in d:  # a full chat completion: the text the user saw must be the text that was signed
+        text = ((d["choices"] or [{}])[0].get("message") or {}).get("content")
+        if type(text) is not str:
+            chk.problems.append("reply text is missing or not a string")
+        else:
+            if not receipt.text_sha256:
+                chk.problems.append("receipt does not commit to the reply text")
+            elif receipt.text_sha256 != text_digest(text):
+                chk.problems.append("returned text is not the text the provider signed for")
+            if ref and text != ref.detokenize([t for t in trace.tokens if t not in set(eos)]):
+                chk.problems.append("returned text does not match the committed tokens")
+        chk.ok = not chk.problems
+    out = {"exact_checks_ok": chk.ok, "problems": chk.problems}
+    if not ref:
+        out["skipped"] = ("end-of-generation, vocabulary and token-to-text checks (pass --referee)"
+                          + ("" if "choices" in d else "; text checks (the file has no reply text)"))
+    print(json.dumps(out, indent=1))
+    if ref and chk.ok:
         scores = audit_trace(ref, trace, SamplingSpec(**receipt.sampling), receipt.client_nonce)
         print(json.dumps({"audited_tokens": sum(1 for s in scores if s),
                           **means(scores, ("regret", "agree", "wgap", "topk"))}, indent=1))

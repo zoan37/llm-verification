@@ -152,3 +152,13 @@ def test_native_batch_path_never_bypasses_an_overridden_generate():
             return super().generate(prompt_ids, spec, max_tokens, client_nonce)
     g = Cheat(FakeNative(weights_seed=1), SIGNER, INFO).generate_batch([([5, 6], SamplingSpec(), 4, "n")])
     assert called and g[0].trace.tokens
+
+
+def test_nonce_must_be_lowercase_hex():
+    app = App(VerifiableProvider(MODEL, SIGNER, INFO), TPL)
+    for bad in ("ab:1", 1234, "", "AB", {"x": 1}):
+        try:
+            app.complete({"messages": MSG, "max_tokens": 4, "verification": {"nonce": bad}})
+            raise AssertionError(f"nonce {bad!r} was accepted")
+        except ValueError:
+            pass

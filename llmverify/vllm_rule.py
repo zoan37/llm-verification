@@ -28,18 +28,17 @@ from typing import Dict
 
 from vllm.v1.worker.gpu.sample.logits_processor.interface import LogitsProcessor
 
-from .receipt import round_top
+from .receipt import check_nonce, round_top
 from .sampling import COMMIT_K, SamplingSpec, choose
 
 PREFIX = "llmverify_"
 
 
 def spec_from_args(args: dict) -> tuple:
-    t = float(args.get(PREFIX + "temperature", 0.0))
-    spec = SamplingSpec(mode="gumbel" if t > 0 else "greedy", temperature=t,
-                        top_k=int(args.get(PREFIX + "top_k", COMMIT_K)), top_p=float(args.get(PREFIX + "top_p", 1.0)),
-                        min_p=float(args.get(PREFIX + "min_p", 0.0)), seed=int(args.get(PREFIX + "seed", 0)))
-    return spec, str(args[PREFIX + "key"])
+    """The same strict parsing as a chat request (SamplingSpec.from_request): wrong types are rejected, not
+    coerced, so the processor never runs a spec other than the one the front end signs."""
+    body = {name: args.get(PREFIX + name) for name in ("temperature", "top_k", "top_p", "min_p", "seed")}
+    return SamplingSpec.from_request(body), check_nonce(args.get(PREFIX + "key"))
 
 
 class LlmverifyRule(LogitsProcessor):
@@ -61,6 +60,8 @@ class LlmverifyRule(LogitsProcessor):
             raise ValueError("llmverify: logit_bias / min_tokens / bad_words / allowed_token_ids change the distribution")
         if params.repetition_penalty != 1.0 or params.presence_penalty or params.frequency_penalty:
             raise ValueError("llmverify: penalties change the distribution")
+        if getattr(params, "structured_outputs", None) or getattr(params, "guided_decoding", None):
+            raise ValueError("llmverify: structured outputs (JSON schema, grammar) mask the distribution")
 
     def add_request(self, req_idx: int, sampling_params) -> bool:
         args = sampling_params.extra_args or {}

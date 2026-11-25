@@ -32,6 +32,7 @@
 //   {"cmd": "cb_add", "requests": [...as generate...]} -> {"slots": [...]}     continuous batching: prefill now
 //   {"cmd": "cb_step", "steps": n} -> {"finished": [{result + "slot"}], "active": m, "free_cells": c}
 //     advance every active sequence up to n tokens; new requests may be added between calls.
+//   {"cmd": "cb_reset"} -> {"ok": true}   drop every active sequence (the front end failed them after an error)
 //
 // All logprobs are raw (temperature 1) log-softmax over the full vocabulary, computed in double precision from
 // the engine's float logits.
@@ -523,6 +524,17 @@ struct Engine {
         return slots;
     }
 
+    // After an error the front end fails every in-flight request; drop them here too, or the orphans would keep
+    // their slots and cells and later finish into requests that no longer exist.
+    void cb_reset() {
+        if (cb_active() && ctx) llama_memory_clear(llama_get_memory(ctx), true);
+        std::fill(cb_used.begin(), cb_used.end(), 0);
+        std::fill(cb.begin(), cb.end(), Seq());
+        cb_cells = 0;
+        n_past = 0;
+        last_logits = nullptr;
+    }
+
     // Advance every active sequence by up to `steps` tokens; return the ones that finished and free their cells.
     json cb_step(int steps, int k) {
         json finished = json::array();
@@ -719,6 +731,9 @@ int main(int argc, char ** argv) {
                 resp["slots"] = E.cb_add(req.at("requests"), k);
             } else if (cmd == "cb_step") {
                 resp.update(E.cb_step(req.value("steps", 1), k));
+            } else if (cmd == "cb_reset") {
+                E.cb_reset();
+                resp["ok"] = true;
             } else if (cmd == "start" || cmd == "step") {
                 resp["top"] = cmd == "start" ? E.start(req["context"].get<std::vector<llama_token>>(), k)
                                              : E.step(req["token"].get<llama_token>(), k);

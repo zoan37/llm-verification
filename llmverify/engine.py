@@ -109,6 +109,10 @@ class LlamaEngine:
         """Advance every active sequence up to `steps` tokens: {"finished": [result + "slot"], "active", "free_cells"}."""
         return self.call({"cmd": "cb_step", "steps": steps, "k": k})
 
+    def cb_reset(self) -> None:
+        """Continuous batching: drop every active sequence (after an error failed them on the Python side)."""
+        self.call({"cmd": "cb_reset"})
+
     def generate(self, requests: Sequence[dict], k: int = 20) -> List[dict]:
         """Native cooperative generation (engine "generate"): each request {"context", "max_tokens", "key", "eos",
         "spec"}; each result {"tokens", "tops": [[[id, q], ...]], "finish_reason"} with q in units of 1e-4 nats."""

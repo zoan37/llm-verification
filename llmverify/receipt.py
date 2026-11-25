@@ -23,6 +23,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import re
 import secrets
 import time
 from dataclasses import asdict, dataclass, field
@@ -244,6 +245,14 @@ def check_receipt_header(receipt: Receipt, *, text: Optional[str] = None,
 
 def new_nonce() -> str:
     return secrets.token_hex(16)
+
+
+def check_nonce(nonce) -> str:
+    """A request nonce is lowercase hex (docs/receipt-spec.md). It goes into the ':'-separated noise preimage, so
+    anything else (a ':' in particular, or a non-string that each side might stringify differently) is rejected."""
+    if type(nonce) is not str or not re.fullmatch(r"[0-9a-f]{1,128}", nonce):
+        raise ValueError("verification.nonce must be a lowercase hex string of 1-128 characters")
+    return nonce
 
 
 def check_rule(trace: Trace, spec: SamplingSpec, key: str) -> List[int]:

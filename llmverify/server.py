@@ -25,7 +25,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Optional
 
 from .provider import VerifiableProvider
-from .receipt import VERSION as RECEIPT_VERSION, new_nonce
+from .receipt import VERSION as RECEIPT_VERSION, check_nonce, new_nonce
 from .sampling import SamplingSpec
 from .templates import render_chat
 
@@ -160,6 +160,10 @@ class ContinuousBatcher:
                         fut.set_exception(e)
                 inflight.clear()
                 free_cells = self.n_ctx
+                try:  # the engine may still hold some of them (or half of a cb_add); start it from empty too
+                    model.cb_reset()
+                except Exception:  # noqa: BLE001 - a dead engine fails the next call anyway
+                    pass
 
 
 class App:
@@ -191,7 +195,8 @@ class App:
             # reject rather than clamp: a clamped value would not match what the client asked for and signed against
             raise ValueError(f"max_tokens must be an integer in [1, {MAX_TOKENS_CAP}]")
         spec = SamplingSpec.from_request(body, default_seed=secrets.randbelow(2 ** 31))
-        nonce = ((body.get("verification") or {}).get("nonce")) or new_nonce()
+        nonce = (body.get("verification") or {}).get("nonce")
+        nonce = new_nonce() if nonce is None else check_nonce(nonce)
         mode = (body.get("verification") or {}).get("trace", "inline")
         if mode not in ("inline", "deferred"):
             raise ValueError("verification.trace must be 'inline' or 'deferred'")
