@@ -42,6 +42,12 @@ most on a model this small. gpt-oss-20b (Marlin MXFP4 kernels on the 4090): 16 o
 and 256-token requests ran at 989-995 tokens/s with the rule against 1,072-1,143 without at 16 concurrent, and
 1,712-1,749 against 1,815-2,043 at 32 concurrent: about 10% (6-15%).
 
+Stop tokens: the front end stops on every id vLLM stops on by default, the tokenizer's EOS plus
+`generation_config.json`'s `eos_token_id` list (Qwen3: 151643, 151645; gpt-oss: 199999, 200002, 200012), and adds
+BOS when the tokenizer does (Llama, Gemma). Before 2026-11-25 it knew only the tokenizer's single EOS, so a reply that
+ended on another one got a "length" receipt that clients reject as truncated. Re-tested on a DGX Spark (vLLM 0.32,
+gpt-oss-20b, batch-invariant): 16 of 16 replies (greedy and T=0.7, inline and deferred) passed every exact check.
+
 ## Exact checking in one pass
 
 With `VLLM_BATCH_INVARIANT=1` on both sides, a referee running the same vLLM version (no processor needed) on a GPU of

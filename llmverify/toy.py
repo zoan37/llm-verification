@@ -33,6 +33,7 @@ class ToyLM:
     def __init__(self, vocab: int = 64, states: int = 4096, weights_seed: int = 0, quant_noise: float = 0.0,
                  machine: int = 0, hw_noise: float = 0.0, sharpen: float = 1.0, eos: int = 0):
         self.vocab, self.states = vocab, states
+        self.n_vocab = vocab
         rng = np.random.default_rng(weights_seed)
         scale = np.exp(rng.normal(0.6, 0.6, size=(states, 1)))  # per-state sharpness
         self.W = rng.normal(0.0, 1.0, size=(states, vocab)) * scale

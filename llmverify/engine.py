@@ -82,6 +82,10 @@ class LlamaEngine:
     def eos_ids(self) -> List[int]:
         return [int(x) for x in self.meta["eos"]]
 
+    @property
+    def n_vocab(self) -> int:
+        return int(self.meta["n_vocab"])
+
     def tokenize(self, text: str, special: bool = False) -> List[int]:
         return [int(t) for t in self.call({"cmd": "tokenize", "text": text, "special": special})["tokens"]]
 

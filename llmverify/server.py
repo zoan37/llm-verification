@@ -5,7 +5,7 @@ plus `verification: {"nonce": "<client-chosen hex>", "trace": "inline" | "deferr
 completion with an extra `verification` object holding the signed receipt and, inline, the trace (prompt ids, output
 ids, committed top-20). Deferred, the reply carries only the receipt (about 700 bytes) and a `trace_id`; the trace
 waits in a rolling in-memory buffer for `trace_window` seconds and is served once asked for:
-GET /v1/verification/trace/<trace_id>, where trace_id is the hex sha256 of the receipt body (the digest it signs).
+GET /v1/verification/trace/<trace_id>, where trace_id is a random 128-bit hex id known only to the client.
 GET /v1/verification/info returns the provider's public key, model claim and trace window, for pinning.
 
 Concurrent requests are collected for a few milliseconds and generated together when the engine runs the rule
@@ -19,7 +19,7 @@ import queue
 import secrets
 import threading
 import time
-from collections import OrderedDict
+from collections import OrderedDict, deque
 from concurrent.futures import Future
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Optional
@@ -66,9 +66,10 @@ class Batcher:
     def __init__(self, provider: VerifiableProvider, max_batch: int, wait_s: float = 0.05, max_wait: float = 0.25):
         self.provider, self.max_batch, self.wait_s, self.max_wait = provider, max(1, max_batch), wait_s, max_wait
         self.q: "queue.Queue" = queue.Queue()
-        self.sizes: list = []  # batch sizes served, for monitoring
-        self.arrivals: list = []
-        self.durations: list = []
+        # recent history only, for monitoring (unbounded lists grew forever on a long-running server)
+        self.sizes: deque = deque(maxlen=1000)  # batch sizes served
+        self.arrivals: deque = deque(maxlen=1000)
+        self.durations: deque = deque(maxlen=1000)
         threading.Thread(target=self._loop, daemon=True).start()
 
     def submit(self, prompt_ids, spec, max_tokens, nonce):
@@ -109,7 +110,7 @@ class ContinuousBatcher:
         meta = provider.model.meta
         self.max_seqs, self.n_ctx = int(meta["n_seq_max"]), int(meta["n_ctx"])
         self.q: "queue.Queue" = queue.Queue()
-        self.sizes: list = []  # active sequences per step call, for monitoring
+        self.sizes: deque = deque(maxlen=1000)  # active sequences per step call, recent history for monitoring
         threading.Thread(target=self._loop, daemon=True).start()
 
     def submit(self, prompt_ids, spec, max_tokens, nonce):
@@ -199,7 +200,9 @@ class App:
         eos = self.provider.eos
         text = g.text if g.text is not None else self.tokenizer.detokenize([t for t in g.trace.tokens if t not in eos])
         if mode == "deferred":
-            trace_id = g.receipt.digest().hex()
+            # A random id, not derived from the receipt: a client may publish a receipt (to prove a reply) and
+            # whoever sees it must not be able to fetch the prompt and output trace (found in external review).
+            trace_id = secrets.token_hex(16)
             self.traces.put(trace_id, g.trace.to_dict())
             verification = {"receipt": g.receipt.to_dict(), "trace_id": trace_id,
                             "trace_until": int(time.time() + self.traces.window)}
@@ -217,9 +220,8 @@ class App:
 
     def info(self) -> dict:
         return {"provider_key": self.provider.signer.public_hex, "model": self.provider.model_info,
-                "batch_sizes_recent": self.batcher.sizes[-50:],
-                "batch_seconds_recent": getattr(self.batcher, "durations", [])[-50:],
-
+                "batch_sizes_recent": list(self.batcher.sizes)[-50:],
+                "batch_seconds_recent": list(getattr(self.batcher, "durations", []))[-50:],
                 "receipt_version": RECEIPT_VERSION, "sampling_rule": "llmverify-gumbel-v1",
                 "trace_window_s": self.traces.window}
 

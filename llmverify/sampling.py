@@ -48,6 +48,8 @@ class SamplingSpec:
             raise ValueError(f"unknown mode {self.mode!r}")
         if self.mode == "gumbel" and not self.temperature > 0:
             raise ValueError("gumbel sampling needs temperature > 0")
+        if self.mode == "greedy" and self.temperature != 0:
+            raise ValueError("greedy decoding records temperature 0")
         if not 1 <= self.top_k <= COMMIT_K:
             raise ValueError(f"top_k must be in [1, {COMMIT_K}]")
         if not 0.0 < self.top_p <= 1.0:
@@ -64,13 +66,29 @@ class SamplingSpec:
 
     @classmethod
     def from_request(cls, body: dict, default_seed: int = 0) -> "SamplingSpec":
-        """The spec an OpenAI-style request asks for. temperature 0 (or absent) means greedy."""
-        t = float(body.get("temperature") or 0.0)
-        top_p = body.get("top_p")
-        return cls(mode="gumbel" if t > 0 else "greedy", temperature=t,
-                   top_k=max(1, min(int(body.get("top_k") or COMMIT_K), COMMIT_K)),
-                   top_p=1.0 if top_p is None else float(top_p), min_p=float(body.get("min_p") or 0.0),
-                   seed=int(body["seed"]) if body.get("seed") is not None else default_seed)
+        """The spec an OpenAI-style request asks for. temperature 0 (or absent) means greedy. Out-of-range or
+        wrongly typed values are rejected, never clamped or coerced: a clamped value is not what the client asked
+        for, and a coerced seed (1234.9 -> 1234, true -> 1) hides a client bug behind a valid-looking receipt."""
+        def num(name: str, default: float) -> float:
+            v = body.get(name)
+            if v is None:
+                return default
+            if type(v) not in (int, float) or not math.isfinite(v):
+                raise ValueError(f"{name} must be a finite number")
+            return float(v)
+        t = num("temperature", 0.0)
+        if t < 0:
+            raise ValueError("temperature must be >= 0")
+        top_k = body.get("top_k")
+        if top_k is None or top_k in (0, -1):  # absent, or the engine convention for "no top-k limit"
+            top_k = COMMIT_K
+        elif type(top_k) is not int or not 1 <= top_k <= COMMIT_K:
+            raise ValueError(f"top_k must be an integer in [1, {COMMIT_K}] (0 or -1: no limit within the committed {COMMIT_K})")
+        seed = body.get("seed")
+        if seed is not None and type(seed) is not int:
+            raise ValueError("seed must be an integer")
+        return cls(mode="gumbel" if t > 0 else "greedy", temperature=t, top_k=top_k, top_p=num("top_p", 1.0),
+                   min_p=num("min_p", 0.0), seed=default_seed if seed is None else seed)
 
 
 def gumbel_noise(seed: int, key: str, step: int, token_id: int) -> float:

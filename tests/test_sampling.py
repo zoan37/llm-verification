@@ -54,3 +54,16 @@ def test_spec_validation_and_request_parsing():
     s = SamplingSpec.from_request({"temperature": 0.7, "seed": 5, "top_p": 0.9})
     assert s.mode == "gumbel" and s.seed == 5 and s.top_p == 0.9
     assert SamplingSpec.from_request({}).greedy
+
+
+def test_request_values_are_rejected_not_clamped_or_coerced():
+    # found in external review: top_k 50 became 20, seed 1234.9 became 1234, negative temperature became greedy
+    for bad in ({"top_k": 50}, {"top_k": -2}, {"top_k": 5.0}, {"seed": 1234.9}, {"seed": True}, {"seed": "7"},
+                {"temperature": -0.5}, {"temperature": "0.7"}, {"top_p": float("nan")}):
+        with pytest.raises(ValueError):
+            SamplingSpec.from_request(bad)
+    for no_limit in (0, -1, None):
+        assert SamplingSpec.from_request({"top_k": no_limit}).top_k == 20
+    assert SamplingSpec.from_request({"temperature": 0}).temperature == 0.0
+    with pytest.raises(ValueError):
+        SamplingSpec(mode="greedy", temperature=0.7)

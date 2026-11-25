@@ -13,14 +13,21 @@ An OpenAI-style chat request plus:
 | `seed` (int) | chosen by the client. Required for verifiability; a provider-chosen seed allows grinding. |
 | `verification.nonce` (hex string) | chosen by the client, fresh per request. Binds the receipt to this request and keys the noise. |
 | `verification.trace` | `"inline"` (default): the trace comes with the reply. `"deferred"`: only the receipt and a `trace_id`; the trace is served on request for the provider's trace window. |
-| `temperature`, `top_k` (≤ 20), `top_p`, `min_p` | the sampling spec. `temperature` 0 means greedy. |
+| `temperature`, `top_k` (≤ 20), `top_p`, `min_p` | the sampling spec. `temperature` 0 means greedy. Out-of-range or wrongly typed values (top_k above 20, a negative temperature, a non-integer seed) are rejected with HTTP 400, never clamped; `top_k` 0 or -1 (the usual "no limit") means 20. |
+
+**Why at most 20 candidates.** Sampling only ever draws from the committed top-20, so the tail beyond them is cut. This is
+disclosed and signed (`top_k` is in the receipt), unlike the silent tail truncation the black-box audits flag in
+providers that claim to sample from the full distribution. For most prompts the top-20 hold nearly all the
+probability mass; a larger commitment is a straightforward future version (more bytes per step, same rule).
 
 ## Generation
 
 1. Render the messages with the model's published chat template and tokenize: `prompt_ids`.
 2. For step s = 0, 1, ...:
    - compute raw (temperature 1) log-softmax over the full vocabulary; take the 20 highest, ties broken by lower
-     token id; quantize each logprob to an integer number of 1e-4 nats, `q = round(x * 10000)`, and use
+     token id (engines whose top-k kernel does not break exact ties this way, such as `torch.topk` on GPU, can differ
+     at the 20th place only when two raw logits are bitwise equal there; on the exact tier provider and referee run the
+     same kernel); quantize each logprob to an integer number of 1e-4 nats, `q = round(x * 10000)`, and use
      `q / 10000` from here on: `top[s]`.
    - choose the token with the rule below applied to `top[s]` (the *rounded* values).
    - stop after an end-of-generation token (it is included in the trace) or after `max_tokens` tokens.
@@ -73,8 +80,10 @@ client treats as a failure.
 
 ## Deferred traces
 
-With `verification.trace = "deferred"` the reply carries `{"receipt": ..., "trace_id": hex(sha256(canonical(receipt
-without signature))), "trace_until": unix seconds}`. `GET /v1/verification/trace/<trace_id>` returns the trace until
+With `verification.trace = "deferred"` the reply carries `{"receipt": ..., "trace_id": <random 128-bit hex>, "trace_until":
+unix seconds}`. The id is random, not derived from the receipt, so a client can publish a receipt (to prove a reply)
+without letting whoever reads it fetch the prompt and output; until 2026-11-25 it was the receipt digest (found in
+external review). The client verifies the fetched trace against the receipt's hashes, so the id needs no binding. `GET /v1/verification/trace/<trace_id>` returns the trace until
 then (the provider keeps a rolling buffer; `GET /v1/verification/info` reports `trace_window_s`). The client checks the
 receipt alone at once (signature, key, nonce, prompt, spec, max_tokens, model, text hash), then decides privately,
 after the receipt has arrived, whether to challenge; a challenged trace must match the receipt exactly, and a trace

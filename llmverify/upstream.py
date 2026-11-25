@@ -65,6 +65,20 @@ class UpstreamLlama:
         return tokens, [[(int(t["id"]), float(t["logprob"])) for t in s["top_logprobs"]] for s in steps]
 
 
+def vllm_stop_ids(tok, name: str) -> List[int]:
+    """Every id vLLM stops on by default: the tokenizer's EOS plus generation_config.json's eos_token_id list
+    (Qwen's <|im_end|> and <|endoftext|>, Llama 3's <|eot_id|> and <|end_of_text|>, gpt-oss's <|return|>,
+    <|call|> and <|endoftext|>). Missing one made a reply that ended on it look truncated ("length")."""
+    ids = [tok.eos_token_id] if tok.eos_token_id is not None else []
+    try:
+        from transformers import GenerationConfig
+        g = GenerationConfig.from_pretrained(name).eos_token_id
+        ids += [g] if isinstance(g, int) else list(g or [])
+    except (OSError, ValueError):
+        pass
+    return sorted({int(x) for x in ids})
+
+
 class VllmUpstream(UpstreamLlama):
     """A vLLM server running the llmverify logits processor (llmverify/vllm_rule.py, docs/vllm.md). vLLM's API has
     no chat template or detokenizer for raw ids, so those come from the model's Hugging Face tokenizer."""
@@ -76,8 +90,13 @@ class VllmUpstream(UpstreamLlama):
         self.native_generate = parallel
         self.tok = AutoTokenizer.from_pretrained(tokenizer)
         self.meta = {"chat_template": self.tok.chat_template or "", "add_bos": False, "bos": -1}
+        # Templates render with an empty bos_token (templates.render_chat), so a model whose tokenizer adds BOS
+        # (Llama, Gemma) gets it from here, as llama.cpp's add_bos does.
+        bos = self.tok.bos_token_id
+        if bos is not None and self.tok.encode("a", add_special_tokens=True)[:1] == [bos]:
+            self.meta.update(add_bos=True, bos=int(bos))
         if eos_ids is None:
-            eos_ids = [self.tok.eos_token_id] if self.tok.eos_token_id is not None else []
+            eos_ids = vllm_stop_ids(self.tok, tokenizer)
         self.eos_ids = [int(x) for x in eos_ids]
 
     def tokenize(self, text: str, special: bool = False) -> List[int]:
@@ -118,6 +137,12 @@ class UpstreamProvider(VerifiableProvider):
                 # sign a reply the rule does not reproduce from its own commitments
                 raise RuntimeError(f"upstream reply does not follow the rule at step {step}")
         finish = "stop" if tokens and tokens[-1] in self.eos else "length"
+        if finish == "length" and len(tokens) != max_tokens:
+            # the upstream stopped on a token this front end does not count as end-of-generation; a receipt saying
+            # "length" would fail every client's truncation check, so refuse instead of signing it
+            raise RuntimeError(f"upstream stopped after {len(tokens)} of {max_tokens} tokens on token "
+                               f"{tokens[-1] if tokens else None}, which is not in the eos list {sorted(self.eos)} "
+                               "(pass --eos with every end-of-generation id)")
         trace = Trace(prompt_ids=[int(x) for x in prompt_ids], tokens=tokens, tops=tops, finish_reason=finish)
         text = self.model.detokenize([t for t in tokens if t not in self.eos])
         return Generation(trace, make_receipt(self.signer, trace, self.model_info, spec, nonce, max_tokens, text), text)

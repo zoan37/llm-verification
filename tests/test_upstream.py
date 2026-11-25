@@ -71,3 +71,22 @@ def test_unpatched_upstream_is_never_signed():
     with pytest.raises(RuntimeError, match="does not follow the rule"):
         prov.generate([5, 9, 13], SamplingSpec(), 16, "k")
     srv.shutdown()
+
+
+def test_stop_on_an_unlisted_eos_is_refused_not_signed():
+    # an upstream that stops on a token missing from the eos list would otherwise get a "length" receipt with fewer
+    # than max_tokens tokens, which every client rejects as truncated
+    class Early:
+        native_generate, eos_ids = 1, [0]
+
+        def complete(self, prompt_ids, spec, max_tokens, nonce):
+            lm = ToyLM(weights_seed=1)
+            top = lm.start(prompt_ids, 20)
+            tok = choose(round_top(top), spec, nonce, 0)
+            return [tok], [top]
+
+        def detokenize(self, tokens):
+            return ""
+    p = UpstreamProvider(Early(), Signer(), {"name": "toy"}, eos_ids=[63])
+    with pytest.raises(RuntimeError, match="not in the eos list"):
+        p.generate([1, 2, 3], SamplingSpec(), 8)

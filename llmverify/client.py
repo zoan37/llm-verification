@@ -14,6 +14,7 @@ auditor given the receipt and trace).
 from __future__ import annotations
 
 import json
+import re
 import secrets
 import urllib.error
 import urllib.request
@@ -97,8 +98,9 @@ class VerifyingClient:
                           expected_model=self.expected_model)
             if trace == "deferred":
                 hdr = check_receipt_header(receipt, text=text, **expect)
-                if v.get("trace_id") != receipt.digest().hex():
-                    hdr.problems.append("trace_id does not name this receipt")
+                trace_id = v.get("trace_id")
+                if type(trace_id) is not str or not re.fullmatch(r"[0-9a-f]{32,64}", trace_id):
+                    hdr.problems.append("missing or malformed trace_id")
                     hdr.ok = False
                 challenged = secrets.randbelow(1 << 32) < challenge_rate * (1 << 32)
                 if not hdr.ok or not challenged:
@@ -106,7 +108,7 @@ class VerifyingClient:
                         self.ledger.add_failure(p)
                     return VerifiedReply(text, receipt, None, hdr)
                 try:
-                    tr = Trace.from_dict(self.fetch_trace(receipt.digest().hex()))
+                    tr = Trace.from_dict(self.fetch_trace(trace_id))
                 except (urllib.error.URLError, OSError) as e:
                     msg = f"challenged trace not served ({e})"
                     self.ledger.add_failure(msg)
@@ -114,7 +116,7 @@ class VerifyingClient:
             else:
                 tr = Trace.from_dict(v["trace"])
             eos = list(self.tokenizer.eos_ids)
-            chk = check_receipt(receipt, tr, eos_ids=eos, **expect)
+            chk = check_receipt(receipt, tr, eos_ids=eos, vocab=getattr(self.tokenizer, "n_vocab", None), **expect)
             if text != self.tokenizer.detokenize([t for t in tr.tokens if t not in set(eos)]):
                 chk.problems.append("returned text does not match the committed tokens")
                 chk.ok = False

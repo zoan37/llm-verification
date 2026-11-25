@@ -42,12 +42,16 @@ def test_deferred_honest_replies_pass_challenged_or_not():
     assert c.ledger.verdict()["status"] != "FAIL"
 
 
-def test_deferred_reply_carries_no_trace_and_names_its_receipt():
+def test_deferred_reply_carries_no_trace_and_a_random_trace_id():
     app = App(VerifiableProvider(MODEL, SIGNER, INFO), TPL)
     out = app.complete({"messages": MSG, "max_tokens": 8, "verification": {"nonce": "ab", "trace": "deferred"}})
     v = out["verification"]
     assert "trace" not in v and len(json.dumps(v)) < 1500
     assert app.trace(v["trace_id"])["tokens"]
+    # the id is random, not the receipt digest: a published receipt must not let others fetch the prompt and output
+    from llmverify.receipt import Receipt
+    assert v["trace_id"] != Receipt.from_dict(v["receipt"]).digest().hex()
+    assert app.trace(Receipt.from_dict(v["receipt"]).digest().hex()) is None
 
 
 def test_fabricated_text_is_caught_without_a_challenge():
