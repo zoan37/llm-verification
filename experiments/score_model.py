@@ -26,6 +26,9 @@ ap.add_argument("--template-kwargs", default="{}")
 ap.add_argument("--prompts", default="prompts/general.json")
 ap.add_argument("--only", nargs="*")
 ap.add_argument("--reasoning", action="store_true", help="also score the reasoning text of sampled replies")
+ap.add_argument("--only-reasoning", action="store_true",
+                help="score only the reasoning text, of every reply (greedy too, and replies cut off before an answer); "
+                     "for long-context probes, where the answer just copies what the reasoning looked up")
 ap.add_argument("--max-tokens", type=int, default=0)
 ap.add_argument("--raw-root", default="data/raw")
 ap.add_argument("--scores-root", default="data/scores")
@@ -71,9 +74,12 @@ for f in sorted(raw.glob("*.jsonl.gz")):
     t0 = time.time()
     scored, errors = [], 0
     for rec in load(f):
-        if not rec.get("content"):
+        if a.only_reasoning:
+            segs = ["reasoning"] if rec.get("reasoning") else []
+        elif not rec.get("content"):
             continue
-        segs = ["answer"] + (["reasoning"] if a.reasoning and rec["mode"] == "sample" and rec.get("reasoning") else [])
+        else:
+            segs = ["answer"] + (["reasoning"] if a.reasoning and rec["mode"] == "sample" and rec.get("reasoning") else [])
         for seg in segs:
             try:
                 s = score_record(eng, fmt, tmap, prompts[rec["prompt_idx"]], rec, seg, a.max_tokens,
