@@ -469,8 +469,12 @@ struct Engine {
         }
         try { decode_or_throw(batch); } catch (...) { llama_batch_free(batch); throw; }
         llama_batch_free(batch);
+        // llama_get_logits_ith synchronizes the backend: call it from this thread only. From several threads at
+        // once it could deadlock in ggml_metal_synchronize (seen on the M5 Max during continuous batching).
+        std::vector<const float *> lg(fed.size());
+        for (size_t i = 0; i < fed.size(); i++) lg[i] = llama_get_logits_ith(ctx, fed[i]->row);
         parallel_for((int) fed.size(), [&](int i) {
-            fed[i]->tops.push_back(round_top(topk_raw(llama_get_logits_ith(ctx, fed[i]->row), k)));
+            fed[i]->tops.push_back(round_top(topk_raw(lg[i], k)));
         });
     }
 
