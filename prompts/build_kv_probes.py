@@ -75,7 +75,10 @@ def grade(item, reply: str) -> float:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="prompts/kv_probes.json")
+    ap.add_argument("--lengths", default="8000,16000,32000", help="approximate prompt lengths in tokens")
+    ap.add_argument("--per-length", type=int, default=4, help="probes per length (alternating lookup and copy)")
+    ap.add_argument("--seed", type=int, default=7)
     a = ap.parse_args()
-    items = build()
+    items = build(tuple(int(x) for x in a.lengths.split(",")), a.per_length, a.seed)
     Path(a.out).write_text(json.dumps(items, indent=1))
     print(f"wrote {len(items)} probes to {a.out}")

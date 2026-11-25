@@ -20,10 +20,12 @@ ap.add_argument("--label", required=True)
 ap.add_argument("--prompts", default="prompts/general.json")
 ap.add_argument("--max-tokens", type=int, default=256)
 ap.add_argument("--reasoning", default='{"enabled": false}')
+ap.add_argument("--modes", default="greedy,sample,repeat")
+ap.add_argument("--root", default="data/raw")
 ap.add_argument("--extra-body", default="{}", help='e.g. {"chat_template_kwargs": {"enable_thinking": false}}')
 a = ap.parse_args()
-prompts = json.loads(Path(a.prompts).read_text())
-out_dir = Path("data/raw") / a.model.replace("/", "__")
+prompts = [p["prompt"] if isinstance(p, dict) else p for p in json.loads(Path(a.prompts).read_text())]
+out_dir = Path(a.root) / a.model.replace("/", "__")
 out_dir.mkdir(parents=True, exist_ok=True)
 ep = {"tag": a.tag, "provider_name": a.tag, "quantization": a.label, "supported_parameters": ["top_logprobs"]}
 orig_call = openrouter.call
@@ -50,4 +52,5 @@ def _request(model, tag, prompt, mode, max_tokens, reasoning, top_n, extra_body=
 
 
 openrouter._request = _request
-openrouter.collect_endpoint(a.model, ep, prompts, out_dir, max_tokens=a.max_tokens, reasoning=json.loads(a.reasoning))
+openrouter.collect_endpoint(a.model, ep, prompts, out_dir, modes=tuple(a.modes.split(",")), max_tokens=a.max_tokens,
+                            reasoning=json.loads(a.reasoning))
