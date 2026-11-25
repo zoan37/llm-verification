@@ -49,7 +49,7 @@ header.lv-top { display: block; max-width: none; gap: 0; position: sticky; top: 
   text-decoration-thickness: 2px; text-underline-offset: 7px; }
 .lv-top nav .short { display: none; }
 @media (max-width: 560px) {
-  .lv-top nav { gap: 0.35rem 1.1rem; padding-block: 0.55rem 0.6rem; font-size: 14px; }
+  .lv-top nav { gap: 0.9rem 1.1rem; padding-block: 0.55rem 0.7rem; font-size: 14px; }
   .lv-top nav .home { flex: 0 0 100%; }
   .lv-top nav .long { display: none; }
   .lv-top nav .short { display: inline; }
