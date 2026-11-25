@@ -19,6 +19,9 @@ split = body.index("</style>") + len("</style>")  # title, meta, font link and t
 head_bits, rest = body[:split], body[split:]
 head_bits = (head_bits.replace("<title>Provider Fidelity Audit</title>", "<title>LLM provider audit results</title>")
              .replace('<meta name="claude:viewport-fit-sides" content="cover">\n', ""))
+head_bits = head_bits.replace("</title>", """</title>
+<meta property="og:title" content="LLM provider audit results">
+<meta property="og:description" content="Per-provider audit of OpenRouter endpoints: how close each one's outputs are to the real open-weights model, with integrity flags.">""", 1)
 nav = """<header class="lv-top"><nav>
   <a class="home" href="/">zoan.space</a>
   <a href="./"><span class="long">LLM Verification</span><span class="short">Overview</span></a>
