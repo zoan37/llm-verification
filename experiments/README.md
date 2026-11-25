@@ -447,6 +447,10 @@ bf16 ones 86 to 79. The sampling findings are unchanged:
     logprobs are roughly right and it really emits non-argmax tokens at temperature 0. Overall its greedy tokens differ
     from the referee's top on 7.7% of positions (CoreWeave fp8 3.1%, honest UD-Q6 2.5%); about a third of that excess
     is these picks, the rest fits fp4 weights. Same in the 2026-11-01 data.
+  - **Re-test 2026-11-25 (provider v0.10.18, released that day with the fix):** gpt-oss-20b junk 0/12,446, 0/12,583,
+    2/12,564 at T 0.9/1.0/1.1; the 2 are in one reply (logprobs -33.3, -28.4, like the old bug's uniform picks),
+    most likely a Mac not yet updated. Qwen3.6 T 0 non-top picks unchanged: 392/11,331 (3.5%).
+    `data/raw-recheck-20261125`, $0.019.
 - **Groq** truncates the tail (0 vs 14.3 expected) and bills 4 extra prompt tokens; **DeepInfra (bf16)** failed 81
   of 104 requests and bills 13 fewer prompt tokens than the published template.
 
