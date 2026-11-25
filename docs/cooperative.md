@@ -1,4 +1,4 @@
-# Cooperative mode: verifiable replies from providers that opt in
+# The llmverify protocol (cooperative mode): verifiable replies from providers that opt in
 
 Black-box audits can only estimate, from the outside, whether an endpoint serves the model it claims. A provider that
 wants to *prove* it can run the llmverify provider (or implement [receipt-spec.md](receipt-spec.md) in its own engine).

@@ -22,6 +22,7 @@ head_bits = (head_bits.replace("<title>Provider Fidelity Audit</title>", "<title
 nav = """<header class="lv-top"><nav>
   <a class="home" href="/">zoan.space</a>
   <a href="./"><span class="long">LLM Verification</span><span class="short">Overview</span></a>
+  <a class="proto" href="protocol.html"><span class="long">Protocol</span><span class="short">Protocol</span></a>
   <a href="results.html" aria-current="page"><span class="long">Results</span><span class="short">Results</span></a>
   <a href="case-studies.html"><span class="long">Case studies</span><span class="short">Cases</span></a>
   <a href="method.html"><span class="long">Method &amp; limits</span><span class="short">Method</span></a>
@@ -41,6 +42,7 @@ header.lv-top { display: block; max-width: none; gap: 0; position: sticky; top: 
 .lv-top nav a { color: var(--muted); text-decoration: none; }
 .lv-top nav a:hover, .lv-top nav a[aria-current] { color: var(--ink); }
 .lv-top nav .home { color: var(--ink); font-weight: 600; margin-right: auto; }
+.lv-top nav a.proto { color: var(--accent); font-weight: 600; }
 .lv-top nav a[aria-current] { text-decoration: underline; text-decoration-color: var(--accent);
   text-decoration-thickness: 2px; text-underline-offset: 7px; }
 .lv-top nav .short { display: none; }
@@ -60,7 +62,7 @@ header.lv-top { display: block; max-width: none; gap: 0; position: sticky; top: 
 </style>
 """
 pager = """<nav class="pager" aria-label="Previous and next page">
-  <a class="prev" href="./"><span class="dir">← Previous</span><span class="t">Overview</span></a>
+  <a class="prev" href="protocol.html"><span class="dir">← Previous</span><span class="t">Protocol</span></a>
   <a class="next" href="case-studies.html"><span class="dir">Next →</span><span class="t">Case studies</span></a>
 </nav>
 """

@@ -7,14 +7,47 @@ harsher quantization, a smaller model, skip part of the computation, inject a sy
 their output path. This repo checks, as rigorously as the evidence allows, and is explicit about where the
 checks stop.
 
-Two modes, the second with a stricter exact tier:
+## The llmverify protocol
+
+**An open protocol for verifiable LLM replies.** A provider that adopts it makes every reply provable instead of
+trusted:
+
+1. The **client** picks a `seed` and a fresh nonce for each request; the provider never chooses the randomness.
+2. The **provider's engine** commits to the model's top-20 logprobs at every step (rounded to 1e-4 nats) and picks each
+   token with a public seeded Gumbel-max rule over exactly those numbers (an exact sample from the requested
+   distribution).
+3. It **signs a receipt** (Ed25519) over the prompt ids, every step's token and top-20, the reply text, the sampling
+   settings, the nonce and the model claim (name and weights SHA-256).
+
+Any client then checks every reply **exactly**, in milliseconds and without a GPU: hidden system prompts, edited or
+dropped text, ignored sampling settings, laundered tokens and sampler bugs are proof, not statistics. (Darkbloom's
+junk-token bug and its non-greedy temperature 0, found here only through hundreds of requests and a referee, would each have failed
+the rule check on the first affected reply.) Any referee holding the weights can replay a reply, or an unpredictably
+challenged span, to check the committed numbers; on the exact tier (vLLM batch-invariant, one GPU family) even that is
+exact.
+
+| You | Start here |
+|---|---|
+| run inference on vLLM | a logits processor + signing front end, ~10% throughput: [docs/vllm.md](docs/vllm.md) |
+| run llama.cpp | a ~40-line llama-server patch: [docs/llama-server.md](docs/llama-server.md) |
+| have your own engine (SGLang, TensorRT-LLM, MLX, ...) | implement [the spec](docs/receipt-spec.md): record the raw top-20, apply the rule, sign |
+| call models | `VerifyingClient` / `python -m llmverify verify reply.json`: [docs/cooperative.md](docs/cooperative.md) |
+| route to providers or run a network | which checks are safe to enforce today: [docs/readiness.md](docs/readiness.md) |
+
+Overview with examples and costs: [zoan.space/llm-verification/protocol.html](https://zoan.space/llm-verification/protocol.html).
+Versions: `llmverify-receipt-v2`, `llmverify-gumbel-v1`, `llmverify-challenge-v2`. No public provider runs it yet;
+if you want to, open an issue.
+
+## Two modes
+
+The repo does both, the second with a stricter exact tier:
 
 - **Black-box audits** of any OpenAI-compatible endpoint (e.g. every provider of a model on OpenRouter). A
   referee running the true weights replays each reply and measures how well the tokens (and logprobs, when
   offered) fit the real model. Results are published per provider as distances with confidence intervals, a
   0-100 fidelity score, and integrity flags.
-- **Cooperative mode** for providers that opt in by running the llmverify provider (or implementing
-  [the receipt spec](docs/receipt-spec.md) in their own engine). Every reply comes with a signed receipt over
+- **The llmverify protocol (cooperative mode)** for providers that opt in by running the llmverify provider (or
+  implementing [the spec](docs/receipt-spec.md) in their own engine). Every reply comes with a signed receipt over
   the exact prompt tokens, output tokens and top-20 logprobs, sampled with a public seeded rule the client
   controls. Tampering, hidden prompts, laundered logprobs and grinding become *exact* failures, not statistics,
   and any reply can be re-checked by any referee later.
