@@ -4,8 +4,37 @@
 
 When you call "Qwen3.8-27B" or "gpt-oss-20b" through an API, you are trusting the provider. They might serve a
 harsher quantization, a smaller model, skip part of the computation, inject a system prompt, or have a bug in
-their output path. This repo checks, as rigorously as the evidence allows, and is explicit about where the
-checks stop.
+their output path. This repo gives two ways to check, as rigorously as the evidence allows, and is explicit about
+where the checks stop:
+
+| | [Black-box audits](#black-box-audits) | [The llmverify protocol](#the-llmverify-protocol) |
+|---|---|---|
+| Provider's help | none: works on any OpenAI-compatible endpoint today | the provider opts in and runs it |
+| What you get | per-provider distance from the real model with confidence intervals, sampling tests, integrity flags | a signed receipt on every reply, checked exactly |
+| Strength | statistical, calibrated against honest machines and degraded copies | exact for tampering, prompts, settings and sampling; statistical (or exact, on the exact tier) for model identity |
+| Status | 88 OpenRouter endpoints across 6 open models audited ([results](https://zoan.space/llm-verification/results.html)) | spec v2 with reference implementations for vLLM and llama.cpp |
+
+## Black-box audits
+
+**Check any provider from the outside, no cooperation needed.** Send every endpoint of a model the same requests,
+then replay each reply on a referee running the real weights: are these the tokens this model would pick, do the
+returned logprobs match, is the sampled text distributed like the model's own samples? Each endpoint is placed on a
+0-100 scale between an honest machine running the real weights (100) and a deliberately degraded copy (0), with
+confidence intervals. Calibration-free tests (PIT, long-tail counts, a sampler fingerprint) catch altered sampling
+without any reference run, and integrity checks catch broken output paths.
+
+What it has found so far (October-November 2026, under $3 of API spend): Venice's Qwen3.8-27B is not the released
+weights (165x an honest machine's distance, twice a 2-bit copy's); endpoints labelled fp8 that measure near a heavily
+quantized copy; Darkbloom's gpt-oss-20b sampling near-impossible junk tokens (since traced to a Float32 bug in its
+sampler) and its Qwen3.6 ignoring temperature 0; most endpoints silently truncating the model's tail; logprobs
+attached to the wrong tokens, dropped tokens, and tool-call arguments cut off mid-JSON.
+
+| You want to | Start here |
+|---|---|
+| audit one endpoint | `python -m llmverify audit --base-url https://host/v1 --model NAME --referee "lv-engine -m model.gguf"` ([quick start](#quick-start)) |
+| audit every OpenRouter provider of a model | `experiments/collect.py`, `score_model.py`, `build_results.py` ([quick start](#quick-start)) |
+| see the results | [zoan.space/llm-verification](https://zoan.space/llm-verification/) (results, case studies), [experiments/README.md](experiments/README.md) |
+| understand the method | [docs/black-box.md](docs/black-box.md) |
 
 ## The llmverify protocol
 
@@ -38,29 +67,18 @@ Overview with examples and costs: [zoan.space/llm-verification/protocol.html](ht
 Versions: `llmverify-receipt-v2`, `llmverify-gumbel-v1`, `llmverify-challenge-v2`. No public provider runs it yet;
 if you want to, open an issue.
 
-## Two modes
+**Exact tier.** For providers on vLLM in batch-invariant mode, a referee on any GPU of the same group
+(Ampere/Ada: RTX 3090/4090, A6000, A100, L40S; Blackwell: RTX 5090, RTX PRO 6000, DGX Spark) reproduces every
+committed number to the last digit in one scoring pass. Measured: 0 false alarms in over 300,000 honest tokens, every
+edited reply caught at the edited token. See [docs/exact-tier.md](docs/exact-tier.md) and [docs/vllm.md](docs/vllm.md).
 
-The repo does both, the second with a stricter exact tier:
-
-- **Black-box audits** of any OpenAI-compatible endpoint (e.g. every provider of a model on OpenRouter). A
-  referee running the true weights replays each reply and measures how well the tokens (and logprobs, when
-  offered) fit the real model. Results are published per provider as distances with confidence intervals, a
-  0-100 fidelity score, and integrity flags.
-- **The llmverify protocol (cooperative mode)** for providers that opt in by running the llmverify provider (or
-  implementing [the spec](docs/receipt-spec.md) in their own engine). Every reply comes with a signed receipt over
-  the exact prompt tokens, output tokens and top-20 logprobs, sampled with a public seeded rule the client
-  controls. Tampering, hidden prompts, laundered logprobs and grinding become *exact* failures, not statistics,
-  and any reply can be re-checked by any referee later.
-- **Exact tier**, for cooperative providers on vLLM in batch-invariant mode: a referee on any GPU of the same group
-  (Ampere/Ada: RTX 3090/4090, A6000, A100, L40S; Blackwell: RTX 5090, RTX PRO 6000, DGX Spark) reproduces every
-  committed number to the last digit in one scoring pass. Measured: 0 false alarms in over 300,000 honest tokens,
-  every edited reply caught at the edited token. See [docs/exact-tier.md](docs/exact-tier.md) and [docs/vllm.md](docs/vllm.md).
+## Read more
 
 [What this can and cannot prove](docs/soundness.md) is the most important document here. Results so far:
 [experiments/README.md](experiments/README.md), and as a website at
 [zoan.space/llm-verification](https://zoan.space/llm-verification/).
 
-Guides: [black-box method](docs/black-box.md), [cooperative mode](docs/cooperative.md),
+Guides: [black-box method](docs/black-box.md), [the llmverify protocol for clients and providers](docs/cooperative.md),
 [receipt spec](docs/receipt-spec.md), [vLLM integration](docs/vllm.md), [running an exact tier](docs/exact-tier.md),
 [deployment readiness](docs/readiness.md).
 

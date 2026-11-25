@@ -42,7 +42,6 @@ header.lv-top { display: block; max-width: none; gap: 0; position: sticky; top: 
 .lv-top nav a { color: var(--muted); text-decoration: none; }
 .lv-top nav a:hover, .lv-top nav a[aria-current] { color: var(--ink); }
 .lv-top nav .home { color: var(--ink); font-weight: 600; margin-right: auto; }
-.lv-top nav a.proto { color: var(--accent); font-weight: 600; }
 .lv-top nav a[aria-current] { text-decoration: underline; text-decoration-color: var(--accent);
   text-decoration-thickness: 2px; text-underline-offset: 7px; }
 .lv-top nav .short { display: none; }
