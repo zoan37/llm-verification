@@ -5,7 +5,7 @@
 When you call "Qwen3.8-27B" or "gpt-oss-20b" through an API, you are trusting the provider. They might serve a
 harsher quantization, a smaller model, skip part of the computation, inject a system prompt, or have a bug in
 their output path. This repo checks from the outside, as rigorously as the evidence allows, and is explicit about
-where the checks stop. For providers who want to make each reply provable, it also defines an open protocol
+where the checks stop. For providers who want to make each reply checkable, it also defines an open protocol
 ([below](#the-llmverify-protocol)).
 
 ## Black-box audits
@@ -32,12 +32,12 @@ attached to the wrong tokens, dropped tokens, and tool-call arguments cut off mi
 
 ## The llmverify protocol
 
-Audits are statistical. A provider that wants to make each reply provable can adopt an open protocol: the client picks
+Audits are statistical. A provider that wants to make each reply checkable can adopt an open protocol: the client picks
 the seed and a fresh nonce, the engine commits to the top-20 logprobs at every step and picks each token with a public
 seeded Gumbel-max rule over them, and it signs a receipt (Ed25519) over the prompt, tokens, text, settings and model
 claim. Any client then checks every reply exactly against those commitments, in milliseconds and without a GPU (hidden
 prompts, edited text, ignored settings and sampler bugs like Darkbloom's fail on the first affected reply). Whether the
-committed numbers are the claimed model's is checked by a referee with the weights replaying the reply; across
+committed numbers are the claimed model's is not proven by the receipt; a referee with the weights checks it by replaying the reply; across
 different GPUs that comparison is statistical (calibrated on honest hardware noise), and on the exact tier below it is
 exact too. Spec: [docs/receipt-spec.md](docs/receipt-spec.md); overview:
 [zoan.space/llm-verification/protocol.html](https://zoan.space/llm-verification/protocol.html).
