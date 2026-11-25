@@ -4,15 +4,9 @@
 
 When you call "Qwen3.8-27B" or "gpt-oss-20b" through an API, you are trusting the provider. They might serve a
 harsher quantization, a smaller model, skip part of the computation, inject a system prompt, or have a bug in
-their output path. This repo gives two ways to check, as rigorously as the evidence allows, and is explicit about
-where the checks stop:
-
-| | [Black-box audits](#black-box-audits) | [The llmverify protocol](#the-llmverify-protocol) |
-|---|---|---|
-| Provider's help | none: works on any OpenAI-compatible endpoint today | the provider opts in and runs it |
-| What you get | per-provider distance from the real model with confidence intervals, sampling tests, integrity flags | a signed receipt on every reply, checked exactly |
-| Strength | statistical, calibrated against honest machines and degraded copies | exact for tampering, prompts, settings and sampling; statistical (or exact, on the exact tier) for model identity |
-| Status | 88 OpenRouter endpoints across 6 open models audited ([results](https://zoan.space/llm-verification/results.html)) | spec v2 with reference implementations for vLLM and llama.cpp |
+their output path. This repo checks from the outside, as rigorously as the evidence allows, and is explicit about
+where the checks stop. For providers who want to prove each reply exactly, it also defines an open protocol
+([below](#the-llmverify-protocol)).
 
 ## Black-box audits
 
@@ -25,8 +19,8 @@ without any reference run, and integrity checks catch broken output paths.
 
 What it has found so far (October-November 2026, under $3 of API spend): Venice's Qwen3.8-27B is not the released
 weights (165x an honest machine's distance, twice a 2-bit copy's); endpoints labelled fp8 that measure near a heavily
-quantized copy; Darkbloom's gpt-oss-20b sampling near-impossible junk tokens (a Float32 bug in its
-sampler, fixed in its v0.10.18) and its Qwen3.6 ignoring temperature 0; most endpoints silently truncating the model's tail; logprobs
+quantized copy; Darkbloom's gpt-oss-20b sampling near-impossible junk tokens (a Float32 bug in its sampler, fixed in
+its v0.10.18) and its Qwen3.6 ignoring temperature 0; most endpoints silently truncating the model's tail; logprobs
 attached to the wrong tokens, dropped tokens, and tool-call arguments cut off mid-JSON.
 
 | You want to | Start here |
@@ -38,22 +32,13 @@ attached to the wrong tokens, dropped tokens, and tool-call arguments cut off mi
 
 ## The llmverify protocol
 
-**An open protocol for verifiable LLM replies.** A provider that adopts it makes every reply provable instead of
-trusted:
-
-1. The **client** picks a `seed` and a fresh nonce for each request; the provider never chooses the randomness.
-2. The **provider's engine** commits to the model's top-20 logprobs at every step (rounded to 1e-4 nats) and picks each
-   token with a public seeded Gumbel-max rule over exactly those numbers (an exact sample from the requested
-   distribution).
-3. It **signs a receipt** (Ed25519) over the prompt ids, every step's token and top-20, the reply text, the sampling
-   settings, the nonce and the model claim (name and weights SHA-256).
-
-Any client then checks every reply **exactly**, in milliseconds and without a GPU: hidden system prompts, edited or
-dropped text, ignored sampling settings, laundered tokens and sampler bugs are proof, not statistics. (Darkbloom's
-junk-token bug and its non-greedy temperature 0, found here only through hundreds of requests and a referee, would each have failed
-the rule check on the first affected reply.) Any referee holding the weights can replay a reply, or an unpredictably
-challenged span, to check the committed numbers; on the exact tier (vLLM batch-invariant, one GPU family) even that is
-exact.
+Audits are statistical. A provider that wants to prove each reply exactly can adopt an open protocol: the client picks
+the seed and a fresh nonce, the engine commits to the top-20 logprobs at every step and picks each token with a public
+seeded Gumbel-max rule over them, and it signs a receipt (Ed25519) over the prompt, tokens, text, settings and model
+claim. Any client then checks every reply exactly, in milliseconds and without a GPU (hidden prompts, edited text,
+ignored settings and sampler bugs like Darkbloom's fail on the first affected reply), and a referee with the weights can
+replay any reply. Spec: [docs/receipt-spec.md](docs/receipt-spec.md); overview:
+[zoan.space/llm-verification/protocol.html](https://zoan.space/llm-verification/protocol.html).
 
 | You | Start here |
 |---|---|
@@ -63,7 +48,6 @@ exact.
 | call models | `VerifyingClient` / `python -m llmverify verify reply.json`: [docs/cooperative.md](docs/cooperative.md) |
 | route to providers or run a network | which checks are safe to enforce today: [docs/readiness.md](docs/readiness.md) |
 
-Overview with examples and costs: [zoan.space/llm-verification/protocol.html](https://zoan.space/llm-verification/protocol.html).
 Versions: `llmverify-receipt-v2`, `llmverify-gumbel-v1`, `llmverify-challenge-v2`. No public provider runs it yet;
 if you want to, open an issue.
 
