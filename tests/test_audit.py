@@ -125,3 +125,17 @@ def test_fp4_referee_guard():
     assert fp4_referee_problem({**gb10, "devices": ["NVIDIA GeForce RTX 4090"]}) is None
     assert fp4_referee_problem({**gb10, "desc": "qwen3 27B Q8_0"}) is None
     assert fp4_referee_problem({"desc": "gpt-oss 20B MXFP4 MoE"}) is None  # an older engine that does not say
+
+
+def test_tool_grader_handles_non_object_arguments_and_bool_vs_int():
+    import importlib.util
+    from pathlib import Path
+    spec = importlib.util.spec_from_file_location("tc", Path(__file__).resolve().parents[1] / "prompts" / "tool_cases.py")
+    tc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(tc)
+    case = next(c for c in tc.CASES if not c.get("no_call"))
+    name = case["expect_call"]
+    for args in ("[]", "null", "3"):
+        g = tc.grade(case, {"tool_calls": [{"function": {"name": name, "arguments": args}}]})
+        assert not g["ok"] and any("not a JSON object" in p for p in g["problems"])
+    assert tc._type_ok({"in_stock": 1}, {"type": "object", "properties": {"in_stock": {"type": "boolean"}}}) is False

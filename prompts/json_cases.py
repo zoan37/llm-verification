@@ -55,6 +55,8 @@ def _same(got, want):
     if isinstance(want, bool):
         return got is want
     if isinstance(want, (int, float)):
+        if isinstance(got, bool):  # float(True) == 1.0
+            return False
         try:
             return abs(float(got) - want) < 1e-6
         except (TypeError, ValueError):

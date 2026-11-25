@@ -74,7 +74,8 @@ only_a = sum(ia[i] and not ib[i] for i in common)
 only_b = sum(ib[i] and not ia[i] for i in common)
 k, n = min(only_a, only_b), only_a + only_b
 p = min(1.0, 2 * sum(math.comb(n, j) for j in range(k + 1)) / 2 ** n) if n else 1.0  # exact two-sided McNemar
-same_text = sum(x["text"] == y["text"] for x, y in zip(A["items"], B["items"]))
+ta, tb = {x["i"]: x["text"] for x in A["items"]}, {x["i"]: x["text"] for x in B["items"]}
+same_text = sum(ta[i] == tb[i] for i in common)  # by problem id, like the counts above
 print(f"{A['label']}: {sum(ia[i] for i in common)}/{len(common)}   {B['label']}: {sum(ib[i] for i in common)}/{len(common)}")
 print(f"only {A['label']} right: {only_a}, only {B['label']} right: {only_b}, McNemar p = {p:.3f}; "
       f"identical replies: {same_text}/{len(common)}")

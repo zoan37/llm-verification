@@ -543,7 +543,7 @@ struct Engine {
     // After an error the front end fails every in-flight request; drop them here too, or the orphans would keep
     // their slots and cells and later finish into requests that no longer exist.
     void cb_reset() {
-        if (cb_active() && ctx) llama_memory_clear(llama_get_memory(ctx), true);
+        if (ctx) llama_memory_clear(llama_get_memory(ctx), true);  // also cells of a prefill that threw midway
         std::fill(cb_used.begin(), cb_used.end(), 0);
         std::fill(cb.begin(), cb.end(), Seq());
         cb_cells = 0;
@@ -698,6 +698,7 @@ int main(int argc, char ** argv) {
             resp["id"] = req.value("id", json());
             const std::string cmd = req.value("cmd", "score");
             const int k = req.value("k", 20);
+            if (k < 1) throw std::runtime_error("k must be at least 1");
             if (cmd == "meta") {
                 char desc[256];
                 llama_model_desc(E.model, desc, sizeof(desc));
@@ -739,12 +740,12 @@ int main(int argc, char ** argv) {
                 E.check_ids(toks);
                 for (int t : toks) out += E.piece(t);
                 resp["text"] = out;
+            } else if (!E.ctx) {
+                throw std::runtime_error("vocab-only engine: only meta, tokenize and detokenize");
             } else if (cmd == "score") {
                 auto context = req["context"].get<std::vector<llama_token>>();
                 auto reply = req["tokens"].get<std::vector<llama_token>>();
                 resp["steps"] = E.score(context, reply, k, req.value("temperature", 1.0), req.value("stats", true));
-            } else if (!E.ctx && cmd != "tokenize" && cmd != "detokenize") {
-                throw std::runtime_error("vocab-only engine: only meta, tokenize and detokenize");
             } else if (cmd == "generate") {
                 resp["results"] = E.generate(req.at("requests"), k);
             } else if (cmd == "cb_add") {

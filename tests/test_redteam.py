@@ -195,3 +195,12 @@ def test_malformed_signature_fields_are_a_bad_signature_not_a_crash():
     for field, value in (("provider_key", 12345), ("signature", None), ("max_tokens", "8")):
         r = Receipt.from_dict({**g.receipt.to_dict(), field: value})
         assert not check_receipt(r, g.trace).ok
+
+
+def test_a_receipt_with_an_empty_prompt_is_caught():
+    signer = Signer()
+    g = VerifiableProvider(ToyLM(weights_seed=1), signer, INFO).generate([3, 9, 12], SamplingSpec(), 8, "ab")
+    r = Receipt.from_dict({**g.receipt.to_dict(), "n_prompt": 0})
+    signer.sign(r)
+    from llmverify.receipt import check_receipt_header
+    assert any("empty prompt" in p for p in check_receipt_header(r).problems)

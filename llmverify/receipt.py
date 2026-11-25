@@ -206,6 +206,8 @@ def _count_problems(receipt: Receipt) -> List[str]:
         return ["receipt token counts are not integers"]
     if not 1 <= receipt.n_tokens <= receipt.max_tokens:
         return [f"receipt has {receipt.n_tokens} tokens, outside 1..max_tokens ({receipt.max_tokens})"]
+    if receipt.n_prompt < 1:
+        return ["receipt has an empty prompt"]
     return []
 
 

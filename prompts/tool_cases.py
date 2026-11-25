@@ -99,7 +99,9 @@ def _type_ok(v, schema):
           "integer": isinstance(v, int) and not isinstance(v, bool), "boolean": isinstance(v, bool),
           "array": isinstance(v, list), "object": isinstance(v, dict)}.get(t, True)
     if ok and "enum" in schema:
-        ok = v in schema["enum"]
+        ok = any(v == e and type(v) is type(e) for e in schema["enum"])  # True is not 1
+    if ok and t == "object":  # nested arguments (e.g. filters) are checked against their own schema
+        ok = all(_type_ok(x, schema.get("properties", {})[k]) for k, x in v.items() if k in schema.get("properties", {}))
     return ok
 
 
@@ -120,6 +122,9 @@ def grade(case: dict, message: dict) -> dict:
             args = json.loads(fn.get("arguments") or "{}")
         except (TypeError, ValueError):
             problems.append(f"{name}: arguments are not valid JSON")
+            continue
+        if not isinstance(args, dict):
+            problems.append(f"{name}: arguments are not a JSON object")
             continue
         schema = offered[name]
         for req in schema.get("required", []):
@@ -149,6 +154,6 @@ def grade(case: dict, message: dict) -> dict:
                 elif isinstance(want, list):
                     if not isinstance(got, list) or sorted(map(str.lower, map(str, got))) != sorted(x.lower() for x in want):
                         problems.append(f"{k}: expected {want!r}, got {got!r}")
-                elif got != want:
+                elif got != want or isinstance(got, bool) != isinstance(want, bool):  # True == 1 in Python
                     problems.append(f"{k}: expected {want!r}, got {got!r}")
     return {"ok": not problems, "problems": problems}

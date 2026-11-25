@@ -60,6 +60,9 @@ def run(e):
     out = raw_dir / f"{tag.replace('/', '__')}.json.gz"
     if out.exists():
         return
+    if openrouter.usage_usd() >= a.budget_usd:  # the key's total spend, as in openrouter.collect_endpoint
+        print(f"{tag}: budget ${a.budget_usd} reached; skipped")
+        return
     rec = {"repeat": [[ask(tag, p, 1.0, a.max_tokens) for _ in range(3)] for p in REPEAT],
            "pairs": [[ask(tag, p1, 0, a.max_tokens), ask(tag, p2, 0, a.max_tokens)] for p1, p2, _, _ in PAIRS]}
     with gzip.open(out, "wt") as f:
