@@ -20,7 +20,7 @@ without any reference run, and integrity checks catch broken output paths.
 What it has found so far (October-November 2026, under $3 of API spend): Venice's Qwen3.8-27B is not the released
 weights (165x an honest machine's distance, twice a 2-bit copy's); endpoints labelled fp8 that measure near a heavily
 quantized copy; Darkbloom's gpt-oss-20b sampling near-impossible junk tokens (a Float32 bug in its sampler, fixed in
-its v0.10.18) and its Qwen3.6 ignoring temperature 0; most endpoints silently truncating the model's tail; logprobs
+its v0.10.18) and its Qwen3.6 not following temperature 0 on ~3.5% of tokens; most endpoints silently truncating the model's tail; logprobs
 attached to the wrong tokens, dropped tokens, and tool-call arguments cut off mid-JSON.
 
 | You want to | Start here |
