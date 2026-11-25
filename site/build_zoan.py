@@ -28,7 +28,7 @@ nav = """<header class="lv-top"><nav>
   <a href="results.html" aria-current="page"><span class="long">Results</span><span class="short">Results</span></a>
   <a href="case-studies.html"><span class="long">Case studies</span><span class="short">Cases</span></a>
   <a href="method.html"><span class="long">Method &amp; limits</span><span class="short">Method</span></a>
-  <a class="proto" href="protocol.html"><span class="long">Cooperative mode</span><span class="short">Cooperative</span></a>
+  <a class="proto" href="protocol.html"><span class="long">Protocol</span><span class="short">Protocol</span></a>
   <a class="ext" href="https://github.com/zoan37/llm-verification">GitHub&nbsp;↗</a>
 </nav></header>
 """
