@@ -87,13 +87,17 @@ code { font: 13px var(--mono); }
       to a known substitute (0).</p>
   </header>
   <section class="findings" aria-label="Findings so far">
-    <div class="finding"><span class="pill good">no swaps</span><p>No endpoint looks like a different model. Most serve
-      something consistent with the claimed weights; on Gemma-4 three are indistinguishable from honest BF16 serving.</p></div>
+    <div class="finding"><span class="pill good">mostly honest</span><p>Most endpoints serve something consistent with
+      the claimed weights; on Gemma-4 three are indistinguishable from honest BF16 serving. One is not the released
+      model (below).</p></div>
     <div class="finding"><span class="pill warn">lossy</span><p>A meaningful minority sit at or past a 3- to 4-bit copy's
-      distance (Qwen3.5: AtlasCloud, Darkbloom, Alibaba; Gemma-4: Darkbloom, AkashML). Distance, not proof of intent.</p></div>
+      distance. Labelled fp8 yet that far: AtlasCloud (Qwen3.5, Qwen3.6), SiliconFlow (Qwen3.5). Unlabelled: Alibaba
+      (Qwen3.5, Qwen3.8), Darkbloom (Gemma-4). Labelled fp4, so disclosed: Darkbloom (Qwen), AkashML (Gemma-4).
+      Distance, not proof of intent.</p></div>
     <div class="finding"><span class="pill warn">sampling not as requested</span><p>Asked for temperature 1 and top_p 1,
       six of seven Qwen3.5 endpoints (and Groq on gpt-oss-20b) almost never sample long-tail tokens, likely an unrequested
-      top-k. Darkbloom on gpt-oss-20b injects near-impossible junk tokens (about one per 200) when sampling.</p></div>
+      top-k. Darkbloom on gpt-oss-20b injected near-impossible junk tokens (about one per 200) when sampling, a sampler
+      bug fixed after this report (v0.10.18, 25 November).</p></div>
     <div class="finding"><span class="pill bad">not the released model</span><p>Venice's Qwen3.8-27B is 165× an honest
       machine's distance from the real weights (a 2-bit copy: 75×), fluent, with no hidden prompt and not an older Qwen. It
       tells a dark joke where the released model deflects. Most consistent with modified (e.g. uncensored) weights.</p></div>
@@ -114,9 +118,9 @@ code { font: 13px var(--mono); }
         <tr><td>None (honest)</td><td class="num">0 / 32</td><td class="num">0%</td><td class="num">0%</td></tr>
         <tr><td>Swap to the 4B model</td><td class="num">0 / 32</td><td class="num">100%</td><td class="num">100%</td></tr>
         <tr><td>Laundering: 4B tokens, real model's logprobs</td><td class="num">31 / 32</td><td class="num">100%</td><td class="num">100%</td></tr>
-        <tr><td>Confident draft: 4B whenever it is &ge; 90% sure</td><td class="num">0 / 32</td><td class="num">57&ndash;76%</td><td class="num">99&ndash;100%</td></tr>
-        <tr><td>Confident draft, &ge; 97%</td><td class="num">0 / 32</td><td class="num">28&ndash;39%</td><td class="num">74&ndash;81%</td></tr>
-        <tr><td>Tie steering: nudging near-ties</td><td class="num">0 / 32</td><td class="num">3&ndash;13%</td><td class="num">2&ndash;13%</td></tr>
+        <tr><td>Confident draft: 4B whenever it is &ge; 90% sure</td><td class="num">0 / 32</td><td class="num">57&ndash;74%</td><td class="num">100%</td></tr>
+        <tr><td>Confident draft, &ge; 97%</td><td class="num">0 / 32</td><td class="num">26&ndash;34%</td><td class="num">70&ndash;79%</td></tr>
+        <tr><td>Tie steering: nudging near-ties</td><td class="num">0 / 32</td><td class="num">12&ndash;13%</td><td class="num">6&ndash;9%</td></tr>
       </tbody></table></div>
   </section>
   <section class="legend" aria-label="Column guide">

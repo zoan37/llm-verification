@@ -54,7 +54,8 @@ def audit_trace(referee: Model, trace: Trace, spec: SamplingSpec, key: str, star
                 end: Optional[int] = None) -> List[Optional[TokenScore]]:
     """Score tokens [start, end) of a trace on the referee, against the provider's committed logprobs. The
     referee sees the prompt plus the reply up to the span (logprobs depend on the whole context)."""
-    from .receipt import top_problem
+    from .receipt import canonical_trace, top_problem
+    trace = canonical_trace(trace)  # the values check_receipt checked, not in-bucket variants of them
     end = len(trace.tokens) if end is None else end
     if not 0 <= start < end <= len(trace.tokens):
         raise ValueError("bad span")

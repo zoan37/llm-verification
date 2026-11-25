@@ -273,16 +273,18 @@ endpoint dropped or mangled emoji or non-Latin text; Darkbloom's distance double
 `coop_attacks.py` + `coop_detection.py`: Qwen3.5-35B-A3B Q8_0 as the honest provider; cheats built from Qwen3.5-4B.
 16 prompts × 128 tokens per variant, greedy and seeded temperature 0.7. "Exact failures" are receipt checks that need
 no referee. Detection uses thresholds at a 0.1% false-flag rate on honest cross-hardware noise (the same weights on
-CPU vs Metal), 1.25× margin; both honest variants were flagged 0% at every budget.
+CPU vs Metal), 1.25× margin; both honest variants were flagged 0% at every budget. Audit spans are placed like real
+challenges (start uniform, clipped to the reply; recomputed 2026-11-25, which moved the draft and steering rates by a
+few points).
 
 | Cheat | Exact failures | Mean regret | Caught by 64 / 256 / 1,024 / 2,048 audited tokens |
 |---|---|---|---|
 | none (honest) | 0 / 32 | 0.0001-0.0003 | 0% at every budget |
 | swap to the 4B | 0 / 32 | 0.31-0.36 | 100% from 64 tokens |
 | laundering (4B tokens, real logprobs) | **31 / 32** | 0.31-0.35 | 100% (and exact) |
-| confident draft, 4B when ≥ 90% sure | 0 / 32 | 0.009-0.016 | 26-38% / 57-76% / 91-99% / 99-100% |
-| confident draft, ≥ 97% | 0 / 32 | 0.004 | 12-16% / 28-39% / 54-61% / 74-81% |
-| tie steering (nudge near-ties) | 0 / 32 | 0.0013-0.0014 | 2-13% at any budget |
+| confident draft, 4B when ≥ 90% sure | 0 / 32 | 0.009-0.016 | 23-35% / 57-74% / 95-99% / 100% |
+| confident draft, ≥ 97% | 0 / 32 | 0.004 | 6-12% / 26-34% / 53-66% / 70-79% |
+| tie steering (nudge near-ties) | 0 / 32 | 0.0013-0.0014 | 3-13% at any budget |
 
 Caveats: the referee and the provider ran on the same machine here, so the probability check (wgap) has unrealistically
 low noise and is not used for detection; regret alone carries it. The anytime-valid e-process is more conservative

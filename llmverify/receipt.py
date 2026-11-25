@@ -199,6 +199,14 @@ def text_digest(text: str) -> str:
     return sha256_hex(text.encode("utf-8"))
 
 
+def _model_problems(receipt: Receipt, expected_model: Optional[dict]) -> List[str]:
+    if not isinstance(receipt.model, dict):
+        return ["receipt model claim is not an object"]
+    if expected_model is not None and any(receipt.model.get(k) != v for k, v in expected_model.items()):
+        return ["receipt names a different model or weights hash"]
+    return []
+
+
 def check_receipt_header(receipt: Receipt, *, text: Optional[str] = None,
                          expected_prompt_ids: Optional[Sequence[int]] = None,
                          expected_spec: Optional[SamplingSpec] = None, expected_nonce: Optional[str] = None,
@@ -229,8 +237,7 @@ def check_receipt_header(receipt: Receipt, *, text: Optional[str] = None,
         p.append(f"invalid sampling spec: {e}")
     if expected_max_tokens is not None and receipt.max_tokens != expected_max_tokens:
         p.append("max_tokens differs from the request")
-    if expected_model is not None and any(receipt.model.get(k) != v for k, v in expected_model.items()):
-        p.append("receipt names a different model or weights hash")
+    p += _model_problems(receipt, expected_model)
     if text is not None:
         if not receipt.text_sha256:
             p.append("receipt does not commit to the reply text")
@@ -248,11 +255,20 @@ def new_nonce() -> str:
 
 
 def check_nonce(nonce) -> str:
-    """A request nonce is lowercase hex (docs/receipt-spec.md). It goes into the ':'-separated noise preimage, so
-    anything else (a ':' in particular, or a non-string that each side might stringify differently) is rejected."""
+    """A request nonce is lowercase hex (docs/receipt-spec.md); servers reject anything else at the door. (The noise
+    preimage stays unambiguous either way: seed, step and token id are integers, so only the nonce can hold a ':'.)"""
     if type(nonce) is not str or not re.fullmatch(r"[0-9a-f]{1,128}", nonce):
         raise ValueError("verification.nonce must be a lowercase hex string of 1-128 characters")
     return nonce
+
+
+def canonical_trace(trace: Trace) -> Trace:
+    """The trace with every committed logprob at its canonical value, the integer 1e-4-nat unit the hash covers.
+    Every check and every audit reads these values, so floats perturbed inside a rounding bucket (same hash, same
+    signature) behave exactly like the canonical ones everywhere."""
+    return Trace(list(trace.prompt_ids), list(trace.tokens),
+                 [[(i, lp_units(lp) / 10 ** LOGPROB_DECIMALS) for i, lp in top] for top in trace.tops],
+                 trace.finish_reason)
 
 
 def check_rule(trace: Trace, spec: SamplingSpec, key: str) -> List[int]:
@@ -283,9 +299,7 @@ def check_receipt(receipt: Receipt, trace: Trace, *, expected_prompt_ids: Option
     # canonicalised to those units. Perturbing floats inside a rounding bucket can then neither frame an honest
     # provider nor let a provider pick a different winner (found in red-team review).
     try:
-        trace = Trace(list(trace.prompt_ids), list(trace.tokens),
-                      [[(i, lp_units(lp) / 10 ** LOGPROB_DECIMALS) for i, lp in top] for top in trace.tops],
-                      trace.finish_reason)
+        trace = canonical_trace(trace)
     except (TypeError, ValueError, OverflowError):
         return ReceiptCheck(False, ["non-finite or non-numeric committed logprob"])
     if receipt.version != VERSION:
@@ -315,8 +329,7 @@ def check_receipt(receipt: Receipt, trace: Trace, *, expected_prompt_ids: Option
         p.append("sampling spec differs from the request")
     if expected_max_tokens is not None and receipt.max_tokens != expected_max_tokens:
         p.append("max_tokens differs from the request")
-    if expected_model is not None and any(receipt.model.get(k) != v for k, v in expected_model.items()):
-        p.append("receipt names a different model or weights hash")
+    p += _model_problems(receipt, expected_model)
     if len(trace.tops) != len(trace.tokens):
         p.append("trace has a different number of steps and tokens")
     elif any(top_problem(top, vocab) for top in trace.tops):

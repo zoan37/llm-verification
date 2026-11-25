@@ -120,11 +120,11 @@ def collect_endpoint(model: str, e: dict, prompts: List[str], out_dir: Path, mod
         if len(recs) % 16 == 0 and usage_usd() >= budget_usd:
             log(f"{tag}: budget ${budget_usd} reached")
             break
-        r, lat = _request(model, tag, prompt, mode if mode in ("sample",) or mode.startswith("temp") else "greedy",
-                          max_tokens, reasoning, top_n, extra)
+        req_mode = mode if mode == "sample" or mode.startswith("temp") else "greedy"  # repeat is greedy
+        r, lat = _request(model, tag, prompt, req_mode, max_tokens, reasoning, top_n, extra)
         if top_n and "error" in r and "logprob" in (r["error"]["body"] or "").lower() and top_n > 5:
             top_n = 5
-            r, lat = _request(model, tag, prompt, mode, max_tokens, reasoning, top_n, extra)
+            r, lat = _request(model, tag, prompt, req_mode, max_tokens, reasoning, top_n, extra)
         if "error" in r:
             errors += 1
             recs.append({"mode": mode, "prompt_idx": i, "error": r["error"]})

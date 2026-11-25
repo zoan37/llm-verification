@@ -25,7 +25,7 @@ from .audit import Ledger, audit_trace
 from .metrics import TokenScore, means
 from .receipt import Receipt, ReceiptCheck, Trace, check_receipt, check_receipt_header, new_nonce, text_digest
 from .sampling import SamplingSpec
-from .templates import render_chat
+from .templates import render_chat, with_bos
 
 
 @dataclass
@@ -91,8 +91,8 @@ class VerifyingClient:
             text = resp["choices"][0]["message"]["content"]
             if type(text) is not str:
                 raise ValueError("reply text is not a string")
-            expected_ids = ([self.bos] if self.bos is not None else []) + self.tokenizer.tokenize(
-                render_chat(self.template, messages, True, **self.template_kwargs), special=True)
+            expected_ids = with_bos(self.bos, self.tokenizer.tokenize(
+                render_chat(self.template, messages, True, **self.template_kwargs), special=True))
             expect = dict(expected_prompt_ids=expected_ids, expected_spec=spec, expected_nonce=nonce,
                           expected_max_tokens=max_tokens, pinned_key=self.pinned_key,
                           expected_model=self.expected_model)
@@ -123,11 +123,14 @@ class VerifyingClient:
             if receipt.text_sha256 and receipt.text_sha256 != text_digest(text):
                 chk.problems.append("returned text is not the text the provider signed for")
                 chk.ok = False
-        except (KeyError, TypeError, ValueError, OverflowError) as e:
+        except (KeyError, TypeError, ValueError, OverflowError, AttributeError, IndexError) as e:
             # A malformed reply is evidence too: record it rather than crash (found in red-team review).
             self.ledger.add_failure(f"malformed verification data: {e}")
-            return VerifiedReply(str((resp.get("choices") or [{}])[0].get("message", {}).get("content", "")),
-                                 None, None, ReceiptCheck(False, [f"malformed verification data: {e}"]))
+            try:
+                shown = str(resp["choices"][0]["message"]["content"])
+            except (KeyError, TypeError, IndexError, AttributeError):
+                shown = ""
+            return VerifiedReply(shown, None, None, ReceiptCheck(False, [f"malformed verification data: {e}"]))
         out = VerifiedReply(text, receipt, tr, chk)
         if not chk.ok:
             for p in chk.problems:

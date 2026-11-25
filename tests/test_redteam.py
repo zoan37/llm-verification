@@ -15,6 +15,7 @@ from llmverify.server import App
 from llmverify.toy import ToyLM
 
 INFO = {"name": "toy"}
+SIGNER_M, TPL_M = Signer(), "{% for m in messages %}{{ m['content'] }} {% endfor %}"
 REAL = ToyLM(weights_seed=1, machine=7, hw_noise=0.02)
 CHEAP = ToyLM(weights_seed=2)
 SPEC = SamplingSpec(mode="gumbel", temperature=1.0, seed=9)
@@ -83,6 +84,8 @@ def test_an_honest_receipt_cannot_be_framed_by_in_bucket_perturbation():
                 framed += 1
         assert forged.steps_digest() == g.trace.steps_digest()
         assert check_receipt(g.receipt, forged, eos_ids=[0]).ok
+        if i < 20:  # and the audit reads the same canonical values: no crash, same scores as the honest trace
+            assert audit_trace(REAL, forged, SPEC, f"n{i}") == audit_trace(REAL, g.trace, SPEC, f"n{i}")
 
 
 def test_honest_receipts_survive_a_json_round_trip_at_scale():
@@ -157,3 +160,19 @@ def test_malformed_trace_is_recorded_not_crashing():
     c = _client(Nan(VerifiableProvider(MODEL, SIGNER, INFO), TPL))
     r = c.chat([{"role": "user", "content": "5 6"}], max_tokens=4)
     assert not r.check.ok and c.ledger.hard_failures
+
+
+def test_malformed_receipt_fields_are_findings_not_crashes():
+    app = App(VerifiableProvider(ToyLM(weights_seed=1), SIGNER_M, INFO), TPL_M)
+    c = VerifyingClient("http://unused", pinned_key=SIGNER_M.public_hex, tokenizer=ToyLM(weights_seed=1),
+                        template=TPL_M, expected_model=INFO)
+    for corrupt in (lambda r: r["verification"]["receipt"].__setitem__("model", "toy"),
+                    lambda r: r["verification"]["receipt"].__setitem__("model", None),
+                    lambda r: r["choices"][0].__setitem__("message", None)):
+        def post(body, corrupt=corrupt):
+            r = json.loads(json.dumps(app.complete(body)))
+            corrupt(r)
+            return r
+        c._post = post
+        r = c.chat([{"role": "user", "content": "5 6 7"}], max_tokens=8)
+        assert not r.check.ok

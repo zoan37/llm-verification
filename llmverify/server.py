@@ -27,7 +27,7 @@ from typing import Optional
 from .provider import VerifiableProvider
 from .receipt import VERSION as RECEIPT_VERSION, check_nonce, new_nonce
 from .sampling import SamplingSpec
-from .templates import render_chat
+from .templates import render_chat, with_bos
 
 MAX_TOKENS_CAP = 4096
 
@@ -184,7 +184,7 @@ class App:
 
     def prompt_ids(self, messages):
         text = render_chat(self.template, messages, True, **self.kw)
-        return ([self.bos] if self.bos is not None else []) + self.tokenizer.tokenize(text, special=True)
+        return with_bos(self.bos, self.tokenizer.tokenize(text, special=True))
 
     def complete(self, body: dict) -> dict:
         messages = body.get("messages")

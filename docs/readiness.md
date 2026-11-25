@@ -67,7 +67,8 @@ attributable). The network:
 ## Known limits (document, do not hide)
 
 - **Tie steering.** Among near-tied tokens the rule's choice can flip with tiny arithmetic differences, so a provider
-  has a small, bounded freedom to steer (2-13% of tokens in tests); exact checks cannot remove it.
+  has a small, bounded freedom to steer (a steering cheat was flagged in only 3-13% of audits in tests); exact
+  checks cannot remove it.
 - **Near-lossless shortcuts look honest.** A Q6/Q8 copy instead of BF16, or a compressed KV cache on hybrid-attention
   models, sits inside honest noise.
 - **Statistics need volume.** A provider that cheats rarely is caught slowly; challenge rates and evidence windows

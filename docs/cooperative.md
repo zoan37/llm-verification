@@ -75,7 +75,7 @@ later block hash), so challenges are unpredictable to the provider yet checkable
 
 `experiments/README.md` ("Cooperative mode on real weights"): with Qwen3.5-35B-A3B as the honest provider and
 Qwen3.5-4B behind the cheats, laundering failed the exact rule check on 31 of 32 replies; a swap was caught within 64
-audited tokens; a confident-draft shortcut (the small model whenever it is ≥ 90% sure) was caught in 99-100% of
+audited tokens; a confident-draft shortcut (the small model whenever it is ≥ 90% sure) was caught in 100% of
 2,048-token audits at a 0.1% false-flag rate; tie steering stayed within honest noise, as expected.
 
 ## Cost to a provider

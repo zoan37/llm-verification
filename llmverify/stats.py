@@ -242,9 +242,9 @@ class Calibration:
                 v = seqs[rng.randrange(len(seqs))]
                 if len(v) <= span:
                     got.extend(v)
-                else:
-                    s = rng.randrange(len(v) - span + 1)
-                    got.extend(v[s:s + span])
+                else:  # spans placed like real challenges (audit.derive_challenge): start uniform, clipped
+                    s = rng.randrange(-(span - 1), len(v))
+                    got.extend(v[max(0, s):s + span])
             out.append(sum(got[:budget]) / budget)
         return out
 

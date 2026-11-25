@@ -23,7 +23,7 @@ from typing import Dict, List, Optional, Sequence, Tuple
 
 from .metrics import RefStep, TokenScore, score_reply
 from .sampling import SamplingSpec
-from .templates import harmony_context, harmony_prompt_only, render_chat
+from .templates import harmony_context, harmony_prompt_only, render_chat, with_bos
 
 GREEDY = SamplingSpec()
 
@@ -46,7 +46,7 @@ class ChatFormat:
             text = render_chat(self.template, [{"role": "user", "content": prompt}], True, date=date,
                                **self.template_kwargs)
         ids = engine.tokenize(text, special=True)
-        return ([self.bos] if self.add_bos and self.bos >= 0 else []) + ids
+        return with_bos(self.bos if self.add_bos else None, ids)
 
     def prompt_only(self, engine, prompt: str, rec: dict) -> List[int]:
         """The prompt as the API counts it: the template with its generation prompt (gpt-oss: ends at

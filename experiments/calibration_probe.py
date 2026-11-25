@@ -131,7 +131,7 @@ for i, (ref, g) in enumerate(zip(can["replies"], got)):
         bad.append((i, j))
 n = sum(len(r) for r in can["replies"])
 print(f"{can['tag']}: {len(can['replies']) - len(bad)} of {len(can['replies'])} prompts match exactly "
-      f"({"prefill" if getattr(a, "prefill", False) else "decode"}, {n} canonical positions)")
+      f"({'prefill' if getattr(a, 'prefill', False) else 'decode'}, {n} canonical positions)")
 for i, j in bad[:5]:
     ref, g = can["replies"][i][j], got[i][j] if j < len(got[i]) else None
     if g is None:

@@ -119,9 +119,6 @@ def cmd_audit(a):
     out_dir = Path(a.out)
     out_dir.mkdir(parents=True, exist_ok=True)
     ep = {"tag": "endpoint", "provider_name": a.base_url, "supported_parameters": ["top_logprobs"] if a.logprobs else []}
-    orig = openrouter._request
-    openrouter._request = lambda model, tag, prompt, mode, mt, reasoning, top_n: orig(a.model, tag, prompt, mode, mt,
-                                                                                     reasoning, top_n)
     raw_path = openrouter.collect_endpoint(a.model, ep, prompts, out_dir, max_tokens=a.max_tokens,
                                            reasoning={"effort": a.reasoning_effort} if a.reasoning_effort else {"enabled": False})
     raw = openrouter.load(raw_path)

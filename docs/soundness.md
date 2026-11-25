@@ -140,8 +140,8 @@ lie slightly in its committed logprobs to keep the rule check passing.
   verifier that accepts same-weights machines leaves room to steer 2-4% of tokens (at most ~20-40 bits per 1,000
   tokens); one that also accepts honest quantization, 8-15%. These are per-token upper bounds: a steerer flips every
   favourable near-tie while honest noise flips about half of them in random directions, so steering at that rate
-  shows up as excess disagreement over enough tokens; the cooperative experiment found steering stays inside
-  honest noise only at 2-13% of near-ties.
+  shows up as excess disagreement over enough tokens; in the cooperative experiment a steering cheat was flagged in
+  only 3-13% of audits at a 0.1% false-flag rate.
 
   How fast that shows (`experiments/steering_detection.py`): an honest machine with the same weights (R9700 on
   Vulkan vs the CUDA referee, Qwen3.8, 9,606 greedy positions) picks the referee's runner-up 57% of the time when

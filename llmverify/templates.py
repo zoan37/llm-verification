@@ -35,6 +35,13 @@ def _compiled(template: str):
     return env.from_string(template)
 
 
+def with_bos(bos, ids: List[int]) -> List[int]:
+    """Prepend the tokenizer's BOS (templates render with an empty bos_token), unless the template already wrote
+    it as a literal string, which would otherwise give two."""
+    ids = list(ids)
+    return ids if bos is None or bos < 0 or ids[:1] == [bos] else [bos] + ids
+
+
 def render_chat(template: str, messages: List[dict], add_generation_prompt: bool = True,
                 date: Optional[str] = None, **kwargs) -> str:
     day = _dt.date.fromisoformat(date) if date else _dt.date.today()

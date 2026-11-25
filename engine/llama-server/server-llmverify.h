@@ -3,8 +3,9 @@
 // A request with "llmverify": {"key": "<client nonce>", "seed": n, "temperature": t, "top_k", "top_p", "min_p"}
 // is generated with the rule of llmverify/sampling.py instead of the sampler chain: at every step the top-20
 // logprobs the server reports (n_probs = 20, pre-sampling, so they come from exactly the same arithmetic) are
-// rounded to 1e-4 and put in canonical order, and the rule picks from them. A proxy (llmverify proxy) turns the
-// reply into a signed receipt. The rule code is copied from engine/lv_engine.cpp, which matches the Python bit for bit.
+// rounded to 1e-4 and put in canonical order, and the rule picks from them. The front end
+// (llmverify serve --upstream) turns the reply into a signed receipt. The rule code is copied from
+// engine/lv_engine.cpp, which matches the Python bit for bit.
 #pragma once
 
 #include <nlohmann/json.hpp>
