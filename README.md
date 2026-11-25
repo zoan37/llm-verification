@@ -13,7 +13,7 @@ Two modes, the second with a stricter exact tier:
   referee running the true weights replays each reply and measures how well the tokens (and logprobs, when
   offered) fit the real model. Results are published per provider as distances with confidence intervals, a
   0-100 fidelity score, and integrity flags.
-- **Cooperative mode** for providers that opt in by running the llmverify provider (or implementing
+- **Cooperative mode** (the llmverify protocol) for providers that opt in by running the llmverify provider (or implementing
   [the receipt spec](docs/receipt-spec.md) in their own engine). Every reply comes with a signed receipt over
   the exact prompt tokens, output tokens and top-20 logprobs, sampled with a public seeded rule the client
   controls. Tampering, hidden prompts, laundered logprobs and grinding become *exact* failures, not statistics,
