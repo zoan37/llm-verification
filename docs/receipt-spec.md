@@ -1,4 +1,4 @@
-# The llmverify protocol: receipt and sampling specification (v2)
+# Receipt and sampling specification (v2)
 
 What an inference engine must implement to give its users verifiable replies. The reference implementation is
 `llmverify/provider.py` + `engine/lv_engine.cpp` (llama.cpp); any engine (vLLM, SGLang, MLX, TensorRT-LLM) can
