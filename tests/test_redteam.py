@@ -176,3 +176,22 @@ def test_malformed_receipt_fields_are_findings_not_crashes():
         c._post = post
         r = c.chat([{"role": "user", "content": "5 6 7"}], max_tokens=8)
         assert not r.check.ok
+
+
+def test_a_stop_reply_longer_than_max_tokens_is_caught():
+    """Over-generation: sign max_tokens=5 for a 30-token reply that ends on EOS."""
+    signer = Signer()
+    g = VerifiableProvider(ToyLM(weights_seed=1), signer, INFO).generate([3, 9, 12], SamplingSpec(), 30, "ab")
+    forged = make_receipt(signer, g.trace, INFO, SamplingSpec(), "ab", 5)
+    forged.finish_reason = "stop"
+    signer.sign(forged)
+    from llmverify.receipt import check_receipt_header
+    for chk in (check_receipt(forged, g.trace), check_receipt_header(forged)):
+        assert not chk.ok and any("max_tokens" in p for p in chk.problems), chk.problems
+
+
+def test_malformed_signature_fields_are_a_bad_signature_not_a_crash():
+    g = VerifiableProvider(ToyLM(weights_seed=1), Signer(), INFO).generate([3, 9, 12], SamplingSpec(), 8, "ab")
+    for field, value in (("provider_key", 12345), ("signature", None), ("max_tokens", "8")):
+        r = Receipt.from_dict({**g.receipt.to_dict(), field: value})
+        assert not check_receipt(r, g.trace).ok

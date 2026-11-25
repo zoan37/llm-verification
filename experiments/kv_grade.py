@@ -22,7 +22,8 @@ ap.add_argument("--prompts", default="prompts/kv_probes.json")
 a = ap.parse_args()
 items = json.loads(Path(a.prompts).read_text())
 out = {}
-print(f"{'run':40} " + "  ".join(f"{t}@{n // 1000}k" for t in ("kv_lookup", "copy") for n in (8000, 16000, 32000)))
+lengths = sorted({it["approx_tokens"] for it in items})  # whatever build_kv_probes.py --lengths produced
+print(f"{'run':40} " + "  ".join(f"{t}@{n // 1000}k" for t in ("kv_lookup", "copy") for n in lengths))
 for f in sorted(Path(a.raw).glob("*.jsonl.gz")):
     acc = defaultdict(list)
     for r in load(f):
@@ -31,7 +32,7 @@ for f in sorted(Path(a.raw).glob("*.jsonl.gz")):
         it = items[r["prompt_idx"]]
         acc[(it["task"], it["approx_tokens"])].append(kvp.grade(it, r.get("content") or ""))
     row = {f"{t}@{n}": (sum(v) / len(v) if (v := acc.get((t, n))) else None) for t in ("kv_lookup", "copy")
-           for n in (8000, 16000, 32000)}
+           for n in lengths}
     out[f.name[: -len(".jsonl.gz")]] = row
     print(f"{f.name[:-9]:40} " + "  ".join("     -" if v is None else f"{v:6.2f}" for v in row.values()))
 Path(a.raw, "grades.json").write_text(json.dumps(out, indent=1))

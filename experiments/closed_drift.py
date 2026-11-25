@@ -87,7 +87,9 @@ def request(model, tag, prompt, effort, max_tokens):
         time.sleep(5 * (attempt + 1))
     if "error" in r:
         return {"error": r["error"]}
-    ch = r["choices"][0]
+    ch = (r.get("choices") or [None])[0]
+    if not isinstance(ch, dict) or not isinstance(ch.get("message"), dict):
+        return {"error": {"status": None, "body": "reply without a message: " + json.dumps(r)[:200]}}
     u = r.get("usage") or {}
     return {"content": ch["message"].get("content"), "reasoning_chars": len(ch["message"].get("reasoning") or ""),
             "finish": ch.get("finish_reason"), "provider": r.get("provider"),

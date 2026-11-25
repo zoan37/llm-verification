@@ -314,9 +314,18 @@ struct Engine {
         return step;
     }
 
+    // Every token id from a request is checked before it reaches llama_decode or indexes the logits: an
+    // out-of-range id must be an error reply, not an out-of-bounds read in the referee.
+    void check_ids(const std::vector<llama_token> & ids) const {
+        for (llama_token t : ids)
+            if (t < 0 || t >= n_vocab) throw std::runtime_error("token id " + std::to_string(t) + " out of range");
+    }
+
     json score(const std::vector<llama_token> & context, const std::vector<llama_token> & reply, int k, double temp,
                bool stats) {
         if (context.empty() || reply.empty()) throw std::runtime_error("empty context or reply");
+        check_ids(context);
+        check_ids(reply);
         if (cb_active()) throw std::runtime_error("continuous batch in progress");
         std::vector<llama_token> seq(context);
         seq.insert(seq.end(), reply.begin(), reply.end());
@@ -472,7 +481,12 @@ struct Engine {
         if (cb_active()) throw std::runtime_error("continuous batch in progress");
         std::vector<Seq> seqs;
         long long cells = 0;
-        for (int s = 0; s < B; s++) { seqs.push_back(parse_request(reqs[s], k)); cells += seqs.back().cells(); }
+        for (int s = 0; s < B; s++) {
+            seqs.push_back(parse_request(reqs[s], k));
+            check_ids(seqs.back().ctxt);
+            check_ids(seqs.back().eos);
+            cells += seqs.back().cells();
+        }
         if (cells > n_ctx) throw std::runtime_error("requests need more context than -c provides");
         llama_memory_clear(llama_get_memory(ctx), true);
         n_past = 0;
@@ -511,6 +525,8 @@ struct Engine {
         json slots = json::array();
         for (const auto & r : reqs) {
             Seq q = parse_request(r, k);
+            check_ids(q.ctxt);
+            check_ids(q.eos);
             int slot = -1;
             for (size_t i = 0; i < cb_used.size(); i++) if (!cb_used[i]) { slot = (int) i; break; }
             if (slot < 0) throw std::runtime_error("no free sequence slot");
@@ -561,6 +577,7 @@ struct Engine {
 
     json start(const std::vector<llama_token> & context, int k) {
         if (context.empty()) throw std::runtime_error("empty context");
+        check_ids(context);
         if (cb_active()) throw std::runtime_error("continuous batch in progress");
         if ((int) context.size() >= n_ctx) throw std::runtime_error("context too long");
         llama_memory_clear(llama_get_memory(ctx), true);
@@ -590,6 +607,7 @@ struct Engine {
 
     json step(llama_token tok, int k) {
         if (n_past == 0) throw std::runtime_error("step before start");
+        check_ids({tok});
         if (n_past + 1 >= n_ctx) throw std::runtime_error("context full");
         llama_batch batch = llama_batch_init(1, 0, 1);
         batch.n_tokens = 1;
@@ -717,7 +735,9 @@ int main(int argc, char ** argv) {
                 resp["pieces"] = pieces;
             } else if (cmd == "detokenize") {
                 std::string out;
-                for (int t : req["tokens"].get<std::vector<int>>()) out += E.piece(t);
+                auto toks = req["tokens"].get<std::vector<llama_token>>();
+                E.check_ids(toks);
+                for (int t : toks) out += E.piece(t);
                 resp["text"] = out;
             } else if (cmd == "score") {
                 auto context = req["context"].get<std::vector<llama_token>>();

@@ -59,9 +59,13 @@ def audit_trace(referee: Model, trace: Trace, spec: SamplingSpec, key: str, star
     end = len(trace.tokens) if end is None else end
     if not 0 <= start < end <= len(trace.tokens):
         raise ValueError("bad span")
-    bad = next((top_problem(t) for t in trace.tops[start:end] if top_problem(t)), None)
+    vocab = getattr(referee, "n_vocab", None)
+    bad = next((top_problem(t, vocab) for t in trace.tops[start:end] if top_problem(t, vocab)), None)
     if bad:  # never score unvalidated commitments (duplicate ids would show the audit different numbers)
         raise ValueError(f"malformed committed logprobs: {bad}")
+    if any(type(t) is not int or t < 0 or (vocab is not None and t >= vocab)
+           for t in list(trace.prompt_ids) + list(trace.tokens[:end])):
+        raise ValueError("token id out of range")
     context = list(trace.prompt_ids) + list(trace.tokens[:start])
     span_tokens = trace.tokens[start:end]
     temp = spec.temperature if not spec.greedy else 1.0

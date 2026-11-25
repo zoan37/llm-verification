@@ -182,7 +182,7 @@ def signature_ok(receipt: Receipt) -> bool:
         Ed25519PublicKey.from_public_bytes(bytes.fromhex(receipt.provider_key)).verify(
             bytes.fromhex(receipt.signature), receipt.digest())
         return True
-    except (InvalidSignature, ValueError):
+    except (InvalidSignature, ValueError, TypeError, AttributeError):  # malformed fields are a bad signature
         return False
 
 
@@ -197,6 +197,16 @@ def make_receipt(signer: Signer, trace: Trace, model: dict, spec: SamplingSpec, 
 
 def text_digest(text: str) -> str:
     return sha256_hex(text.encode("utf-8"))
+
+
+def _count_problems(receipt: Receipt) -> List[str]:
+    """Token counts are integers, and a reply has between 1 and max_tokens tokens whatever its finish reason (a
+    'stop' reply longer than the request asked for is over-generation the client would be billed for)."""
+    if any(type(v) is not int for v in (receipt.max_tokens, receipt.n_tokens, receipt.n_prompt)):
+        return ["receipt token counts are not integers"]
+    if not 1 <= receipt.n_tokens <= receipt.max_tokens:
+        return [f"receipt has {receipt.n_tokens} tokens, outside 1..max_tokens ({receipt.max_tokens})"]
+    return []
 
 
 def _model_problems(receipt: Receipt, expected_model: Optional[dict]) -> List[str]:
@@ -237,7 +247,7 @@ def check_receipt_header(receipt: Receipt, *, text: Optional[str] = None,
         p.append(f"invalid sampling spec: {e}")
     if expected_max_tokens is not None and receipt.max_tokens != expected_max_tokens:
         p.append("max_tokens differs from the request")
-    p += _model_problems(receipt, expected_model)
+    p += _model_problems(receipt, expected_model) + _count_problems(receipt)
     if text is not None:
         if not receipt.text_sha256:
             p.append("receipt does not commit to the reply text")
@@ -329,7 +339,7 @@ def check_receipt(receipt: Receipt, trace: Trace, *, expected_prompt_ids: Option
         p.append("sampling spec differs from the request")
     if expected_max_tokens is not None and receipt.max_tokens != expected_max_tokens:
         p.append("max_tokens differs from the request")
-    p += _model_problems(receipt, expected_model)
+    p += _model_problems(receipt, expected_model) + _count_problems(receipt)
     if len(trace.tops) != len(trace.tokens):
         p.append("trace has a different number of steps and tokens")
     elif any(top_problem(top, vocab) for top in trace.tops):

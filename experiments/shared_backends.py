@@ -105,8 +105,9 @@ for model_dir in [dirs[k] for k in sorted(dirs)]:
     dest = Path("results/shared") / f"{model_dir.name}.json"
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(json.dumps(res, indent=1))
+    mo = res["max_other_share"]
     print(f"{model_dir.name}: {len(reps)} endpoints, {len(rows)} pairs; highest share among other pairs "
-          f"{res['max_other_share']:.2f}")
+          + ("- (every pair is in a group)" if mo is None else f"{mo:.2f}"))
     for r in res["near_pairs"]:
         print(f"   near: {r['a']}~{r['b']} {r['identical']}/{r['compared']}")
     for g in res["groups"]:

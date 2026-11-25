@@ -46,6 +46,11 @@ eps = [e for e in openrouter.endpoints(a.model) if "reasoning" in (e.get("suppor
 print(f"{a.model}: {len(eps)} endpoints support reasoning")
 
 
+def over_budget() -> bool:
+    """The key's total spend has reached --budget-usd (as in openrouter.collect_endpoint)."""
+    return openrouter.usage_usd() >= a.budget_usd
+
+
 def run(e):
     tag = openrouter.endpoint_tag(e)
     out = raw_dir / f"{tag.replace('/', '__')}.jsonl.gz"
@@ -56,6 +61,9 @@ def run(e):
         for i, case in enumerate(CASES):
             if errors >= 6 and not any("content" in r for r in recs):
                 break
+            if len(recs) % 8 == 0 and over_budget():
+                print(f"{tag}: budget ${a.budget_usd} reached; not writing a partial file")
+                return
             body = {"model": a.model, "messages": [{"role": "user", "content": case["q"] + rc.SUFFIX}],
                     "temperature": 0, "max_tokens": a.max_tokens, "reasoning": {"effort": eff},
                     "provider": {"order": [tag], "allow_fallbacks": False}, "usage": {"include": True}}
@@ -79,9 +87,8 @@ def run(e):
 
 
 start = openrouter.usage_usd()
-if start < a.budget_usd:
-    with ThreadPoolExecutor(a.workers) as pool:
-        list(pool.map(run, eps))
+with ThreadPoolExecutor(a.workers) as pool:
+    list(pool.map(run, eps))
 print(f"spent ${openrouter.usage_usd() - start:.4f}")
 
 def measure(v):

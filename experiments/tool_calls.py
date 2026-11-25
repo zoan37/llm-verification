@@ -40,6 +40,11 @@ eps = [e for e in openrouter.endpoints(a.model) if "tools" in (e.get("supported_
 print(f"{a.model}: {len(eps)} endpoints advertise tools")
 
 
+def over_budget() -> bool:
+    """The key's total spend has reached --budget-usd (as in openrouter.collect_endpoint)."""
+    return openrouter.usage_usd() >= a.budget_usd
+
+
 def run(e):
     tag = openrouter.endpoint_tag(e)
     out = raw_dir / f"{tag.replace('/', '__')}.jsonl.gz"
@@ -48,6 +53,9 @@ def run(e):
     recs = []
     for case in tc.CASES:
         for rep in range(a.repeats):
+            if len(recs) % 8 == 0 and over_budget():
+                print(f"{tag}: budget ${a.budget_usd} reached; not writing a partial file")
+                return tag
             body = {"model": a.model, "messages": [{"role": "user", "content": case["user"]}], "tools": case["tools"],
                     "temperature": 0, "max_tokens": a.max_tokens, "provider": {"order": [tag], "allow_fallbacks": False},
                     "usage": {"include": True},
