@@ -442,6 +442,11 @@ bf16 ones 86 to 79. The sampling findings are unchanged:
     labelled fp4, gave 53/51/49 per 10k at T 0.9/1.0/1.1 by its own logprobs (`data/raw-recheck-20261124`). Darkbloom's
     Qwen3.6 still picks a non-top token (own logprobs) on 3.6% of T 0 and 3.4% of T 0.01 tokens, always within 1.5 nats
     (`data/raw-recheck-20261124-t001`); its other models are at 0%.
+    Referee check (Qwen3.6 UD-Q4_K_XL on the Spark, `experiments/darkbloom_greedy_referee.py`): at those positions the
+    referee's top token is Darkbloom's own claimed top 72% of the time (265/366) and the emitted token 22% (81), so its
+    logprobs are roughly right and it really emits non-argmax tokens at temperature 0. Overall its greedy tokens differ
+    from the referee's top on 7.7% of positions (CoreWeave fp8 3.1%, honest UD-Q6 2.5%); about a third of that excess
+    is these picks, the rest fits fp4 weights. Same in the 2026-11-01 data.
 - **Groq** truncates the tail (0 vs 14.3 expected) and bills 4 extra prompt tokens; **DeepInfra (bf16)** failed 81
   of 104 requests and bills 13 fewer prompt tokens than the published template.
 
