@@ -281,8 +281,52 @@ no call when none is needed). 64 of 68 endpoints pass every check.
   prompt grows (~1.8-1.9× from 4k to 32k), which points to something context-dependent (attention approximations,
   cache compression of another kind, long-context kernels). Moderate evidence: intervals partly overlap.
 - A 4-bit KV cache is within honest noise on this model at every length: Qwen3.5 keeps a KV cache in only some of its
-  layers. Whether cache compression is detectable on full-attention models is the next experiment
-  (`prompts/build_kv_probes.py`, gpt-oss-20b).
+  layers. On gpt-oss-20b, where every other layer attends over the whole context, it is plain (next section).
+
+## KV-cache compression (gpt-oss-20b, 2026-11-25)
+
+36 probes (`prompts/kv_probes_64k.json`, built by `prompts/build_kv_probes.py --lengths 4000,16000,32000`): 18 verbatim
+copies of a planted random-word paragraph from Python source at ~4k, 14k and 26k tokens, and 18 eight-key lookups in
+number tables at ~8k, 31k and 63k tokens (the tables tokenize twice as densely as the builder assumed, so lookups are
+about 2× their "4k/16k/32k" labels; the builder is fixed). Greedy, reasoning effort low, up to 1,024 tokens, all on a
+DGX Spark. Four servers: llama.cpp with an f16 and a q4_0 KV cache (the same engine and MXFP4 GGUF as the referee),
+and vLLM 0.32 with its default (bf16) and an fp8 KV cache. The referee (lv-engine, `-ub 8`) scores the reasoning
+text; the answers are mostly copied text that every server gets right token for token.
+
+Regret of the reasoning text (95% interval over replies):
+
+| Server | copy 4k | copy 14k | copy 26k | lookup 8k | lookup 31k | lookup 63k |
+|---|---|---|---|---|---|---|
+| *llama.cpp, f16 cache* | 0.0017 [0.001, 0.003] | 0.0029 [0.002, 0.005] | 0.0025 [0.002, 0.003] | 0.015 [0.004, 0.028] | 0.0033 [0.002, 0.007] | 0.0081 [0.003, 0.016] |
+| **llama.cpp, q4_0 cache** | 0.058 [0.027, 0.088] | 0.063 [0.030, 0.091] | 0.047 [0.020, 0.072] | 0.103 [0.021, 0.183] | 0.050 [0.038, 0.076] | 0.039 [0.029, 0.050] |
+| *vLLM, default cache* | 0.0031 [0.001, 0.007] | 0.0048 [0.003, 0.007] | 0.0054 [0.004, 0.008] | 0.026 [0.013, 0.044] | 0.023 [0.005, 0.057] | 0.065 [0.028, 0.112] |
+| vLLM, fp8 cache | 0.0039 [0.003, 0.006] | 0.0067 [0.004, 0.015] | 0.0055 [0.002, 0.010] | 0.025 [0.012, 0.040] | 0.038 [0.004, 0.106] | 0.052 [0.016, 0.085] |
+
+Task accuracy (share of keys or characters right; `experiments/kv_grade.py`) and replies that spent all 1,024 tokens
+reasoning without answering:
+
+| Server | copy 4k / 14k / 26k | lookup 8k / 31k / 63k | out of tokens |
+|---|---|---|---|
+| *llama.cpp, f16 cache* | 1.00 / 1.00 / 1.00 | 1.00 / 0.67 / 0.90 | 2 of 36 |
+| **llama.cpp, q4_0 cache** | 0.69 / 0.30 / 0.79 | 0.98 / 0.54 / 0.29 | 11 of 36 |
+| *vLLM, default cache* | 1.00 / 1.00 / 1.00 | 1.00 / 0.98 / 0.92 | 0 of 36 |
+| vLLM, fp8 cache | 0.83 / 1.00 / 1.00 | 1.00 / 0.98 / 0.92 | 1 of 36 |
+
+- **A 4-bit cache is plain on gpt-oss-20b.** Against the same engine with an f16 cache its reasoning sits 5-34× further
+  from the model at every length (19-34× on the copies), and 3-5× as many of its tokens are not the referee's top
+  choice (2-6% against 1-2%). Unlike on Qwen3.5, it also costs answers: lookups fall to 0.29 at 63k tokens, and 11 of
+  36 replies reason until the token budget runs out (the f16 cache's two misses at 31k are replies of that kind).
+- **The distance does not grow with length** (0.039-0.103 across buckets, highest on the shortest lookups); what grows is the loss of
+  right answers.
+- **An fp8 cache could not be told from vLLM's default.** Regret and accuracy agree within their intervals at every
+  length; its one miss is a copy reply that reproduced the text inside its reasoning and ran out of tokens. With
+  ~9,000-10,000 scored reasoning tokens per vLLM server, any fp8 effect is smaller than the noise between two honest engines.
+- **Honest cross-engine noise depends on the prompt.** vLLM against the llama.cpp referee is 0.003-0.005 on the copies
+  but 0.023-0.065 on the number tables, which overlaps the 4-bit cache's 0.039-0.050 at 31k-63k. So for an outside
+  audit, the copy-style prompts separate a 4-bit cache from honest serving on another engine (9-19×); dense tables
+  separate it only against a same-engine reference.
+- The October gpt-oss probe set (`data/raw-kvprobe`, never published) has the same mislabel: its lookups labelled
+  8k/16k/32k are about 16k/31k/63k tokens.
 
 Short / edge prompts (`prompts/edge.json`: one-word prompts, exact-format replies, JSON, emoji, Chinese, Japanese,
 Arabic, Russian, tab-indented code, repetition) rank the Qwen3.5 endpoints the same way as the general prompts; no

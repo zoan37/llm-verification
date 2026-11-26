@@ -3,10 +3,11 @@
 Open work, roughly in priority order. Each item says what it would establish.
 
 ## Detection coverage
-- [ ] **KV-cache compression on full-attention models.** On Qwen3.5 (hybrid attention) a 4-bit KV cache was within
-      honest noise up to 32k tokens. Run the precision-hungry probes (`prompts/build_kv_probes.py`: long key-value
-      lookups, verbatim copy of an early paragraph) with an honest f16 cache vs a 4-bit cache on a model with full
-      attention (gpt-oss-20b, Gemma-4), measuring task accuracy and referee distance; then point them at providers.
+- [x] **KV-cache compression on a full-attention model** (gpt-oss-20b, 2026-11-25; experiments/README.md). A q4_0
+      cache is plain at every length (5-34x the f16 cache's distance, wrong answers at 31k-63k tokens); an fp8 cache
+      on vLLM could not be told from vLLM's default. Next: point the copy-style probes at OpenRouter's gpt-oss
+      endpoints (they separate a 4-bit cache from honest serving on another engine; number tables do not), and try
+      Gemma-4 (sliding-window plus global layers).
 - [ ] **Longer contexts** (64k-128k) and multi-needle recall.
 - [ ] **Gemma-4-31B (16 endpoints) and Qwen3.6-35B-A3B (10)**: full referee audits, the most popular local-sized models
       after those done. Paused 2026-10-30: needs ~148 GB of weights (Q8 referee, Q6_K honest, Q2_K_XL substitute)

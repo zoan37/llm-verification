@@ -17,7 +17,10 @@ import string
 import sysconfig
 from pathlib import Path
 
-CHARS_PER_TOKEN = 3.6
+CHARS_PER_TOKEN = 3.6  # Python source (the copy task)
+# Key-value tables tokenize about twice as densely (gpt-oss: 14,611 characters -> 7,955 tokens). Sized at 3.6,
+# lookups came out ~2x their label: the 2026-11-25 set's "4k/16k/32k" lookups are ~8k/31k/63k tokens.
+TABLE_CHARS_PER_TOKEN = 1.85
 
 
 def rand_word(rng, n):
@@ -26,7 +29,7 @@ def rand_word(rng, n):
 
 def kv_lookup(rng, n_tok):
     pairs, size = [], 0
-    while size < n_tok * CHARS_PER_TOKEN:
+    while size < n_tok * TABLE_CHARS_PER_TOKEN:
         k = f"{rand_word(rng, 5)}-{rng.randrange(100, 999)}"
         v = f"{rng.randrange(10000, 99999)}"
         pairs.append((k, v))

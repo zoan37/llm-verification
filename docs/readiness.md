@@ -69,8 +69,8 @@ attributable). The network:
 - **Tie steering.** Among near-tied tokens the rule's choice can flip with tiny arithmetic differences, so a provider
   has a small, bounded freedom to steer (a steering cheat was flagged in only 3-13% of audits in tests); exact
   checks cannot remove it.
-- **Near-lossless shortcuts look honest.** A Q6/Q8 copy instead of BF16, or a compressed KV cache on hybrid-attention
-  models, sits inside honest noise.
+- **Near-lossless shortcuts look honest.** A Q6/Q8 copy instead of BF16, an fp8 KV cache (gpt-oss-20b), or a 4-bit
+  KV cache on hybrid-attention models (Qwen3.5) sits inside honest noise. A 4-bit cache on gpt-oss-20b does not.
 - **Statistics need volume.** A provider that cheats rarely is caught slowly; challenge rates and evidence windows
   set how slowly.
 - **Privacy is not verified.** Verification proves which model ran, not who saw the prompt. Hiding prompts from the

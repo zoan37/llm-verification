@@ -266,8 +266,9 @@ Findings from adversarial reviews, each now a regression test in `tests/test_red
 3. **Equivalence classes.** Speculative decoding with verification, expert offloading, and other lossless
    tricks produce M's distribution and are (correctly) indistinguishable. Lossy tricks smaller than honest
    noise are also indistinguishable, and arguably fine. The line between them is a policy choice (the tolerance).
-4. **Long context.** Most measurements use short prompts. KV-cache compression and attention approximations grow
-   with length; long-context audits need their own calibration.
+4. **Long context.** Most measurements use short prompts. On gpt-oss-20b up to 63k tokens, a 4-bit KV cache's
+   per-token distance stayed flat while its wrong answers grew, and honest cross-engine noise on dense number tables
+   was ~10x that on code; long-context audits need their own calibration, per prompt type.
 5. **Calibration coverage.** Every new hardware platform and engine needs an honest baseline before its
    providers can be judged in a strict tier. Measured so far: Apple Metal, NVIDIA CUDA (GB10, RTX PRO 6000), ARM and
    x86 CPUs, vLLM BF16, AMD R9700 on Vulkan under Windows (gpt-oss-20b, Qwen3.8-27B), RTX 4090 on CUDA under WSL2
