@@ -78,6 +78,23 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    is in-memory processing with no storage or training; so routing through DeepInfra would be consistent with what
    Venice discloses. What the listing does not show is which models leave Venice, and to whom. Method: `experiments/api_fingerprint.py` (26
    parameter-validation probes per endpoint; no other pair of providers in 12 models matched this way).
+12. **26 November 2026 full Venice audit (`experiments/venice_audit.py`, `results/venice/audit_2026-11-26.json`, audited by Gemini Neon for zoan).**
+   Expanding the parameter-validation fingerprint + tokenizer/greedy sweep to all **32 live Venice ZDR endpoints on
+   OpenRouter** (total spend $0.14) matched **24 of 32** to external hosts: **18 DeepInfra** (including 10 text-only
+   models via the `top_k 999 ok / 1000 -> 502` cliff), **3 Baseten** (`13/13` probes + Baseten's unique `+1` prompt
+   token offset), and **3 Parasail**, plus 4 endpoints behind a `top_k <= 100` validator. Also confirmed live:
+   `qwen/qwen3-235b-a22b-thinking-2507` (Venice is the sole OpenRouter provider at $0.45/$3.50) returns 0 reasoning
+   tokens and answers identically to Instruct (4/5 temp-0 prompts); three DeepInfra-wrapped endpoints carry higher
+   quantization labels than DeepInfra serves (`gemma-4-26b-a4b-it` labelled `bf16` while our DGX Spark referee scores it
+   at DeepInfra `fp8` fidelity 56.9 vs Parasail `bf16` 72.3; `z-ai/glm-5.2` and `nvidia/nemotron-3-ultra-550b-a55b`
+   labelled `fp8` where DeepInfra only serves `fp4`); `qwen/qwen3.5-397b-a17b` is listed ZDR on OpenRouter while
+   Venice's own `/api/v1/models` marks it `anonymized`; `moonshotai/kimi-k2.6` leaks raw CoT into `content` when
+   `reasoning: {enabled: false}`; and `dolphin-mistral-24b-venice-edition` bills 561 prompt tokens for `"Reply with OK."`
+   due to a hidden Mistral "Le Chat" system prompt. Live inspection of Venice's web bundle (`1af15r7l_biwn.js`) and
+   public `/tee/attestation` responses after Venice pulled its Phala `-p` models on 26 November also found that Venice
+   still sends legacy E2EE V1 (no AAD / no `X-Encryption-Version: 3`) to the 6 remaining NEAR AI models, and its web
+   app receipt verifier (`Eh`) returns `{contentMatchFailed: true, verified: true}` on hash mismatches while its caller
+   (`EE`) checks only `verified`.
 
 ## Image inputs (10 vision models)
 
