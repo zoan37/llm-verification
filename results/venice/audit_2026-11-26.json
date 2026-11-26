@@ -1,6 +1,6 @@
 {
  "measured_utc": "2026-11-26T14:05:00Z",
- "openrouter_spend_usd": 0.1413,
+ "openrouter_spend_usd": 0.1562,
  "venice_zdr_endpoint_count": 32,
  "venice_catalog_count": 141,
  "venice_zdr_endpoints": [
@@ -25852,6 +25852,55 @@
    "compose_hash": "e4b83d924284eece9b972d8e18bd88dac4dd529031b00311ef5044eaa60ba8d9",
    "nvidia_arch": "HOPPER",
    "nvidia_gpu_count": 8
+  }
+ },
+ "pairwise_20prompt_clustering": {
+  "spend_usd": 0.0149,
+  "prompts": 20,
+  "temperature": 0,
+  "z-ai/glm-5.2": {
+   "venice/fp8_vs_deepinfra/fp4": {
+    "exact": 3,
+    "mean_shared_prefix": 0.52
+   },
+   "venice/fp8_vs_deepinfra/fp4/priority": {
+    "exact": 3,
+    "mean_shared_prefix": 0.33
+   },
+   "venice/fp8_vs_baseten/fp8": {
+    "exact": 1,
+    "mean_shared_prefix": 0.32
+   },
+   "venice/fp8_vs_parasail/fp4": {
+    "exact": 3,
+    "mean_shared_prefix": 0.41
+   },
+   "deepinfra/fp4_vs_deepinfra/fp4/priority": {
+    "exact": 3,
+    "mean_shared_prefix": 0.46
+   }
+  },
+  "nvidia/nemotron-3-ultra-550b-a55b": {
+   "venice/fp8_vs_deepinfra/fp4": {
+    "exact": 4,
+    "mean_shared_prefix": 0.75
+   },
+   "venice/fp8_vs_deepinfra/fp4/priority": {
+    "exact": 5,
+    "mean_shared_prefix": 0.7
+   },
+   "venice/fp8_vs_fireworks": {
+    "exact": 3,
+    "mean_shared_prefix": 0.56
+   },
+   "venice/fp8_vs_baseten/fp4/us": {
+    "exact": 6,
+    "mean_shared_prefix": 0.56
+   },
+   "deepinfra/fp4_vs_deepinfra/fp4/priority": {
+    "exact": 6,
+    "mean_shared_prefix": 0.61
+   }
   }
  }
 }

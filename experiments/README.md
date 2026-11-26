@@ -80,14 +80,16 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    parameter-validation probes per endpoint; no other pair of providers in 12 models matched this way).
 12. **26 November 2026 full Venice audit (`experiments/venice_audit.py`, `results/venice/audit_2026-11-26.json`, audited by Gemini Neon for zoan).**
    Expanding the parameter-validation fingerprint + tokenizer/greedy sweep to all **32 live Venice ZDR endpoints on
-   OpenRouter** (total spend $0.14) matched **24 of 32** to external hosts: **18 DeepInfra** (including 10 text-only
+   OpenRouter** (total spend $0.16) matched **24 of 32** to external hosts: **18 DeepInfra** (including 10 text-only
    models via the `top_k 999 ok / 1000 -> 502` cliff), **3 Baseten** (`13/13` probes + Baseten's unique `+1` prompt
    token offset), and **3 Parasail**, plus 4 endpoints behind a `top_k <= 100` validator. Also confirmed live:
    `qwen/qwen3-235b-a22b-thinking-2507` (Venice is the sole OpenRouter provider at $0.45/$3.50) returns 0 reasoning
    tokens and answers identically to Instruct (4/5 temp-0 prompts); three DeepInfra-wrapped endpoints carry higher
    quantization labels than DeepInfra serves (`gemma-4-26b-a4b-it` labelled `bf16` while our DGX Spark referee scores it
    at DeepInfra `fp8` fidelity 56.9 vs Parasail `bf16` 72.3; `z-ai/glm-5.2` and `nvidia/nemotron-3-ultra-550b-a55b`
-   labelled `fp8` where DeepInfra only serves `fp4`); `qwen/qwen3.5-397b-a17b` is listed ZDR on OpenRouter while
+   labelled `fp8` where DeepInfra only serves `fp4`, corroborated by a 20-prompt temp-0 pairwise prefix clustering test
+   where `venice/fp8 ↔ deepinfra/fp4` had the highest mean shared prefix in both 5-endpoint matrices: 0.52 vs 0.32 with
+   `baseten/fp8` on GLM-5.2, and 0.75/0.70 vs 0.56 with Fireworks/Baseten on Nemotron-3-Ultra); `qwen/qwen3.5-397b-a17b` is listed ZDR on OpenRouter while
    Venice's own `/api/v1/models` marks it `anonymized`; `moonshotai/kimi-k2.6` leaks raw CoT into `content` when
    `reasoning: {enabled: false}`; and `dolphin-mistral-24b-venice-edition` bills 561 prompt tokens for `"Reply with OK."`
    due to a hidden Mistral "Le Chat" system prompt. Live inspection of Venice's web bundle (`1af15r7l_biwn.js`) and
