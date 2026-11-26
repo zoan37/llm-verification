@@ -1,0 +1,26 @@
+budget stops at key usage $39.78
+openai/gpt-oss-120b: 23 endpoints; key usage $36.7796
+crusoe/bf16                    quant=bf16     ok=36/36 logprobs=0 errors=0
+coreweave/fp4                  quant=fp4      ok=36/36 logprobs=36 errors=0
+venice/int4                    quant=int4     ok=35/36 logprobs=0 errors=0
+digitalocean                   quant=unknown  ok=35/36 logprobs=35 errors=0
+google-vertex/global           quant=unknown  ok=35/36 logprobs=0 errors=0
+baseten/fp4/us                 quant=fp4      ok=35/36 logprobs=0 errors=0
+mancer/fp8                     quant=fp8      ok=36/36 logprobs=36 errors=0
+baseten/fp4                    quant=fp4      ok=35/36 logprobs=0 errors=0
+fireworks                      quant=unknown  ok=0/36 logprobs=0 errors=4
+parasail/fp4                   quant=fp4      ok=35/36 logprobs=35 errors=0
+sambanova                      quant=unknown  ok=35/36 logprobs=0 errors=0
+amazon-bedrock/eu-west-1       quant=unknown  ok=35/36 logprobs=0 errors=0
+nebius/fp4                     quant=fp4      ok=36/36 logprobs=0 errors=0
+amazon-bedrock                 quant=unknown  ok=35/36 logprobs=0 errors=0
+deepinfra/bf16                 quant=bf16     ok=35/36 logprobs=0 errors=0
+akashml/fp4                    quant=fp4      ok=12/36 logprobs=12 errors=24
+groq                           quant=unknown  ok=36/36 logprobs=0 errors=0
+near-ai/fp4                    quant=fp4      ok=27/36 logprobs=27 errors=7
+together                       quant=unknown  ok=35/36 logprobs=0 errors=0
+parasail/fast                  quant=fp4      ok=36/36 logprobs=36 errors=0
+cerebras/fp16                  quant=fp16     ok=36/36 logprobs=36 errors=0
+primeintellect/fp4             quant=fp4      ok=36/36 logprobs=0 errors=0
+siliconflow/fp8                quant=fp8      ok=36/36 logprobs=0 errors=0
+openai/gpt-oss-120b: spent $2.3810

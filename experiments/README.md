@@ -50,6 +50,12 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    the labels (DeepInfra says fp8) cannot all describe what runs.
 8. **Reasoning effort is not always honoured.** SiliconFlow reasons about the same amount at low, medium and high on
    both gpt-oss models (gpt-oss-120b: 486 / 470 / 458 characters of reasoning; all endpoints: 261 / 470 / 1,277).
+   The mechanism (measured 2026-11-26): SiliconFlow does not pass the effort to the model, which reasons at its
+   default length, and instead cuts the reasoning at a share of `max_tokens` and forces the answer: 20% at "low"
+   (207 reasoning tokens at `max_tokens` 1,024, 822 at 4,096), 50% at "medium" or unset (259 / 515 / 1,027 at 512 /
+   1,024 / 2,048). The cut lands mid-thought: on the KV probes (`max_tokens` 1,024, "low") every one of 72 replies
+   on both models has exactly 201 tokens of reasoning, and the 6 whose reasoning was still copying the text answer
+   with a copy cut off mid-word, marked `finish_reason: stop`. Every other endpoint copied those prompts whole.
    Darkbloom's gpt-oss-20b "high" reasons like everyone else's "medium" (598 vs 607 characters), and Novita's and
    Phala's gpt-oss-120b "low" like "medium" (456 and 536). On Qwen3.8 the setting barely changes reasoning on any
    endpoint (465 / 534 / 531), so it is a property of the model there, not of a provider.

@@ -1,0 +1,101 @@
+{
+ "akashml__fp4": {
+  "kv_lookup@4000": 1.0,
+  "kv_lookup@16000": 0.9583333333333334,
+  "kv_lookup@32000": 0.875,
+  "copy@4000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0,
+  "failed_requests": 0
+ },
+ "amazon-bedrock": {
+  "kv_lookup@4000": 1.0,
+  "kv_lookup@16000": 0.9375,
+  "kv_lookup@32000": 0.8958333333333334,
+  "copy@4000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0,
+  "failed_requests": 0
+ },
+ "amazon-bedrock__eu-west-1": {
+  "kv_lookup@4000": 1.0,
+  "kv_lookup@16000": 0.9583333333333334,
+  "kv_lookup@32000": 0.8958333333333334,
+  "copy@4000": 0.9945402298850574,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0,
+  "failed_requests": 0
+ },
+ "coreweave__fp4": {
+  "kv_lookup@4000": 1.0,
+  "kv_lookup@16000": 0.9375,
+  "kv_lookup@32000": 0.9375,
+  "copy@4000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0,
+  "failed_requests": 0
+ },
+ "darkbloom__fp4": {
+  "kv_lookup@4000": 1.0,
+  "kv_lookup@16000": 0.9791666666666666,
+  "kv_lookup@32000": 0.9583333333333334,
+  "copy@4000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 0.9974619289340101,
+  "failed_requests": 0
+ },
+ "deepinfra__bf16": {
+  "kv_lookup@4000": 1.0,
+  "kv_lookup@16000": 0.9791666666666666,
+  "kv_lookup@32000": 0.8541666666666666,
+  "copy@4000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0,
+  "failed_requests": 0
+ },
+ "deepinfra__bf16__flex": {
+  "kv_lookup@4000": 1.0,
+  "kv_lookup@16000": 0.95,
+  "kv_lookup@32000": 0.875,
+  "copy@4000": 0.9979460093896714,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0,
+  "failed_requests": 1
+ },
+ "groq": {
+  "kv_lookup@4000": 1.0,
+  "kv_lookup@16000": 0.9583333333333334,
+  "kv_lookup@32000": 0.875,
+  "copy@4000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0,
+  "failed_requests": 0
+ },
+ "parasail__fp4": {
+  "kv_lookup@4000": 1.0,
+  "kv_lookup@16000": 1.0,
+  "kv_lookup@32000": 0.9166666666666666,
+  "copy@4000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0,
+  "failed_requests": 0
+ },
+ "primeintellect__fp4": {
+  "kv_lookup@4000": 1.0,
+  "kv_lookup@16000": 0.9583333333333334,
+  "kv_lookup@32000": 0.8958333333333334,
+  "copy@4000": 1.0,
+  "copy@16000": 1.0,
+  "copy@32000": 1.0,
+  "failed_requests": 0
+ },
+ "siliconflow__fp8": {
+  "kv_lookup@4000": 1.0,
+  "kv_lookup@16000": 0.9791666666666666,
+  "kv_lookup@32000": 0.875,
+  "copy@4000": 0.9541759053954175,
+  "copy@16000": 0.9600219058050383,
+  "copy@32000": 1.0,
+  "failed_requests": 0
+ }
+}

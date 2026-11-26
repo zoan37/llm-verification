@@ -68,8 +68,13 @@ def build(lengths=(8000, 16000, 32000), per_length=4, seed=7):
 def grade(item, reply: str) -> float:
     """Share of the item answered exactly: lookups found / 8, or 1 - normalized edit distance for copy."""
     if item["task"] == "kv_lookup":
-        lines = {l.strip().strip("`") for l in reply.splitlines()}
-        return sum(a in lines for a in item["answers"]) / len(item["answers"])
+        # each "key = value" anywhere in the reply, so a dropped newline (seen on one provider) is a formatting
+        # fault, not a wrong value; a longer number or a longer key around it doesn't count
+        import re
+        def found(ans):
+            k, v = ans.split(" = ")
+            return re.search(rf"(?<![a-z]){re.escape(k)}\s*=\s*{re.escape(v)}(?!\d)", reply) is not None
+        return sum(found(a) for a in item["answers"]) / len(item["answers"])
     import difflib
     got = reply.strip().strip("`").strip()
     return difflib.SequenceMatcher(None, got, item["target"]).ratio()

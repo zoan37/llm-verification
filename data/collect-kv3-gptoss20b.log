@@ -1,0 +1,14 @@
+budget stops at key usage $39.23
+openai/gpt-oss-20b: 11 endpoints; key usage $36.2328
+coreweave/fp4                  quant=fp4      ok=36/36 logprobs=36 errors=0
+deepinfra/bf16                 quant=bf16     ok=36/36 logprobs=0 errors=0
+parasail/fp4                   quant=fp4      ok=36/36 logprobs=36 errors=0
+deepinfra/bf16/flex            quant=bf16     ok=35/36 logprobs=0 errors=1
+amazon-bedrock/eu-west-1       quant=unknown  ok=36/36 logprobs=0 errors=0
+groq                           quant=unknown  ok=36/36 logprobs=0 errors=0
+siliconflow/fp8                quant=fp8      ok=36/36 logprobs=0 errors=0
+amazon-bedrock                 quant=unknown  ok=36/36 logprobs=0 errors=0
+darkbloom/fp4                  quant=fp4      ok=36/36 logprobs=36 errors=0
+primeintellect/fp4             quant=fp4      ok=36/36 logprobs=0 errors=0
+akashml/fp4                    quant=fp4      ok=23/36 logprobs=23 errors=13
+openai/gpt-oss-20b: spent $0.5394
