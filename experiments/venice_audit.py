@@ -19,6 +19,7 @@ import datetime as dt
 import json
 import re
 import sys
+import threading
 import time
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -124,7 +125,7 @@ def ask(model: str, tag: str, content: str, max_tokens: int = 150, disable_reaso
         dt_s = round(time.time() - t0, 3)
     if "error" in r:
         return {"error": r["error"], "lat_s": dt_s}
-    ch = (r.get("choices") or [{}])[0]
+    ch = ((r.get("choices") or [None])[0]) or {}
     msg = ch.get("message") or {}
     return {
         "content": msg.get("content"),
@@ -139,9 +140,26 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="results/venice/audit_live.json")
     ap.add_argument("--workers", type=int, default=32)
+    ap.add_argument("--budget-usd", type=float, default=2.0, help="stop when the key's spend this run reaches this")
     a = ap.parse_args()
 
     start_usd = openrouter.usage_usd()
+    budget_lock = threading.Lock()
+    budget_state = {"calls": 0, "over": False}
+
+    def over_budget() -> bool:
+        with budget_lock:
+            if budget_state["over"]:
+                return True
+            budget_state["calls"] += 1
+            if budget_state["calls"] % 24 != 1:
+                return False
+        spent_now = openrouter.usage_usd() - start_usd
+        if spent_now >= a.budget_usd:
+            with budget_lock:
+                budget_state["over"] = True
+            return True
+        return False
     zdr = fetch_json("https://openrouter.ai/api/v1/endpoints/zdr").get("data", [])
     venice_catalog = fetch_json("https://api.venice.ai/api/v1/models").get("data", [])
 
@@ -179,6 +197,8 @@ def main():
 
     def run_sweep(j):
         m, t, pn, txt, mt = j
+        if over_budget():
+            return m, t, pn, {"skipped": "budget"}
         res = ask(m, t, txt, mt, disable_reasoning=True)
         if "error" in res and "Reasoning is mandatory" in (res["error"].get("body") or ""):
             res = ask(m, t, txt, max(mt, 600), disable_reasoning=False)
@@ -191,8 +211,15 @@ def main():
     # 2. Parameter-validation fingerprints
     fp: dict = {}
     fp_jobs = [(m, t, pn) for m, t in targets for pn in FP_PROBES]
+
+    def run_fp(j):
+        m, t, pn = j
+        if over_budget():
+            return m, t, pn, None
+        return m, t, pn, probe_param(m, t, FP_PROBES[pn])
+
     with ThreadPoolExecutor(a.workers) as pool:
-        for m, t, pn, res in pool.map(lambda j: (j[0], j[1], j[2], probe_param(j[0], j[1], FP_PROBES[j[2]])), fp_jobs):
+        for m, t, pn, res in pool.map(run_fp, fp_jobs):
             fp.setdefault(m, {}).setdefault(t, {})[pn] = res
 
     # 3. Public TEE attestations for live e2ee-* models

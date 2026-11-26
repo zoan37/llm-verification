@@ -25856,6 +25856,7 @@
  },
  "pairwise_20prompt_clustering": {
   "spend_usd": 0.0149,
+  "included_in_openrouter_spend_usd": true,
   "prompts": 20,
   "temperature": 0,
   "z-ai/glm-5.2": {
@@ -25878,6 +25879,26 @@
    "deepinfra/fp4_vs_deepinfra/fp4/priority": {
     "exact": 3,
     "mean_shared_prefix": 0.46
+   },
+   "deepinfra/fp4_vs_baseten/fp8": {
+    "exact": 1,
+    "mean_shared_prefix": 0.39
+   },
+   "deepinfra/fp4_vs_parasail/fp4": {
+    "exact": 2,
+    "mean_shared_prefix": 0.46
+   },
+   "deepinfra/fp4/priority_vs_baseten/fp8": {
+    "exact": 2,
+    "mean_shared_prefix": 0.36
+   },
+   "deepinfra/fp4/priority_vs_parasail/fp4": {
+    "exact": 3,
+    "mean_shared_prefix": 0.38
+   },
+   "baseten/fp8_vs_parasail/fp4": {
+    "exact": 2,
+    "mean_shared_prefix": 0.39
    }
   },
   "nvidia/nemotron-3-ultra-550b-a55b": {
@@ -25900,7 +25921,31 @@
    "deepinfra/fp4_vs_deepinfra/fp4/priority": {
     "exact": 6,
     "mean_shared_prefix": 0.61
+   },
+   "deepinfra/fp4_vs_fireworks": {
+    "exact": 4,
+    "mean_shared_prefix": 0.59
+   },
+   "deepinfra/fp4_vs_baseten/fp4/us": {
+    "exact": 5,
+    "mean_shared_prefix": 0.54
+   },
+   "deepinfra/fp4/priority_vs_fireworks": {
+    "exact": 5,
+    "mean_shared_prefix": 0.61
+   },
+   "deepinfra/fp4/priority_vs_baseten/fp4/us": {
+    "exact": 5,
+    "mean_shared_prefix": 0.68
+   },
+   "fireworks_vs_baseten/fp4/us": {
+    "exact": 5,
+    "mean_shared_prefix": 0.61
    }
   }
+ },
+ "openrouter_spend_breakdown_usd": {
+  "main_audit": 0.1413,
+  "pairwise_20prompt_clustering": 0.0149
  }
 }
