@@ -31,7 +31,7 @@ from llmverify.engine import LlamaEngine  # noqa: E402
 from llmverify.provider import VerifiableProvider  # noqa: E402
 from llmverify.receipt import Signer, Trace, check_receipt  # noqa: E402
 from llmverify.sampling import SamplingSpec  # noqa: E402
-from llmverify.templates import render_chat  # noqa: E402
+from llmverify.templates import render_chat, with_bos  # noqa: E402
 
 EDGES = [0.01, 0.03, 0.05, 0.1, 0.2, 0.5, 1e9]
 
@@ -57,7 +57,7 @@ a = ap.parse_args()
 if a.cmd == "generate":
     eng = LlamaEngine(shlex.split(a.engine))
     meta, kw = eng.meta, json.loads(a.template_kwargs)
-    bos = [meta["bos"]] if meta.get("add_bos") else []
+    bos = meta["bos"] if meta.get("add_bos") else None
     prompts = [p["prompt"] if isinstance(p, dict) else p for p in json.loads(Path(a.prompts).read_text())]
     signer, info, spec = Signer(), {"name": "hidden-message"}, SamplingSpec()
     msg = a.message.encode()
@@ -68,8 +68,8 @@ if a.cmd == "generate":
     for name, mk in variants.items():
         prov, t0, reps = mk(), time.time(), []
         for i, p in enumerate(prompts):
-            ids = bos + eng.tokenize(render_chat(meta["chat_template"], [{"role": "user", "content": p}], True, **kw),
-                                     True)
+            ids = with_bos(bos, eng.tokenize(
+                render_chat(meta["chat_template"], [{"role": "user", "content": p}], True, **kw), True))
             nonce = f"hm-{i}"
             gen = prov.generate(ids, spec, a.max_tokens, nonce)
             ok = check_receipt(gen.receipt, gen.trace, expected_prompt_ids=ids, expected_spec=spec,

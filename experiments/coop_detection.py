@@ -33,8 +33,12 @@ rows = {}
 print(f"{'variant':16} {'mean regret':>11}  " + "  ".join(f"N={b:<5}" for b in budgets))
 print(f"{'threshold':16} {'':>11}  " + "  ".join(f"{cal.thresholds['regret'][b]:.4f}" for b in budgets))
 for name, v in coop["variants"].items():
-    toks = [TokenScore(regret=r, agree=0.0, lp=0.0) for r, _ in v["per_token"]]
-    reps = [toks[i:i + 128] for i in range(0, len(toks), 128)]
+    if "per_reply" in v:
+        reps = [[TokenScore(regret=r, agree=0.0, lp=0.0) for r, _ in rep] for rep in v["per_reply"]]
+    else:  # files written before per_reply: one flat list, reply boundaries unknown; cut at max_tokens
+        toks = [TokenScore(regret=r, agree=0.0, lp=0.0) for r, _ in v["per_token"]]
+        step = int(coop.get("max_tokens", 128))
+        reps = [toks[i:i + step] for i in range(0, len(toks), step)]
     det = {b: cal.flag_rate(reps, "regret", b, n_draws=2000) for b in budgets}
     rows[name] = {"exact_failures": v["exact_failures"], "replies": v["replies"], "mean_regret": v["regret"],
                   "detection": det}

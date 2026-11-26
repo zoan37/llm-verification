@@ -115,7 +115,7 @@ def cmd_audit(a):
     from .engine import LlamaEngine
     from .peer import logprob_alignment, self_consistency
     from .report import endpoint_summary
-    prompts = json.loads(Path(a.prompts).read_text())[: a.n]
+    prompts = [p["prompt"] if isinstance(p, dict) else p for p in json.loads(Path(a.prompts).read_text())][: a.n]
     out_dir = Path(a.out)
     out_dir.mkdir(parents=True, exist_ok=True)
     ep = {"tag": "endpoint", "provider_name": a.base_url, "supported_parameters": ["top_logprobs"] if a.logprobs else []}
