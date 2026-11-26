@@ -257,9 +257,16 @@ def make_handler(app: App):
                 return self._send(404, {"error": "not found"})
             try:
                 n = int(self.headers.get("Content-Length") or 0)
+                if n < 0:
+                    raise ValueError("bad Content-Length")
                 if n > 4_000_000:
                     return self._send(413, {"error": "request too large"})
-                self._send(200, app.complete(json.loads(self.rfile.read(n))))
+                body = json.loads(self.rfile.read(n))
+                if not isinstance(body, dict):
+                    raise ValueError("request body must be a JSON object")
+                if not isinstance(body.get("verification") or {}, dict):
+                    raise ValueError("verification must be an object")
+                self._send(200, app.complete(body))
             except (ValueError, KeyError, TypeError) as e:
                 self._send(400, {"error": str(e)})
             except Exception as e:  # noqa: BLE001

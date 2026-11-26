@@ -137,6 +137,27 @@ def test_deferred_over_http():
         srv.shutdown()
 
 
+def test_malformed_bodies_are_400_not_500():
+    import http.client
+    app = App(VerifiableProvider(MODEL, SIGNER, INFO), TPL)
+    srv = serve(app, port=0)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    try:
+        cases = [({"Content-Length": "-1"}, b""), ({"Content-Length": "abc"}, b""),
+                 ({}, b"[1, 2]"), ({}, json.dumps({"messages": MSG, "verification": "x"}).encode())]
+        for headers, body in cases:
+            conn = http.client.HTTPConnection("127.0.0.1", srv.server_address[1], timeout=10)
+            conn.putrequest("POST", "/v1/chat/completions")
+            for k, v in {"Content-Length": str(len(body)), **headers}.items():
+                conn.putheader(k, v)
+            conn.endheaders()
+            conn.send(body)
+            assert conn.getresponse().status == 400, headers
+            conn.close()
+    finally:
+        srv.shutdown()
+
+
 def test_native_batch_path_never_bypasses_an_overridden_generate():
     class FakeNative(ToyLM):
         native_generate = 8
