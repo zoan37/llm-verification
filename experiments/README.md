@@ -55,7 +55,11 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    (207 reasoning tokens at `max_tokens` 1,024, 822 at 4,096), 50% at "medium" or unset (259 / 515 / 1,027 at 512 /
    1,024 / 2,048). The cut lands mid-thought: on the KV probes (`max_tokens` 1,024, "low") every one of 72 replies
    on both models has exactly 201 tokens of reasoning, and the 6 whose reasoning was still copying the text answer
-   with a copy cut off mid-word, marked `finish_reason: stop`. Every other endpoint copied those prompts whole.
+   with a copy cut off mid-word, marked `finish_reason: stop`. Every other endpoint copied those prompts whole. The
+   referee confirms the prompt: scored with "Reasoning: medium" in the system prompt, SiliconFlow's reasoning on six
+   copy probes has regret 0.0019, against 0.0437 with the "low" that was requested (three replies open with a token
+   the model gives ~6 nats of regret under "low"); DeepInfra's replies to the same requests fit "low" (0.0046 vs
+   0.0325). `score_model.py --effort` renders either.
    Darkbloom's gpt-oss-20b "high" reasons like everyone else's "medium" (598 vs 607 characters), and Novita's and
    Phala's gpt-oss-120b "low" like "medium" (456 and 536). On Qwen3.8 the setting barely changes reasoning on any
    endpoint (465 / 534 / 531), so it is a property of the model there, not of a provider.

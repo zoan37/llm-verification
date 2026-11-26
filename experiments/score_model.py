@@ -30,6 +30,7 @@ ap.add_argument("--only-reasoning", action="store_true",
                 help="score only the reasoning text, of every reply (greedy too, and replies cut off before an answer); "
                      "for long-context probes, where the answer just copies what the reasoning looked up")
 ap.add_argument("--max-tokens", type=int, default=0)
+ap.add_argument("--effort", default="low", help="harmony: the reasoning effort the referee renders in the system prompt")
 ap.add_argument("--raw-root", default="data/raw")
 ap.add_argument("--scores-root", default="data/scores")
 ap.add_argument("--allow-fp4-batch", action="store_true", help="score FP4 weights on Blackwell at full batch anyway")
@@ -63,7 +64,7 @@ if problem and not a.allow_fp4_batch:
     sys.exit("refusing to score: " + problem)
 meta = eng.meta
 fmt = ChatFormat(kind=a.chat, template=meta.get("chat_template", ""), template_kwargs=json.loads(a.template_kwargs),
-                 add_bos=bool(meta.get("add_bos")), bos=int(meta.get("bos", -1)))
+                 add_bos=bool(meta.get("add_bos")), bos=int(meta.get("bos", -1)), effort=a.effort)
 tmap = TokenMap(eng)
 for f in sorted(raw.glob("*.jsonl.gz")):
     stem = f.name[: -len(".jsonl.gz")]
