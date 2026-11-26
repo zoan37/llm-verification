@@ -7,7 +7,9 @@ token count drops too. Codes avoid look-alike characters (0/O, 1/I/L, 5/S, 8/B, 
 """
 import base64
 import io
+import os
 import random
+import sys
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -15,7 +17,24 @@ ALPHABET = "ACDEFHJKMNPRTUVWXY34679"
 SIZES = [36, 24, 16, 12, 9, 7]
 PER_BAND = 4
 SIDE = 1536
-FONT = "/usr/share/fonts/TTF/JetBrainsMonoNerdFont-Regular.ttf"
+# The published images were drawn in JetBrains Mono (Arch path first). Other fonts work but draw different images,
+# so results from them are not comparable with the published ones. LV_VISION_FONT overrides the search.
+FONTS = [os.environ.get("LV_VISION_FONT", ""),
+         "/usr/share/fonts/TTF/JetBrainsMonoNerdFont-Regular.ttf",
+         "/usr/share/fonts/TTF/JetBrainsMono-Regular.ttf",
+         "/usr/share/fonts/truetype/jetbrains-mono/JetBrainsMono-Regular.ttf",
+         "/Library/Fonts/JetBrainsMono-Regular.ttf",
+         os.path.expanduser("~/Library/Fonts/JetBrainsMono-Regular.ttf"),
+         "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
+         "/usr/share/fonts/TTF/DejaVuSansMono.ttf",
+         "/System/Library/Fonts/Menlo.ttc"]
+FONT = next((f for f in FONTS if f and os.path.exists(f)), None)
+if FONT is None:
+    raise SystemExit("vision_cases: no monospace font found; set LV_VISION_FONT to a .ttf file "
+                     "(JetBrains Mono matches the published images)")
+if "JetBrainsMono" not in FONT:
+    print(f"vision_cases: using {FONT}; images differ from the published ones (drawn in JetBrains Mono)",
+          file=sys.stderr)
 PROMPT = ("This image contains short codes made of 5 letters or digits, printed in rows from large to tiny. "
           "Read every code you can, in order from top to bottom and left to right, one per line. Write only the "
           "codes, exactly as printed; skip any you cannot read.")

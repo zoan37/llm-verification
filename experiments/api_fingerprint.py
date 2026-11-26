@@ -84,10 +84,28 @@ state = {m: (json.loads((RAW / f"{m.replace('/', '__')}.json").read_text())
              if (RAW / f"{m.replace('/', '__')}.json").exists() else {}) for m in a.models}
 
 
+budget = {"probes": 0, "over": False}
+
+
+def over_budget():
+    """Checks the key's spend every 16 probes (each probe costs a fraction of a cent), not on every probe."""
+    with lock:
+        if budget["over"]:
+            return True
+        budget["probes"] += 1
+        if budget["probes"] % 16 != 1:
+            return False
+    over = openrouter.usage_usd() >= a.budget_usd
+    if over:
+        with lock:
+            budget["over"] = True
+    return over
+
+
 def probe(job):
     """One probe on one endpoint; saved as soon as it returns, so an interrupted run resumes."""
     model, tag, name = job
-    if openrouter.usage_usd() >= a.budget_usd:
+    if over_budget():
         return
     o = outcome(model, tag, PROBES[name])
     with lock:

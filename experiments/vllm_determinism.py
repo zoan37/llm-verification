@@ -69,6 +69,9 @@ def compare(x, y):
                 break  # the replies diverge here; later positions have different contexts
             if sx[1] != sy[1] or sx[2] != sy[2]:
                 val += 1
+        else:
+            if len(rx) != len(ry):
+                tok += 1  # same prefix, but one reply stopped earlier
     return pos, tok, val
 
 
