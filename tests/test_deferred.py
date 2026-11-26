@@ -145,6 +145,8 @@ def test_malformed_bodies_are_400_not_500():
     try:
         cases = [({"Content-Length": "-1"}, b""), ({"Content-Length": "abc"}, b""),
                  ({}, b"[1, 2]"), ({}, json.dumps({"messages": MSG, "verification": "x"}).encode())]
+        cases += [({}, json.dumps({"messages": MSG, "verification": v}).encode()) for v in ([], "", False, 0)]
+        cases += [({}, json.dumps({"messages": MSG, "seed": s}).encode()) for s in (2**63, -(2**63) - 1, 10**25)]
         for headers, body in cases:
             conn = http.client.HTTPConnection("127.0.0.1", srv.server_address[1], timeout=10)
             conn.putrequest("POST", "/v1/chat/completions")

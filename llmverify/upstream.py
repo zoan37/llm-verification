@@ -15,7 +15,7 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import List, Optional, Sequence
 
 from .provider import Generation, VerifiableProvider
-from .receipt import Signer, Trace, make_receipt, new_nonce, round_top
+from .receipt import Signer, Trace, make_receipt, new_nonce, round_top, top_problem
 from .sampling import COMMIT_K, SamplingSpec, choose
 
 
@@ -130,9 +130,18 @@ class UpstreamProvider(VerifiableProvider):
                  client_nonce: Optional[str] = None) -> Generation:
         nonce = client_nonce or new_nonce()
         tokens, raw = self.model.complete(prompt_ids, spec, max_tokens, nonce)
+        if len(tokens) != len(raw):
+            raise RuntimeError(f"upstream returned {len(tokens)} tokens but {len(raw)} top lists")
+        if any(lp != lp for top in raw for _, lp in top):  # NaN would round to -1e4 and hide (-inf is masking)
+            raise RuntimeError("upstream returned a NaN logprob")
+        if any(t in self.eos for t in tokens[:-1]):
+            raise RuntimeError("upstream generated past an end-of-generation token")
         tops = [round_top(t) for t in raw]
         for step, (tok, top) in enumerate(zip(tokens, tops)):
-            if len(top) != COMMIT_K or choose(top, spec, nonce, step) != tok:
+            bad = top_problem(top)
+            if bad:  # check_receipt would fail the receipt; never sign one (found in review, round 11)
+                raise RuntimeError(f"upstream top list at step {step} is malformed: {bad}")
+            if choose(top, spec, nonce, step) != tok:
                 # an unpatched server, a request option the patch does not cover, or an arithmetic mismatch: never
                 # sign a reply the rule does not reproduce from its own commitments
                 raise RuntimeError(f"upstream reply does not follow the rule at step {step}")

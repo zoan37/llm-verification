@@ -72,7 +72,8 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    (1,032 where everyone else bills 2,375); on Gemma-4-26B it cuts reasoning at the same ~2,300 tokens as DeepInfra,
    which no other endpoint does. Against: Venice accepts a seed of 2^64 that DeepInfra rejects, and wraps DeepInfra's
    error messages in its own (both expected of a proxy that cleans requests). On Qwen3.5 and Qwen3.8 Venice behaves
-   unlike DeepInfra on all of these, so there it appears to serve the model itself. Indirect evidence, not proof.
+   unlike DeepInfra on all of these. Qwen3.5 instead matches Parasail (byte-identical temperature-0 replies, and both
+   Venice Qwen3.5 endpoints in the 26 November audit); only Qwen3.8 matches nobody. Indirect evidence, not proof.
    Venice's privacy page says Private-mode inference runs "on Venice-controlled GPUs or zero-data-retention partner
    infrastructure" under contractual (not technical) guarantees, without naming partners, and DeepInfra's own policy
    is in-memory processing with no storage or training; so routing through DeepInfra would be consistent with what

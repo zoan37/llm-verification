@@ -58,10 +58,12 @@ def test_spec_validation_and_request_parsing():
 
 def test_request_values_are_rejected_not_clamped_or_coerced():
     # found in external review: top_k 50 became 20, seed 1234.9 became 1234, negative temperature became greedy
-    for bad in ({"top_k": 50}, {"top_k": -2}, {"top_k": 5.0}, {"top_k": False}, {"top_k": True}, {"seed": 1234.9}, {"seed": True}, {"seed": "7"},
+    for bad in ({"top_k": 50}, {"top_k": -2}, {"top_k": 5.0}, {"top_k": False}, {"top_k": True}, {"seed": 2**63}, {"seed": -(2**63) - 1}, {"seed": 10**25}, {"seed": 1234.9}, {"seed": True}, {"seed": "7"},
                 {"temperature": -0.5}, {"temperature": "0.7"}, {"top_p": float("nan")}):
         with pytest.raises(ValueError):
             SamplingSpec.from_request(bad)
+    for edge in (2**63 - 1, -(2**63)):
+        assert SamplingSpec.from_request({"seed": edge}).seed == edge
     for no_limit in (0, -1, None):
         assert SamplingSpec.from_request({"top_k": no_limit}).top_k == 20
     assert SamplingSpec.from_request({"temperature": 0}).temperature == 0.0

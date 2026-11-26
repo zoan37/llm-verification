@@ -23,6 +23,9 @@ COMMIT_K = 20  # candidates a provider commits per step, whatever top_k the requ
 NOISE_DOMAIN = "llmverify-gumbel-v1"
 
 
+SEED_MIN, SEED_MAX = -(1 << 63), (1 << 63) - 1
+
+
 @dataclass(frozen=True)
 class SamplingSpec:
     mode: str = "greedy"  # "greedy" or "gumbel"
@@ -39,6 +42,10 @@ class SamplingSpec:
             v = getattr(self, name)
             if type(v) is not int:
                 raise ValueError(f"{name} must be an int, got {type(v).__name__}")
+        # The engines hold the seed as a signed 64-bit integer: 2**63 would wrap there (the engine samples with
+        # one seed while the receipt signs another) and 10**25 would arrive as a float (found in review, round 11).
+        if not SEED_MIN <= self.seed <= SEED_MAX:
+            raise ValueError(f"seed must be a signed 64-bit integer ({SEED_MIN} to {SEED_MAX})")
         for name in ("temperature", "top_p", "min_p"):
             v = getattr(self, name)
             if type(v) not in (int, float) or not math.isfinite(v):

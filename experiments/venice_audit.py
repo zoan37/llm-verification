@@ -252,15 +252,20 @@ def main():
     out = {
         "measured_utc": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "openrouter_spend_usd": spent,
+        "budget_exceeded": budget_state["over"],  # if true, some sweep/fingerprint entries are {"skipped": "budget"}
         "venice_zdr_count": len(venice_eps),
         "venice_catalog_count": len(venice_catalog),
         "sweep": sweep,
         "fingerprints": fp,
         "e2ee_attestations": attestations,
     }
-    Path(a.out).parent.mkdir(parents=True, exist_ok=True)
-    Path(a.out).write_text(json.dumps(out, indent=1))
-    print(f"wrote {a.out} (spent ${spent:.4f})")
+    out_path = Path(a.out)
+    if budget_state["over"]:  # never overwrite a complete run with a partial one
+        out_path = out_path.with_name(out_path.stem + ".partial" + out_path.suffix)
+        print(f"budget of ${a.budget_usd} reached: results are incomplete", file=sys.stderr)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(out, indent=1))
+    print(f"wrote {out_path} (spent ${spent:.4f})")
 
 
 if __name__ == "__main__":

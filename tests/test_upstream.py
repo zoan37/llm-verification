@@ -90,3 +90,28 @@ def test_stop_on_an_unlisted_eos_is_refused_not_signed():
     p = UpstreamProvider(Early(), Signer(), {"name": "toy"}, eos_ids=[63])
     with pytest.raises(RuntimeError, match="not in the eos list"):
         p.generate([1, 2, 3], SamplingSpec(), 8)
+
+
+def test_malformed_upstream_replies_are_refused_not_signed():
+    # found in review (round 11): the front end checked the rule but not the commitment's shape, so it could sign a
+    # receipt every client then rejects
+    lm = ToyLM(weights_seed=1)
+    top = lm.start([1, 2, 3], 20)
+
+    def fake(tokens, tops):
+        class Up:
+            native_generate, eos_ids = 1, [0]
+
+            def complete(self, prompt_ids, spec, max_tokens, nonce):
+                return tokens, tops
+
+            def detokenize(self, toks):
+                return ""
+        return UpstreamProvider(Up(), Signer(), {"name": "toy"}, eos_ids=[0])
+    tok = choose(round_top(top), SamplingSpec(), "k", 0)
+    dup = [top[0]] + list(top[:-1])  # a duplicated id
+    nan = [(i, float("nan") if j == 5 else lp) for j, (i, lp) in enumerate(top)]
+    for tokens, tops, why in (([tok, tok], [top], "top lists"), ([tok], [dup], "duplicate"),
+                              ([tok], [nan], "NaN"), ([0, tok], [top, top], "past an end-of-generation")):
+        with pytest.raises(RuntimeError, match=why):
+            fake(tokens, tops).generate([1, 2, 3], SamplingSpec(), 2, "k")

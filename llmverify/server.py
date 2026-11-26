@@ -133,7 +133,11 @@ class ContinuousBatcher:
                     break
             admit, keep = [], []
             for item, fut in pending:
-                req = self.provider.native_request(item)
+                try:  # a request the provider can't build fails alone, not the loop (and every later request)
+                    req = self.provider.native_request(item)
+                except Exception as e:  # noqa: BLE001
+                    fut.set_exception(e)
+                    continue
                 need = len(req["context"]) + req["max_tokens"]
                 if need > self.n_ctx:
                     fut.set_exception(ValueError("request needs more context than the engine has"))
@@ -264,7 +268,7 @@ def make_handler(app: App):
                 body = json.loads(self.rfile.read(n))
                 if not isinstance(body, dict):
                     raise ValueError("request body must be a JSON object")
-                if not isinstance(body.get("verification") or {}, dict):
+                if body.get("verification") is not None and not isinstance(body["verification"], dict):
                     raise ValueError("verification must be an object")
                 self._send(200, app.complete(body))
             except (ValueError, KeyError, TypeError) as e:

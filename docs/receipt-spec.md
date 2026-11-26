@@ -10,7 +10,7 @@ An OpenAI-style chat request plus:
 
 | Field | Meaning |
 |---|---|
-| `seed` (int) | chosen by the client. Required for verifiability; a provider-chosen seed allows grinding. |
+| `seed` (int, signed 64-bit: -2^63 to 2^63-1) | chosen by the client. Required for verifiability; a provider-chosen seed allows grinding. |
 | `verification.nonce` (lowercase hex string, 1-128 characters; anything else is rejected) | chosen by the client, fresh per request. Binds the receipt to this request and keys the noise. |
 | `verification.trace` | `"inline"` (default): the trace comes with the reply. `"deferred"`: only the receipt and a `trace_id`; the trace is served on request for the provider's trace window. |
 | `temperature`, `top_k` (≤ 20), `top_p`, `min_p` | the sampling spec. `temperature` 0 means greedy. Out-of-range or wrongly typed values (top_k above 20, a negative temperature, a non-integer seed) are rejected with HTTP 400, never clamped; `top_k` 0 or -1 (the usual "no limit") means 20. |
