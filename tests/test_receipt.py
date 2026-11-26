@@ -121,3 +121,15 @@ def test_http_roundtrip_with_client_checks():
         srv2.shutdown()
     finally:
         srv.shutdown()
+
+
+def test_out_of_range_prompt_ids_fail_the_exact_check(setup):
+    # found in external review (round 8): a signed prompt id past the vocabulary passed check_receipt and then
+    # crashed the referee's audit instead of failing the receipt
+    _, signer, prov = setup
+    g = prov.generate(PROMPT, SamplingSpec(), 10, "n")
+    t = Trace.from_dict(g.trace.to_dict())
+    t.prompt_ids[1] = 10**9
+    r = signer.sign(dataclasses.replace(g.receipt, prompt_sha256=t.prompt_digest(), signature="", provider_key=""))
+    probs = check_receipt(r, t, vocab=64).problems
+    assert "prompt token id out of range" in probs, probs

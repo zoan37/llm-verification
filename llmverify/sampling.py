@@ -80,7 +80,7 @@ class SamplingSpec:
         if t < 0:
             raise ValueError("temperature must be >= 0")
         top_k = body.get("top_k")
-        if top_k is None or top_k in (0, -1):  # absent, or the engine convention for "no top-k limit"
+        if top_k is None or (type(top_k) is int and top_k in (0, -1)):  # absent, or the engine convention for "no top-k limit"
             top_k = COMMIT_K
         elif type(top_k) is not int or not 1 <= top_k <= COMMIT_K:
             raise ValueError(f"top_k must be an integer in [1, {COMMIT_K}] (0 or -1: no limit within the committed {COMMIT_K})")

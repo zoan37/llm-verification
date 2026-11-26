@@ -332,6 +332,8 @@ def check_receipt(receipt: Receipt, trace: Trace, *, expected_prompt_ids: Option
         p.append("receipt is for a different request nonce (replayed or swapped reply)")
     if any(type(t) is not int or t < 0 or (vocab is not None and t >= vocab) for t in trace.tokens):
         p.append("output token id out of range")
+    if any(type(t) is not int or t < 0 or (vocab is not None and t >= vocab) for t in trace.prompt_ids):
+        p.append("prompt token id out of range")
     try:
         spec = SamplingSpec(**receipt.sampling)
     except (TypeError, ValueError) as e:

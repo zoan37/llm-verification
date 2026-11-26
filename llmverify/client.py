@@ -120,7 +120,10 @@ class VerifyingClient:
             if text != self.tokenizer.detokenize([t for t in tr.tokens if t not in set(eos)]):
                 chk.problems.append("returned text does not match the committed tokens")
                 chk.ok = False
-            if receipt.text_sha256 and receipt.text_sha256 != text_digest(text):
+            if not receipt.text_sha256:
+                chk.problems.append("receipt does not commit to the reply text")
+                chk.ok = False
+            elif receipt.text_sha256 != text_digest(text):
                 chk.problems.append("returned text is not the text the provider signed for")
                 chk.ok = False
         except (KeyError, TypeError, ValueError, OverflowError, AttributeError, IndexError) as e:

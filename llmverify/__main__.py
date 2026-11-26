@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import shlex
 import sys
 from pathlib import Path
@@ -27,8 +28,10 @@ def _sha256_file(path: str) -> str:
 def cmd_keygen(a):
     from .receipt import Signer
     s = Signer()
-    Path(a.out).write_text(s.private_hex() + "\n")
-    Path(a.out).chmod(0o600)
+    fd = os.open(a.out, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)  # never readable by others, even briefly
+    os.fchmod(fd, 0o600)  # an existing file keeps its old mode through O_CREAT
+    with os.fdopen(fd, "w") as f:
+        f.write(s.private_hex() + "\n")
     print(f"wrote {a.out}; public key {s.public_hex}")
 
 
@@ -80,7 +83,9 @@ def cmd_verify(a):
     eos = list(ref.eos_ids) if ref else []
     chk = check_receipt(receipt, trace, pinned_key=a.key, eos_ids=eos, vocab=ref.n_vocab if ref else None)
     if "choices" in d:  # a full chat completion: the text the user saw must be the text that was signed
-        text = ((d["choices"] or [{}])[0].get("message") or {}).get("content")
+        ch = d["choices"][0] if isinstance(d["choices"], list) and d["choices"] else {}
+        msg = ch.get("message") if isinstance(ch, dict) else None
+        text = msg.get("content") if isinstance(msg, dict) else None
         if type(text) is not str:
             chk.problems.append("reply text is missing or not a string")
         else:

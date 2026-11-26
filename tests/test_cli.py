@@ -31,3 +31,21 @@ def test_verify_checks_the_reply_text_against_the_receipt(tmp_path, capsys):
     reply["choices"][0]["message"]["content"] += " (edited)"  # the trace and signature are untouched
     code, out = _verify(tmp_path, reply, capsys)
     assert code == 1 and any("not the text the provider signed for" in p for p in out["problems"]), out
+
+
+def test_malformed_choices_are_a_failed_check_not_a_crash(tmp_path, capsys):
+    app = App(VerifiableProvider(ToyLM(weights_seed=1), SIGNER, {"name": "toy"}), TPL)
+    reply = json.loads(json.dumps(app.complete({"messages": [{"role": "user", "content": "5 6 7 8"}], "max_tokens": 8})))
+    for choices in ("x", [3], [{"message": "hi"}], {}):
+        code, out = _verify(tmp_path, {**reply, "choices": choices}, capsys)
+        assert code == 1 and "reply text is missing or not a string" in out["problems"], out
+
+
+def test_keygen_never_writes_a_world_readable_key(tmp_path, capsys):
+    import os
+    from llmverify.__main__ import cmd_keygen
+    out = tmp_path / "k.hex"
+    out.write_text("old")
+    out.chmod(0o644)
+    cmd_keygen(argparse.Namespace(out=str(out)))
+    assert os.stat(out).st_mode & 0o777 == 0o600 and len(out.read_text().strip()) == 64
