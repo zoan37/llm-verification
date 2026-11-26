@@ -195,7 +195,8 @@ class EProcess:
     def update(self, x: float) -> float:
         x = min(max(x, 0.0), self.upper)
         mu = (self._sum + self.tau) / (self.n + 1)          # shrunk running mean
-        var = (self._sum_sq - self._sum ** 2 / self.n) / self.n if self.n > 1 else self.tau ** 2 + 1e-12
+        # one-pass variance can cancel slightly below 0; clamp (any bet chosen before x keeps the e-process valid)
+        var = max(0.0, (self._sum_sq - self._sum ** 2 / self.n) / self.n) if self.n > 1 else self.tau ** 2 + 1e-12
         lam = (mu - self.tau) / (var + (mu - self.tau) ** 2 + 1e-12)
         lam = min(max(lam, 0.0), 0.5 / max(self.tau, 1e-12))  # factor 1 + lam (x - tau) >= 1/2 for x >= 0
         self.wealth *= 1.0 + lam * (x - self.tau)

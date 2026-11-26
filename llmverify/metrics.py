@@ -32,7 +32,7 @@ import math
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Sequence
 
-from .sampling import SamplingSpec, TopK, candidates, gumbel_noise
+from .sampling import SamplingSpec, TopK, candidates, choose, gumbel_noise
 from .sampling import margin as rule_margin
 
 METRICS = ("regret", "agree", "lp", "ce_dev", "var_lp", "pit", "drift", "topk", "wgap", "tail_hit", "tail_mass")
@@ -95,8 +95,7 @@ def regret(token: int, ref: RefStep, spec: SamplingSpec, key: str, step: int) ->
 
 def score_token(token: int, ref: RefStep, spec: SamplingSpec, key: str, step: int,
                 reported_top: Optional[TopK] = None, reported_lp: Optional[float] = None) -> TokenScore:
-    agree_tok = ref.top[0][0] if spec.greedy else max(
-        candidates(ref.top, spec), key=lambda c: c[1] / spec.temperature + gumbel_noise(spec.seed, key, step, c[0]))[0]
+    agree_tok = choose(ref.top, spec, key, step)  # the rule's own pick, ties broken as the provider must break them
     s = TokenScore(regret=regret(token, ref, spec, key, step), agree=float(token == agree_tok), lp=ref.lp)
     if len(ref.top) >= 2:
         s.margin = rule_margin(ref.top, spec, key, step)

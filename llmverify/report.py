@@ -20,7 +20,7 @@ from typing import Dict, List, Optional
 
 from .blackbox import expand
 from .openrouter import load
-from .peer import greedy_texts, logprob_alignment, prefix_agreement, self_consistency
+from .peer import finite_lp, greedy_texts, logprob_alignment, prefix_agreement, self_consistency, valid_top
 from .stats import cluster_bootstrap_mean, likelihood_test, pit_test, sampler_test, tail_test
 
 
@@ -262,11 +262,12 @@ def _own_top_miss_raw(raw: List[dict]) -> Optional[float]:
         if r.get("mode") not in ("greedy", "repeat"):
             continue
         for x in r.get("logprobs") or []:
-            top = x.get("top_logprobs") or []
-            if not top or x.get("logprob") is None:
+            top = valid_top(x.get("top_logprobs"))
+            lp = finite_lp(x.get("logprob"))
+            if not top or lp is None:
                 continue
             n += 1
-            bad += max(c["logprob"] for c in top) - x["logprob"] > 1e-3
+            bad += max(c["logprob"] for c in top) - lp > 1e-3
     return bad / n if n else None
 
 

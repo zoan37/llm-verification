@@ -98,3 +98,15 @@ def test_self_consistency_is_uniform_for_honest_samples():
             c = rng.choice(x["top_logprobs"])
             x["token"], x["logprob"] = c["token"], c["logprob"]
     assert self_consistency(recs)["mean"] > 0.55
+
+
+def test_peer_checks_survive_none_nan_and_sentinel_logprobs():
+    # found in review (round 12): exp(-1000) underflowed to a zero normaliser, and None crashed max()
+    from llmverify.peer import logprob_alignment, self_consistency
+    from llmverify.report import _own_top_miss_raw
+    top = [{"token": t, "logprob": v} for t, v in zip("abcdefg", [-1000.0, -1001, -1002, None, float("nan"), -1003, -1004])]
+    raw = [{"mode": "sample", "prompt_idx": i, "logprobs": [{"token": "a", "logprob": -1000.0, "top_logprobs": top}] * 20}
+           for i in range(5)]
+    assert self_consistency(raw) is not None
+    assert logprob_alignment(raw)["bad_share"] == 0.0
+    assert _own_top_miss_raw([{**r, "mode": "greedy"} for r in raw]) == 0.0

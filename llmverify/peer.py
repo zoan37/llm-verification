@@ -14,9 +14,21 @@ the others, next to the same number for known references.
 
 from __future__ import annotations
 
+import math
 from itertools import combinations
 from statistics import median
 from typing import Dict, List, Optional
+
+
+def finite_lp(v) -> Optional[float]:
+    """A provider-reported logprob as a float, or None when it is missing, not a number, NaN or infinite."""
+    return float(v) if type(v) in (int, float) and math.isfinite(v) else None
+
+
+def valid_top(top) -> List[dict]:
+    """The entries of a provider's top_logprobs list that carry a usable logprob. APIs return None and NaN (found
+    in review, round 12); finite sentinels such as -9999 are kept, and callers work relative to the largest."""
+    return [c for c in (top if isinstance(top, list) else []) if isinstance(c, dict) and finite_lp(c.get("logprob")) is not None]
 
 
 def shared_prefix_chars(a: str, b: str) -> int:
@@ -73,12 +85,14 @@ def self_consistency(raw: List[dict], seed: str = "self") -> Optional[dict]:
         if r.get("mode") != "sample" or not r.get("logprobs"):
             continue
         for j, x in enumerate(r["logprobs"]):
-            top = x.get("top_logprobs") or []
-            if len(top) < 5 or x.get("logprob") is None:
+            top = valid_top(x.get("top_logprobs"))
+            lp = finite_lp(x.get("logprob"))
+            if len(top) < 5 or lp is None:
                 continue
-            ps = {c["token"]: math.exp(c["logprob"]) for c in top}
+            m = max(lp, *(c["logprob"] for c in top))  # relative to the largest: no underflow or overflow
+            ps = {c["token"]: math.exp(c["logprob"] - m) for c in top}
             z = sum(ps.values())
-            px = math.exp(x["logprob"])
+            px = math.exp(lp - m)
             if x["token"] not in ps:
                 z += px
             above = sum(p for t, p in ps.items() if p > px and t != x["token"])
@@ -100,13 +114,14 @@ def logprob_alignment(raw: List[dict], tol: float = 0.05) -> Optional[dict]:
     bad = n = 0
     for r in raw:
         for x in r.get("logprobs") or []:
-            top = x.get("top_logprobs") or []
-            if not top or x.get("logprob") is None:
+            top = valid_top(x.get("top_logprobs"))
+            lp = finite_lp(x.get("logprob"))
+            if not top or lp is None:
                 continue
             n += 1
             listed = {c["token"]: c["logprob"] for c in top}
-            if x["token"] in listed:
-                bad += abs(listed[x["token"]] - x["logprob"]) > tol
+            if x.get("token") in listed:
+                bad += abs(listed[x["token"]] - lp) > tol
             else:
-                bad += x["logprob"] > min(listed.values()) + tol
+                bad += lp > min(listed.values()) + tol
     return {"bad_share": bad / n, "n_tokens": n} if n else None

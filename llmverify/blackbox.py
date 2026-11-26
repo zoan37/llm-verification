@@ -160,8 +160,9 @@ def score_record(engine, fmt: ChatFormat, tmap: TokenMap, prompt: str, rec: dict
     if max_tokens:
         ids, tops, lps = ids[:max_tokens], tops[:max_tokens], lps[:max_tokens]
     inserted: List[int] = []
-    temp = 1.0
-    stats = rec.get("mode") not in ("greedy", "repeat")  # full-vocabulary statistics only matter for sampled text
+    mode = str(rec.get("mode") or "")
+    temp = float(mode[4:]) if mode.startswith("temp") else 1.0  # "temp0.5" was sampled at 0.5 (openrouter._request)
+    stats = mode not in ("greedy", "repeat")  # full-vocabulary statistics only matter for sampled text
     ref = engine.score(context, ids, k=50, temperature=temp, stats=stats) if ids else []
     if repair and ids and has_repair_candidate(ids, ref):
         ids, inserted = repair_dropped(engine, context, ids)

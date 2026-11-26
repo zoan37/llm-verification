@@ -139,3 +139,23 @@ def test_tool_grader_handles_non_object_arguments_and_bool_vs_int():
         g = tc.grade(case, {"tool_calls": [{"function": {"name": name, "arguments": args}}]})
         assert not g["ok"] and any("not a JSON object" in p for p in g["problems"])
     assert tc._type_ok({"in_stock": 1}, {"type": "object", "properties": {"in_stock": {"type": "boolean"}}}) is False
+
+
+def test_verdict_means_are_per_metric_and_none_when_unmeasured():
+    # found in review (round 12): unmeasured metrics read 0.0, and a tolerance on a metric outside
+    # regret/wgap/topk printed "mean 0.0000 exceeds tolerance"
+    from llmverify.metrics import TokenScore
+    led = Ledger("x", tolerances={"drift": 0.1})
+    led.add([TokenScore(regret=0.01, agree=1.0, lp=-0.1, drift=0.9) for _ in range(200)])
+    v = led.verdict()
+    assert v["means"]["wgap"] is None and v["means"]["topk"] is None
+    assert abs(v["means"]["drift"] - 0.9) < 1e-9
+    assert any("drift: mean 0.9000" in r for r in v["reasons"]), v["reasons"]
+
+
+def test_eprocess_variance_never_goes_negative():
+    from llmverify.stats import EProcess
+    e = EProcess(tau=0.5, upper=5.0)
+    for _ in range(10_000):
+        e.update(0.1)
+        assert e.wealth > 0

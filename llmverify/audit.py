@@ -124,21 +124,25 @@ class Ledger:
 
     def verdict(self, calibration: Optional[Calibration] = None) -> dict:
         n = len(self.scores)
-        means = {m: (sum(s.get(m) for s in self.scores if s.get(m) is not None) /
-                     max(1, sum(1 for s in self.scores if s.get(m) is not None))) for m in ("regret", "wgap", "topk")}
+        # Per metric, over the tokens that have it: a metric never measured (text-only audits have no wgap or topk)
+        # is None, not 0.0, and a calibrated threshold is looked up at that metric's own count (review, round 12).
+        counts, means = {}, {}
+        for m in dict.fromkeys(("regret", "wgap", "topk", *self.tolerances)):
+            vals = [v for v in (s.get(m) for s in self.scores) if v is not None]
+            counts[m], means[m] = len(vals), (sum(vals) / len(vals) if vals else None)
         reasons = list(self.hard_failures)
         e_vals = {m: {"p": e.p_value(), "wealth": e.wealth, "n": e.n} for m, e in self._eps.items()}
         for m, e in self._eps.items():
             if e.p_value() <= self.alpha:
-                reasons.append(f"{m}: mean {means.get(m, 0):.4f} exceeds tolerance {e.tau} "
+                reasons.append(f"{m}: mean {means[m]:.4f} exceeds tolerance {e.tau} "
                                f"(anytime p = {e.p_value():.2g} over {e.n} tokens)")
         thresholds = {}
         if calibration is not None:
             for m in ("regret", "wgap", "topk"):
-                thr = calibration.threshold(m, n)
+                thr = calibration.threshold(m, counts[m]) if counts[m] else None
                 thresholds[m] = thr
-                if thr is not None and means.get(m) is not None and means[m] > thr:
-                    reasons.append(f"{m}: mean {means[m]:.4f} > calibrated threshold {thr:.4f} at {n} tokens")
+                if thr is not None and means[m] is not None and means[m] > thr:
+                    reasons.append(f"{m}: mean {means[m]:.4f} > calibrated threshold {thr:.4f} at {counts[m]} tokens")
         warnings = []
         steering = self.steering_test()
         if steering and steering["z"] > 4:
