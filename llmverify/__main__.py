@@ -126,6 +126,8 @@ def cmd_audit(a):
     ep = {"tag": "endpoint", "provider_name": a.base_url, "supported_parameters": ["top_logprobs"] if a.logprobs else []}
     raw_path = openrouter.collect_endpoint(a.model, ep, prompts, out_dir, max_tokens=a.max_tokens,
                                            reasoning={"effort": a.reasoning_effort} if a.reasoning_effort else {"enabled": False})
+    if raw_path is None:
+        sys.exit("spend budget reached before the endpoint was fully collected; nothing to audit")
     raw = openrouter.load(raw_path)
     eng = LlamaEngine(shlex.split(a.referee))
     meta = eng.meta
@@ -135,7 +137,8 @@ def cmd_audit(a):
     scored = []
     for rec in raw:
         if rec.get("content"):
-            s = score_record(eng, fmt, tmap, prompts[rec["prompt_idx"]], rec, "answer", repair=rec["mode"] != "sample")
+            s = score_record(eng, fmt, tmap, prompts[rec["prompt_idx"]], rec, "answer",
+                             repair=rec["mode"] in ("greedy", "repeat"))  # dropped-token repair assumes greedy
             if s:
                 scored.append(s)
     summ = endpoint_summary(scored, raw)

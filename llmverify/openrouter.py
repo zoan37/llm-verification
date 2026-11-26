@@ -131,8 +131,9 @@ def collect_endpoint(model: str, e: dict, prompts: List[str], out_dir: Path, mod
         if errors >= 4 and not any(r.get("content") for r in recs):
             break  # unusable endpoint: stop paying for errors
         if len(recs) % 16 == 0 and usage_usd() >= budget_usd:
-            log(f"{tag}: budget ${budget_usd} reached")
-            break
+            # not written: a partial file would make every later run skip this endpoint (review, rounds 9/13)
+            log(f"{tag}: budget ${budget_usd} reached; not writing a partial file")
+            return None
         req_mode = mode if mode == "sample" or mode.startswith("temp") else "greedy"  # repeat is greedy
         r, lat = _request(model, tag, prompt, req_mode, max_tokens, reasoning, top_n, extra)
         if top_n and "error" in r and "logprob" in (r["error"]["body"] or "").lower() and top_n > 5:

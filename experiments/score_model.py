@@ -83,7 +83,7 @@ for f in sorted(raw.glob("*.jsonl.gz")):
         for seg in segs:
             try:
                 s = score_record(eng, fmt, tmap, prompts[rec["prompt_idx"]], rec, seg, a.max_tokens,
-                                 repair=rec["mode"] != "sample")
+                                 repair=rec["mode"] in ("greedy", "repeat"))  # repair assumes greedy decoding
             except Exception as e:  # noqa: BLE001 - one bad reply must not stop the run
                 errors += 1
                 print(f"  {stem} prompt {rec['prompt_idx']} {seg}: {e}", flush=True)

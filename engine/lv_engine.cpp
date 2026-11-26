@@ -407,6 +407,8 @@ struct Engine {
         q.sp.seed = sp.value("seed", 0LL);
         if (q.ctxt.empty() || q.max_tokens < 1) throw std::runtime_error("empty context or max_tokens < 1");
         if (q.sp.top_k < 1 || q.sp.top_k > k) throw std::runtime_error("top_k out of range");
+        if (!q.sp.greedy && (!(q.sp.temperature > 0.0) || !std::isfinite(q.sp.temperature)))
+            throw std::runtime_error("sampled requests need a finite temperature > 0");
         return q;
     }
 
@@ -697,6 +699,12 @@ int main(int argc, char ** argv) {
     while (std::getline(std::cin, line)) {
         if (line.empty()) continue;
         json req, resp;
+        // Temperatures divide logits: 0, negative or NaN would give inf/NaN probabilities (review, rounds 9/13).
+        auto temperature = [&](double dflt) {
+            const double t = req.value("temperature", dflt);
+            if (!(t > 0.0) || !std::isfinite(t)) throw std::runtime_error("temperature must be a finite number > 0");
+            return t;
+        };
         try {
             req = json::parse(line);
             resp["id"] = req.value("id", json());
@@ -749,7 +757,7 @@ int main(int argc, char ** argv) {
             } else if (cmd == "score") {
                 auto context = req["context"].get<std::vector<llama_token>>();
                 auto reply = req["tokens"].get<std::vector<llama_token>>();
-                resp["steps"] = E.score(context, reply, k, req.value("temperature", 1.0), req.value("stats", true));
+                resp["steps"] = E.score(context, reply, k, temperature(1.0), req.value("stats", true));
             } else if (cmd == "generate") {
                 resp["results"] = E.generate(req.at("requests"), k);
             } else if (cmd == "cb_add") {
@@ -763,7 +771,7 @@ int main(int argc, char ** argv) {
                 resp["top"] = cmd == "start" ? E.start(req["context"].get<std::vector<llama_token>>(), k)
                                              : E.step(req["token"].get<llama_token>(), k);
                 if (req.contains("u")) {  // also draw an ordinary full-vocabulary sample
-                    const int t = E.sample_full(E.last_logits, req.value("temperature", 1.0), req["u"].get<double>());
+                    const int t = E.sample_full(E.last_logits, temperature(1.0), req["u"].get<double>());
                     double lse;
                     E.topk(E.last_logits, 1, lse);
                     resp["sampled"] = t;

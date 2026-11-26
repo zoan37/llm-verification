@@ -133,9 +133,10 @@ n = sum(len(r) for r in can["replies"])
 print(f"{can['tag']}: {len(can['replies']) - len(bad)} of {len(can['replies'])} prompts match exactly "
       f"({'prefill' if getattr(a, 'prefill', False) else 'decode'}, {n} canonical positions)")
 for i, j in bad[:5]:
-    ref, g = can["replies"][i][j], got[i][j] if j < len(got[i]) else None
-    if g is None:
-        print(f"  prompt {i}: the node's reply ends at token {j}")
+    ref = can["replies"][i][j] if j < len(can["replies"][i]) else None
+    g = got[i][j] if j < len(got[i]) else None
+    if g is None or ref is None:  # one reply is a prefix of the other
+        print(f"  prompt {i}: the {'node' if g is None else 'canonical'} reply ends at token {j}")
         continue
     diff = sorted(set(map(tuple, ref[1])) ^ set(map(tuple, g[1])), key=lambda x: x[1], reverse=True)
     print(f"  prompt {i}: first difference at token {j}: canonical token {ref[0]}, node token {g[0]}; "

@@ -82,7 +82,9 @@ if a.cmd == "generate":
         alt = runner_up(tr.tops[j], spec, nonce, j)
         top = _lower_winner(tr.tops[j], tr.tokens[j], alt, spec, nonce, j)
         tokens, tops, finish = tr.tokens[:j] + [alt], tr.tops[:j] + [top], "length"
-        if spec.greedy and len(tokens) < a.max_tokens:  # keep writing from the altered prefix
+        if alt in up.eos_ids:  # the flip ends the reply: nothing may follow an end-of-generation token
+            finish = "stop"
+        elif spec.greedy and len(tokens) < a.max_tokens:  # keep writing from the altered prefix
             more, raw = up.complete(tr.prompt_ids + tokens, spec, a.max_tokens - len(tokens), nonce)
             tokens, tops = tokens + more, tops + [round_top(t) for t in raw]
             finish = "stop" if more and more[-1] in up.eos_ids else "length"
