@@ -25,6 +25,12 @@ MIN_PROMPTS = 5     # pairs compared on fewer prompts are not judged
 SAME_SHARE = 0.9    # byte-identical on at least this share of shared prompts
 
 
+def _reply(r: dict) -> tuple:
+    """(content, reasoning) with a missing field and an empty one treated alike: one wrapper omits an empty
+    reasoning, another returns "" for the same upstream reply (review, round 14)."""
+    return (r.get("content") or "", r.get("reasoning") or r.get("reasoning_content") or "")
+
+
 def greedy_replies(model_key: str) -> dict:
     """endpoint -> {prompt key: (content, reasoning)} over all greedy sources."""
     out: dict = {}
@@ -32,18 +38,18 @@ def greedy_replies(model_key: str) -> dict:
         for r in load(f):
             if r.get("mode") == "greedy" and r.get("content"):
                 out.setdefault(f.name[:-len(".jsonl.gz")], {})[("main", r["prompt_idx"], r.get("rep", 0))] = \
-                    (r["content"], r.get("reasoning"))
+                    _reply(r)
     for f in sorted((Path("data/raw-shared") / model_key).glob("*.jsonl.gz")):
         for r in load(f):
             if r.get("rep", 0) == 0 and (r.get("content") or r.get("reasoning")):
                 out.setdefault(f.name[:-len(".jsonl.gz")], {})[("scan", r["prompt_idx"])] = \
-                    (r.get("content"), r.get("reasoning"))
+                    _reply(r)
     for f in sorted((Path("data/raw-reason") / model_key).glob("*.jsonl.gz")):
         for line in gzip.open(f, "rt"):
             r = json.loads(line)
             if "error" not in r and r.get("content"):
                 out.setdefault(f.name[:-len(".jsonl.gz")], {})[("reason", r["effort"], r["case"])] = \
-                    (r["content"], r.get("reasoning"))
+                    _reply(r)
     return {k: v for k, v in out.items() if not k.startswith("local__")}
 
 

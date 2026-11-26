@@ -70,8 +70,9 @@ def run(e):
                 if sum("error" in x for x in recs) >= 6 and not any("message" in x for x in recs):
                     break
                 continue
-            ch = (r.get("choices") or [{}])[0]
-            recs.append({"case": case["id"], "rep": rep, "message": ch.get("message") or {},
+            ch = openrouter.first_choice(r)
+            recs.append({"case": case["id"], "rep": rep,
+                         "message": ch.get("message") if isinstance(ch.get("message"), dict) else {},
                          "finish_reason": ch.get("finish_reason"), "usage": r.get("usage"),
                          "latency_s": round(time.time() - t0, 2)})
         if sum("error" in x for x in recs) >= 6 and not any("message" in x for x in recs):

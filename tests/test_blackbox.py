@@ -110,3 +110,11 @@ def test_peer_checks_survive_none_nan_and_sentinel_logprobs():
     assert self_consistency(raw) is not None
     assert logprob_alignment(raw)["bad_share"] == 0.0
     assert _own_top_miss_raw([{**r, "mode": "greedy"} for r in raw]) == 0.0
+
+
+def test_null_choices_and_reasoning_content():
+    # found in review (round 14): {"choices": [null]} crashed four collectors
+    from llmverify.openrouter import first_choice, reasoning_of
+    for r in ({}, {"choices": None}, {"choices": []}, {"choices": [None]}, {"choices": ["x"]}):
+        assert first_choice(r) == {}
+    assert reasoning_of({"reasoning_content": "r"}) == "r" and reasoning_of({"reasoning": "a"}) == "a"

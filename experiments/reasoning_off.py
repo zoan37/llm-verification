@@ -78,6 +78,8 @@ def run(e):
         for i, case in enumerate(jc.CASES):
             if errors >= 6 and not any("content" in r for r in recs):
                 break
+            if i % 8 == 0 and openrouter.usage_usd() >= a.budget_usd:  # checked inside the endpoint too
+                return  # an endpoint cut short is not written, so a later run collects it whole
             body = {"model": a.model, "temperature": a.temperature, "max_tokens": a.max_tokens,
                     "messages": [{"role": "system", "content": jc.SYSTEM}, {"role": "user", "content": case["q"]}],
                     "response_format": {"type": "json_object"},
@@ -92,9 +94,9 @@ def run(e):
                 errors += 1
                 recs.append({"mode": mode, "case": i, "error": r["error"]})
                 continue
-            ch = (r.get("choices") or [{}])[0]
-            msg = ch.get("message") or {}
-            recs.append({"mode": mode, "case": i, "content": msg.get("content"), "reasoning": msg.get("reasoning"),
+            ch = openrouter.first_choice(r)
+            msg = ch.get("message") if isinstance(ch.get("message"), dict) else {}
+            recs.append({"mode": mode, "case": i, "content": msg.get("content"), "reasoning": openrouter.reasoning_of(msg),
                          "finish_reason": ch.get("finish_reason"), "usage": r.get("usage"),
                          "provider": r.get("provider"), "latency_s": round(time.time() - t0, 2)})
     with gzip.open(out, "wt") as f:

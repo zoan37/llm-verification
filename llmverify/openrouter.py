@@ -30,6 +30,19 @@ API = os.environ.get("LLMVERIFY_API_BASE", "https://openrouter.ai/api/v1")  # an
 _lock = threading.Lock()
 
 
+def first_choice(r: dict) -> dict:
+    """The first choice of a chat completion as a dict, {} when choices is missing, empty, or holds null
+    (providers return {"choices": [null]}; found in review, round 14)."""
+    ch = r.get("choices")
+    ch = ch[0] if isinstance(ch, list) and ch else None
+    return ch if isinstance(ch, dict) else {}
+
+
+def reasoning_of(msg: dict):
+    """The reasoning text, whichever field the provider uses (OpenRouter normalises to "reasoning")."""
+    return msg.get("reasoning") or msg.get("reasoning_content")
+
+
 def _key() -> str:
     if "openrouter.ai" not in API:
         return os.environ.get("LLMVERIFY_API_KEY", "none")
@@ -129,13 +142,13 @@ def collect_endpoint(model: str, e: dict, prompts: List[str], out_dir: Path, mod
             errors += 1
             recs.append({"mode": mode, "prompt_idx": i, "error": r["error"]})
             continue
-        ch = (r.get("choices") or [{}])[0]
-        msg = ch.get("message") or {}
+        ch = first_choice(r)
+        msg = ch.get("message") if isinstance(ch.get("message"), dict) else {}
         recs.append({
             "mode": mode, "prompt_idx": i, "date": date, "provider": r.get("provider"), "tag": tag,
             **({"extra_body": extra} if extra and mode != "greedy" else {}),
             "quantization": e.get("quantization"), "model_returned": r.get("model"),
-            "content": msg.get("content"), "reasoning": msg.get("reasoning"),
+            "content": msg.get("content"), "reasoning": reasoning_of(msg),
             "logprobs": (ch.get("logprobs") or {}).get("content"), "finish_reason": ch.get("finish_reason"),
             "native_finish_reason": ch.get("native_finish_reason"), "usage": r.get("usage"),
             "latency_s": round(lat, 2), "top_logprobs_requested": top_n,

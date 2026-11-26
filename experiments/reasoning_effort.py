@@ -76,9 +76,9 @@ def run(e):
                 errors += 1
                 recs.append({"effort": eff, "case": i, "error": r["error"]})
                 continue
-            ch = (r.get("choices") or [{}])[0]
-            msg = ch.get("message") or {}
-            recs.append({"effort": eff, "case": i, "content": msg.get("content"), "reasoning": msg.get("reasoning"),
+            ch = openrouter.first_choice(r)
+            msg = ch.get("message") if isinstance(ch.get("message"), dict) else {}
+            recs.append({"effort": eff, "case": i, "content": msg.get("content"), "reasoning": openrouter.reasoning_of(msg),
                          "finish_reason": ch.get("finish_reason"), "usage": r.get("usage"),
                          "latency_s": round(time.time() - t0, 2)})
     with gzip.open(out, "wt") as f:
