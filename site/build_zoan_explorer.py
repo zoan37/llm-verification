@@ -77,9 +77,9 @@ HTML = r"""<!doctype html>
   <a class="home" href="/">zoan.space</a>
   <a href="./"><span class="long">LLM Verification</span><span class="short">Overview</span></a>
   <a href="results.html"><span class="long">Results</span><span class="short">Results</span></a>
-  <a href="explorer.html" aria-current="page"><span class="long">Explorer</span><span class="short">Explore</span></a>
   <a href="case-studies.html"><span class="long">Case studies</span><span class="short">Cases</span></a>
   <a href="method.html"><span class="long">Method &amp; limits</span><span class="short">Method</span></a>
+  <a href="explorer.html" aria-current="page"><span class="long">Explorer</span><span class="short">Explore</span></a>
   <a class="proto" href="protocol.html"><span class="long">Protocol</span><span class="short">Protocol</span></a>
   <a class="ext" href="https://github.com/zoan37/llm-verification">GitHub&nbsp;↗</a>
 </nav></header>
@@ -162,8 +162,8 @@ HTML = r"""<!doctype html>
     <code>results/regret_profile/</code>, and <code>results/prefix_cache/</code> in the
     <a href="https://github.com/zoan37/llm-verification">llm-verification repository</a>.</div>
   <nav class="pager" aria-label="Previous and next page">
-    <a class="prev" href="results.html"><span class="dir">← Previous</span><span class="t">Results</span></a>
-    <a class="next" href="case-studies.html"><span class="dir">Next →</span><span class="t">Case studies</span></a>
+    <a class="prev" href="method.html"><span class="dir">← Previous</span><span class="t">Method &amp; limits</span></a>
+    <a class="next" href="protocol.html"><span class="dir">Next →</span><span class="t">Protocol</span></a>
   </nav>
 </main>
 <script>
