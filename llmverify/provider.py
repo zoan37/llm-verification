@@ -22,11 +22,13 @@ class Generation:
 
 
 class VerifiableProvider:
-    def __init__(self, model: Model, signer: Signer, model_info: dict, eos_ids: Optional[Sequence[int]] = None):
+    def __init__(self, model: Model, signer: Signer, model_info: dict, eos_ids: Optional[Sequence[int]] = None,
+                 merkle: bool = False):
         self.model = model
         self.signer = signer
         self.model_info = dict(model_info)
         self.eos = set(int(x) for x in (eos_ids if eos_ids is not None else model.eos_ids))
+        self.merkle = bool(merkle)
 
     def generate_batch(self, items: Sequence[tuple]) -> List[Generation]:
         """Many requests [(prompt_ids, spec, max_tokens, client_nonce), ...]. With an engine that runs the rule
@@ -61,7 +63,8 @@ class VerifiableProvider:
                       finish_reason=res["finish_reason"])
         text = (getattr(self, "text_model", None) or self.model).detokenize(
             [t for t in trace.tokens if t not in self.eos])
-        return Generation(trace, make_receipt(self.signer, trace, self.model_info, spec, req["key"], n, text), text)
+        return Generation(trace, make_receipt(self.signer, trace, self.model_info, spec, req["key"], n, text,
+                                              merkle=self.merkle), text)
 
     def generate(self, prompt_ids: Sequence[int], spec: SamplingSpec, max_tokens: int,
                  client_nonce: Optional[str] = None) -> Generation:
@@ -84,4 +87,5 @@ class VerifiableProvider:
                 top = round_top(self.model.step(tok, COMMIT_K))
         trace = Trace(prompt_ids=[int(x) for x in prompt_ids], tokens=tokens, tops=tops, finish_reason=finish)
         text = self.model.detokenize([t for t in tokens if t not in self.eos])
-        return Generation(trace, make_receipt(self.signer, trace, self.model_info, spec, nonce, max_tokens, text), text)
+        return Generation(trace, make_receipt(self.signer, trace, self.model_info, spec, nonce, max_tokens, text,
+                                              merkle=self.merkle), text)

@@ -237,6 +237,13 @@ class App:
     def trace(self, trace_id: str) -> Optional[dict]:
         return self.traces.get(trace_id)
 
+    def span_proof(self, trace_id: str, start: int, end: int) -> Optional[dict]:
+        t = self.traces.get(trace_id)
+        if t is None:
+            return None
+        from .merkle import make_span_proof
+        return make_span_proof(t["tokens"], t["tops"], start, end).to_dict()
+
 
 def make_handler(app: App):
     class Handler(BaseHTTPRequestHandler):
@@ -254,6 +261,17 @@ def make_handler(app: App):
             if self.path.startswith("/v1/verification/trace/"):
                 t = app.trace(self.path.rsplit("/", 1)[-1])
                 return self._send(200, t) if t is not None else self._send(404, {"error": "unknown or expired trace"})
+            if self.path.startswith("/v1/verification/span/"):
+                from urllib.parse import parse_qs, urlsplit
+                parts = urlsplit(self.path)
+                tid = parts.path.rsplit("/", 1)[-1]
+                qs = parse_qs(parts.query)
+                try:
+                    start, end = int(qs["start"][0]), int(qs["end"][0])
+                    sp = app.span_proof(tid, start, end)
+                except (KeyError, ValueError, IndexError) as e:
+                    return self._send(400, {"error": f"bad span query: {e}"})
+                return self._send(200, sp) if sp is not None else self._send(404, {"error": "unknown or expired trace"})
             self._send(404, {"error": "not found"})
 
         def do_POST(self):  # noqa: N802

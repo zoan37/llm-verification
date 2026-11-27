@@ -68,6 +68,10 @@ class VerifyingClient:
     def fetch_trace(self, trace_id: str) -> dict:
         return self._get("/v1/verification/trace/" + trace_id)
 
+    def fetch_span(self, trace_id: str, start: int, end: int):
+        from .merkle import SpanProof
+        return SpanProof.from_dict(self._get(f"/v1/verification/span/{trace_id}?start={int(start)}&end={int(end)}"))
+
     def chat(self, messages: List[dict], max_tokens: int = 256, temperature: float = 0.0, top_p: float = 1.0,
              top_k: int = 20, min_p: float = 0.0, seed: Optional[int] = None, audit: bool = True,
              trace: str = "inline", challenge_rate: float = 1.0) -> VerifiedReply:

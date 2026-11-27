@@ -137,12 +137,17 @@ class Receipt:
     # sha256 of the reply text as returned to the client (UTF-8), "" if not committed. Binds the text itself, so a
     # client that does not fetch the trace (deferred mode) still knows the text is what the provider signed for.
     text_sha256: str = ""
+    # Optional binary Merkle root over individual step commitments (llmverify/merkle.py), enabling compact O(log N)
+    # span-reveal proofs for challenged windows without fetching the entire trace.
+    steps_merkle_root: str = ""
     version: str = VERSION
     signature: str = ""
 
     def body(self) -> dict:
         d = asdict(self)
         d.pop("signature")
+        if not d.get("steps_merkle_root"):
+            d.pop("steps_merkle_root", None)
         return d
 
     def digest(self) -> bytes:
@@ -187,11 +192,16 @@ def signature_ok(receipt: Receipt) -> bool:
 
 
 def make_receipt(signer: Signer, trace: Trace, model: dict, spec: SamplingSpec, client_nonce: str,
-                 max_tokens: int, text: Optional[str] = None) -> Receipt:
+                 max_tokens: int, text: Optional[str] = None, merkle: bool = False) -> Receipt:
+    mroot = ""
+    if merkle:
+        from .merkle import merkle_root
+        mroot = merkle_root(trace.tokens, trace.tops)
     r = Receipt(provider_key="", model=dict(model), client_nonce=client_nonce, sampling=spec.to_dict(),
                 max_tokens=int(max_tokens), prompt_sha256=trace.prompt_digest(), n_prompt=len(trace.prompt_ids),
                 steps_sha256=trace.steps_digest(), n_tokens=len(trace.tokens), finish_reason=trace.finish_reason,
-                created=int(time.time()), text_sha256=text_digest(text) if text is not None else "")
+                created=int(time.time()), text_sha256=text_digest(text) if text is not None else "",
+                steps_merkle_root=mroot)
     return signer.sign(r)
 
 
@@ -324,6 +334,10 @@ def check_receipt(receipt: Receipt, trace: Trace, *, expected_prompt_ids: Option
         p.append("trace prompt does not match the receipt")
     if receipt.steps_sha256 != trace.steps_digest() or receipt.n_tokens != len(trace.tokens):
         p.append("trace output does not match the receipt")
+    if receipt.steps_merkle_root:
+        from .merkle import merkle_root
+        if receipt.steps_merkle_root != merkle_root(trace.tokens, trace.tops):
+            p.append("trace output does not match the receipt's steps_merkle_root")
     if receipt.finish_reason != trace.finish_reason:
         p.append("finish reason does not match the receipt")
     if expected_prompt_ids is not None and list(trace.prompt_ids) != [int(x) for x in expected_prompt_ids]:
