@@ -139,7 +139,12 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    (`deepinfra/fp8`: 34 prompt tokens) returned `"DEFAULT"` (`saw_canary = False`), whereas every stuffing stack
    executed the canary (`"ZEBRA9472"`) with exact 3-schema token matches (`baseten`/`venice/fp8`: 99;
    `fireworks`/`crusoe/fp8`/`venice/ultrafast`: 105; `coreweave/fp8`/`nebius/fp8`: 134; `baidu/fp8`: 232)—creating both
-   undisclosed prompt billing and a prompt-injection surface through untrusted schema descriptions. Parameter honesty:
+   undisclosed prompt billing and a prompt-injection surface through untrusted schema descriptions. Note that matching
+   schema deltas alone can reflect a shared serving-software template (`fireworks` runs the `main` checkpoint with
+   logprobs while `crusoe/fp8` runs `1017` without logprobs, yet both share `(178, 52, 105)`), whereas multi-axis
+   matches corroborate shared upstreams (`venice/fp8` ↔ `baseten` on `main`, Baseten's unique `+1` prompt0 offset,
+   `(170, 44, 99)`, and `frequency_penalty_ignored`; `venice/ultrafast` ↔ `crusoe/fp8` on `1017`, `(178, 52, 105)`,
+   honoured `frequency_penalty`, and no logprobs). Parameter honesty:
    **`siliconflow/fp8` ignores `stop` sequences on all three models** (`gpt-oss-20b`, `qwen3.8-27b`, `deepseek-v4.1-flash`),
    `digitalocean` ignores `stop` on `deepseek-v4.1-flash`, `wafer` stops without stripping the stop string, and
    `frequency_penalty: 2.0` is silently ignored on 10/25 `qwen3.8-27b` and 18/39 `deepseek-v4.1-flash` endpoints.

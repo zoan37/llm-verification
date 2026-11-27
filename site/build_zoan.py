@@ -26,6 +26,7 @@ nav = """<header class="lv-top"><nav>
   <a class="home" href="/">zoan.space</a>
   <a href="./"><span class="long">LLM Verification</span><span class="short">Overview</span></a>
   <a href="results.html" aria-current="page"><span class="long">Results</span><span class="short">Results</span></a>
+  <a href="explorer.html"><span class="long">Explorer</span><span class="short">Explore</span></a>
   <a href="case-studies.html"><span class="long">Case studies</span><span class="short">Cases</span></a>
   <a href="method.html"><span class="long">Method &amp; limits</span><span class="short">Method</span></a>
   <a class="proto" href="protocol.html"><span class="long">Protocol</span><span class="short">Protocol</span></a>
@@ -65,7 +66,7 @@ header.lv-top { display: block; max-width: none; gap: 0; position: sticky; top: 
 """
 pager = """<nav class="pager" aria-label="Previous and next page">
   <a class="prev" href="./"><span class="dir">← Previous</span><span class="t">Overview</span></a>
-  <a class="next" href="case-studies.html"><span class="dir">Next →</span><span class="t">Case studies</span></a>
+  <a class="next" href="explorer.html"><span class="dir">Next →</span><span class="t">Forensic Explorer</span></a>
 </nav>
 """
 
@@ -294,8 +295,47 @@ serving_html = f"""<section class="coop" aria-label="Serving behaviour">
       <tbody>{''.join(cache_rows)}</tbody></table></div>
   </section>
 """
+
+struct_rows = []
+for sf in sorted((root / "results" / "structured").glob("*.json")) if (root / "results" / "structured").exists() else []:
+    if sf.stem == "schema_canary_deepseek":
+        continue
+    sd = json.loads(sf.read_text())
+    eps = sd.get("endpoints") or {}
+    stuffed = [f"<b>{ep_name(k)}</b> (+{v['schema1']['prompt_tokens_delta']})"
+               for k, v in sorted(eps.items())
+               if (v.get("schema1") or {}).get("prompt_tokens_delta") is not None
+               and v["schema1"]["prompt_tokens_delta"] >= 20]
+    stop_bad = [f"<b>{ep_name(k)}</b> ({'ignored' if (v.get('stop') or {}).get('contains_after') else 'unstripped'})"
+                for k, v in sorted(eps.items())
+                if (v.get("stop") or {}).get("contains_after") or (v.get("stop") or {}).get("contains_stop")]
+    fp_ign = sum(1 for v in eps.values()
+                 if any(f.startswith("frequency_penalty_ignored") for f in (v.get("flags") or [])))
+    fp_tot = sum(1 for v in eps.values() if "banana_fp0" in (v.get("frequency_penalty") or {}))
+    struct_rows.append(
+        f"<tr><td>{sd['model']}</td><td class='num'>{len(eps)}</td>"
+        f"<td>{', '.join(stuffed) or '<span class=sub>none</span>'}</td>"
+        f"<td>{', '.join(stop_bad) or '<span class=sub>none</span>'}</td>"
+        f"<td class='num'>{fp_ign} / {fp_tot}</td></tr>"
+    )
+struct_html = f"""<section class="coop" aria-label="Strict JSON schema and parameter honesty">
+    <h2>Strict JSON schemas &amp; parameter honesty (27 November 2026)</h2>
+    <p class="lede" style="font-size:14px;max-width:80ch">Comparing billed prompt tokens under
+      <code>response_format: json_schema</code> (<code>strict: true</code>) against a plain request separates true
+      grammar-only constrained decoding (+0 tokens) from stacks that silently stuff the JSON schema into the prompt
+      (+168 to +279 tokens). A canary instruction placed only inside a schema <code>description</code> field
+      (<code>ZEBRA9472</code>) was executed by every stuffing stack and ignored by grammar-only <code>deepinfra/fp8</code>.
+      Also tested: <code>stop</code> sequences and <code>frequency_penalty: 2.0</code>.
+      <a href="case-studies.html#schema-canary">Schema Canary case study →</a> ·
+      <a href="explorer.html">Interactive explorer →</a></p>
+    <div class="ledger"><table class="small">
+      <thead><tr><th>Model</th><th>Endpoints</th><th>Prompt-stuffed schemas (+prompt tokens)</th><th><code>stop</code> bugs</th><th><code>frequency_penalty</code> ignored</th></tr></thead>
+      <tbody>{''.join(struct_rows)}</tbody></table></div>
+  </section>
+""" if struct_rows else ""
+
 i = rest.rfind("</div>", 0, rest.index('<script id="data"'))
-rest = rest[:i] + tools_html + vision_html + serving_html + pager + rest[i:]
+rest = rest[:i] + tools_html + vision_html + serving_html + struct_html + pager + rest[i:]
 doc = ("<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n"
        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
        "<meta name=\"description\" content=\"Per-provider audit of OpenRouter endpoints: how close each one's outputs "
