@@ -1,0 +1,1451 @@
+{
+ "model": "qwen/qwen3.8-27b",
+ "date": "2026-11-27",
+ "n_prompts": 12,
+ "n_endpoints": 25,
+ "crowd_median_prefix": 0.3197,
+ "identical_pairs": [
+  {
+   "a": "primeintellect/fast",
+   "b": "primeintellect/flex",
+   "exact_share": 1.0,
+   "prefix": 1.0,
+   "n": 12
+  },
+  {
+   "a": "primeintellect/fast",
+   "b": "primeintellect/fp8",
+   "exact_share": 1.0,
+   "prefix": 1.0,
+   "n": 12
+  },
+  {
+   "a": "primeintellect/flex",
+   "b": "primeintellect/fp8",
+   "exact_share": 1.0,
+   "prefix": 1.0,
+   "n": 12
+  }
+ ],
+ "outliers": [
+  {
+   "tag": "alibaba",
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1815,
+   "self_prefix": 0.1129,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "primeintellect/fp8",
+     "prefix": 0.2313
+    },
+    {
+     "tag": "primeintellect/flex",
+     "prefix": 0.2313
+    },
+    {
+     "tag": "primeintellect/fast",
+     "prefix": 0.2313
+    }
+   ]
+  },
+  {
+   "tag": "darkbloom/fp4",
+   "quantization": "fp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1286,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "cerebras/fp16",
+     "prefix": 0.1982
+    },
+    {
+     "tag": "siliconflow/fp8",
+     "prefix": 0.1834
+    },
+    {
+     "tag": "modal",
+     "prefix": 0.1686
+    }
+   ]
+  },
+  {
+   "tag": "modelrun/fp4",
+   "quantization": "fp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1852,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "akashml/fp8",
+     "prefix": 0.2147
+    },
+    {
+     "tag": "nebius/fp4",
+     "prefix": 0.2142
+    },
+    {
+     "tag": "parasail/fp8",
+     "prefix": 0.2123
+    }
+   ]
+  },
+  {
+   "tag": "tenstorrent/fast",
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1193,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "alibaba",
+     "prefix": 0.1693
+    },
+    {
+     "tag": "modal",
+     "prefix": 0.1388
+    },
+    {
+     "tag": "cloudflare",
+     "prefix": 0.1379
+    }
+   ]
+  },
+  {
+   "tag": "tenstorrent/fp8",
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1394,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "chutes/fp8",
+     "prefix": 0.1989
+    },
+    {
+     "tag": "modelrun/fp4",
+     "prefix": 0.1722
+    },
+    {
+     "tag": "mancer/fp8",
+     "prefix": 0.1635
+    }
+   ]
+  },
+  {
+   "tag": "wafer/fp8",
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1779,
+   "self_prefix": 0.3223,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "streamlake",
+     "prefix": 0.2711
+    },
+    {
+     "tag": "near-ai/fp8",
+     "prefix": 0.2267
+    },
+    {
+     "tag": "cerebras/fp16",
+     "prefix": 0.2246
+    }
+   ]
+  }
+ ],
+ "outlier_internal": [
+  {
+   "a": "alibaba",
+   "b": "darkbloom/fp4",
+   "prefix": 0.115
+  },
+  {
+   "a": "alibaba",
+   "b": "modelrun/fp4",
+   "prefix": 0.1926
+  },
+  {
+   "a": "alibaba",
+   "b": "tenstorrent/fast",
+   "prefix": 0.1693
+  },
+  {
+   "a": "alibaba",
+   "b": "tenstorrent/fp8",
+   "prefix": 0.1479
+  },
+  {
+   "a": "alibaba",
+   "b": "wafer/fp8",
+   "prefix": 0.0996
+  },
+  {
+   "a": "darkbloom/fp4",
+   "b": "modelrun/fp4",
+   "prefix": 0.1017
+  },
+  {
+   "a": "darkbloom/fp4",
+   "b": "tenstorrent/fast",
+   "prefix": 0.105
+  },
+  {
+   "a": "darkbloom/fp4",
+   "b": "tenstorrent/fp8",
+   "prefix": 0.1117
+  },
+  {
+   "a": "darkbloom/fp4",
+   "b": "wafer/fp8",
+   "prefix": 0.1357
+  },
+  {
+   "a": "modelrun/fp4",
+   "b": "tenstorrent/fast",
+   "prefix": 0.1094
+  },
+  {
+   "a": "modelrun/fp4",
+   "b": "tenstorrent/fp8",
+   "prefix": 0.1722
+  },
+  {
+   "a": "modelrun/fp4",
+   "b": "wafer/fp8",
+   "prefix": 0.0945
+  },
+  {
+   "a": "tenstorrent/fast",
+   "b": "tenstorrent/fp8",
+   "prefix": 0.1142
+  },
+  {
+   "a": "tenstorrent/fast",
+   "b": "wafer/fp8",
+   "prefix": 0.1016
+  },
+  {
+   "a": "tenstorrent/fp8",
+   "b": "wafer/fp8",
+   "prefix": 0.0949
+  }
+ ],
+ "endpoints": {
+  "akashml/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3123,
+   "self_prefix": 0.6693,
+   "self_exact": 0.333,
+   "nearest": [
+    {
+     "tag": "coreweave/fp8",
+     "prefix": 0.5503
+    },
+    {
+     "tag": "mancer/fp8",
+     "prefix": 0.5472
+    },
+    {
+     "tag": "chutes/fp8",
+     "prefix": 0.4607
+    }
+   ]
+  },
+  "alibaba": {
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1815,
+   "self_prefix": 0.1129,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "primeintellect/fp8",
+     "prefix": 0.2313
+    },
+    {
+     "tag": "primeintellect/flex",
+     "prefix": 0.2313
+    },
+    {
+     "tag": "primeintellect/fast",
+     "prefix": 0.2313
+    }
+   ]
+  },
+  "cerebras/fp16": {
+   "quantization": "fp16",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3178,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "cloudflare",
+     "prefix": 0.5446
+    },
+    {
+     "tag": "modal",
+     "prefix": 0.5166
+    },
+    {
+     "tag": "coreweave/fp8",
+     "prefix": 0.4892
+    }
+   ]
+  },
+  "chutes/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.353,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "mancer/fp8",
+     "prefix": 0.5464
+    },
+    {
+     "tag": "modal",
+     "prefix": 0.5371
+    },
+    {
+     "tag": "cloudflare",
+     "prefix": 0.5369
+    }
+   ]
+  },
+  "cloudflare": {
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3825,
+   "self_prefix": 0.5303,
+   "self_exact": 0.333,
+   "nearest": [
+    {
+     "tag": "modal",
+     "prefix": 0.8817
+    },
+    {
+     "tag": "coreweave/fp8",
+     "prefix": 0.5726
+    },
+    {
+     "tag": "cerebras/fp16",
+     "prefix": 0.5446
+    }
+   ]
+  },
+  "coreweave/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3532,
+   "self_prefix": 0.4907,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "mancer/fp8",
+     "prefix": 0.5809
+    },
+    {
+     "tag": "modal",
+     "prefix": 0.5768
+    },
+    {
+     "tag": "cloudflare",
+     "prefix": 0.5726
+    }
+   ]
+  },
+  "darkbloom/fp4": {
+   "quantization": "fp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1286,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "cerebras/fp16",
+     "prefix": 0.1982
+    },
+    {
+     "tag": "siliconflow/fp8",
+     "prefix": 0.1834
+    },
+    {
+     "tag": "modal",
+     "prefix": 0.1686
+    }
+   ]
+  },
+  "deepinfra/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3397,
+   "self_prefix": 0.5215,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "near-ai/fp8",
+     "prefix": 0.5072
+    },
+    {
+     "tag": "parasail/fp8",
+     "prefix": 0.5061
+    },
+    {
+     "tag": "coreweave/fp8",
+     "prefix": 0.4778
+    }
+   ]
+  },
+  "ionstream/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.252,
+   "self_prefix": 0.589,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "chutes/fp8",
+     "prefix": 0.4354
+    },
+    {
+     "tag": "akashml/fp8",
+     "prefix": 0.4029
+    },
+    {
+     "tag": "reka/fp8",
+     "prefix": 0.3782
+    }
+   ]
+  },
+  "mancer/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3635,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "coreweave/fp8",
+     "prefix": 0.5809
+    },
+    {
+     "tag": "akashml/fp8",
+     "prefix": 0.5472
+    },
+    {
+     "tag": "chutes/fp8",
+     "prefix": 0.5464
+    }
+   ]
+  },
+  "modal": {
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3813,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "cloudflare",
+     "prefix": 0.8817
+    },
+    {
+     "tag": "coreweave/fp8",
+     "prefix": 0.5768
+    },
+    {
+     "tag": "chutes/fp8",
+     "prefix": 0.5371
+    }
+   ]
+  },
+  "modelrun/fp4": {
+   "quantization": "fp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1852,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "akashml/fp8",
+     "prefix": 0.2147
+    },
+    {
+     "tag": "nebius/fp4",
+     "prefix": 0.2142
+    },
+    {
+     "tag": "parasail/fp8",
+     "prefix": 0.2123
+    }
+   ]
+  },
+  "near-ai/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3354,
+   "self_prefix": 0.4159,
+   "self_exact": 0.333,
+   "nearest": [
+    {
+     "tag": "chutes/fp8",
+     "prefix": 0.5182
+    },
+    {
+     "tag": "deepinfra/fp8",
+     "prefix": 0.5072
+    },
+    {
+     "tag": "mancer/fp8",
+     "prefix": 0.4982
+    }
+   ]
+  },
+  "nebius/fp4": {
+   "quantization": "fp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.2309,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "primeintellect/fp8",
+     "prefix": 0.2936
+    },
+    {
+     "tag": "primeintellect/flex",
+     "prefix": 0.2936
+    },
+    {
+     "tag": "primeintellect/fast",
+     "prefix": 0.2936
+    }
+   ]
+  },
+  "parasail/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3518,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "deepinfra/fp8",
+     "prefix": 0.5061
+    },
+    {
+     "tag": "pearl-research/fp8",
+     "prefix": 0.4959
+    },
+    {
+     "tag": "near-ai/fp8",
+     "prefix": 0.4939
+    }
+   ]
+  },
+  "pearl-research/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3197,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "parasail/fp8",
+     "prefix": 0.4959
+    },
+    {
+     "tag": "cloudflare",
+     "prefix": 0.4316
+    },
+    {
+     "tag": "coreweave/fp8",
+     "prefix": 0.4303
+    }
+   ]
+  },
+  "primeintellect/fast": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3582,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "primeintellect/fp8",
+     "prefix": 1.0
+    },
+    {
+     "tag": "primeintellect/flex",
+     "prefix": 1.0
+    },
+    {
+     "tag": "reka/fp8",
+     "prefix": 0.4706
+    }
+   ]
+  },
+  "primeintellect/flex": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3582,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "primeintellect/fp8",
+     "prefix": 1.0
+    },
+    {
+     "tag": "primeintellect/fast",
+     "prefix": 1.0
+    },
+    {
+     "tag": "reka/fp8",
+     "prefix": 0.4706
+    }
+   ]
+  },
+  "primeintellect/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3582,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "primeintellect/flex",
+     "prefix": 1.0
+    },
+    {
+     "tag": "primeintellect/fast",
+     "prefix": 1.0
+    },
+    {
+     "tag": "reka/fp8",
+     "prefix": 0.4706
+    }
+   ]
+  },
+  "reka/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3316,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "primeintellect/fp8",
+     "prefix": 0.4706
+    },
+    {
+     "tag": "primeintellect/flex",
+     "prefix": 0.4706
+    },
+    {
+     "tag": "primeintellect/fast",
+     "prefix": 0.4706
+    }
+   ]
+  },
+  "siliconflow/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.2173,
+   "self_prefix": 0.4744,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "modal",
+     "prefix": 0.3473
+    },
+    {
+     "tag": "cerebras/fp16",
+     "prefix": 0.3295
+    },
+    {
+     "tag": "akashml/fp8",
+     "prefix": 0.3158
+    }
+   ]
+  },
+  "streamlake": {
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.2757,
+   "self_prefix": 0.4458,
+   "self_exact": 0.333,
+   "nearest": [
+    {
+     "tag": "primeintellect/fp8",
+     "prefix": 0.3936
+    },
+    {
+     "tag": "primeintellect/flex",
+     "prefix": 0.3936
+    },
+    {
+     "tag": "primeintellect/fast",
+     "prefix": 0.3936
+    }
+   ]
+  },
+  "tenstorrent/fast": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1193,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "alibaba",
+     "prefix": 0.1693
+    },
+    {
+     "tag": "modal",
+     "prefix": 0.1388
+    },
+    {
+     "tag": "cloudflare",
+     "prefix": 0.1379
+    }
+   ]
+  },
+  "tenstorrent/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1394,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "chutes/fp8",
+     "prefix": 0.1989
+    },
+    {
+     "tag": "modelrun/fp4",
+     "prefix": 0.1722
+    },
+    {
+     "tag": "mancer/fp8",
+     "prefix": 0.1635
+    }
+   ]
+  },
+  "wafer/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1779,
+   "self_prefix": 0.3223,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "streamlake",
+     "prefix": 0.2711
+    },
+    {
+     "tag": "near-ai/fp8",
+     "prefix": 0.2267
+    },
+    {
+     "tag": "cerebras/fp16",
+     "prefix": 0.2246
+    }
+   ]
+  }
+ },
+ "matrix": {
+  "akashml/fp8": {
+   "alibaba": 0.1845,
+   "cerebras/fp16": 0.3763,
+   "chutes/fp8": 0.4607,
+   "cloudflare": 0.4128,
+   "coreweave/fp8": 0.5503,
+   "darkbloom/fp4": 0.1307,
+   "deepinfra/fp8": 0.3551,
+   "ionstream/fp8": 0.4029,
+   "mancer/fp8": 0.5472,
+   "modal": 0.4129,
+   "modelrun/fp4": 0.2147,
+   "near-ai/fp8": 0.4192,
+   "nebius/fp4": 0.1916,
+   "parasail/fp8": 0.3396,
+   "pearl-research/fp8": 0.2978,
+   "primeintellect/fast": 0.2665,
+   "primeintellect/flex": 0.2665,
+   "primeintellect/fp8": 0.2665,
+   "reka/fp8": 0.3668,
+   "siliconflow/fp8": 0.3158,
+   "streamlake": 0.2624,
+   "tenstorrent/fast": 0.1303,
+   "tenstorrent/fp8": 0.1495,
+   "wafer/fp8": 0.1736
+  },
+  "alibaba": {
+   "akashml/fp8": 0.1845,
+   "cerebras/fp16": 0.178,
+   "chutes/fp8": 0.1731,
+   "cloudflare": 0.1915,
+   "coreweave/fp8": 0.1701,
+   "darkbloom/fp4": 0.115,
+   "deepinfra/fp8": 0.1825,
+   "ionstream/fp8": 0.1703,
+   "mancer/fp8": 0.1827,
+   "modal": 0.1916,
+   "modelrun/fp4": 0.1926,
+   "near-ai/fp8": 0.1685,
+   "nebius/fp4": 0.184,
+   "parasail/fp8": 0.1946,
+   "pearl-research/fp8": 0.2151,
+   "primeintellect/fast": 0.2313,
+   "primeintellect/flex": 0.2313,
+   "primeintellect/fp8": 0.2313,
+   "reka/fp8": 0.1701,
+   "siliconflow/fp8": 0.2027,
+   "streamlake": 0.1781,
+   "tenstorrent/fast": 0.1693,
+   "tenstorrent/fp8": 0.1479,
+   "wafer/fp8": 0.0996
+  },
+  "cerebras/fp16": {
+   "akashml/fp8": 0.3763,
+   "alibaba": 0.178,
+   "chutes/fp8": 0.3937,
+   "cloudflare": 0.5446,
+   "coreweave/fp8": 0.4892,
+   "darkbloom/fp4": 0.1982,
+   "deepinfra/fp8": 0.3828,
+   "ionstream/fp8": 0.2748,
+   "mancer/fp8": 0.4188,
+   "modal": 0.5166,
+   "modelrun/fp4": 0.1773,
+   "near-ai/fp8": 0.3309,
+   "nebius/fp4": 0.2358,
+   "parasail/fp8": 0.379,
+   "pearl-research/fp8": 0.4043,
+   "primeintellect/fast": 0.3198,
+   "primeintellect/flex": 0.3198,
+   "primeintellect/fp8": 0.3198,
+   "reka/fp8": 0.2914,
+   "siliconflow/fp8": 0.3295,
+   "streamlake": 0.2757,
+   "tenstorrent/fast": 0.1198,
+   "tenstorrent/fp8": 0.127,
+   "wafer/fp8": 0.2246
+  },
+  "chutes/fp8": {
+   "akashml/fp8": 0.4607,
+   "alibaba": 0.1731,
+   "cerebras/fp16": 0.3937,
+   "cloudflare": 0.5369,
+   "coreweave/fp8": 0.4837,
+   "darkbloom/fp4": 0.1332,
+   "deepinfra/fp8": 0.3818,
+   "ionstream/fp8": 0.4354,
+   "mancer/fp8": 0.5464,
+   "modal": 0.5371,
+   "modelrun/fp4": 0.1924,
+   "near-ai/fp8": 0.5182,
+   "nebius/fp4": 0.2547,
+   "parasail/fp8": 0.4515,
+   "pearl-research/fp8": 0.4044,
+   "primeintellect/fast": 0.365,
+   "primeintellect/flex": 0.365,
+   "primeintellect/fp8": 0.365,
+   "reka/fp8": 0.4689,
+   "siliconflow/fp8": 0.2095,
+   "streamlake": 0.2741,
+   "tenstorrent/fast": 0.1129,
+   "tenstorrent/fp8": 0.1989,
+   "wafer/fp8": 0.21
+  },
+  "cloudflare": {
+   "akashml/fp8": 0.4128,
+   "alibaba": 0.1915,
+   "cerebras/fp16": 0.5446,
+   "chutes/fp8": 0.5369,
+   "coreweave/fp8": 0.5726,
+   "darkbloom/fp4": 0.1671,
+   "deepinfra/fp8": 0.4716,
+   "ionstream/fp8": 0.3586,
+   "mancer/fp8": 0.5118,
+   "modal": 0.8817,
+   "modelrun/fp4": 0.2102,
+   "near-ai/fp8": 0.4575,
+   "nebius/fp4": 0.2664,
+   "parasail/fp8": 0.49,
+   "pearl-research/fp8": 0.4316,
+   "primeintellect/fast": 0.3735,
+   "primeintellect/flex": 0.3735,
+   "primeintellect/fp8": 0.3735,
+   "reka/fp8": 0.4268,
+   "siliconflow/fp8": 0.3031,
+   "streamlake": 0.3375,
+   "tenstorrent/fast": 0.1379,
+   "tenstorrent/fp8": 0.1612,
+   "wafer/fp8": 0.1871
+  },
+  "coreweave/fp8": {
+   "akashml/fp8": 0.5503,
+   "alibaba": 0.1701,
+   "cerebras/fp16": 0.4892,
+   "chutes/fp8": 0.4837,
+   "cloudflare": 0.5726,
+   "darkbloom/fp4": 0.1284,
+   "deepinfra/fp8": 0.4778,
+   "ionstream/fp8": 0.2859,
+   "mancer/fp8": 0.5809,
+   "modal": 0.5768,
+   "modelrun/fp4": 0.1942,
+   "near-ai/fp8": 0.3641,
+   "nebius/fp4": 0.2562,
+   "parasail/fp8": 0.4448,
+   "pearl-research/fp8": 0.4303,
+   "primeintellect/fast": 0.3282,
+   "primeintellect/flex": 0.3282,
+   "primeintellect/fp8": 0.3282,
+   "reka/fp8": 0.4227,
+   "siliconflow/fp8": 0.263,
+   "streamlake": 0.3449,
+   "tenstorrent/fast": 0.1142,
+   "tenstorrent/fp8": 0.138,
+   "wafer/fp8": 0.2041
+  },
+  "darkbloom/fp4": {
+   "akashml/fp8": 0.1307,
+   "alibaba": 0.115,
+   "cerebras/fp16": 0.1982,
+   "chutes/fp8": 0.1332,
+   "cloudflare": 0.1671,
+   "coreweave/fp8": 0.1284,
+   "deepinfra/fp8": 0.1392,
+   "ionstream/fp8": 0.1345,
+   "mancer/fp8": 0.1294,
+   "modal": 0.1686,
+   "modelrun/fp4": 0.1017,
+   "near-ai/fp8": 0.1305,
+   "nebius/fp4": 0.0907,
+   "parasail/fp8": 0.1174,
+   "pearl-research/fp8": 0.1115,
+   "primeintellect/fast": 0.1116,
+   "primeintellect/flex": 0.1116,
+   "primeintellect/fp8": 0.1116,
+   "reka/fp8": 0.1111,
+   "siliconflow/fp8": 0.1834,
+   "streamlake": 0.1084,
+   "tenstorrent/fast": 0.105,
+   "tenstorrent/fp8": 0.1117,
+   "wafer/fp8": 0.1357
+  },
+  "deepinfra/fp8": {
+   "akashml/fp8": 0.3551,
+   "alibaba": 0.1825,
+   "cerebras/fp16": 0.3828,
+   "chutes/fp8": 0.3818,
+   "cloudflare": 0.4716,
+   "coreweave/fp8": 0.4778,
+   "darkbloom/fp4": 0.1392,
+   "ionstream/fp8": 0.3036,
+   "mancer/fp8": 0.4297,
+   "modal": 0.4692,
+   "modelrun/fp4": 0.1998,
+   "near-ai/fp8": 0.5072,
+   "nebius/fp4": 0.2719,
+   "parasail/fp8": 0.5061,
+   "pearl-research/fp8": 0.4065,
+   "primeintellect/fast": 0.4174,
+   "primeintellect/flex": 0.4174,
+   "primeintellect/fp8": 0.4174,
+   "reka/fp8": 0.3955,
+   "siliconflow/fp8": 0.2381,
+   "streamlake": 0.3364,
+   "tenstorrent/fast": 0.1234,
+   "tenstorrent/fp8": 0.1343,
+   "wafer/fp8": 0.1882
+  },
+  "ionstream/fp8": {
+   "akashml/fp8": 0.4029,
+   "alibaba": 0.1703,
+   "cerebras/fp16": 0.2748,
+   "chutes/fp8": 0.4354,
+   "cloudflare": 0.3586,
+   "coreweave/fp8": 0.2859,
+   "darkbloom/fp4": 0.1345,
+   "deepinfra/fp8": 0.3036,
+   "mancer/fp8": 0.3646,
+   "modal": 0.3266,
+   "modelrun/fp4": 0.1925,
+   "near-ai/fp8": 0.3347,
+   "nebius/fp4": 0.1796,
+   "parasail/fp8": 0.2679,
+   "pearl-research/fp8": 0.2415,
+   "primeintellect/fast": 0.2207,
+   "primeintellect/flex": 0.2207,
+   "primeintellect/fp8": 0.2207,
+   "reka/fp8": 0.3782,
+   "siliconflow/fp8": 0.2129,
+   "streamlake": 0.1671,
+   "tenstorrent/fast": 0.1214,
+   "tenstorrent/fp8": 0.1316,
+   "wafer/fp8": 0.1023
+  },
+  "mancer/fp8": {
+   "akashml/fp8": 0.5472,
+   "alibaba": 0.1827,
+   "cerebras/fp16": 0.4188,
+   "chutes/fp8": 0.5464,
+   "cloudflare": 0.5118,
+   "coreweave/fp8": 0.5809,
+   "darkbloom/fp4": 0.1294,
+   "deepinfra/fp8": 0.4297,
+   "ionstream/fp8": 0.3646,
+   "modal": 0.5119,
+   "modelrun/fp4": 0.2086,
+   "near-ai/fp8": 0.4982,
+   "nebius/fp4": 0.2707,
+   "parasail/fp8": 0.4862,
+   "pearl-research/fp8": 0.4016,
+   "primeintellect/fast": 0.376,
+   "primeintellect/flex": 0.376,
+   "primeintellect/fp8": 0.376,
+   "reka/fp8": 0.4293,
+   "siliconflow/fp8": 0.212,
+   "streamlake": 0.3558,
+   "tenstorrent/fast": 0.1238,
+   "tenstorrent/fp8": 0.1635,
+   "wafer/fp8": 0.2236
+  },
+  "modal": {
+   "akashml/fp8": 0.4129,
+   "alibaba": 0.1916,
+   "cerebras/fp16": 0.5166,
+   "chutes/fp8": 0.5371,
+   "cloudflare": 0.8817,
+   "coreweave/fp8": 0.5768,
+   "darkbloom/fp4": 0.1686,
+   "deepinfra/fp8": 0.4692,
+   "ionstream/fp8": 0.3266,
+   "mancer/fp8": 0.5119,
+   "modelrun/fp4": 0.2107,
+   "near-ai/fp8": 0.4576,
+   "nebius/fp4": 0.2665,
+   "parasail/fp8": 0.4731,
+   "pearl-research/fp8": 0.4293,
+   "primeintellect/fast": 0.3736,
+   "primeintellect/flex": 0.3736,
+   "primeintellect/fp8": 0.3736,
+   "reka/fp8": 0.4273,
+   "siliconflow/fp8": 0.3473,
+   "streamlake": 0.3375,
+   "tenstorrent/fast": 0.1388,
+   "tenstorrent/fp8": 0.1614,
+   "wafer/fp8": 0.1881
+  },
+  "modelrun/fp4": {
+   "akashml/fp8": 0.2147,
+   "alibaba": 0.1926,
+   "cerebras/fp16": 0.1773,
+   "chutes/fp8": 0.1924,
+   "cloudflare": 0.2102,
+   "coreweave/fp8": 0.1942,
+   "darkbloom/fp4": 0.1017,
+   "deepinfra/fp8": 0.1998,
+   "ionstream/fp8": 0.1925,
+   "mancer/fp8": 0.2086,
+   "modal": 0.2107,
+   "near-ai/fp8": 0.1943,
+   "nebius/fp4": 0.2142,
+   "parasail/fp8": 0.2123,
+   "pearl-research/fp8": 0.2046,
+   "primeintellect/fast": 0.2,
+   "primeintellect/flex": 0.2,
+   "primeintellect/fp8": 0.2,
+   "reka/fp8": 0.1973,
+   "siliconflow/fp8": 0.1718,
+   "streamlake": 0.1793,
+   "tenstorrent/fast": 0.1094,
+   "tenstorrent/fp8": 0.1722,
+   "wafer/fp8": 0.0945
+  },
+  "near-ai/fp8": {
+   "akashml/fp8": 0.4192,
+   "alibaba": 0.1685,
+   "cerebras/fp16": 0.3309,
+   "chutes/fp8": 0.5182,
+   "cloudflare": 0.4575,
+   "coreweave/fp8": 0.3641,
+   "darkbloom/fp4": 0.1305,
+   "deepinfra/fp8": 0.5072,
+   "ionstream/fp8": 0.3347,
+   "mancer/fp8": 0.4982,
+   "modal": 0.4576,
+   "modelrun/fp4": 0.1943,
+   "nebius/fp4": 0.2782,
+   "parasail/fp8": 0.4939,
+   "pearl-research/fp8": 0.3916,
+   "primeintellect/fast": 0.363,
+   "primeintellect/flex": 0.363,
+   "primeintellect/fp8": 0.363,
+   "reka/fp8": 0.4049,
+   "siliconflow/fp8": 0.2116,
+   "streamlake": 0.3078,
+   "tenstorrent/fast": 0.1172,
+   "tenstorrent/fp8": 0.1488,
+   "wafer/fp8": 0.2267
+  },
+  "nebius/fp4": {
+   "akashml/fp8": 0.1916,
+   "alibaba": 0.184,
+   "cerebras/fp16": 0.2358,
+   "chutes/fp8": 0.2547,
+   "cloudflare": 0.2664,
+   "coreweave/fp8": 0.2562,
+   "darkbloom/fp4": 0.0907,
+   "deepinfra/fp8": 0.2719,
+   "ionstream/fp8": 0.1796,
+   "mancer/fp8": 0.2707,
+   "modal": 0.2665,
+   "modelrun/fp4": 0.2142,
+   "near-ai/fp8": 0.2782,
+   "parasail/fp8": 0.2804,
+   "pearl-research/fp8": 0.2735,
+   "primeintellect/fast": 0.2936,
+   "primeintellect/flex": 0.2936,
+   "primeintellect/fp8": 0.2936,
+   "reka/fp8": 0.2864,
+   "siliconflow/fp8": 0.1543,
+   "streamlake": 0.2883,
+   "tenstorrent/fast": 0.1201,
+   "tenstorrent/fp8": 0.1233,
+   "wafer/fp8": 0.1742
+  },
+  "parasail/fp8": {
+   "akashml/fp8": 0.3396,
+   "alibaba": 0.1946,
+   "cerebras/fp16": 0.379,
+   "chutes/fp8": 0.4515,
+   "cloudflare": 0.49,
+   "coreweave/fp8": 0.4448,
+   "darkbloom/fp4": 0.1174,
+   "deepinfra/fp8": 0.5061,
+   "ionstream/fp8": 0.2679,
+   "mancer/fp8": 0.4862,
+   "modal": 0.4731,
+   "modelrun/fp4": 0.2123,
+   "near-ai/fp8": 0.4939,
+   "nebius/fp4": 0.2804,
+   "pearl-research/fp8": 0.4959,
+   "primeintellect/fast": 0.4442,
+   "primeintellect/flex": 0.4442,
+   "primeintellect/fp8": 0.4442,
+   "reka/fp8": 0.4576,
+   "siliconflow/fp8": 0.2297,
+   "streamlake": 0.2959,
+   "tenstorrent/fast": 0.1203,
+   "tenstorrent/fp8": 0.1517,
+   "wafer/fp8": 0.2234
+  },
+  "pearl-research/fp8": {
+   "akashml/fp8": 0.2978,
+   "alibaba": 0.2151,
+   "cerebras/fp16": 0.4043,
+   "chutes/fp8": 0.4044,
+   "cloudflare": 0.4316,
+   "coreweave/fp8": 0.4303,
+   "darkbloom/fp4": 0.1115,
+   "deepinfra/fp8": 0.4065,
+   "ionstream/fp8": 0.2415,
+   "mancer/fp8": 0.4016,
+   "modal": 0.4293,
+   "modelrun/fp4": 0.2046,
+   "near-ai/fp8": 0.3916,
+   "nebius/fp4": 0.2735,
+   "parasail/fp8": 0.4959,
+   "primeintellect/fast": 0.4223,
+   "primeintellect/flex": 0.4223,
+   "primeintellect/fp8": 0.4223,
+   "reka/fp8": 0.339,
+   "siliconflow/fp8": 0.2218,
+   "streamlake": 0.2714,
+   "tenstorrent/fast": 0.1031,
+   "tenstorrent/fp8": 0.1582,
+   "wafer/fp8": 0.1734
+  },
+  "primeintellect/fast": {
+   "akashml/fp8": 0.2665,
+   "alibaba": 0.2313,
+   "cerebras/fp16": 0.3198,
+   "chutes/fp8": 0.365,
+   "cloudflare": 0.3735,
+   "coreweave/fp8": 0.3282,
+   "darkbloom/fp4": 0.1116,
+   "deepinfra/fp8": 0.4174,
+   "ionstream/fp8": 0.2207,
+   "mancer/fp8": 0.376,
+   "modal": 0.3736,
+   "modelrun/fp4": 0.2,
+   "near-ai/fp8": 0.363,
+   "nebius/fp4": 0.2936,
+   "parasail/fp8": 0.4442,
+   "pearl-research/fp8": 0.4223,
+   "primeintellect/flex": 1.0,
+   "primeintellect/fp8": 1.0,
+   "reka/fp8": 0.4706,
+   "siliconflow/fp8": 0.1885,
+   "streamlake": 0.3936,
+   "tenstorrent/fast": 0.1116,
+   "tenstorrent/fp8": 0.1256,
+   "wafer/fp8": 0.2013
+  },
+  "primeintellect/flex": {
+   "akashml/fp8": 0.2665,
+   "alibaba": 0.2313,
+   "cerebras/fp16": 0.3198,
+   "chutes/fp8": 0.365,
+   "cloudflare": 0.3735,
+   "coreweave/fp8": 0.3282,
+   "darkbloom/fp4": 0.1116,
+   "deepinfra/fp8": 0.4174,
+   "ionstream/fp8": 0.2207,
+   "mancer/fp8": 0.376,
+   "modal": 0.3736,
+   "modelrun/fp4": 0.2,
+   "near-ai/fp8": 0.363,
+   "nebius/fp4": 0.2936,
+   "parasail/fp8": 0.4442,
+   "pearl-research/fp8": 0.4223,
+   "primeintellect/fast": 1.0,
+   "primeintellect/fp8": 1.0,
+   "reka/fp8": 0.4706,
+   "siliconflow/fp8": 0.1885,
+   "streamlake": 0.3936,
+   "tenstorrent/fast": 0.1116,
+   "tenstorrent/fp8": 0.1256,
+   "wafer/fp8": 0.2013
+  },
+  "primeintellect/fp8": {
+   "akashml/fp8": 0.2665,
+   "alibaba": 0.2313,
+   "cerebras/fp16": 0.3198,
+   "chutes/fp8": 0.365,
+   "cloudflare": 0.3735,
+   "coreweave/fp8": 0.3282,
+   "darkbloom/fp4": 0.1116,
+   "deepinfra/fp8": 0.4174,
+   "ionstream/fp8": 0.2207,
+   "mancer/fp8": 0.376,
+   "modal": 0.3736,
+   "modelrun/fp4": 0.2,
+   "near-ai/fp8": 0.363,
+   "nebius/fp4": 0.2936,
+   "parasail/fp8": 0.4442,
+   "pearl-research/fp8": 0.4223,
+   "primeintellect/fast": 1.0,
+   "primeintellect/flex": 1.0,
+   "reka/fp8": 0.4706,
+   "siliconflow/fp8": 0.1885,
+   "streamlake": 0.3936,
+   "tenstorrent/fast": 0.1116,
+   "tenstorrent/fp8": 0.1256,
+   "wafer/fp8": 0.2013
+  },
+  "reka/fp8": {
+   "akashml/fp8": 0.3668,
+   "alibaba": 0.1701,
+   "cerebras/fp16": 0.2914,
+   "chutes/fp8": 0.4689,
+   "cloudflare": 0.4268,
+   "coreweave/fp8": 0.4227,
+   "darkbloom/fp4": 0.1111,
+   "deepinfra/fp8": 0.3955,
+   "ionstream/fp8": 0.3782,
+   "mancer/fp8": 0.4293,
+   "modal": 0.4273,
+   "modelrun/fp4": 0.1973,
+   "near-ai/fp8": 0.4049,
+   "nebius/fp4": 0.2864,
+   "parasail/fp8": 0.4576,
+   "pearl-research/fp8": 0.339,
+   "primeintellect/fast": 0.4706,
+   "primeintellect/flex": 0.4706,
+   "primeintellect/fp8": 0.4706,
+   "siliconflow/fp8": 0.178,
+   "streamlake": 0.3447,
+   "tenstorrent/fast": 0.1145,
+   "tenstorrent/fp8": 0.1326,
+   "wafer/fp8": 0.2046
+  },
+  "siliconflow/fp8": {
+   "akashml/fp8": 0.3158,
+   "alibaba": 0.2027,
+   "cerebras/fp16": 0.3295,
+   "chutes/fp8": 0.2095,
+   "cloudflare": 0.3031,
+   "coreweave/fp8": 0.263,
+   "darkbloom/fp4": 0.1834,
+   "deepinfra/fp8": 0.2381,
+   "ionstream/fp8": 0.2129,
+   "mancer/fp8": 0.212,
+   "modal": 0.3473,
+   "modelrun/fp4": 0.1718,
+   "near-ai/fp8": 0.2116,
+   "nebius/fp4": 0.1543,
+   "parasail/fp8": 0.2297,
+   "pearl-research/fp8": 0.2218,
+   "primeintellect/fast": 0.1885,
+   "primeintellect/flex": 0.1885,
+   "primeintellect/fp8": 0.1885,
+   "reka/fp8": 0.178,
+   "streamlake": 0.2611,
+   "tenstorrent/fast": 0.118,
+   "tenstorrent/fp8": 0.1211,
+   "wafer/fp8": 0.1644
+  },
+  "streamlake": {
+   "akashml/fp8": 0.2624,
+   "alibaba": 0.1781,
+   "cerebras/fp16": 0.2757,
+   "chutes/fp8": 0.2741,
+   "cloudflare": 0.3375,
+   "coreweave/fp8": 0.3449,
+   "darkbloom/fp4": 0.1084,
+   "deepinfra/fp8": 0.3364,
+   "ionstream/fp8": 0.1671,
+   "mancer/fp8": 0.3558,
+   "modal": 0.3375,
+   "modelrun/fp4": 0.1793,
+   "near-ai/fp8": 0.3078,
+   "nebius/fp4": 0.2883,
+   "parasail/fp8": 0.2959,
+   "pearl-research/fp8": 0.2714,
+   "primeintellect/fast": 0.3936,
+   "primeintellect/flex": 0.3936,
+   "primeintellect/fp8": 0.3936,
+   "reka/fp8": 0.3447,
+   "siliconflow/fp8": 0.2611,
+   "tenstorrent/fast": 0.1135,
+   "tenstorrent/fp8": 0.1261,
+   "wafer/fp8": 0.2711
+  },
+  "tenstorrent/fast": {
+   "akashml/fp8": 0.1303,
+   "alibaba": 0.1693,
+   "cerebras/fp16": 0.1198,
+   "chutes/fp8": 0.1129,
+   "cloudflare": 0.1379,
+   "coreweave/fp8": 0.1142,
+   "darkbloom/fp4": 0.105,
+   "deepinfra/fp8": 0.1234,
+   "ionstream/fp8": 0.1214,
+   "mancer/fp8": 0.1238,
+   "modal": 0.1388,
+   "modelrun/fp4": 0.1094,
+   "near-ai/fp8": 0.1172,
+   "nebius/fp4": 0.1201,
+   "parasail/fp8": 0.1203,
+   "pearl-research/fp8": 0.1031,
+   "primeintellect/fast": 0.1116,
+   "primeintellect/flex": 0.1116,
+   "primeintellect/fp8": 0.1116,
+   "reka/fp8": 0.1145,
+   "siliconflow/fp8": 0.118,
+   "streamlake": 0.1135,
+   "tenstorrent/fp8": 0.1142,
+   "wafer/fp8": 0.1016
+  },
+  "tenstorrent/fp8": {
+   "akashml/fp8": 0.1495,
+   "alibaba": 0.1479,
+   "cerebras/fp16": 0.127,
+   "chutes/fp8": 0.1989,
+   "cloudflare": 0.1612,
+   "coreweave/fp8": 0.138,
+   "darkbloom/fp4": 0.1117,
+   "deepinfra/fp8": 0.1343,
+   "ionstream/fp8": 0.1316,
+   "mancer/fp8": 0.1635,
+   "modal": 0.1614,
+   "modelrun/fp4": 0.1722,
+   "near-ai/fp8": 0.1488,
+   "nebius/fp4": 0.1233,
+   "parasail/fp8": 0.1517,
+   "pearl-research/fp8": 0.1582,
+   "primeintellect/fast": 0.1256,
+   "primeintellect/flex": 0.1256,
+   "primeintellect/fp8": 0.1256,
+   "reka/fp8": 0.1326,
+   "siliconflow/fp8": 0.1211,
+   "streamlake": 0.1261,
+   "tenstorrent/fast": 0.1142,
+   "wafer/fp8": 0.0949
+  },
+  "wafer/fp8": {
+   "akashml/fp8": 0.1736,
+   "alibaba": 0.0996,
+   "cerebras/fp16": 0.2246,
+   "chutes/fp8": 0.21,
+   "cloudflare": 0.1871,
+   "coreweave/fp8": 0.2041,
+   "darkbloom/fp4": 0.1357,
+   "deepinfra/fp8": 0.1882,
+   "ionstream/fp8": 0.1023,
+   "mancer/fp8": 0.2236,
+   "modal": 0.1881,
+   "modelrun/fp4": 0.0945,
+   "near-ai/fp8": 0.2267,
+   "nebius/fp4": 0.1742,
+   "parasail/fp8": 0.2234,
+   "pearl-research/fp8": 0.1734,
+   "primeintellect/fast": 0.2013,
+   "primeintellect/flex": 0.2013,
+   "primeintellect/fp8": 0.2013,
+   "reka/fp8": 0.2046,
+   "siliconflow/fp8": 0.1644,
+   "streamlake": 0.2711,
+   "tenstorrent/fast": 0.1016,
+   "tenstorrent/fp8": 0.0949
+  }
+ }
+}

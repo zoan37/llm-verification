@@ -1,0 +1,750 @@
+{
+ "model": "anthropic/claude-opus-5.5",
+ "from": "2026-11-08",
+ "to": "2026-11-27",
+ "selected_prompts": [
+  13,
+  14,
+  22,
+  23,
+  27,
+  32,
+  33,
+  34,
+  35,
+  36,
+  37,
+  38,
+  39,
+  40,
+  41,
+  43
+ ],
+ "spent_usd": 1.6051,
+ "drift": {
+  "amazon-bedrock": {
+   "stat": 3.623,
+   "p": 0.000999000999000999,
+   "prompts": 16,
+   "top": [
+    {
+     "prompt": "Write a six-word story.",
+     "tv": 0.68,
+     "a": [
+      [
+       "last human",
+       7
+      ],
+      [
+       "wrong number",
+       3
+      ],
+      [
+       "the last",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "last human",
+       8
+      ],
+      [
+       "last man",
+       1
+      ],
+      [
+       "last words",
+       1
+      ]
+     ]
+    },
+    {
+     "prompt": "Write the first sentence of a fantasy novel.",
+     "tv": 0.52,
+     "a": [
+      [
+       "the last",
+       16
+      ],
+      [
+       "on the",
+       3
+      ],
+      [
+       "the night",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "the night",
+       11
+      ],
+      [
+       "the last",
+       7
+      ]
+     ]
+    },
+    {
+     "prompt": "Name a hobby someone could start this weekend.",
+     "tv": 0.52,
+     "a": [
+      [
+       "sketching is",
+       10
+      ],
+      [
+       "try sketching",
+       5
+      ],
+      [
+       "sketching all",
+       4
+      ]
+     ],
+     "b": [
+      [
+       "try sketching",
+       5
+      ],
+      [
+       "hiking is",
+       3
+      ],
+      [
+       "birdwatching is",
+       2
+      ]
+     ]
+    }
+   ]
+  },
+  "anthropic": {
+   "stat": 3.447,
+   "p": 0.03296703296703297,
+   "prompts": 16,
+   "top": [
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.52,
+     "a": [
+      [
+       "veloria prime",
+       5
+      ],
+      [
+       "vethara prime",
+       3
+      ],
+      [
+       "velmaris prime",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "veloria prime",
+       6
+      ],
+      [
+       "vethara prime",
+       3
+      ],
+      [
+       "velmora prime",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Write a six-word story.",
+     "tv": 0.52,
+     "a": [
+      [
+       "wrong number",
+       5
+      ],
+      [
+       "last human",
+       4
+      ],
+      [
+       "last breath",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "last human",
+       4
+      ],
+      [
+       "last message",
+       2
+      ],
+      [
+       "grandma s",
+       1
+      ]
+     ]
+    },
+    {
+     "prompt": "Give a title for a mystery novel.",
+     "tv": 0.44,
+     "a": [
+      [
+       "the clockmaker",
+       14
+      ],
+      [
+       "the last",
+       5
+      ]
+     ],
+     "b": [
+      [
+       "the silence",
+       8
+      ],
+      [
+       "the clockmaker",
+       6
+      ],
+      [
+       "the last",
+       4
+      ]
+     ]
+    }
+   ]
+  },
+  "anthropic/fast": {
+   "stat": 2.841,
+   "p": 0.14785214785214784,
+   "prompts": 16,
+   "top": [
+    {
+     "prompt": "Write a six-word story.",
+     "tv": 0.58,
+     "a": [
+      [
+       "last human",
+       5
+      ],
+      [
+       "last message",
+       3
+      ],
+      [
+       "wrong number",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "last human",
+       5
+      ],
+      [
+       "last message",
+       1
+      ]
+     ]
+    },
+    {
+     "prompt": "Name a hobby someone could start this weekend.",
+     "tv": 0.39,
+     "a": [
+      [
+       "birdwatching is",
+       8
+      ],
+      [
+       "hiking is",
+       5
+      ],
+      [
+       "sketching is",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "sketching is",
+       3
+      ],
+      [
+       "hiking is",
+       3
+      ],
+      [
+       "bird watching",
+       3
+      ]
+     ]
+    },
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.36,
+     "a": [
+      [
+       "veloria prime",
+       12
+      ],
+      [
+       "veyruun",
+       2
+      ],
+      [
+       "velmora prime",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "veloria prime",
+       10
+      ],
+      [
+       "velmora prime",
+       4
+      ],
+      [
+       "veltharion",
+       2
+      ]
+     ]
+    }
+   ]
+  },
+  "azure/global": {
+   "stat": 2.62,
+   "p": 0.6923076923076923,
+   "prompts": 16,
+   "top": [
+    {
+     "prompt": "Write a six-word story.",
+     "tv": 0.66,
+     "a": [
+      [
+       "last text",
+       4
+      ],
+      [
+       "last human",
+       4
+      ],
+      [
+       "for sale",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "last human",
+       7
+      ],
+      [
+       "last message",
+       2
+      ],
+      [
+       "last words",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Complete with one word: She opened the box and found a ___.",
+     "tv": 0.47,
+     "a": [
+      [
+       "surprise",
+       4
+      ],
+      [
+       "gift",
+       3
+      ],
+      [
+       "ring",
+       3
+      ]
+     ],
+     "b": [
+      [
+       "key",
+       7
+      ],
+      [
+       "ring",
+       3
+      ],
+      [
+       "surprise",
+       3
+      ]
+     ]
+    },
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.43,
+     "a": [
+      [
+       "veloria prime",
+       9
+      ],
+      [
+       "veloria thane",
+       2
+      ],
+      [
+       "veyrathis",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "veloria prime",
+       6
+      ],
+      [
+       "veydris prime",
+       2
+      ],
+      [
+       "vethara prime",
+       2
+      ]
+     ]
+    }
+   ]
+  },
+  "claude-on-aws": {
+   "stat": 3.089,
+   "p": 0.0959040959040959,
+   "prompts": 16,
+   "top": [
+    {
+     "prompt": "Write a six-word story.",
+     "tv": 0.52,
+     "a": [
+      [
+       "last human",
+       9
+      ],
+      [
+       "wrong number",
+       3
+      ],
+      [
+       "found my",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "last human",
+       9
+      ],
+      [
+       "last letter",
+       1
+      ],
+      [
+       "last voicemail",
+       1
+      ]
+     ]
+    },
+    {
+     "prompt": "Write the opening line of a poem about rain.",
+     "tv": 0.44,
+     "a": [
+      [
+       "the sky",
+       19
+      ],
+      [
+       "the rain",
+       4
+      ]
+     ],
+     "b": [
+      [
+       "the rain",
+       11
+      ],
+      [
+       "the sky",
+       7
+      ]
+     ]
+    },
+    {
+     "prompt": "Complete with one word: She opened the box and found a ___.",
+     "tv": 0.4,
+     "a": [
+      [
+       "key",
+       8
+      ],
+      [
+       "ring",
+       7
+      ],
+      [
+       "gift",
+       5
+      ]
+     ],
+     "b": [
+      [
+       "key",
+       9
+      ],
+      [
+       "letter",
+       3
+      ],
+      [
+       "ring",
+       2
+      ]
+     ]
+    }
+   ]
+  },
+  "google-vertex/global": {
+   "stat": 2.631,
+   "p": 0.4645354645354645,
+   "prompts": 16,
+   "top": [
+    {
+     "prompt": "Invent a name for a fictional planet.",
+     "tv": 0.6,
+     "a": [
+      [
+       "veloria prime",
+       8
+      ],
+      [
+       "vethara prime",
+       2
+      ],
+      [
+       "veyrith prime",
+       1
+      ]
+     ],
+     "b": [
+      [
+       "veloria prime",
+       9
+      ],
+      [
+       "veylith prime",
+       2
+      ],
+      [
+       "velmara thessix",
+       2
+      ]
+     ]
+    },
+    {
+     "prompt": "Name a hobby someone could start this weekend.",
+     "tv": 0.47,
+     "a": [
+      [
+       "sketching is",
+       5
+      ],
+      [
+       "birdwatching is",
+       5
+      ],
+      [
+       "sketching all",
+       4
+      ]
+     ],
+     "b": [
+      [
+       "birdwatching is",
+       4
+      ],
+      [
+       "try sketching",
+       4
+      ],
+      [
+       "hiking is",
+       4
+      ]
+     ]
+    },
+    {
+     "prompt": "Write a six-word story.",
+     "tv": 0.31,
+     "a": [
+      [
+       "last human",
+       11
+      ],
+      [
+       "last message",
+       4
+      ],
+      [
+       "last words",
+       2
+      ]
+     ],
+     "b": [
+      [
+       "last human",
+       8
+      ],
+      [
+       "last message",
+       1
+      ]
+     ]
+    }
+   ]
+  }
+ },
+ "matrix_2026_11_27": {
+  "amazon-bedrock": {
+   "anthropic": 0.6786,
+   "anthropic/fast": 0.002,
+   "azure/global": 0.002,
+   "claude-on-aws": 0.9022,
+   "google-vertex/global": 0.002
+  },
+  "anthropic": {
+   "amazon-bedrock": 0.7026,
+   "anthropic/fast": 0.014,
+   "azure/global": 0.012,
+   "claude-on-aws": 0.5928,
+   "google-vertex/global": 0.004
+  },
+  "anthropic/fast": {
+   "amazon-bedrock": 0.002,
+   "anthropic": 0.018,
+   "azure/global": 0.002,
+   "claude-on-aws": 0.0299,
+   "google-vertex/global": 0.8643
+  },
+  "azure/global": {
+   "amazon-bedrock": 0.002,
+   "anthropic": 0.014,
+   "anthropic/fast": 0.002,
+   "claude-on-aws": 0.004,
+   "google-vertex/global": 0.002
+  },
+  "claude-on-aws": {
+   "amazon-bedrock": 0.8703,
+   "anthropic": 0.6128,
+   "anthropic/fast": 0.0339,
+   "azure/global": 0.002,
+   "google-vertex/global": 0.0938
+  },
+  "google-vertex/global": {
+   "amazon-bedrock": 0.002,
+   "anthropic": 0.002,
+   "anthropic/fast": 0.8782,
+   "azure/global": 0.002,
+   "claude-on-aws": 0.1078
+  }
+ },
+ "migration_matches": {
+  "amazon-bedrock": [
+   {
+    "old_endpoint": "claude-on-aws",
+    "p": 0.6487
+   }
+  ],
+  "anthropic": [
+   {
+    "old_endpoint": "anthropic/fast",
+    "p": 0.5669
+   },
+   {
+    "old_endpoint": "claude-on-aws",
+    "p": 0.3752
+   },
+   {
+    "old_endpoint": "google-vertex/global",
+    "p": 0.2375
+   },
+   {
+    "old_endpoint": "google-vertex/us",
+    "p": 0.0758
+   }
+  ],
+  "anthropic/fast": [
+   {
+    "old_endpoint": "anthropic/fast",
+    "p": 0.1198
+   },
+   {
+    "old_endpoint": "google-vertex/europe",
+    "p": 0.3992
+   },
+   {
+    "old_endpoint": "google-vertex/global",
+    "p": 0.7086
+   },
+   {
+    "old_endpoint": "google-vertex/us",
+    "p": 0.7465
+   }
+  ],
+  "azure/global": [
+   {
+    "old_endpoint": "amazon-bedrock/eu-west-1",
+    "p": 0.2735
+   },
+   {
+    "old_endpoint": "azure/global",
+    "p": 0.6747
+   },
+   {
+    "old_endpoint": "azure/us",
+    "p": 0.6926
+   }
+  ],
+  "claude-on-aws": [
+   {
+    "old_endpoint": "claude-on-aws",
+    "p": 0.0878
+   },
+   {
+    "old_endpoint": "google-vertex/global",
+    "p": 0.1357
+   }
+  ],
+  "google-vertex/global": [
+   {
+    "old_endpoint": "anthropic/fast",
+    "p": 0.0758
+   },
+   {
+    "old_endpoint": "google-vertex/europe",
+    "p": 0.1317
+   },
+   {
+    "old_endpoint": "google-vertex/global",
+    "p": 0.4132
+   },
+   {
+    "old_endpoint": "google-vertex/us",
+    "p": 0.4391
+   }
+  ]
+ }
+}

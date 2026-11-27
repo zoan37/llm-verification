@@ -1,0 +1,1690 @@
+{
+ "model": "moonshotai/kimi-k3",
+ "date": "2026-11-27",
+ "n_prompts": 12,
+ "n_endpoints": 27,
+ "crowd_median_prefix": 0.2815,
+ "identical_pairs": [],
+ "outliers": [
+  {
+   "tag": "amazon-bedrock/us-east-1",
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1228,
+   "self_prefix": 0.06,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "makora/fp4",
+     "prefix": 0.1527
+    },
+    {
+     "tag": "chutes/mxfp4",
+     "prefix": 0.1516
+    },
+    {
+     "tag": "fireworks/us",
+     "prefix": 0.1405
+    }
+   ]
+  },
+  {
+   "tag": "amazon-bedrock/us-east-2",
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1095,
+   "self_prefix": 0.0807,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "chutes/mxfp4",
+     "prefix": 0.1419
+    },
+    {
+     "tag": "fireworks",
+     "prefix": 0.1336
+    },
+    {
+     "tag": "inference-net/fp4",
+     "prefix": 0.1301
+    }
+   ]
+  },
+  {
+   "tag": "digitalocean",
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1531,
+   "self_prefix": 0.1525,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "nebius/fp4",
+     "prefix": 0.2484
+    },
+    {
+     "tag": "alibaba",
+     "prefix": 0.2069
+    },
+    {
+     "tag": "together",
+     "prefix": 0.2062
+    }
+   ]
+  },
+  {
+   "tag": "fireworks/us",
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1573,
+   "self_prefix": 0.0687,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "fireworks/fast",
+     "prefix": 0.222
+    },
+    {
+     "tag": "deepinfra/mxfp4",
+     "prefix": 0.2121
+    },
+    {
+     "tag": "parasail/fp4",
+     "prefix": 0.1958
+    }
+   ]
+  },
+  {
+   "tag": "moonshotai",
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.0457,
+   "self_prefix": 0.0645,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "modal/mxfp4",
+     "prefix": 0.0744
+    },
+    {
+     "tag": "digitalocean",
+     "prefix": 0.0534
+    },
+    {
+     "tag": "deepinfra/mxfp4",
+     "prefix": 0.053
+    }
+   ]
+  },
+  {
+   "tag": "wafer",
+   "quantization": "mxfp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1209,
+   "self_prefix": 0.3405,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "wafer/us",
+     "prefix": 0.3764
+    },
+    {
+     "tag": "wafer/fast",
+     "prefix": 0.3196
+    },
+    {
+     "tag": "baseten/fp8",
+     "prefix": 0.1294
+    }
+   ]
+  },
+  {
+   "tag": "wafer/fast",
+   "quantization": "mxfp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1189,
+   "self_prefix": 0.0934,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "wafer/us",
+     "prefix": 0.3751
+    },
+    {
+     "tag": "wafer",
+     "prefix": 0.3196
+    },
+    {
+     "tag": "fireworks/fast",
+     "prefix": 0.1273
+    }
+   ]
+  },
+  {
+   "tag": "wafer/us",
+   "quantization": "mxfp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1228,
+   "self_prefix": 0.3922,
+   "self_exact": 0.333,
+   "nearest": [
+    {
+     "tag": "wafer",
+     "prefix": 0.3764
+    },
+    {
+     "tag": "wafer/fast",
+     "prefix": 0.3751
+    },
+    {
+     "tag": "fireworks/fast",
+     "prefix": 0.1285
+    }
+   ]
+  }
+ ],
+ "outlier_internal": [
+  {
+   "a": "amazon-bedrock/us-east-1",
+   "b": "amazon-bedrock/us-east-2",
+   "prefix": 0.1044
+  },
+  {
+   "a": "amazon-bedrock/us-east-1",
+   "b": "digitalocean",
+   "prefix": 0.0999
+  },
+  {
+   "a": "amazon-bedrock/us-east-1",
+   "b": "fireworks/us",
+   "prefix": 0.1405
+  },
+  {
+   "a": "amazon-bedrock/us-east-1",
+   "b": "moonshotai",
+   "prefix": 0.0432
+  },
+  {
+   "a": "amazon-bedrock/us-east-1",
+   "b": "wafer",
+   "prefix": 0.1115
+  },
+  {
+   "a": "amazon-bedrock/us-east-1",
+   "b": "wafer/fast",
+   "prefix": 0.1114
+  },
+  {
+   "a": "amazon-bedrock/us-east-1",
+   "b": "wafer/us",
+   "prefix": 0.1115
+  },
+  {
+   "a": "amazon-bedrock/us-east-2",
+   "b": "digitalocean",
+   "prefix": 0.0566
+  },
+  {
+   "a": "amazon-bedrock/us-east-2",
+   "b": "fireworks/us",
+   "prefix": 0.1279
+  },
+  {
+   "a": "amazon-bedrock/us-east-2",
+   "b": "moonshotai",
+   "prefix": 0.0347
+  },
+  {
+   "a": "amazon-bedrock/us-east-2",
+   "b": "wafer",
+   "prefix": 0.0857
+  },
+  {
+   "a": "amazon-bedrock/us-east-2",
+   "b": "wafer/fast",
+   "prefix": 0.0849
+  },
+  {
+   "a": "amazon-bedrock/us-east-2",
+   "b": "wafer/us",
+   "prefix": 0.0857
+  },
+  {
+   "a": "digitalocean",
+   "b": "fireworks/us",
+   "prefix": 0.1052
+  },
+  {
+   "a": "digitalocean",
+   "b": "moonshotai",
+   "prefix": 0.0534
+  },
+  {
+   "a": "digitalocean",
+   "b": "wafer",
+   "prefix": 0.0625
+  },
+  {
+   "a": "digitalocean",
+   "b": "wafer/fast",
+   "prefix": 0.062
+  },
+  {
+   "a": "digitalocean",
+   "b": "wafer/us",
+   "prefix": 0.0625
+  },
+  {
+   "a": "fireworks/us",
+   "b": "moonshotai",
+   "prefix": 0.0453
+  },
+  {
+   "a": "fireworks/us",
+   "b": "wafer",
+   "prefix": 0.1045
+  },
+  {
+   "a": "fireworks/us",
+   "b": "wafer/fast",
+   "prefix": 0.103
+  },
+  {
+   "a": "fireworks/us",
+   "b": "wafer/us",
+   "prefix": 0.104
+  },
+  {
+   "a": "moonshotai",
+   "b": "wafer",
+   "prefix": 0.0394
+  },
+  {
+   "a": "moonshotai",
+   "b": "wafer/fast",
+   "prefix": 0.0355
+  },
+  {
+   "a": "moonshotai",
+   "b": "wafer/us",
+   "prefix": 0.039
+  },
+  {
+   "a": "wafer",
+   "b": "wafer/fast",
+   "prefix": 0.3196
+  },
+  {
+   "a": "wafer",
+   "b": "wafer/us",
+   "prefix": 0.3764
+  },
+  {
+   "a": "wafer/fast",
+   "b": "wafer/us",
+   "prefix": 0.3751
+  }
+ ],
+ "endpoints": {
+  "alibaba": {
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.2985,
+   "self_prefix": 0.3572,
+   "self_exact": 0.333,
+   "nearest": [
+    {
+     "tag": "deepinfra/mxfp4",
+     "prefix": 0.4615
+    },
+    {
+     "tag": "baseten/fp8",
+     "prefix": 0.4327
+    },
+    {
+     "tag": "inference-net/fp4",
+     "prefix": 0.4261
+    }
+   ]
+  },
+  "amazon-bedrock/us-east-1": {
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1228,
+   "self_prefix": 0.06,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "makora/fp4",
+     "prefix": 0.1527
+    },
+    {
+     "tag": "chutes/mxfp4",
+     "prefix": 0.1516
+    },
+    {
+     "tag": "fireworks/us",
+     "prefix": 0.1405
+    }
+   ]
+  },
+  "amazon-bedrock/us-east-2": {
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1095,
+   "self_prefix": 0.0807,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "chutes/mxfp4",
+     "prefix": 0.1419
+    },
+    {
+     "tag": "fireworks",
+     "prefix": 0.1336
+    },
+    {
+     "tag": "inference-net/fp4",
+     "prefix": 0.1301
+    }
+   ]
+  },
+  "baseten/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.2912,
+   "self_prefix": 0.359,
+   "self_exact": 0.333,
+   "nearest": [
+    {
+     "tag": "alibaba",
+     "prefix": 0.4327
+    },
+    {
+     "tag": "relace/fp4",
+     "prefix": 0.4274
+    },
+    {
+     "tag": "together",
+     "prefix": 0.4075
+    }
+   ]
+  },
+  "chutes/mxfp4": {
+   "quantization": "mxfp4",
+   "answered": 11,
+   "errors": 0,
+   "mean_peer_prefix": 0.2815,
+   "self_prefix": 0.5602,
+   "self_exact": 0.333,
+   "nearest": [
+    {
+     "tag": "inference-net/fp4",
+     "prefix": 0.4725
+    },
+    {
+     "tag": "parasail/fast",
+     "prefix": 0.442
+    },
+    {
+     "tag": "fireworks",
+     "prefix": 0.4394
+    }
+   ]
+  },
+  "deepinfra/mxfp4": {
+   "quantization": "mxfp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3048,
+   "self_prefix": 0.1332,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "alibaba",
+     "prefix": 0.4615
+    },
+    {
+     "tag": "river",
+     "prefix": 0.4502
+    },
+    {
+     "tag": "makora/fp4",
+     "prefix": 0.4421
+    }
+   ]
+  },
+  "digitalocean": {
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1531,
+   "self_prefix": 0.1525,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "nebius/fp4",
+     "prefix": 0.2484
+    },
+    {
+     "tag": "alibaba",
+     "prefix": 0.2069
+    },
+    {
+     "tag": "together",
+     "prefix": 0.2062
+    }
+   ]
+  },
+  "fireworks": {
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.2939,
+   "self_prefix": 0.2973,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "inference-net/fp4",
+     "prefix": 0.4394
+    },
+    {
+     "tag": "chutes/mxfp4",
+     "prefix": 0.4394
+    },
+    {
+     "tag": "deepinfra/mxfp4",
+     "prefix": 0.4272
+    }
+   ]
+  },
+  "fireworks/fast": {
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.2019,
+   "self_prefix": 0.0888,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "baseten/fp8",
+     "prefix": 0.288
+    },
+    {
+     "tag": "inference-net/us/fast",
+     "prefix": 0.2864
+    },
+    {
+     "tag": "relace/fp4",
+     "prefix": 0.2766
+    }
+   ]
+  },
+  "fireworks/us": {
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1573,
+   "self_prefix": 0.0687,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "fireworks/fast",
+     "prefix": 0.222
+    },
+    {
+     "tag": "deepinfra/mxfp4",
+     "prefix": 0.2121
+    },
+    {
+     "tag": "parasail/fp4",
+     "prefix": 0.1958
+    }
+   ]
+  },
+  "inference-net/fast": {
+   "quantization": "fp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.298,
+   "self_prefix": 0.259,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "inference-net/us/fast",
+     "prefix": 0.6901
+    },
+    {
+     "tag": "makora/fp4",
+     "prefix": 0.45
+    },
+    {
+     "tag": "relace/fp4",
+     "prefix": 0.4385
+    }
+   ]
+  },
+  "inference-net/fp4": {
+   "quantization": "fp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3111,
+   "self_prefix": 0.2626,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "inference-net/us",
+     "prefix": 0.476
+    },
+    {
+     "tag": "chutes/mxfp4",
+     "prefix": 0.4725
+    },
+    {
+     "tag": "parasail/fp4",
+     "prefix": 0.4652
+    }
+   ]
+  },
+  "inference-net/us": {
+   "quantization": "fp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.28,
+   "self_prefix": 0.1376,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "inference-net/fp4",
+     "prefix": 0.476
+    },
+    {
+     "tag": "makora/fp4",
+     "prefix": 0.3954
+    },
+    {
+     "tag": "baseten/fp8",
+     "prefix": 0.3931
+    }
+   ]
+  },
+  "inference-net/us/fast": {
+   "quantization": "fp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3023,
+   "self_prefix": 0.4243,
+   "self_exact": 0.333,
+   "nearest": [
+    {
+     "tag": "inference-net/fast",
+     "prefix": 0.6901
+    },
+    {
+     "tag": "relace/fp4",
+     "prefix": 0.4539
+    },
+    {
+     "tag": "makora/fp4",
+     "prefix": 0.4457
+    }
+   ]
+  },
+  "kt": {
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1885,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "chutes/mxfp4",
+     "prefix": 0.2666
+    },
+    {
+     "tag": "parasail/fast",
+     "prefix": 0.2544
+    },
+    {
+     "tag": "alibaba",
+     "prefix": 0.2542
+    }
+   ]
+  },
+  "makora/fp4": {
+   "quantization": "fp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.2888,
+   "self_prefix": 0.0543,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "inference-net/fp4",
+     "prefix": 0.4565
+    },
+    {
+     "tag": "inference-net/fast",
+     "prefix": 0.45
+    },
+    {
+     "tag": "inference-net/us/fast",
+     "prefix": 0.4457
+    }
+   ]
+  },
+  "modal/mxfp4": {
+   "quantization": "mxfp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.2096,
+   "self_prefix": 0.1585,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "parasail/fast",
+     "prefix": 0.3504
+    },
+    {
+     "tag": "parasail/fp4",
+     "prefix": 0.3433
+    },
+    {
+     "tag": "inference-net/fp4",
+     "prefix": 0.3341
+    }
+   ]
+  },
+  "moonshotai": {
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.0457,
+   "self_prefix": 0.0645,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "modal/mxfp4",
+     "prefix": 0.0744
+    },
+    {
+     "tag": "digitalocean",
+     "prefix": 0.0534
+    },
+    {
+     "tag": "deepinfra/mxfp4",
+     "prefix": 0.053
+    }
+   ]
+  },
+  "nebius/fp4": {
+   "quantization": "fp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.257,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "deepinfra/mxfp4",
+     "prefix": 0.4391
+    },
+    {
+     "tag": "fireworks",
+     "prefix": 0.4106
+    },
+    {
+     "tag": "relace/fp4",
+     "prefix": 0.3934
+    }
+   ]
+  },
+  "parasail/fast": {
+   "quantization": "fp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3183,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "parasail/fp4",
+     "prefix": 0.8826
+    },
+    {
+     "tag": "inference-net/fp4",
+     "prefix": 0.4585
+    },
+    {
+     "tag": "chutes/mxfp4",
+     "prefix": 0.442
+    }
+   ]
+  },
+  "parasail/fp4": {
+   "quantization": "fp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.317,
+   "self_prefix": 0.2398,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "parasail/fast",
+     "prefix": 0.8826
+    },
+    {
+     "tag": "inference-net/fp4",
+     "prefix": 0.4652
+    },
+    {
+     "tag": "relace/fp4",
+     "prefix": 0.4247
+    }
+   ]
+  },
+  "relace/fp4": {
+   "quantization": "fp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.3061,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "inference-net/us/fast",
+     "prefix": 0.4539
+    },
+    {
+     "tag": "inference-net/fast",
+     "prefix": 0.4385
+    },
+    {
+     "tag": "parasail/fast",
+     "prefix": 0.428
+    }
+   ]
+  },
+  "river": {
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.2869,
+   "self_prefix": 1.0,
+   "self_exact": 1.0,
+   "nearest": [
+    {
+     "tag": "deepinfra/mxfp4",
+     "prefix": 0.4502
+    },
+    {
+     "tag": "alibaba",
+     "prefix": 0.4254
+    },
+    {
+     "tag": "relace/fp4",
+     "prefix": 0.4031
+    }
+   ]
+  },
+  "together": {
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.2851,
+   "self_prefix": 0.3169,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "alibaba",
+     "prefix": 0.4187
+    },
+    {
+     "tag": "baseten/fp8",
+     "prefix": 0.4075
+    },
+    {
+     "tag": "deepinfra/mxfp4",
+     "prefix": 0.3999
+    }
+   ]
+  },
+  "wafer": {
+   "quantization": "mxfp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1209,
+   "self_prefix": 0.3405,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "wafer/us",
+     "prefix": 0.3764
+    },
+    {
+     "tag": "wafer/fast",
+     "prefix": 0.3196
+    },
+    {
+     "tag": "baseten/fp8",
+     "prefix": 0.1294
+    }
+   ]
+  },
+  "wafer/fast": {
+   "quantization": "mxfp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1189,
+   "self_prefix": 0.0934,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "wafer/us",
+     "prefix": 0.3751
+    },
+    {
+     "tag": "wafer",
+     "prefix": 0.3196
+    },
+    {
+     "tag": "fireworks/fast",
+     "prefix": 0.1273
+    }
+   ]
+  },
+  "wafer/us": {
+   "quantization": "mxfp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1228,
+   "self_prefix": 0.3922,
+   "self_exact": 0.333,
+   "nearest": [
+    {
+     "tag": "wafer",
+     "prefix": 0.3764
+    },
+    {
+     "tag": "wafer/fast",
+     "prefix": 0.3751
+    },
+    {
+     "tag": "fireworks/fast",
+     "prefix": 0.1285
+    }
+   ]
+  }
+ },
+ "matrix": {
+  "alibaba": {
+   "amazon-bedrock/us-east-1": 0.1392,
+   "amazon-bedrock/us-east-2": 0.1195,
+   "baseten/fp8": 0.4327,
+   "chutes/mxfp4": 0.3205,
+   "deepinfra/mxfp4": 0.4615,
+   "digitalocean": 0.2069,
+   "fireworks": 0.3513,
+   "fireworks/fast": 0.2693,
+   "fireworks/us": 0.1923,
+   "inference-net/fast": 0.3706,
+   "inference-net/fp4": 0.4261,
+   "inference-net/us": 0.3884,
+   "inference-net/us/fast": 0.3926,
+   "kt": 0.2542,
+   "makora/fp4": 0.367,
+   "modal/mxfp4": 0.285,
+   "moonshotai": 0.0476,
+   "nebius/fp4": 0.3402,
+   "parasail/fast": 0.4176,
+   "parasail/fp4": 0.4102,
+   "relace/fp4": 0.3995,
+   "river": 0.4254,
+   "together": 0.4187,
+   "wafer": 0.1089,
+   "wafer/fast": 0.1074,
+   "wafer/us": 0.1085
+  },
+  "amazon-bedrock/us-east-1": {
+   "alibaba": 0.1392,
+   "amazon-bedrock/us-east-2": 0.1044,
+   "baseten/fp8": 0.1338,
+   "chutes/mxfp4": 0.1516,
+   "deepinfra/mxfp4": 0.1367,
+   "digitalocean": 0.0999,
+   "fireworks": 0.1363,
+   "fireworks/fast": 0.1307,
+   "fireworks/us": 0.1405,
+   "inference-net/fast": 0.1388,
+   "inference-net/fp4": 0.1375,
+   "inference-net/us": 0.1384,
+   "inference-net/us/fast": 0.138,
+   "kt": 0.124,
+   "makora/fp4": 0.1527,
+   "modal/mxfp4": 0.0428,
+   "moonshotai": 0.0432,
+   "nebius/fp4": 0.078,
+   "parasail/fast": 0.1382,
+   "parasail/fp4": 0.1384,
+   "relace/fp4": 0.1384,
+   "river": 0.1386,
+   "together": 0.1385,
+   "wafer": 0.1115,
+   "wafer/fast": 0.1114,
+   "wafer/us": 0.1115
+  },
+  "amazon-bedrock/us-east-2": {
+   "alibaba": 0.1195,
+   "amazon-bedrock/us-east-1": 0.1044,
+   "baseten/fp8": 0.1266,
+   "chutes/mxfp4": 0.1419,
+   "deepinfra/mxfp4": 0.1255,
+   "digitalocean": 0.0566,
+   "fireworks": 0.1336,
+   "fireworks/fast": 0.124,
+   "fireworks/us": 0.1279,
+   "inference-net/fast": 0.1271,
+   "inference-net/fp4": 0.1301,
+   "inference-net/us": 0.1233,
+   "inference-net/us/fast": 0.127,
+   "kt": 0.1095,
+   "makora/fp4": 0.1225,
+   "modal/mxfp4": 0.0459,
+   "moonshotai": 0.0347,
+   "nebius/fp4": 0.0732,
+   "parasail/fast": 0.1269,
+   "parasail/fp4": 0.127,
+   "relace/fp4": 0.1269,
+   "river": 0.1299,
+   "together": 0.1266,
+   "wafer": 0.0857,
+   "wafer/fast": 0.0849,
+   "wafer/us": 0.0857
+  },
+  "baseten/fp8": {
+   "alibaba": 0.4327,
+   "amazon-bedrock/us-east-1": 0.1338,
+   "amazon-bedrock/us-east-2": 0.1266,
+   "chutes/mxfp4": 0.3221,
+   "deepinfra/mxfp4": 0.386,
+   "digitalocean": 0.1914,
+   "fireworks": 0.3828,
+   "fireworks/fast": 0.288,
+   "fireworks/us": 0.1757,
+   "inference-net/fast": 0.3746,
+   "inference-net/fp4": 0.3639,
+   "inference-net/us": 0.3931,
+   "inference-net/us/fast": 0.3987,
+   "kt": 0.2257,
+   "makora/fp4": 0.3604,
+   "modal/mxfp4": 0.2642,
+   "moonshotai": 0.0427,
+   "nebius/fp4": 0.3675,
+   "parasail/fast": 0.3703,
+   "parasail/fp4": 0.377,
+   "relace/fp4": 0.4274,
+   "river": 0.3757,
+   "together": 0.4075,
+   "wafer": 0.1294,
+   "wafer/fast": 0.1266,
+   "wafer/us": 0.1281
+  },
+  "chutes/mxfp4": {
+   "alibaba": 0.3205,
+   "amazon-bedrock/us-east-1": 0.1516,
+   "amazon-bedrock/us-east-2": 0.1419,
+   "baseten/fp8": 0.3221,
+   "deepinfra/mxfp4": 0.3734,
+   "digitalocean": 0.1212,
+   "fireworks": 0.4394,
+   "fireworks/fast": 0.2496,
+   "fireworks/us": 0.1922,
+   "inference-net/fast": 0.315,
+   "inference-net/fp4": 0.4725,
+   "inference-net/us": 0.3244,
+   "inference-net/us/fast": 0.3117,
+   "kt": 0.2666,
+   "makora/fp4": 0.3666,
+   "modal/mxfp4": 0.2403,
+   "moonshotai": 0.0383,
+   "nebius/fp4": 0.3422,
+   "parasail/fast": 0.442,
+   "parasail/fp4": 0.4048,
+   "relace/fp4": 0.3842,
+   "river": 0.3757,
+   "together": 0.3585,
+   "wafer": 0.1216,
+   "wafer/fast": 0.1204,
+   "wafer/us": 0.121
+  },
+  "deepinfra/mxfp4": {
+   "alibaba": 0.4615,
+   "amazon-bedrock/us-east-1": 0.1367,
+   "amazon-bedrock/us-east-2": 0.1255,
+   "baseten/fp8": 0.386,
+   "chutes/mxfp4": 0.3734,
+   "digitalocean": 0.1964,
+   "fireworks": 0.4272,
+   "fireworks/fast": 0.2329,
+   "fireworks/us": 0.2121,
+   "inference-net/fast": 0.353,
+   "inference-net/fp4": 0.3823,
+   "inference-net/us": 0.3826,
+   "inference-net/us/fast": 0.3429,
+   "kt": 0.2351,
+   "makora/fp4": 0.4421,
+   "modal/mxfp4": 0.3003,
+   "moonshotai": 0.053,
+   "nebius/fp4": 0.4391,
+   "parasail/fast": 0.4095,
+   "parasail/fp4": 0.4094,
+   "relace/fp4": 0.4198,
+   "river": 0.4502,
+   "together": 0.3999,
+   "wafer": 0.1142,
+   "wafer/fast": 0.1194,
+   "wafer/us": 0.1203
+  },
+  "digitalocean": {
+   "alibaba": 0.2069,
+   "amazon-bedrock/us-east-1": 0.0999,
+   "amazon-bedrock/us-east-2": 0.0566,
+   "baseten/fp8": 0.1914,
+   "chutes/mxfp4": 0.1212,
+   "deepinfra/mxfp4": 0.1964,
+   "fireworks": 0.1941,
+   "fireworks/fast": 0.0954,
+   "fireworks/us": 0.1052,
+   "inference-net/fast": 0.2043,
+   "inference-net/fp4": 0.2032,
+   "inference-net/us": 0.1986,
+   "inference-net/us/fast": 0.2039,
+   "kt": 0.104,
+   "makora/fp4": 0.1978,
+   "modal/mxfp4": 0.1538,
+   "moonshotai": 0.0534,
+   "nebius/fp4": 0.2484,
+   "parasail/fast": 0.1984,
+   "parasail/fp4": 0.1984,
+   "relace/fp4": 0.1928,
+   "river": 0.1627,
+   "together": 0.2062,
+   "wafer": 0.0625,
+   "wafer/fast": 0.062,
+   "wafer/us": 0.0625
+  },
+  "fireworks": {
+   "alibaba": 0.3513,
+   "amazon-bedrock/us-east-1": 0.1363,
+   "amazon-bedrock/us-east-2": 0.1336,
+   "baseten/fp8": 0.3828,
+   "chutes/mxfp4": 0.4394,
+   "deepinfra/mxfp4": 0.4272,
+   "digitalocean": 0.1941,
+   "fireworks/fast": 0.2389,
+   "fireworks/us": 0.1671,
+   "inference-net/fast": 0.3709,
+   "inference-net/fp4": 0.4394,
+   "inference-net/us": 0.3656,
+   "inference-net/us/fast": 0.3708,
+   "kt": 0.2084,
+   "makora/fp4": 0.4106,
+   "modal/mxfp4": 0.2982,
+   "moonshotai": 0.0461,
+   "nebius/fp4": 0.4106,
+   "parasail/fast": 0.3897,
+   "parasail/fp4": 0.3825,
+   "relace/fp4": 0.4092,
+   "river": 0.3525,
+   "together": 0.3539,
+   "wafer": 0.1135,
+   "wafer/fast": 0.1235,
+   "wafer/us": 0.1243
+  },
+  "fireworks/fast": {
+   "alibaba": 0.2693,
+   "amazon-bedrock/us-east-1": 0.1307,
+   "amazon-bedrock/us-east-2": 0.124,
+   "baseten/fp8": 0.288,
+   "chutes/mxfp4": 0.2496,
+   "deepinfra/mxfp4": 0.2329,
+   "digitalocean": 0.0954,
+   "fireworks": 0.2389,
+   "fireworks/us": 0.222,
+   "inference-net/fast": 0.2419,
+   "inference-net/fp4": 0.231,
+   "inference-net/us": 0.2134,
+   "inference-net/us/fast": 0.2864,
+   "kt": 0.2086,
+   "makora/fp4": 0.2016,
+   "modal/mxfp4": 0.1367,
+   "moonshotai": 0.0366,
+   "nebius/fp4": 0.2201,
+   "parasail/fast": 0.2459,
+   "parasail/fp4": 0.2436,
+   "relace/fp4": 0.2766,
+   "river": 0.2448,
+   "together": 0.2355,
+   "wafer": 0.1192,
+   "wafer/fast": 0.1273,
+   "wafer/us": 0.1285
+  },
+  "fireworks/us": {
+   "alibaba": 0.1923,
+   "amazon-bedrock/us-east-1": 0.1405,
+   "amazon-bedrock/us-east-2": 0.1279,
+   "baseten/fp8": 0.1757,
+   "chutes/mxfp4": 0.1922,
+   "deepinfra/mxfp4": 0.2121,
+   "digitalocean": 0.1052,
+   "fireworks": 0.1671,
+   "fireworks/fast": 0.222,
+   "inference-net/fast": 0.1695,
+   "inference-net/fp4": 0.1807,
+   "inference-net/us": 0.1783,
+   "inference-net/us/fast": 0.1679,
+   "kt": 0.1696,
+   "makora/fp4": 0.1684,
+   "modal/mxfp4": 0.1106,
+   "moonshotai": 0.0453,
+   "nebius/fp4": 0.1063,
+   "parasail/fast": 0.1957,
+   "parasail/fp4": 0.1958,
+   "relace/fp4": 0.1837,
+   "river": 0.1894,
+   "together": 0.1819,
+   "wafer": 0.1045,
+   "wafer/fast": 0.103,
+   "wafer/us": 0.104
+  },
+  "inference-net/fast": {
+   "alibaba": 0.3706,
+   "amazon-bedrock/us-east-1": 0.1388,
+   "amazon-bedrock/us-east-2": 0.1271,
+   "baseten/fp8": 0.3746,
+   "chutes/mxfp4": 0.315,
+   "deepinfra/mxfp4": 0.353,
+   "digitalocean": 0.2043,
+   "fireworks": 0.3709,
+   "fireworks/fast": 0.2419,
+   "fireworks/us": 0.1695,
+   "inference-net/fp4": 0.4163,
+   "inference-net/us": 0.3777,
+   "inference-net/us/fast": 0.6901,
+   "kt": 0.2121,
+   "makora/fp4": 0.45,
+   "modal/mxfp4": 0.256,
+   "moonshotai": 0.0488,
+   "nebius/fp4": 0.3232,
+   "parasail/fast": 0.3856,
+   "parasail/fp4": 0.3852,
+   "relace/fp4": 0.4385,
+   "river": 0.3961,
+   "together": 0.3764,
+   "wafer": 0.1093,
+   "wafer/fast": 0.1076,
+   "wafer/us": 0.1088
+  },
+  "inference-net/fp4": {
+   "alibaba": 0.4261,
+   "amazon-bedrock/us-east-1": 0.1375,
+   "amazon-bedrock/us-east-2": 0.1301,
+   "baseten/fp8": 0.3639,
+   "chutes/mxfp4": 0.4725,
+   "deepinfra/mxfp4": 0.3823,
+   "digitalocean": 0.2032,
+   "fireworks": 0.4394,
+   "fireworks/fast": 0.231,
+   "fireworks/us": 0.1807,
+   "inference-net/fast": 0.4163,
+   "inference-net/us": 0.476,
+   "inference-net/us/fast": 0.416,
+   "kt": 0.2324,
+   "makora/fp4": 0.4565,
+   "modal/mxfp4": 0.3341,
+   "moonshotai": 0.048,
+   "nebius/fp4": 0.3528,
+   "parasail/fast": 0.4585,
+   "parasail/fp4": 0.4652,
+   "relace/fp4": 0.39,
+   "river": 0.3822,
+   "together": 0.368,
+   "wafer": 0.1087,
+   "wafer/fast": 0.1074,
+   "wafer/us": 0.1086
+  },
+  "inference-net/us": {
+   "alibaba": 0.3884,
+   "amazon-bedrock/us-east-1": 0.1384,
+   "amazon-bedrock/us-east-2": 0.1233,
+   "baseten/fp8": 0.3931,
+   "chutes/mxfp4": 0.3244,
+   "deepinfra/mxfp4": 0.3826,
+   "digitalocean": 0.1986,
+   "fireworks": 0.3656,
+   "fireworks/fast": 0.2134,
+   "fireworks/us": 0.1783,
+   "inference-net/fast": 0.3777,
+   "inference-net/fp4": 0.476,
+   "inference-net/us/fast": 0.3878,
+   "kt": 0.2248,
+   "makora/fp4": 0.3954,
+   "modal/mxfp4": 0.2493,
+   "moonshotai": 0.0479,
+   "nebius/fp4": 0.2819,
+   "parasail/fast": 0.3541,
+   "parasail/fp4": 0.354,
+   "relace/fp4": 0.369,
+   "river": 0.3492,
+   "together": 0.3807,
+   "wafer": 0.1108,
+   "wafer/fast": 0.1076,
+   "wafer/us": 0.1086
+  },
+  "inference-net/us/fast": {
+   "alibaba": 0.3926,
+   "amazon-bedrock/us-east-1": 0.138,
+   "amazon-bedrock/us-east-2": 0.127,
+   "baseten/fp8": 0.3987,
+   "chutes/mxfp4": 0.3117,
+   "deepinfra/mxfp4": 0.3429,
+   "digitalocean": 0.2039,
+   "fireworks": 0.3708,
+   "fireworks/fast": 0.2864,
+   "fireworks/us": 0.1679,
+   "inference-net/fast": 0.6901,
+   "inference-net/fp4": 0.416,
+   "inference-net/us": 0.3878,
+   "kt": 0.2124,
+   "makora/fp4": 0.4457,
+   "modal/mxfp4": 0.2562,
+   "moonshotai": 0.0483,
+   "nebius/fp4": 0.3733,
+   "parasail/fast": 0.3814,
+   "parasail/fp4": 0.3882,
+   "relace/fp4": 0.4539,
+   "river": 0.3746,
+   "together": 0.3681,
+   "wafer": 0.1085,
+   "wafer/fast": 0.1076,
+   "wafer/us": 0.1085
+  },
+  "kt": {
+   "alibaba": 0.2542,
+   "amazon-bedrock/us-east-1": 0.124,
+   "amazon-bedrock/us-east-2": 0.1095,
+   "baseten/fp8": 0.2257,
+   "chutes/mxfp4": 0.2666,
+   "deepinfra/mxfp4": 0.2351,
+   "digitalocean": 0.104,
+   "fireworks": 0.2084,
+   "fireworks/fast": 0.2086,
+   "fireworks/us": 0.1696,
+   "inference-net/fast": 0.2121,
+   "inference-net/fp4": 0.2324,
+   "inference-net/us": 0.2248,
+   "inference-net/us/fast": 0.2124,
+   "makora/fp4": 0.2406,
+   "modal/mxfp4": 0.1571,
+   "moonshotai": 0.0398,
+   "nebius/fp4": 0.1522,
+   "parasail/fast": 0.2544,
+   "parasail/fp4": 0.252,
+   "relace/fp4": 0.2326,
+   "river": 0.2474,
+   "together": 0.2362,
+   "wafer": 0.1008,
+   "wafer/fast": 0.1002,
+   "wafer/us": 0.1009
+  },
+  "makora/fp4": {
+   "alibaba": 0.367,
+   "amazon-bedrock/us-east-1": 0.1527,
+   "amazon-bedrock/us-east-2": 0.1225,
+   "baseten/fp8": 0.3604,
+   "chutes/mxfp4": 0.3666,
+   "deepinfra/mxfp4": 0.4421,
+   "digitalocean": 0.1978,
+   "fireworks": 0.4106,
+   "fireworks/fast": 0.2016,
+   "fireworks/us": 0.1684,
+   "inference-net/fast": 0.45,
+   "inference-net/fp4": 0.4565,
+   "inference-net/us": 0.3954,
+   "inference-net/us/fast": 0.4457,
+   "kt": 0.2406,
+   "modal/mxfp4": 0.2436,
+   "moonshotai": 0.0486,
+   "nebius/fp4": 0.3175,
+   "parasail/fast": 0.3664,
+   "parasail/fp4": 0.374,
+   "relace/fp4": 0.3816,
+   "river": 0.3147,
+   "together": 0.3601,
+   "wafer": 0.109,
+   "wafer/fast": 0.1077,
+   "wafer/us": 0.1088
+  },
+  "modal/mxfp4": {
+   "alibaba": 0.285,
+   "amazon-bedrock/us-east-1": 0.0428,
+   "amazon-bedrock/us-east-2": 0.0459,
+   "baseten/fp8": 0.2642,
+   "chutes/mxfp4": 0.2403,
+   "deepinfra/mxfp4": 0.3003,
+   "digitalocean": 0.1538,
+   "fireworks": 0.2982,
+   "fireworks/fast": 0.1367,
+   "fireworks/us": 0.1106,
+   "inference-net/fast": 0.256,
+   "inference-net/fp4": 0.3341,
+   "inference-net/us": 0.2493,
+   "inference-net/us/fast": 0.2562,
+   "kt": 0.1571,
+   "makora/fp4": 0.2436,
+   "moonshotai": 0.0744,
+   "nebius/fp4": 0.3023,
+   "parasail/fast": 0.3504,
+   "parasail/fp4": 0.3433,
+   "relace/fp4": 0.3129,
+   "river": 0.2827,
+   "together": 0.267,
+   "wafer": 0.0555,
+   "wafer/fast": 0.0329,
+   "wafer/us": 0.0553
+  },
+  "moonshotai": {
+   "alibaba": 0.0476,
+   "amazon-bedrock/us-east-1": 0.0432,
+   "amazon-bedrock/us-east-2": 0.0347,
+   "baseten/fp8": 0.0427,
+   "chutes/mxfp4": 0.0383,
+   "deepinfra/mxfp4": 0.053,
+   "digitalocean": 0.0534,
+   "fireworks": 0.0461,
+   "fireworks/fast": 0.0366,
+   "fireworks/us": 0.0453,
+   "inference-net/fast": 0.0488,
+   "inference-net/fp4": 0.048,
+   "inference-net/us": 0.0479,
+   "inference-net/us/fast": 0.0483,
+   "kt": 0.0398,
+   "makora/fp4": 0.0486,
+   "modal/mxfp4": 0.0744,
+   "nebius/fp4": 0.0424,
+   "parasail/fast": 0.0472,
+   "parasail/fp4": 0.0474,
+   "relace/fp4": 0.0474,
+   "river": 0.0473,
+   "together": 0.0468,
+   "wafer": 0.0394,
+   "wafer/fast": 0.0355,
+   "wafer/us": 0.039
+  },
+  "nebius/fp4": {
+   "alibaba": 0.3402,
+   "amazon-bedrock/us-east-1": 0.078,
+   "amazon-bedrock/us-east-2": 0.0732,
+   "baseten/fp8": 0.3675,
+   "chutes/mxfp4": 0.3422,
+   "deepinfra/mxfp4": 0.4391,
+   "digitalocean": 0.2484,
+   "fireworks": 0.4106,
+   "fireworks/fast": 0.2201,
+   "fireworks/us": 0.1063,
+   "inference-net/fast": 0.3232,
+   "inference-net/fp4": 0.3528,
+   "inference-net/us": 0.2819,
+   "inference-net/us/fast": 0.3733,
+   "kt": 0.1522,
+   "makora/fp4": 0.3175,
+   "modal/mxfp4": 0.3023,
+   "moonshotai": 0.0424,
+   "parasail/fast": 0.3282,
+   "parasail/fp4": 0.3353,
+   "relace/fp4": 0.3934,
+   "river": 0.3137,
+   "together": 0.337,
+   "wafer": 0.0723,
+   "wafer/fast": 0.0656,
+   "wafer/us": 0.0662
+  },
+  "parasail/fast": {
+   "alibaba": 0.4176,
+   "amazon-bedrock/us-east-1": 0.1382,
+   "amazon-bedrock/us-east-2": 0.1269,
+   "baseten/fp8": 0.3703,
+   "chutes/mxfp4": 0.442,
+   "deepinfra/mxfp4": 0.4095,
+   "digitalocean": 0.1984,
+   "fireworks": 0.3897,
+   "fireworks/fast": 0.2459,
+   "fireworks/us": 0.1957,
+   "inference-net/fast": 0.3856,
+   "inference-net/fp4": 0.4585,
+   "inference-net/us": 0.3541,
+   "inference-net/us/fast": 0.3814,
+   "kt": 0.2544,
+   "makora/fp4": 0.3664,
+   "modal/mxfp4": 0.3504,
+   "moonshotai": 0.0472,
+   "nebius/fp4": 0.3282,
+   "parasail/fp4": 0.8826,
+   "relace/fp4": 0.428,
+   "river": 0.3996,
+   "together": 0.3801,
+   "wafer": 0.1088,
+   "wafer/fast": 0.1075,
+   "wafer/us": 0.1086
+  },
+  "parasail/fp4": {
+   "alibaba": 0.4102,
+   "amazon-bedrock/us-east-1": 0.1384,
+   "amazon-bedrock/us-east-2": 0.127,
+   "baseten/fp8": 0.377,
+   "chutes/mxfp4": 0.4048,
+   "deepinfra/mxfp4": 0.4094,
+   "digitalocean": 0.1984,
+   "fireworks": 0.3825,
+   "fireworks/fast": 0.2436,
+   "fireworks/us": 0.1958,
+   "inference-net/fast": 0.3852,
+   "inference-net/fp4": 0.4652,
+   "inference-net/us": 0.354,
+   "inference-net/us/fast": 0.3882,
+   "kt": 0.252,
+   "makora/fp4": 0.374,
+   "modal/mxfp4": 0.3433,
+   "moonshotai": 0.0474,
+   "nebius/fp4": 0.3353,
+   "parasail/fast": 0.8826,
+   "relace/fp4": 0.4247,
+   "river": 0.3989,
+   "together": 0.38,
+   "wafer": 0.1089,
+   "wafer/fast": 0.1076,
+   "wafer/us": 0.1086
+  },
+  "relace/fp4": {
+   "alibaba": 0.3995,
+   "amazon-bedrock/us-east-1": 0.1384,
+   "amazon-bedrock/us-east-2": 0.1269,
+   "baseten/fp8": 0.4274,
+   "chutes/mxfp4": 0.3842,
+   "deepinfra/mxfp4": 0.4198,
+   "digitalocean": 0.1928,
+   "fireworks": 0.4092,
+   "fireworks/fast": 0.2766,
+   "fireworks/us": 0.1837,
+   "inference-net/fast": 0.4385,
+   "inference-net/fp4": 0.39,
+   "inference-net/us": 0.369,
+   "inference-net/us/fast": 0.4539,
+   "kt": 0.2326,
+   "makora/fp4": 0.3816,
+   "modal/mxfp4": 0.3129,
+   "moonshotai": 0.0474,
+   "nebius/fp4": 0.3934,
+   "parasail/fast": 0.428,
+   "parasail/fp4": 0.4247,
+   "river": 0.4031,
+   "together": 0.3937,
+   "wafer": 0.1137,
+   "wafer/fast": 0.1078,
+   "wafer/us": 0.1089
+  },
+  "river": {
+   "alibaba": 0.4254,
+   "amazon-bedrock/us-east-1": 0.1386,
+   "amazon-bedrock/us-east-2": 0.1299,
+   "baseten/fp8": 0.3757,
+   "chutes/mxfp4": 0.3757,
+   "deepinfra/mxfp4": 0.4502,
+   "digitalocean": 0.1627,
+   "fireworks": 0.3525,
+   "fireworks/fast": 0.2448,
+   "fireworks/us": 0.1894,
+   "inference-net/fast": 0.3961,
+   "inference-net/fp4": 0.3822,
+   "inference-net/us": 0.3492,
+   "inference-net/us/fast": 0.3746,
+   "kt": 0.2474,
+   "makora/fp4": 0.3147,
+   "modal/mxfp4": 0.2827,
+   "moonshotai": 0.0473,
+   "nebius/fp4": 0.3137,
+   "parasail/fast": 0.3996,
+   "parasail/fp4": 0.3989,
+   "relace/fp4": 0.4031,
+   "together": 0.3671,
+   "wafer": 0.1219,
+   "wafer/fast": 0.1077,
+   "wafer/us": 0.1088
+  },
+  "together": {
+   "alibaba": 0.4187,
+   "amazon-bedrock/us-east-1": 0.1385,
+   "amazon-bedrock/us-east-2": 0.1266,
+   "baseten/fp8": 0.4075,
+   "chutes/mxfp4": 0.3585,
+   "deepinfra/mxfp4": 0.3999,
+   "digitalocean": 0.2062,
+   "fireworks": 0.3539,
+   "fireworks/fast": 0.2355,
+   "fireworks/us": 0.1819,
+   "inference-net/fast": 0.3764,
+   "inference-net/fp4": 0.368,
+   "inference-net/us": 0.3807,
+   "inference-net/us/fast": 0.3681,
+   "kt": 0.2362,
+   "makora/fp4": 0.3601,
+   "modal/mxfp4": 0.267,
+   "moonshotai": 0.0468,
+   "nebius/fp4": 0.337,
+   "parasail/fast": 0.3801,
+   "parasail/fp4": 0.38,
+   "relace/fp4": 0.3937,
+   "river": 0.3671,
+   "wafer": 0.1082,
+   "wafer/fast": 0.1076,
+   "wafer/us": 0.1083
+  },
+  "wafer": {
+   "alibaba": 0.1089,
+   "amazon-bedrock/us-east-1": 0.1115,
+   "amazon-bedrock/us-east-2": 0.0857,
+   "baseten/fp8": 0.1294,
+   "chutes/mxfp4": 0.1216,
+   "deepinfra/mxfp4": 0.1142,
+   "digitalocean": 0.0625,
+   "fireworks": 0.1135,
+   "fireworks/fast": 0.1192,
+   "fireworks/us": 0.1045,
+   "inference-net/fast": 0.1093,
+   "inference-net/fp4": 0.1087,
+   "inference-net/us": 0.1108,
+   "inference-net/us/fast": 0.1085,
+   "kt": 0.1008,
+   "makora/fp4": 0.109,
+   "modal/mxfp4": 0.0555,
+   "moonshotai": 0.0394,
+   "nebius/fp4": 0.0723,
+   "parasail/fast": 0.1088,
+   "parasail/fp4": 0.1089,
+   "relace/fp4": 0.1137,
+   "river": 0.1219,
+   "together": 0.1082,
+   "wafer/fast": 0.3196,
+   "wafer/us": 0.3764
+  },
+  "wafer/fast": {
+   "alibaba": 0.1074,
+   "amazon-bedrock/us-east-1": 0.1114,
+   "amazon-bedrock/us-east-2": 0.0849,
+   "baseten/fp8": 0.1266,
+   "chutes/mxfp4": 0.1204,
+   "deepinfra/mxfp4": 0.1194,
+   "digitalocean": 0.062,
+   "fireworks": 0.1235,
+   "fireworks/fast": 0.1273,
+   "fireworks/us": 0.103,
+   "inference-net/fast": 0.1076,
+   "inference-net/fp4": 0.1074,
+   "inference-net/us": 0.1076,
+   "inference-net/us/fast": 0.1076,
+   "kt": 0.1002,
+   "makora/fp4": 0.1077,
+   "modal/mxfp4": 0.0329,
+   "moonshotai": 0.0355,
+   "nebius/fp4": 0.0656,
+   "parasail/fast": 0.1075,
+   "parasail/fp4": 0.1076,
+   "relace/fp4": 0.1078,
+   "river": 0.1077,
+   "together": 0.1076,
+   "wafer": 0.3196,
+   "wafer/us": 0.3751
+  },
+  "wafer/us": {
+   "alibaba": 0.1085,
+   "amazon-bedrock/us-east-1": 0.1115,
+   "amazon-bedrock/us-east-2": 0.0857,
+   "baseten/fp8": 0.1281,
+   "chutes/mxfp4": 0.121,
+   "deepinfra/mxfp4": 0.1203,
+   "digitalocean": 0.0625,
+   "fireworks": 0.1243,
+   "fireworks/fast": 0.1285,
+   "fireworks/us": 0.104,
+   "inference-net/fast": 0.1088,
+   "inference-net/fp4": 0.1086,
+   "inference-net/us": 0.1086,
+   "inference-net/us/fast": 0.1085,
+   "kt": 0.1009,
+   "makora/fp4": 0.1088,
+   "modal/mxfp4": 0.0553,
+   "moonshotai": 0.039,
+   "nebius/fp4": 0.0662,
+   "parasail/fast": 0.1086,
+   "parasail/fp4": 0.1086,
+   "relace/fp4": 0.1089,
+   "river": 0.1088,
+   "together": 0.1083,
+   "wafer": 0.3764,
+   "wafer/fast": 0.3751
+  }
+ }
+}

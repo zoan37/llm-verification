@@ -33,6 +33,41 @@ samples per prompt; "≈" = not distinguishable):
 - A difference is not lower quality. Accuracy on the reasoning problems was 100% on every endpoint, with median
   reasoning of 41-54 tokens (Opus, effort `high`). The problems are too easy to separate endpoints.
 
+## 19-day drift follow-up: Haiku 5.5 (`2026-11-08` → `2026-11-27`)
+Re-running `closed_drift.py` 19 days later (20 samples/prompt across all 5 live endpoints, spend ~$0.10) caught
+**two live cloud-backend migrations** while three endpoints stayed completely stationary:
+
+| Endpoint | 19-day self-drift (`11-08` → `11-27`) | Matches on `2026-11-27` | Matches on `2026-11-08` |
+|---|---|---|---|
+| `azure/global` | stationary (`TV=0.98, p=0.890`) | `anthropic` (`p=0.493`) | `azure/global` (`p=0.872`) |
+| `google-vertex/global` | stationary (`TV=1.08, p=0.859`) | none (`p=0.002` vs all) | `google-vertex/global` (`p=0.858`), `anthropic` (`p=0.685`) |
+| `claude-on-aws` | stationary (`TV=1.47, p=0.397`) | `amazon-bedrock` (`p=0.595`) | `claude-on-aws` (`p=0.401`) |
+| **`anthropic`** | **drifted (`TV=3.42, p=0.0005`)** | **`azure/global` (`p=0.493`)** | **`azure/us` (`p=0.210`)** |
+| **`amazon-bedrock`** | **drifted (`TV=2.92, p=0.0005`)** | **`claude-on-aws` (`p=0.595`)** | **`claude-on-aws` (`p=0.323`)** |
+
+- **Anthropic's 1P Haiku 5.5 endpoint migrated from Vertex-matching numerics (Google TPU) to Azure-matching numerics
+  (NVIDIA GPU):** on Nov 8 `anthropic` matched `google-vertex` (`"Name a gemstone"` → ruby 18 / diamond 12); on Nov 27
+  `anthropic` switched to `diamond 17 / emerald 2 / sapphire 1` and became indistinguishable from `azure/global` (`p=0.493`),
+  while `google-vertex/global` remained stationary (`p=0.859`) and still matches Nov 8's `anthropic` (`p=0.685`).
+- **Amazon Bedrock migrated onto the `claude-on-aws` stack:** on Nov 8 `amazon-bedrock` was its own distinct group
+  (`"tea or coffee?"` → tea 30/30, `"walked slowly into the ___"` → park 30/30); on Nov 27 it shifted (`p=0.0005`) to
+  match both Nov 27 and Nov 8 `claude-on-aws` (`p=0.595` and `p=0.323`).
+- All 5 endpoints kept 100% accuracy on the reasoning cases and passed split-half self-calibration (`self-p = 0.446–0.995`).
+
+## 19-day drift follow-up: Opus 5.5 (`2026-11-08` → `2026-11-27`)
+A targeted 16-prompt follow-up (`experiments/opus_drift_probe.py`, 18 samples/prompt across all 6 live endpoints,
+spend $1.61; `results/closed/anthropic__claude-opus-5.5_drift_2026-11-27.json`) replicated the exact same Bedrock
+migration on Opus 5.5:
+
+- **`amazon-bedrock` drifted (`p = 0.001`) and merged onto `claude-on-aws`:** on Nov 27 `amazon-bedrock` is
+  indistinguishable from `claude-on-aws` (`p = 0.902`) and matches Nov 8 `claude-on-aws` (`p = 0.649`).
+- **`anthropic` (standard) shifted (`p = 0.033`) into the AWS group** (`p = 0.679` vs `amazon-bedrock`, `p = 0.593`
+  vs `claude-on-aws`), while **`anthropic/fast` stayed paired with `google-vertex/global`** (`p = 0.864`, matching Nov 8
+  Vertex at `p = 0.709–0.747`).
+- **`azure/global` remained stationary** (`p = 0.692` vs Nov 8) and distinct from every other endpoint (`p ≤ 0.014`).
+- By Nov 27, Opus 5.5 collapsed into three crisp groups: **AWS** (`amazon-bedrock ≈ claude-on-aws ≈ anthropic`),
+  **Google Vertex / TPU** (`google-vertex/global ≈ anthropic/fast`), and **Azure** (`azure/global`).
+
 ## Limits
 - It detects change from a baseline; it says nothing about the time before the first snapshot. The 2026-11-08 runs
   are the baselines.

@@ -1,0 +1,154 @@
+{
+ "model": "deepseek/deepseek-v3.2",
+ "date": "2026-11-27",
+ "n_prompts": 12,
+ "n_endpoints": 5,
+ "crowd_median_prefix": 0.1512,
+ "identical_pairs": [],
+ "outliers": [],
+ "outlier_internal": [],
+ "endpoints": {
+  "baidu/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1352,
+   "self_prefix": 0.0908,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "siliconflow/fp8",
+     "prefix": 0.1579
+    },
+    {
+     "tag": "deepinfra/fp4",
+     "prefix": 0.1579
+    },
+    {
+     "tag": "venice",
+     "prefix": 0.1445
+    }
+   ]
+  },
+  "deepinfra/fp4": {
+   "quantization": "fp4",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1512,
+   "self_prefix": 0.1388,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "siliconflow/fp8",
+     "prefix": 0.1581
+    },
+    {
+     "tag": "baidu/fp8",
+     "prefix": 0.1579
+    },
+    {
+     "tag": "featherless/fp8",
+     "prefix": 0.1467
+    }
+   ]
+  },
+  "featherless/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1138,
+   "self_prefix": 0.0929,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "deepinfra/fp4",
+     "prefix": 0.1467
+    },
+    {
+     "tag": "venice",
+     "prefix": 0.1147
+    },
+    {
+     "tag": "siliconflow/fp8",
+     "prefix": 0.1131
+    }
+   ]
+  },
+  "siliconflow/fp8": {
+   "quantization": "fp8",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1711,
+   "self_prefix": 0.1013,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "venice",
+     "prefix": 0.2552
+    },
+    {
+     "tag": "deepinfra/fp4",
+     "prefix": 0.1581
+    },
+    {
+     "tag": "baidu/fp8",
+     "prefix": 0.1579
+    }
+   ]
+  },
+  "venice": {
+   "quantization": "unknown",
+   "answered": 12,
+   "errors": 0,
+   "mean_peer_prefix": 0.1641,
+   "self_prefix": 0.129,
+   "self_exact": 0.0,
+   "nearest": [
+    {
+     "tag": "siliconflow/fp8",
+     "prefix": 0.2552
+    },
+    {
+     "tag": "baidu/fp8",
+     "prefix": 0.1445
+    },
+    {
+     "tag": "deepinfra/fp4",
+     "prefix": 0.1419
+    }
+   ]
+  }
+ },
+ "matrix": {
+  "baidu/fp8": {
+   "deepinfra/fp4": 0.1579,
+   "featherless/fp8": 0.0806,
+   "siliconflow/fp8": 0.1579,
+   "venice": 0.1445
+  },
+  "deepinfra/fp4": {
+   "baidu/fp8": 0.1579,
+   "featherless/fp8": 0.1467,
+   "siliconflow/fp8": 0.1581,
+   "venice": 0.1419
+  },
+  "featherless/fp8": {
+   "baidu/fp8": 0.0806,
+   "deepinfra/fp4": 0.1467,
+   "siliconflow/fp8": 0.1131,
+   "venice": 0.1147
+  },
+  "siliconflow/fp8": {
+   "baidu/fp8": 0.1579,
+   "deepinfra/fp4": 0.1581,
+   "featherless/fp8": 0.1131,
+   "venice": 0.2552
+  },
+  "venice": {
+   "baidu/fp8": 0.1445,
+   "deepinfra/fp4": 0.1419,
+   "featherless/fp8": 0.1147,
+   "siliconflow/fp8": 0.2552
+  }
+ }
+}

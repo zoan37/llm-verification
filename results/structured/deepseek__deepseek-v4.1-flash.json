@@ -1,0 +1,1032 @@
+{
+ "model": "deepseek/deepseek-v4.1-flash",
+ "endpoints": {
+  "wafer/mxfp4": {
+   "tag": "wafer/mxfp4",
+   "quantization": "mxfp4",
+   "flags": [
+    "stop_sequence_not_stripped"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 5",
+    "contains_stop": true,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 10,
+    "identical": false
+   }
+  },
+  "cohere/fp8": {
+   "tag": "cohere/fp8",
+   "quantization": "fp8",
+   "flags": [],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 10,
+    "identical": false
+   }
+  },
+  "coreweave/fp8": {
+   "tag": "coreweave/fp8",
+   "quantization": "fp8",
+   "flags": [
+    "schema_prompt_stuffed (+207 prompt tokens)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 207,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 10,
+    "identical": false
+   }
+  },
+  "inference-net/fp8": {
+   "tag": "inference-net/fp8",
+   "quantization": "fp8",
+   "flags": [],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 11,
+    "identical": false
+   }
+  },
+  "inference-net/us": {
+   "tag": "inference-net/us",
+   "quantization": "fp8",
+   "flags": [],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 11,
+    "identical": false
+   }
+  },
+  "river": {
+   "tag": "river",
+   "quantization": "unknown",
+   "flags": [
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "ionstream": {
+   "tag": "ionstream",
+   "quantization": "unknown",
+   "flags": [],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 18,
+    "identical": false
+   }
+  },
+  "alibaba": {
+   "tag": "alibaba",
+   "quantization": "unknown",
+   "flags": [
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "error": 404
+   },
+   "schema2_adversarial": {
+    "error": 404
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "deepinfra/fp8": {
+   "tag": "deepinfra/fp8",
+   "quantization": "fp8",
+   "flags": [
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "crusoe/fp8": {
+   "tag": "crusoe/fp8",
+   "quantization": "fp8",
+   "flags": [
+    "schema_prompt_stuffed (+178 prompt tokens)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 178,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 16,
+    "identical": false
+   }
+  },
+  "wafer/us": {
+   "tag": "wafer/us",
+   "quantization": "mxfp4",
+   "flags": [
+    "stop_sequence_not_stripped"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 5",
+    "contains_stop": true,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 11,
+    "identical": false
+   }
+  },
+  "streamlake/fp8": {
+   "tag": "streamlake/fp8",
+   "quantization": "fp8",
+   "flags": [
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "error": 404
+   },
+   "schema2_adversarial": {
+    "error": 404
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "reka": {
+   "tag": "reka",
+   "quantization": "unknown",
+   "flags": [],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 17,
+    "identical": false
+   }
+  },
+  "fireworks/spot": {
+   "tag": "fireworks/spot",
+   "quantization": "unknown",
+   "flags": [
+    "schema_prompt_stuffed (+178 prompt tokens)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 178,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 16,
+    "identical": false
+   }
+  },
+  "open-inference/fp4": {
+   "tag": "open-inference/fp4",
+   "quantization": "fp4",
+   "flags": [
+    "schema_prompt_stuffed (+206 prompt tokens)",
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 206,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "together": {
+   "tag": "together",
+   "quantization": "unknown",
+   "flags": [],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 11,
+    "identical": false
+   }
+  },
+  "novita/fp8": {
+   "tag": "novita/fp8",
+   "quantization": "fp8",
+   "flags": [],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 10,
+    "identical": false
+   }
+  },
+  "makora/fp8": {
+   "tag": "makora/fp8",
+   "quantization": "fp8",
+   "flags": [],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 11,
+    "identical": false
+   }
+  },
+  "baidu/fp8": {
+   "tag": "baidu/fp8",
+   "quantization": "fp8",
+   "flags": [
+    "schema_prompt_stuffed (+279 prompt tokens)",
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 279,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "deepinfra/fp8/priority": {
+   "tag": "deepinfra/fp8/priority",
+   "quantization": "fp8",
+   "flags": [
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "deepinfra/fp8/flex": {
+   "tag": "deepinfra/fp8/flex",
+   "quantization": "fp8",
+   "flags": [
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "cloudflare": {
+   "tag": "cloudflare",
+   "quantization": "unknown",
+   "flags": [],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 16,
+    "identical": false
+   }
+  },
+  "digitalocean": {
+   "tag": "digitalocean",
+   "quantization": "unknown",
+   "flags": [
+    "stop_sequence_ignored",
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 5 6 7 8 9 10",
+    "contains_stop": true,
+    "contains_after": true
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "together/us": {
+   "tag": "together/us",
+   "quantization": "unknown",
+   "flags": [],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 10,
+    "identical": false
+   }
+  },
+  "featherless/fp8": {
+   "tag": "featherless/fp8",
+   "quantization": "fp8",
+   "flags": [],
+   "schema1": {
+    "supported_listed": true,
+    "error": 404
+   },
+   "schema2_adversarial": {
+    "error": 404
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 15,
+    "identical": false
+   }
+  },
+  "modal": {
+   "tag": "modal",
+   "quantization": "unknown",
+   "flags": [
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "baseten": {
+   "tag": "baseten",
+   "quantization": "unknown",
+   "flags": [
+    "schema_prompt_stuffed (+170 prompt tokens)",
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 170,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "relace/fp4": {
+   "tag": "relace/fp4",
+   "quantization": "fp4",
+   "flags": [
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "nebius/fp8": {
+   "tag": "nebius/fp8",
+   "quantization": "fp8",
+   "flags": [
+    "schema_prompt_stuffed (+207 prompt tokens)",
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 207,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "fireworks/us": {
+   "tag": "fireworks/us",
+   "quantization": "unknown",
+   "flags": [
+    "schema_prompt_stuffed (+178 prompt tokens)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 178,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 10,
+    "identical": false
+   }
+  },
+  "fireworks": {
+   "tag": "fireworks",
+   "quantization": "unknown",
+   "flags": [
+    "schema_prompt_stuffed (+178 prompt tokens)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 178,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 16,
+    "identical": false
+   }
+  },
+  "venice/ultrafast": {
+   "tag": "venice/ultrafast",
+   "quantization": "fp8",
+   "flags": [
+    "schema_prompt_stuffed (+178 prompt tokens)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 178,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 17,
+    "identical": false
+   }
+  },
+  "parasail/fp8": {
+   "tag": "parasail/fp8",
+   "quantization": "fp8",
+   "flags": [
+    "schema_prompt_stuffed (+178 prompt tokens)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 178,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 11,
+    "identical": false
+   }
+  },
+  "google-vertex/global": {
+   "tag": "google-vertex/global",
+   "quantization": "unknown",
+   "flags": [
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "mancer/fp8": {
+   "tag": "mancer/fp8",
+   "quantization": "fp8",
+   "flags": [
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 0,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "venice/fp8": {
+   "tag": "venice/fp8",
+   "quantization": "fp8",
+   "flags": [
+    "schema_prompt_stuffed (+170 prompt tokens)",
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 170,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "siliconflow/fp8": {
+   "tag": "siliconflow/fp8",
+   "quantization": "fp8",
+   "flags": [
+    "stop_sequence_ignored",
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "error": 404
+   },
+   "schema2_adversarial": {
+    "error": 404
+   },
+   "stop": {
+    "content": "1 2 3 4 5 6 7 8 9 10",
+    "contains_stop": true,
+    "contains_after": true
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "baseten/us": {
+   "tag": "baseten/us",
+   "quantization": "unknown",
+   "flags": [
+    "schema_prompt_stuffed (+170 prompt tokens)",
+    "frequency_penalty_ignored (banana count 20 -> 20)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 170,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 20,
+    "identical": true
+   }
+  },
+  "parasail/fast": {
+   "tag": "parasail/fast",
+   "quantization": "fp8",
+   "flags": [
+    "schema_prompt_stuffed (+178 prompt tokens)"
+   ],
+   "schema1": {
+    "supported_listed": true,
+    "prompt_tokens_delta": 178,
+    "valid": true,
+    "errors": []
+   },
+   "schema2_adversarial": {
+    "valid": true,
+    "errors": []
+   },
+   "stop": {
+    "content": "1 2 3 4 ",
+    "contains_stop": false,
+    "contains_after": false
+   },
+   "frequency_penalty": {
+    "banana_fp0": 20,
+    "banana_fp2": 11,
+    "identical": false
+   }
+  }
+ }
+}

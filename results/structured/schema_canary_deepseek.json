@@ -1,0 +1,17 @@
+{
+ "model": "deepseek/deepseek-v4.1-flash",
+ "date": "2026-11-27",
+ "canary_word": "ZEBRA9472",
+ "description": "Embeds an instruction ONLY inside the JSON schema's `description` field. True grammar-only constrained decoding never exposes the schema text to the model (saw_canary=false, +0 prompt tokens); prompt-stuffing stacks inject the schema into the model's context window (saw_canary=true, billing extra prompt tokens and creating a prompt-injection surface via untrusted schema descriptions).",
+ "endpoints": {
+  "deepinfra/fp8": {"prompt_tokens": 34, "saw_canary": false, "reply": "{\"codeword\": \"DEFAULT\"}"},
+  "baseten": {"prompt_tokens": 99, "saw_canary": true, "reply": "{\"codeword\": \"ZEBRA9472\"}"},
+  "venice/fp8": {"prompt_tokens": 99, "saw_canary": true, "reply": "{\"codeword\": \"ZEBRA9472\"}"},
+  "fireworks": {"prompt_tokens": 105, "saw_canary": true, "reply": "{\"codeword\": \"ZEBRA9472\"}"},
+  "venice/ultrafast": {"prompt_tokens": 105, "saw_canary": true, "reply": "{\"codeword\": \"ZEBRA9472\"}"},
+  "crusoe/fp8": {"prompt_tokens": 105, "saw_canary": true, "reply": "{\"codeword\": \"ZEBRA9472\"}"},
+  "coreweave/fp8": {"prompt_tokens": 134, "saw_canary": true, "reply": "{\"codeword\": \"ZEBRA9472\"}"},
+  "nebius/fp8": {"prompt_tokens": 134, "saw_canary": true, "reply": "{\"codeword\": \"ZEBRA9472\"}"},
+  "baidu/fp8": {"prompt_tokens": 232, "saw_canary": true, "reply": "{\"codeword\":\"ZEBRA9472\"}"}
+ }
+}

@@ -1,0 +1,4691 @@
+{
+ "model": "openai/gpt-oss-20b",
+ "endpoints": {
+  "deepinfra/bf16": {
+   "tag": "deepinfra/bf16",
+   "quantization": "bf16",
+   "supports_tools": true,
+   "flags": [],
+   "text_ok": 0,
+   "tool_ok": 0,
+   "text_results": [
+    {
+     "prompt_idx": 0,
+     "ns1": {
+      "error": {
+       "status": 429,
+       "body": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b is temporarily rate-limited upstream. Please retry shortly, or add your own provider key to use your own limits: https://openrouter.ai/workspaces/default/byok\",\"provider_name\":\"DeepInfra\",\"is_byok\":false,\"provider_error_code\":\"engine_overloaded\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":\"Retry shortly, add your own provider key to use your own limits (https://openrouter.ai/workspaces/default/byok), or route to another provider with provider routing: https://openrouter.ai/docs/featu"
+      }
+     },
+     "stream": {
+      "error": {
+       "status": 429,
+       "body": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b is temporarily rate-limited upstream. Please retry shortly, or add your own provider key to use your own limits: https://openrouter.ai/workspaces/default/byok\",\"provider_name\":\"DeepInfra\",\"is_byok\":false,\""
+      }
+     },
+     "ns2": {
+      "error": {
+       "status": 429,
+       "body": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b is temporarily rate-limited upstream. Please retry shortly, or add your own provider key to use your own limits: https://openrouter.ai/workspaces/default/byok\",\"provider_name\":\"DeepInfra\",\"is_byok\":false,\"provider_error_code\":\"engine_overloaded\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":\"Retry shortly, add your own provider key to use your own limits (https://openrouter.ai/workspaces/default/byok), or route to another provider with provider routing: https://openrouter.ai/docs/featu"
+      }
+     }
+    }
+   ],
+   "tool_results": []
+  },
+  "groq": {
+   "tag": "groq",
+   "quantization": "unknown",
+   "supports_tools": true,
+   "flags": [
+    "stream_drops_newlines (1/4)",
+    "stream_empty_content (1/4)"
+   ],
+   "text_ok": 4,
+   "tool_ok": 2,
+   "text_results": [
+    {
+     "prompt_idx": 0,
+     "ns1": {
+      "content": "def fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n",
+      "reasoning": "We need to output only the code. Provide a Python function fib(n) that returns nth Fibonacci number. Include docstring and two doctest lines. So docstring should contain examples. For instance:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    ...\n\nWe need to implement. Use iterative or recursive. Use iterative for efficiency. Edge cases: negative? Not needed. We'll implement iterative.\n\nReturn fib(n). For n=0 return 0, n=1 return 1. For n>1 compute.\n\nLet's produce code.",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 180,
+       "total_tokens": 282,
+       "cost": 6.165e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 6.165e-05,
+        "upstream_inference_prompt_cost": 7.65e-06,
+        "upstream_inference_completions_cost": 5.4e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 134,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns nth Fibonacci number. Provide docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut careful: fib(0) returns 0, fib(1) returns 1. For n=10, we want 55. Let's test: n=10: loop from 2 to 10 inclusive: 9 iterations. Starting",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 180,
+       "total_tokens": 282,
+       "cost": 6.165e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 6.165e-05,
+        "upstream_inference_prompt_cost": 7.65e-06,
+        "upstream_inference_completions_cost": 5.4e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 178,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 179,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns nth Fibonacci number. Provide docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut careful: fib(0) returns 0, fib(1) returns 1. For n=10, we want 55. Let's test: n=10: loop from 2 to 10 inclusive: 9 iterations. Starting",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 180,
+       "total_tokens": 282,
+       "cost": 6.165e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 6.165e-05,
+        "upstream_inference_prompt_cost": 7.65e-06,
+        "upstream_inference_completions_cost": 5.4e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 178,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns1": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5 European capitals. So we can choose any. Let's choose: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Vienna. That meets the requirement. Ensure no extra text. Just the list.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 92,
+       "completion_tokens": 146,
+       "total_tokens": 238,
+       "cost": 5.07e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.07e-05,
+        "upstream_inference_prompt_cost": 6.9e-06,
+        "upstream_inference_completions_cost": 4.38e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 118,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5 European capitals. So we can choose any. Let's choose: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Vienna. That meets the requirement. Ensure no extra text. Just the list.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 92,
+       "completion_tokens": 146,
+       "total_tokens": 238,
+       "cost": 5.07e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.07e-05,
+        "upstream_inference_prompt_cost": 6.9e-06,
+        "upstream_inference_completions_cost": 4.38e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 118,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 138,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5 European capitals. So we can choose any. Let's choose: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Vienna. That meets the requirement. Ensure no extra text. Just the list.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 92,
+       "completion_tokens": 146,
+       "total_tokens": 238,
+       "cost": 5.07e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.07e-05,
+        "upstream_inference_prompt_cost": 6.9e-06,
+        "upstream_inference_completions_cost": 4.38e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 118,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 2,
+     "ns1": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure newline in string is escaped as \\n. So output exactly that.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 106,
+       "completion_tokens": 114,
+       "total_tokens": 220,
+       "cost": 4.215e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 4.215e-05,
+        "upstream_inference_prompt_cost": 7.95e-06,
+        "upstream_inference_completions_cost": 3.42e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 88,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure newline in string is escaped as \\n. So output exactly that.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 106,
+       "completion_tokens": 114,
+       "total_tokens": 220,
+       "cost": 4.215e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 4.215e-05,
+        "upstream_inference_prompt_cost": 7.95e-06,
+        "upstream_inference_completions_cost": 3.42e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 88,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 106,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure newline in string is escaped as \\n. So output exactly that.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 106,
+       "completion_tokens": 114,
+       "total_tokens": 220,
+       "cost": 4.215e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 4.215e-05,
+        "upstream_inference_prompt_cost": 7.95e-06,
+        "upstream_inference_completions_cost": 3.42e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 88,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 3,
+     "ns1": {
+      "content": "Ice floats because its molecular structure forms a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, so ice occupies more volume",
+      "reasoning": "We need to explain in exactly two short sentences why ice floats on water. The user wants exactly two short sentences. So we need to produce exactly two sentences. They must be short. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a more open lattice. So we can say: \"Ice floats because its molecular structure forms a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, so ice occupies more volume for the same mass.\" That's two sentences. They are short. That should satisfy. Ensure exactly two sentences. No extra punctuation that might be considered a sentence. Use period at end of each. That is fine.",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 83,
+       "completion_tokens": 180,
+       "total_tokens": 263,
+       "cost": 6.0225e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 6.0225e-05,
+        "upstream_inference_prompt_cost": 6.225e-06,
+        "upstream_inference_completions_cost": 5.4e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 141,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "Ice floats because its molecular structure forms a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, so ice occupies more volume",
+      "reasoning": "We need to explain in exactly two short sentences why ice floats on water. The user wants exactly two short sentences. So we need to produce exactly two sentences. They must be short. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a more open lattice. So we can say: \"Ice floats because its molecular structure forms a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, so ice occupies more volume for the same mass.\" That's two sentences. They are short. That should satisfy. Ensure exactly two sentences. No extra punctuation that might be considered a sentence. Use period at end of each. That is fine.",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 83,
+       "completion_tokens": 180,
+       "total_tokens": 263,
+       "cost": 6.0225e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 6.0225e-05,
+        "upstream_inference_prompt_cost": 6.225e-06,
+        "upstream_inference_completions_cost": 5.4e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 141,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 173,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "Ice floats because its molecular structure forms a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, so ice occupies more volume for the same mass.",
+      "reasoning": "We need to explain in exactly two short sentences why ice floats on water. The user wants exactly two short sentences. So we need to produce exactly two sentences. They must be short. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a more open lattice. So we can say: \"Ice floats because its molecular structure forms a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, so ice occupies more volume for the same mass.\" That's two sentences. They are short. That should satisfy. Ensure no extra sentences. Also no bullet points. Just two sentences. Let's produce that.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 83,
+       "completion_tokens": 178,
+       "total_tokens": 261,
+       "cost": 5.9625e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.9625e-05,
+        "upstream_inference_prompt_cost": 6.225e-06,
+        "upstream_inference_completions_cost": 5.34e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 133,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    }
+   ],
+   "tool_results": [
+    {
+     "prompt_idx": 0,
+     "ns": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with parameters: origin: NYC (likely \"NYC\" or \"New York City\" or \"JFK\"? We'll use \"NYC\" as given). destination: Tokyo. date: \"2026-12-15\". cabin: \"business\". max_stops: 1. Let's call.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 177,
+       "completion_tokens": 120,
+       "total_tokens": 297,
+       "cost": 4.9275e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 4.9275e-05,
+        "upstream_inference_prompt_cost": 1.3275e-05,
+        "upstream_inference_completions_cost": 3.6e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 71,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"cabin\":\"business\",\"date\":\"2026-12-15\",\"destination\":\"Tokyo\",\"max_stops\":1,\"origin\":\"NYC\"}",
+        "json_ok": true
+       }
+      ]
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with parameters: origin: NYC (likely \"NYC\" or \"New York City\" or \"JFK\"? We'll use \"NYC\" as given). destination: Tokyo. date: \"2026-12-15\". cabin: \"business\". max_stops: 1. Let's call.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 177,
+       "completion_tokens": 120,
+       "total_tokens": 297,
+       "cost": 4.9275e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 4.9275e-05,
+        "upstream_inference_prompt_cost": 1.3275e-05,
+        "upstream_inference_completions_cost": 3.6e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 71,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"cabin\":\"business\",\"date\":\"2026-12-15\",\"destination\":\"Tokyo\",\"max_stops\":1,\"origin\":\"NYC\"}",
+        "json_ok": true
+       }
+      ],
+      "chunks": 74,
+      "saw_done": true
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with parameters: origin Paris, destination Berlin, date 2026-11-30, cabin economy, max_stops 0.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 172,
+       "completion_tokens": 86,
+       "total_tokens": 258,
+       "cost": 3.87e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 3.87e-05,
+        "upstream_inference_prompt_cost": 1.29e-05,
+        "upstream_inference_completions_cost": 2.58e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 37,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"cabin\":\"economy\",\"date\":\"2026-11-30\",\"destination\":\"Berlin\",\"max_stops\":0,\"origin\":\"Paris\"}",
+        "json_ok": true
+       }
+      ]
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with parameters: origin Paris, destination Berlin, date 2026-11-30, cabin economy, max_stops 0.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 172,
+       "completion_tokens": 86,
+       "total_tokens": 258,
+       "cost": 3.87e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 3.87e-05,
+        "upstream_inference_prompt_cost": 1.29e-05,
+        "upstream_inference_completions_cost": 2.58e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 37,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"cabin\":\"economy\",\"date\":\"2026-11-30\",\"destination\":\"Berlin\",\"max_stops\":0,\"origin\":\"Paris\"}",
+        "json_ok": true
+       }
+      ],
+      "chunks": 40,
+      "saw_done": true
+     }
+    }
+   ]
+  },
+  "primeintellect/fp4": {
+   "tag": "primeintellect/fp4",
+   "quantization": "fp4",
+   "supports_tools": true,
+   "flags": [],
+   "text_ok": 4,
+   "tool_ok": 2,
+   "text_results": [
+    {
+     "prompt_idx": 0,
+     "ns1": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns the n-th Fibonacci number. We need a docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut we need to consider n-th Fibonacci number: Usually fib(0)=0, fib(1)=1, fib(2)=1, etc. The doctest lines: two lines. We can include two doctest lines",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 7.0026e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 96,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 7.0026e-05,
+        "upstream_inference_prompt_cost": 1.7286e-05,
+        "upstream_inference_completions_cost": 5.274e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 177,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns the n-th Fibonacci number. We need a docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut we need to consider n-th Fibonacci number: Usually fib(0)=0, fib(1)=1, fib(2)=1, etc. The doctest lines: two lines. We can include two doctest lines",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 7.168e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 96,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 7.168e-05,
+        "upstream_inference_prompt_cost": 1.768e-05,
+        "upstream_inference_completions_cost": 5.4e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 177,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 11,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns the n-th Fibonacci number. We need a docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut we need to consider n-th Fibonacci number: Usually fib(0)=0, fib(1)=1, fib(2)=1, etc. The doctest lines: two lines. We can include two doctest lines",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 7.168e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 96,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 7.168e-05,
+        "upstream_inference_prompt_cost": 1.768e-05,
+        "upstream_inference_completions_cost": 5.4e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 177,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns1": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. Ensure numbering with \"1.\" etc. No extra text. So output exactly 5 lines. Let's choose: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Vienna. That satisfies.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 146,
+       "total_tokens": 234,
+       "cost": 5.98e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 80,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.98e-05,
+        "upstream_inference_prompt_cost": 1.6e-05,
+        "upstream_inference_completions_cost": 4.38e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 117,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. Ensure numbering with \"1.\" etc. No extra text. So output exactly 5 lines. Let's choose: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Vienna. That satisfies.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 146,
+       "total_tokens": 234,
+       "cost": 5.98e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 80,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.98e-05,
+        "upstream_inference_prompt_cost": 1.6e-05,
+        "upstream_inference_completions_cost": 4.38e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 117,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 10,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. Ensure numbering with \"1.\" etc. No extra text. So output exactly 5 lines. Let's choose: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Vienna. That satisfies.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 146,
+       "total_tokens": 234,
+       "cost": 5.98e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 80,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.98e-05,
+        "upstream_inference_prompt_cost": 1.6e-05,
+        "upstream_inference_completions_cost": 4.38e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 117,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 2,
+     "ns1": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \\n. So output exactly: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. That is the answer.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 136,
+       "total_tokens": 238,
+       "cost": 5.928e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 96,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.928e-05,
+        "upstream_inference_prompt_cost": 1.848e-05,
+        "upstream_inference_completions_cost": 4.08e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 109,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \\n. So output exactly: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. That is the answer.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 136,
+       "total_tokens": 238,
+       "cost": 5.928e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 96,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.928e-05,
+        "upstream_inference_prompt_cost": 1.848e-05,
+        "upstream_inference_completions_cost": 4.08e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 109,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 10,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \\n. So output exactly: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. That is the answer.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 136,
+       "total_tokens": 238,
+       "cost": 5.928e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 96,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.928e-05,
+        "upstream_inference_prompt_cost": 1.848e-05,
+        "upstream_inference_completions_cost": 4.08e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 109,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 3,
+     "ns1": {
+      "content": "Ice floats because its molecules form a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, making ice lighter.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a more open structure. So two short sentences. Must be exactly two sentences. They should be short. Let's craft: \"Ice floats because its molecules form a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, making ice lighter.\" That's two sentences. They are short. Good.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 130,
+       "total_tokens": 209,
+       "cost": 5.352e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.352e-05,
+        "upstream_inference_prompt_cost": 1.452e-05,
+        "upstream_inference_completions_cost": 3.9e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 91,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "Ice floats because its molecules form a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, making ice lighter.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a more open structure. So two short sentences. Must be exactly two sentences. They should be short. Let's craft: \"Ice floats because its molecules form a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, making ice lighter.\" That's two sentences. They are short. Good.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 130,
+       "total_tokens": 209,
+       "cost": 5.352e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.352e-05,
+        "upstream_inference_prompt_cost": 1.452e-05,
+        "upstream_inference_completions_cost": 3.9e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 91,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 10,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "Ice floats because its molecules form a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, making ice lighter.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a more open structure. So two short sentences. Must be exactly two sentences. They should be short. Let's craft: \"Ice floats because its molecules form a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, making ice lighter.\" That's two sentences. They are short. Good.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 130,
+       "total_tokens": 209,
+       "cost": 5.352e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.352e-05,
+        "upstream_inference_prompt_cost": 1.452e-05,
+        "upstream_inference_completions_cost": 3.9e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 91,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    }
+   ],
+   "tool_results": [
+    {
+     "prompt_idx": 0,
+     "ns": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with origin NYC, destination Tokyo, date 2026-12-15, max_stops 1, cabin business.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 171,
+       "completion_tokens": 84,
+       "total_tokens": 255,
+       "cost": 5.62e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 160,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.62e-05,
+        "upstream_inference_prompt_cost": 3.1e-05,
+        "upstream_inference_completions_cost": 2.52e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 64,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"NYC\",\"destination\":\"Tokyo\",\"date\":\"2026-12-15\",\"max_stops\":1,\"cabin\":\"business\"}",
+        "json_ok": true
+       }
+      ]
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with origin NYC, destination Tokyo, date 2026-12-15, max_stops 1, cabin business.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 171,
+       "completion_tokens": 84,
+       "total_tokens": 255,
+       "cost": 5.62e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 160,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.62e-05,
+        "upstream_inference_prompt_cost": 3.1e-05,
+        "upstream_inference_completions_cost": 2.52e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 64,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"NYC\",\"destination\":\"Tokyo\",\"date\":\"2026-12-15\",\"max_stops\":1,\"cabin\":\"business\"}",
+        "json_ok": true
+       }
+      ],
+      "chunks": 8,
+      "saw_done": true
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns": {
+      "content": "",
+      "reasoning": "We need to call function search_flights with origin Paris, destination Berlin, date 2026-11-30, max_stops 0, cabin economy.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 166,
+       "completion_tokens": 83,
+       "total_tokens": 249,
+       "cost": 5.49e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 160,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.49e-05,
+        "upstream_inference_prompt_cost": 3e-05,
+        "upstream_inference_completions_cost": 2.49e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 63,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"Paris\",\"destination\":\"Berlin\",\"date\":\"2026-11-30\",\"max_stops\":0,\"cabin\":\"economy\"}",
+        "json_ok": true
+       }
+      ]
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to call function search_flights with origin Paris, destination Berlin, date 2026-11-30, max_stops 0, cabin economy.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 166,
+       "completion_tokens": 83,
+       "total_tokens": 249,
+       "cost": 5.49e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 160,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 5.49e-05,
+        "upstream_inference_prompt_cost": 3e-05,
+        "upstream_inference_completions_cost": 2.49e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 63,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"Paris\",\"destination\":\"Berlin\",\"date\":\"2026-11-30\",\"max_stops\":0,\"cabin\":\"economy\"}",
+        "json_ok": true
+       }
+      ],
+      "chunks": 8,
+      "saw_done": true
+     }
+    }
+   ]
+  },
+  "amazon-bedrock/eu-west-1": {
+   "tag": "amazon-bedrock/eu-west-1",
+   "quantization": "unknown",
+   "supports_tools": true,
+   "flags": [],
+   "text_ok": 4,
+   "tool_ok": 2,
+   "text_results": [
+    {
+     "prompt_idx": 0,
+     "ns1": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns the n-th Fibonacci number. We need docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut careful: fib(0) returns 0, fib(1) returns 1. For n=10, we want 55. Let's test: n=10, loop from 2 to 10 inclusive: a=",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 3.386e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 3.386e-05,
+        "upstream_inference_prompt_cost": 6.86e-06,
+        "upstream_inference_completions_cost": 2.7e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 136,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns the n-th Fibonacci number. We need a docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut we need to consider n-th Fibonacci number: Usually fib(0)=0, fib(1)=1, fib(2)=1, etc. The doctest lines: two lines. We can include two doctest lines",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 3.386e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 3.386e-05,
+        "upstream_inference_prompt_cost": 6.86e-06,
+        "upstream_inference_completions_cost": 2.7e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 144,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 5,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns the n-th Fibonacci number. We need docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut we need to consider n-th Fibonacci number: Usually fib(0)=0, fib(1)=1, fib(2)=1, etc. The doctest lines: two lines. Provide two examples. The docstring should",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 3.386e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 3.386e-05,
+        "upstream_inference_prompt_cost": 6.86e-06,
+        "upstream_inference_completions_cost": 2.7e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 146,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns1": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. Ensure numbering with \"1.\" etc. No extra text. So output exactly 5 lines. Let's choose: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Vienna. That satisfies.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 146,
+       "total_tokens": 234,
+       "cost": 2.806e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.806e-05,
+        "upstream_inference_prompt_cost": 6.16e-06,
+        "upstream_inference_completions_cost": 2.19e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 98,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. Ensure numbering with \"1.\" etc. No extra text. So output exactly 5 lines. Let's choose capitals: Paris, Berlin, Madrid, Rome, Vienna. That should satisfy.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 133,
+       "total_tokens": 221,
+       "cost": 2.611e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.611e-05,
+        "upstream_inference_prompt_cost": 6.16e-06,
+        "upstream_inference_completions_cost": 1.995e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 98,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 6,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. Ensure numbering with \"1.\" etc. No extra text. So output exactly 5 lines. Let's choose: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Vienna. That satisfies",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 146,
+       "total_tokens": 234,
+       "cost": 2.806e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.806e-05,
+        "upstream_inference_prompt_cost": 6.16e-06,
+        "upstream_inference_completions_cost": 2.19e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 98,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 2,
+     "ns1": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \\n. So output exactly: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. That is the answer.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 136,
+       "total_tokens": 238,
+       "cost": 2.754e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.754e-05,
+        "upstream_inference_prompt_cost": 7.14e-06,
+        "upstream_inference_completions_cost": 2.04e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 93,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \\n. So output exactly that.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 115,
+       "total_tokens": 217,
+       "cost": 2.439e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.439e-05,
+        "upstream_inference_prompt_cost": 7.14e-06,
+        "upstream_inference_completions_cost": 1.725e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 79,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 6,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \\n. So output exactly: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. That is the answer.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 136,
+       "total_tokens": 238,
+       "cost": 2.754e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.754e-05,
+        "upstream_inference_prompt_cost": 7.14e-06,
+        "upstream_inference_completions_cost": 2.04e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 93,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 3,
+     "ns1": {
+      "content": "Ice is less dense than liquid water because hydrogen bonds create an open lattice that expands the structure. Therefore, ice floats on water.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a lattice that expands. So two short sentences. Must be exactly two sentences. Each sentence should be short. Let's craft: \"Ice is less dense than liquid water because hydrogen bonds form a lattice that expands the structure. Therefore, ice floats on water.\" That's two sentences. They are short. Good.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 124,
+       "total_tokens": 203,
+       "cost": 2.413e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.413e-05,
+        "upstream_inference_prompt_cost": 5.53e-06,
+        "upstream_inference_completions_cost": 1.86e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 115,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "Ice floats because its molecules form a lattice that takes up more space, making it less dense than liquid water. The lower density keeps it buoyant.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a lattice that expands. So two short sentences. Must be exactly two sentences. They should be short. Let's craft: \"Ice floats because its molecules form a lattice that takes up more space, making it less dense than liquid water. The lower density keeps it buoyant.\" That's two sentences. They are short. Good.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 132,
+       "total_tokens": 211,
+       "cost": 2.533e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.533e-05,
+        "upstream_inference_prompt_cost": 5.53e-06,
+        "upstream_inference_completions_cost": 1.98e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 117,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 6,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "Ice is less dense than liquid water because hydrogen bonds create an open lattice that expands the structure. This lower density makes ice float.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a lattice that expands. So two short sentences. Must be exactly two sentences. Each sentence should be short. Let's craft: \"Ice is less dense than liquid water because hydrogen bonds form a lattice that expands the structure. This lower density makes ice float.\" That's two sentences. They are short. Good.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 124,
+       "total_tokens": 203,
+       "cost": 2.413e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.413e-05,
+        "upstream_inference_prompt_cost": 5.53e-06,
+        "upstream_inference_completions_cost": 1.86e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 116,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    }
+   ],
+   "tool_results": [
+    {
+     "prompt_idx": 0,
+     "ns": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with origin NYC, destination Tokyo, date 2026-12-15, cabin business, max_stops 1.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 171,
+       "completion_tokens": 84,
+       "total_tokens": 255,
+       "cost": 2.457e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.457e-05,
+        "upstream_inference_prompt_cost": 1.197e-05,
+        "upstream_inference_completions_cost": 1.26e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 32,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"NYC\",\"destination\":\"Tokyo\",\"date\":\"2026-12-15\",\"cabin\":\"business\",\"max_stops\":1}",
+        "json_ok": true
+       }
+      ]
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with origin NYC, destination Tokyo, date 2026-12-15, cabin business, max_stops 1.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 171,
+       "completion_tokens": 84,
+       "total_tokens": 255,
+       "cost": 2.457e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.457e-05,
+        "upstream_inference_prompt_cost": 1.197e-05,
+        "upstream_inference_completions_cost": 1.26e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 32,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"NYC\",\"destination\":\"Tokyo\",\"date\":\"2026-12-15\",\"cabin\":\"business\",\"max_stops\":1}",
+        "json_ok": true
+       }
+      ],
+      "chunks": 6,
+      "saw_done": true
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with origin Paris, destination Berlin, date 2026-11-30, cabin economy, max_stops 0.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 166,
+       "completion_tokens": 84,
+       "total_tokens": 250,
+       "cost": 2.422e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.422e-05,
+        "upstream_inference_prompt_cost": 1.162e-05,
+        "upstream_inference_completions_cost": 1.26e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 32,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"Paris\",\"destination\":\"Berlin\",\"date\":\"2026-11-30\",\"cabin\":\"economy\",\"max_stops\":0}",
+        "json_ok": true
+       }
+      ]
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to call function search_flights with origin Paris, destination Berlin, date 2026-11-30, cabin economy, max_stops 0.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 166,
+       "completion_tokens": 83,
+       "total_tokens": 249,
+       "cost": 2.407e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.407e-05,
+        "upstream_inference_prompt_cost": 1.162e-05,
+        "upstream_inference_completions_cost": 1.245e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 31,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"Paris\",\"destination\":\"Berlin\",\"date\":\"2026-11-30\",\"cabin\":\"economy\",\"max_stops\":0}",
+        "json_ok": true
+       }
+      ],
+      "chunks": 6,
+      "saw_done": true
+     }
+    }
+   ]
+  },
+  "amazon-bedrock": {
+   "tag": "amazon-bedrock",
+   "quantization": "unknown",
+   "supports_tools": true,
+   "flags": [],
+   "text_ok": 4,
+   "tool_ok": 2,
+   "text_results": [
+    {
+     "prompt_idx": 0,
+     "ns1": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns the n-th Fibonacci number. Provide docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut careful: For n=0, return 0. For n=1, return 1. For n=2, return 1. The loop starting from 2 to n inclusive. For n=2, loop runs once",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 3.386e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 3.386e-05,
+        "upstream_inference_prompt_cost": 6.86e-06,
+        "upstream_inference_completions_cost": 2.7e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 139,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns the n-th Fibonacci number. We need docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut we need to consider n-th Fibonacci number: Usually fib(0)=0, fib(1)=1, fib(2)=1, etc. The doctest lines: two lines. Provide two examples. The docstring",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 3.386e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 3.386e-05,
+        "upstream_inference_prompt_cost": 6.86e-06,
+        "upstream_inference_completions_cost": 2.7e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 145,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 5,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns the n-th Fibonacci number. Provide docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut careful: For n=0, return 0. For n=1, return 1. For n=2, return 1. The loop starting from 2 to n inclusive. For n=2, loop runs once",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 3.386e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 3.386e-05,
+        "upstream_inference_prompt_cost": 6.86e-06,
+        "upstream_inference_completions_cost": 2.7e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 139,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns1": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. Ensure numbering with \"1.\" etc. No extra text. So output exactly 5 lines. Let's choose: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Vienna. That satisfies.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 146,
+       "total_tokens": 234,
+       "cost": 2.806e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.806e-05,
+        "upstream_inference_prompt_cost": 6.16e-06,
+        "upstream_inference_completions_cost": 2.19e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 98,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. Ensure numbering with \"1.\" etc. No extra text. So output exactly 5 lines. Let's choose: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Vienna. That satisfies.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 146,
+       "total_tokens": 234,
+       "cost": 2.806e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.806e-05,
+        "upstream_inference_prompt_cost": 6.16e-06,
+        "upstream_inference_completions_cost": 2.19e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 98,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 6,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Warsaw",
+      "reasoning": "The user wants: \"List 5 European capitals, one per line, numbered 1. through 5. Nothing else.\" So we need to output exactly 5 lines, each with a number and a period, then a space, then the capital. No other text. Just the list. So we need to choose 5 European capitals. For example: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Warsaw. That satisfies. Ensure no extra text. Just the list.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 139,
+       "total_tokens": 227,
+       "cost": 2.701e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.701e-05,
+        "upstream_inference_prompt_cost": 6.16e-06,
+        "upstream_inference_completions_cost": 2.085e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 97,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 2,
+     "ns1": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \\n. So output exactly: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. That is the answer.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 136,
+       "total_tokens": 238,
+       "cost": 2.754e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.754e-05,
+        "upstream_inference_prompt_cost": 7.14e-06,
+        "upstream_inference_completions_cost": 2.04e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 93,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \\n. So output exactly: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. That is the answer.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 136,
+       "total_tokens": 238,
+       "cost": 2.754e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.754e-05,
+        "upstream_inference_prompt_cost": 7.14e-06,
+        "upstream_inference_completions_cost": 2.04e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 93,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 7,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \\n. So output exactly: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. That is the answer.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 136,
+       "total_tokens": 238,
+       "cost": 2.754e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.754e-05,
+        "upstream_inference_prompt_cost": 7.14e-06,
+        "upstream_inference_completions_cost": 2.04e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 93,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 3,
+     "ns1": {
+      "content": "",
+      "reasoning": "The user wants an explanation in exactly two short sentences. So we need to produce exactly two sentences, each short. The explanation: ice floats because its molecular structure creates a lattice that is less dense than liquid water. So we can say: \"Ice floats because its crystal lattice expands, making it less dense than liquid water. The lower density keeps it buoyant.\" That's two sentences. But we need to ensure they are short. \"Ice floats because its crystal lattice expands, making it less dense than liquid water.\" That's one sentence. \"The lower density keeps it buoyant.\" That's second. That works. Or \"Ice floats because its lattice structure is less dense than liquid water. This lower density makes it buoyant.\" That also works. The user wants exactly two short sentences. So we need to ensure we don't add extra punctuation that might be considered a sentence. We need to",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 180,
+       "total_tokens": 259,
+       "cost": 3.253e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 3.253e-05,
+        "upstream_inference_prompt_cost": 5.53e-06,
+        "upstream_inference_completions_cost": 2.7e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 222,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "Ice floats because its molecules form a lattice that takes up more space, making it less dense than liquid water. The lower density keeps it buoyant.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a lattice that expands. So two short sentences. Must be exactly two sentences. They should be short. Let's craft: \"Ice floats because its molecules form a lattice that takes up more space, making it less dense than liquid water. The lower density keeps it buoyant.\" That's two sentences. They are short. Good.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 132,
+       "total_tokens": 211,
+       "cost": 2.533e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.533e-05,
+        "upstream_inference_prompt_cost": 5.53e-06,
+        "upstream_inference_completions_cost": 1.98e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 117,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 6,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "Ice is less dense than liquid water because hydrogen bonds create an open lattice that expands the structure. This lower density makes ice float.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a lattice that expands. So two short sentences. Must be exactly two sentences. Each sentence should be short. Let's craft: \"Ice is less dense than liquid water because hydrogen bonds form a lattice that expands the structure. This lower density makes ice float.\" That's two sentences. They are short. Good.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 124,
+       "total_tokens": 203,
+       "cost": 2.413e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.413e-05,
+        "upstream_inference_prompt_cost": 5.53e-06,
+        "upstream_inference_completions_cost": 1.86e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 116,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    }
+   ],
+   "tool_results": [
+    {
+     "prompt_idx": 0,
+     "ns": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with origin NYC, destination Tokyo, date 2026-12-15, cabin business, max_stops 1.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 171,
+       "completion_tokens": 84,
+       "total_tokens": 255,
+       "cost": 2.457e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.457e-05,
+        "upstream_inference_prompt_cost": 1.197e-05,
+        "upstream_inference_completions_cost": 1.26e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 32,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"NYC\",\"destination\":\"Tokyo\",\"date\":\"2026-12-15\",\"cabin\":\"business\",\"max_stops\":1}",
+        "json_ok": true
+       }
+      ]
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with origin NYC, destination Tokyo, date 2026-12-15, cabin business, max_stops 1.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 171,
+       "completion_tokens": 84,
+       "total_tokens": 255,
+       "cost": 2.457e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.457e-05,
+        "upstream_inference_prompt_cost": 1.197e-05,
+        "upstream_inference_completions_cost": 1.26e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 32,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"NYC\",\"destination\":\"Tokyo\",\"date\":\"2026-12-15\",\"cabin\":\"business\",\"max_stops\":1}",
+        "json_ok": true
+       }
+      ],
+      "chunks": 6,
+      "saw_done": true
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with origin Paris, destination Berlin, date 2026-11-30, cabin economy, max_stops 0.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 166,
+       "completion_tokens": 84,
+       "total_tokens": 250,
+       "cost": 2.422e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.422e-05,
+        "upstream_inference_prompt_cost": 1.162e-05,
+        "upstream_inference_completions_cost": 1.26e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 32,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"Paris\",\"destination\":\"Berlin\",\"date\":\"2026-11-30\",\"cabin\":\"economy\",\"max_stops\":0}",
+        "json_ok": true
+       }
+      ]
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with origin Paris, destination Berlin, date 2026-11-30, cabin economy, max_stops 0.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 166,
+       "completion_tokens": 84,
+       "total_tokens": 250,
+       "cost": 2.422e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.422e-05,
+        "upstream_inference_prompt_cost": 1.162e-05,
+        "upstream_inference_completions_cost": 1.26e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 32,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"Paris\",\"destination\":\"Berlin\",\"date\":\"2026-11-30\",\"cabin\":\"economy\",\"max_stops\":0}",
+        "json_ok": true
+       }
+      ],
+      "chunks": 6,
+      "saw_done": true
+     }
+    }
+   ]
+  },
+  "coreweave/fp4": {
+   "tag": "coreweave/fp4",
+   "quantization": "fp4",
+   "supports_tools": true,
+   "flags": [],
+   "text_ok": 4,
+   "tool_ok": 2,
+   "text_results": [
+    {
+     "prompt_idx": 0,
+     "ns1": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns the n-th Fibonacci number. We need a docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut we need to consider n-th Fibonacci number: Usually fib(0)=0, fib(1)=1, fib(2)=1, etc. The doctest lines: two lines. We can include two doctest lines",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 96,
+       "completion_tokens": 180,
+       "total_tokens": 276,
+       "cost": 2.628e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 32,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.628e-05,
+        "upstream_inference_prompt_cost": 2.88e-06,
+        "upstream_inference_completions_cost": 2.34e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 144,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "def fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    a, b = 0, 1",
+      "reasoning": "We need to write a Python function fib(n) that returns the n-th Fibonacci number. Provide docstring and two doctest lines. Output only the code. So we need to include a docstring with doctest examples. For example:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    # implementation\n\nWe need to implement. Use iterative or recursive. Use iterative for efficiency. Also handle negative? Not necessary. Provide code only. Ensure no extra output. Provide function only. Let's produce code.",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 96,
+       "completion_tokens": 180,
+       "total_tokens": 276,
+       "cost": 2.628e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 32,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.628e-05,
+        "upstream_inference_prompt_cost": 2.88e-06,
+        "upstream_inference_completions_cost": 2.34e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 140,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 173,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "",
+      "reasoning": "We need to write a Python function fib(n) that returns the n-th Fibonacci number. Provide docstring and two doctest lines. Output only the code. So we need to include a docstring with doctest examples. For example:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    # implementation\n\nWe need to implement. Use iterative or recursive. Use iterative for efficiency. Also handle negative? Not necessary. Provide code only. Ensure docstring includes doctest lines. Provide two doctest lines. So code:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n < 0:\n        raise ValueError(\"",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 96,
+       "completion_tokens": 180,
+       "total_tokens": 276,
+       "cost": 2.628e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.628e-05,
+        "upstream_inference_prompt_cost": 2.88e-06,
+        "upstream_inference_completions_cost": 2.34e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 183,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns1": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Warsaw",
+      "reasoning": "The user wants: \"List 5 European capitals, one per line, numbered 1. through 5. Nothing else.\" So we need to output exactly 5 lines, each with a number and a period, then a space, then the capital. No other text. Just the list. So we need to choose 5 European capitals. For example: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Warsaw. That satisfies. Ensure no extra text. Just the list.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 86,
+       "completion_tokens": 139,
+       "total_tokens": 225,
+       "cost": 2.065e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.065e-05,
+        "upstream_inference_prompt_cost": 2.58e-06,
+        "upstream_inference_completions_cost": 1.807e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 97,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Warsaw",
+      "reasoning": "The user wants: \"List 5 European capitals, one per line, numbered 1. through 5. Nothing else.\" So we need to output exactly 5 lines, each with a number and a period, then a space, then the capital. No other text. Just the list. So we need to choose 5 European capitals. For example: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Warsaw. That satisfies. Ensure no extra text. Just the list.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 86,
+       "completion_tokens": 139,
+       "total_tokens": 225,
+       "cost": 2.065e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 32,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.065e-05,
+        "upstream_inference_prompt_cost": 2.58e-06,
+        "upstream_inference_completions_cost": 1.807e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 97,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 131,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Warsaw",
+      "reasoning": "The user wants: \"List 5 European capitals, one per line, numbered 1. through 5. Nothing else.\" So we need to output exactly 5 lines, each with a number and a period, then a space, then the capital. No other text. Just the list. So we need to choose 5 European capitals. For example: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Warsaw. That satisfies. Ensure no extra text. Just the list.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 86,
+       "completion_tokens": 139,
+       "total_tokens": 225,
+       "cost": 2.065e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.065e-05,
+        "upstream_inference_prompt_cost": 2.58e-06,
+        "upstream_inference_completions_cost": 1.807e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 97,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 2,
+     "ns1": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure newline in string is escaped as \\n. So output exactly that.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 100,
+       "completion_tokens": 114,
+       "total_tokens": 214,
+       "cost": 1.782e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 96,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.782e-05,
+        "upstream_inference_prompt_cost": 3e-06,
+        "upstream_inference_completions_cost": 1.482e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 77,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \\n. So output exactly: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. That is the answer.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 100,
+       "completion_tokens": 136,
+       "total_tokens": 236,
+       "cost": 2.068e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 32,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.068e-05,
+        "upstream_inference_prompt_cost": 3e-06,
+        "upstream_inference_completions_cost": 1.768e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 93,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 128,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \"hello\\nworld\" should be represented as \"hello\\nworld\" in JSON. That is correct. So output exactly that.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 100,
+       "completion_tokens": 133,
+       "total_tokens": 233,
+       "cost": 2.029e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 96,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.029e-05,
+        "upstream_inference_prompt_cost": 3e-06,
+        "upstream_inference_completions_cost": 1.729e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 98,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 3,
+     "ns1": {
+      "content": "Ice floats because its molecules form a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, so ice takes up more volume.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a more open lattice. So two short sentences. Must be exactly two sentences. They should be short. Let's craft: \"Ice floats because its molecules form a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, so ice takes up more volume.\" That's two sentences. They are short. Good.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 77,
+       "completion_tokens": 136,
+       "total_tokens": 213,
+       "cost": 1.999e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 32,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.999e-05,
+        "upstream_inference_prompt_cost": 2.31e-06,
+        "upstream_inference_completions_cost": 1.768e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 120,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "Ice floats because its molecules form a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, so ice occupies more volume.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a more open lattice. So two short sentences. Must be exactly two sentences. They should be short. Let's craft: \"Ice floats because its molecules form a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, so ice occupies more volume.\" That's two sentences. They are short. Good.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 77,
+       "completion_tokens": 134,
+       "total_tokens": 211,
+       "cost": 1.973e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 32,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.973e-05,
+        "upstream_inference_prompt_cost": 2.31e-06,
+        "upstream_inference_completions_cost": 1.742e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 120,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 126,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "Ice floats because its molecules form a lattice that takes up more space, making it less dense than liquid water. Therefore, ice rises to the surface.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a lattice that expands. So two short sentences. Must be exactly two sentences. They should be short. Let's craft: \"Ice floats because its molecules form a lattice that takes up more space, making it less dense than liquid water. Therefore, ice rises to the surface.\" That's two sentences. They are short. Good.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 77,
+       "completion_tokens": 132,
+       "total_tokens": 209,
+       "cost": 1.947e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 32,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.947e-05,
+        "upstream_inference_prompt_cost": 2.31e-06,
+        "upstream_inference_completions_cost": 1.716e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 117,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    }
+   ],
+   "tool_results": [
+    {
+     "prompt_idx": 0,
+     "ns": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with origin NYC, destination Tokyo, date 2026-12-15, max_stops 1, cabin business.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 171,
+       "completion_tokens": 84,
+       "total_tokens": 255,
+       "cost": 1.605e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 160,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.605e-05,
+        "upstream_inference_prompt_cost": 5.13e-06,
+        "upstream_inference_completions_cost": 1.092e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 32,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"NYC\",\"destination\":\"Tokyo\",\"date\":\"2026-12-15\",\"max_stops\":1,\"cabin\":\"business\"}",
+        "json_ok": true
+       }
+      ]
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with origin NYC, destination Tokyo, date 2026-12-15, max_stops 1, cabin business.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 171,
+       "completion_tokens": 84,
+       "total_tokens": 255,
+       "cost": 1.605e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.605e-05,
+        "upstream_inference_prompt_cost": 5.13e-06,
+        "upstream_inference_completions_cost": 1.092e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 32,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"NYC\",\"destination\":\"Tokyo\",\"date\":\"2026-12-15\",\"max_stops\":1,\"cabin\":\"business\"}",
+        "json_ok": true
+       }
+      ],
+      "chunks": 68,
+      "saw_done": true
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns": {
+      "content": "",
+      "reasoning": "We need to call function search_flights with origin Paris, destination Berlin, date 2026-11-30, max_stops 0, cabin economy.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 166,
+       "completion_tokens": 83,
+       "total_tokens": 249,
+       "cost": 1.577e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 128,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.577e-05,
+        "upstream_inference_prompt_cost": 4.98e-06,
+        "upstream_inference_completions_cost": 1.079e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 31,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"Paris\",\"destination\":\"Berlin\",\"date\":\"2026-11-30\",\"max_stops\":0,\"cabin\":\"economy\"}",
+        "json_ok": true
+       }
+      ]
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to call function search_flights with origin Paris, destination Berlin, date 2026-11-30, max_stops 0, cabin economy.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 166,
+       "completion_tokens": 83,
+       "total_tokens": 249,
+       "cost": 1.577e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.577e-05,
+        "upstream_inference_prompt_cost": 4.98e-06,
+        "upstream_inference_completions_cost": 1.079e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 31,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"Paris\",\"destination\":\"Berlin\",\"date\":\"2026-11-30\",\"max_stops\":0,\"cabin\":\"economy\"}",
+        "json_ok": true
+       }
+      ],
+      "chunks": 67,
+      "saw_done": true
+     }
+    }
+   ]
+  },
+  "siliconflow/fp8": {
+   "tag": "siliconflow/fp8",
+   "quantization": "fp8",
+   "supports_tools": false,
+   "flags": [],
+   "text_ok": 4,
+   "tool_ok": 0,
+   "text_results": [
+    {
+     "prompt_idx": 0,
+     "ns1": {
+      "content": "def fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(1)\n    1\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in",
+      "reasoning": "We need to write a Python function fib(n) that returns the n-th Fibonacci number. Provide docstring and two doctest lines. Output only the code. So we need to include docstring with doctest examples. For example:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(1)\n    1\n    >>> fib(10)\n   ",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 177,
+       "total_tokens": 275,
+       "cost": 3.578e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 3.578e-05,
+        "upstream_inference_prompt_cost": 3.92e-06,
+        "upstream_inference_completions_cost": 3.186e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 93,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "def fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(1)\n    1\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in",
+      "reasoning": "We need to write a Python function fib(n) that returns the n-th Fibonacci number. Provide docstring and two doctest lines. Output only the code. So we need to include docstring with doctest examples. For example:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(1)\n    1\n    >>> fib(10)\n   ",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 177,
+       "total_tokens": 275,
+       "cost": 3.578e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 3.578e-05,
+        "upstream_inference_prompt_cost": 3.92e-06,
+        "upstream_inference_completions_cost": 3.186e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 93,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 173,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "def fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(1)\n    1\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in",
+      "reasoning": "We need to write a Python function fib(n) that returns the n-th Fibonacci number. Provide docstring and two doctest lines. Output only the code. So we need to include docstring with doctest examples. For example:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(1)\n    1\n    >>> fib(10)\n   ",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 177,
+       "total_tokens": 275,
+       "cost": 3.578e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 3.578e-05,
+        "upstream_inference_prompt_cost": 3.92e-06,
+        "upstream_inference_completions_cost": 3.186e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 93,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns1": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. So we can choose any. Let's choose: 1. Paris, 2. Berlin, ",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 112,
+       "total_tokens": 200,
+       "cost": 2.368e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.368e-05,
+        "upstream_inference_prompt_cost": 3.52e-06,
+        "upstream_inference_completions_cost": 2.016e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 93,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. So we can choose any. Let's choose: 1. Paris, 2. Berlin, ",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 112,
+       "total_tokens": 200,
+       "cost": 2.368e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.368e-05,
+        "upstream_inference_prompt_cost": 3.52e-06,
+        "upstream_inference_completions_cost": 2.016e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 93,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 108,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. So we can choose any. Let's choose: 1. Paris, 2. Berlin, ",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 112,
+       "total_tokens": 200,
+       "cost": 2.368e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.368e-05,
+        "upstream_inference_prompt_cost": 3.52e-06,
+        "upstream_inference_completions_cost": 2.016e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 93,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 2,
+     "ns1": {
+      "content": "{\"a\":[1<|end|><|start|>assistant<|channel|>final<|message|>{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. That is the answer.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 104,
+       "total_tokens": 206,
+       "cost": 2.28e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.28e-05,
+        "upstream_inference_prompt_cost": 4.08e-06,
+        "upstream_inference_completions_cost": 1.872e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 77,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "{\"a\":[1<|end|><|start|>assistant<|channel|>final<|message|>{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. That is the answer.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 104,
+       "total_tokens": 206,
+       "cost": 2.28e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.28e-05,
+        "upstream_inference_prompt_cost": 4.08e-06,
+        "upstream_inference_completions_cost": 1.872e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 77,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 100,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "{\"a\":[1<|end|><|start|>assistant<|channel|>final<|message|>{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. That is the answer.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 104,
+       "total_tokens": 206,
+       "cost": 2.28e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.28e-05,
+        "upstream_inference_prompt_cost": 4.08e-06,
+        "upstream_inference_completions_cost": 1.872e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 77,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 3,
+     "ns1": {
+      "content": "Ice is less dense than liquid water because its<|end|><|start|>assistant<|channel|>final<|message|>Ice is less dense than liquid water because its hydrogen\u2011bonded lattice is more open. Therefore, ice floats.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a more open structure. So two short sentences: \"Ice is less dense than liquid water because the hydrogen bonds create a more open lattice. Therefore, ice floats.\" That is two sentences. Ensure short. That should satisfy.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 110,
+       "total_tokens": 189,
+       "cost": 2.296e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.296e-05,
+        "upstream_inference_prompt_cost": 3.16e-06,
+        "upstream_inference_completions_cost": 1.98e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 72,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "Ice is less dense than liquid water because the<|end|><|start|>assistant<|channel|>final<|message|>Ice is less dense than liquid water because the hydrogen bonds create a more open lattice. Therefore, ice floats.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a more open structure. So two short sentences: \"Ice is less dense than liquid water because the hydrogen bonds create a more open lattice. Therefore, ice floats.\" That is two sentences. Ensure short. That should satisfy.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 109,
+       "total_tokens": 188,
+       "cost": 2.278e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.278e-05,
+        "upstream_inference_prompt_cost": 3.16e-06,
+        "upstream_inference_completions_cost": 1.962e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 72,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 105,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "Ice is less dense than liquid water because its<|end|><|start|>assistant<|channel|>final<|message|>Ice is less dense than liquid water because its hydrogen\u2011bonded lattice is more open. Therefore, ice floats.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a more open structure. So two short sentences: \"Ice is less dense than liquid water because the hydrogen bonds create a more open lattice. Therefore, ice floats.\" That is two sentences. Ensure short. That should satisfy.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 110,
+       "total_tokens": 189,
+       "cost": 2.296e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.296e-05,
+        "upstream_inference_prompt_cost": 3.16e-06,
+        "upstream_inference_completions_cost": 1.98e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 72,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    }
+   ],
+   "tool_results": []
+  },
+  "darkbloom/fp4": {
+   "tag": "darkbloom/fp4",
+   "quantization": "fp4",
+   "supports_tools": true,
+   "flags": [],
+   "text_ok": 4,
+   "tool_ok": 2,
+   "text_results": [
+    {
+     "prompt_idx": 0,
+     "ns1": {
+      "content": "",
+      "reasoning": "We need to output only the code. Provide a Python function fib(n) that returns nth Fibonacci number. Include docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut we need to handle n=0 returns 0. For n=1 returns 1. For n=2 returns 1. For n=10 returns 55. That works.\n\nBut we need to include two doctest",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 1.6966e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.6966e-05,
+        "upstream_inference_prompt_cost": 1.666e-06,
+        "upstream_inference_completions_cost": 1.53e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 177,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to output only the code. Provide a function fib(n) that returns nth Fibonacci number. Include docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut we need to handle n=0 returns 0. For n=1 returns 1. For n=2 returns 1. For n=10 returns 55. That works.\n\nBut we need to include two doctest lines",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 1.6966e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.6966e-05,
+        "upstream_inference_prompt_cost": 1.666e-06,
+        "upstream_inference_completions_cost": 1.53e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 177,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 179,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "",
+      "reasoning": "We need to output only the code. Provide a Python function fib(n) that returns nth Fibonacci number. Include docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut we need to handle n=0 returns 0. For n=1 returns 1. For n=2 returns 1. For n=10 returns 55. That works.\n\nBut we need to include two doctest",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 1.6966e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.6966e-05,
+        "upstream_inference_prompt_cost": 1.666e-06,
+        "upstream_inference_completions_cost": 1.53e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 177,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns1": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. Ensure numbering with a period after the number. No other text. So output exactly 5 lines. Let's choose: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Vienna. That satisfies.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 147,
+       "total_tokens": 235,
+       "cost": 1.3991e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.3991e-05,
+        "upstream_inference_prompt_cost": 1.496e-06,
+        "upstream_inference_completions_cost": 1.2495e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 118,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. Ensure numbering with \"1.\" etc. No extra text. So output exactly 5 lines. Let's choose capitals: London, Paris, Berlin, Rome, Madrid. But London is UK, but still European. Let's do: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Vienna. That is fine. Ensure no extra spaces or text. Just lines.",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 180,
+       "total_tokens": 268,
+       "cost": 1.6796e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.6796e-05,
+        "upstream_inference_prompt_cost": 1.496e-06,
+        "upstream_inference_completions_cost": 1.53e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 151,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 172,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. Ensure numbering with a period after the number. No other text. So output exactly 5 lines. Let's choose: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Vienna. That satisfies.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 147,
+       "total_tokens": 235,
+       "cost": 1.3991e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.3991e-05,
+        "upstream_inference_prompt_cost": 1.496e-06,
+        "upstream_inference_completions_cost": 1.2495e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 118,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 2,
+     "ns1": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \"hello\\nworld\" should be represented as \"hello\\nworld\" in JSON. That is correct. So output exactly that.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 133,
+       "total_tokens": 235,
+       "cost": 1.3039e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.3039e-05,
+        "upstream_inference_prompt_cost": 1.734e-06,
+        "upstream_inference_completions_cost": 1.1305e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 106,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \"hello\\nworld\" should be represented as \"hello\\nworld\" in JSON. That is correct. So output exactly that.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 133,
+       "total_tokens": 235,
+       "cost": 1.3039e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.3039e-05,
+        "upstream_inference_prompt_cost": 1.734e-06,
+        "upstream_inference_completions_cost": 1.1305e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 106,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 125,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \"hello\\nworld\" should be represented as \"hello\\nworld\" in JSON. That is correct. So output exactly that.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 133,
+       "total_tokens": 235,
+       "cost": 1.3039e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.3039e-05,
+        "upstream_inference_prompt_cost": 1.734e-06,
+        "upstream_inference_completions_cost": 1.1305e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 106,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 3,
+     "ns1": {
+      "content": "Ice is less dense than liquid water because its crystal structure keeps molecules farther apart. This lower density makes ice float.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a lattice that expands. So two short sentences. Must be exactly two sentences. Each sentence should be short. Let's craft: \"Ice is less dense than liquid water because its crystal structure keeps molecules farther apart. This lower density makes ice float.\" That's two sentences. They are short. Good.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 119,
+       "total_tokens": 198,
+       "cost": 1.1458e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.1458e-05,
+        "upstream_inference_prompt_cost": 1.343e-06,
+        "upstream_inference_completions_cost": 1.0115e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 86,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "Ice is less dense than liquid water because its crystal structure keeps molecules farther apart. This lower density makes ice float.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a lattice that expands. So two short sentences. Must be exactly two sentences. Each sentence should be short. Let's craft: \"Ice is less dense than liquid water because its crystal structure keeps molecules farther apart. This lower density makes ice float.\" That's two sentences. They are short. Good.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 119,
+       "total_tokens": 198,
+       "cost": 1.1458e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.1458e-05,
+        "upstream_inference_prompt_cost": 1.343e-06,
+        "upstream_inference_completions_cost": 1.0115e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 86,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 111,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "Ice is less dense than liquid water because its crystal structure keeps molecules farther apart. This lower density makes ice float.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a lattice that expands. So two short sentences. Must be exactly two sentences. Each sentence should be short. Let's craft: \"Ice is less dense than liquid water because its crystal structure keeps molecules farther apart. This lower density makes ice float.\" That's two sentences. They are short. Good.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 119,
+       "total_tokens": 198,
+       "cost": 1.1458e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.1458e-05,
+        "upstream_inference_prompt_cost": 1.343e-06,
+        "upstream_inference_completions_cost": 1.0115e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 86,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    }
+   ],
+   "tool_results": [
+    {
+     "prompt_idx": 0,
+     "ns": {
+      "content": "",
+      "reasoning": "We need to call function search_flights with parameters: origin NYC, destination Tokyo, date 2026-12-15, cabin business, max_stops 1.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 171,
+       "completion_tokens": 85,
+       "total_tokens": 256,
+       "cost": 1.0132e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.0132e-05,
+        "upstream_inference_prompt_cost": 2.907e-06,
+        "upstream_inference_completions_cost": 7.225e-06
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 35,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"NYC\",\"destination\":\"Tokyo\",\"date\":\"2026-12-15\",\"cabin\":\"business\",\"max_stops\":1}",
+        "json_ok": true
+       }
+      ]
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to call function search_flights with parameters: origin NYC, destination Tokyo, date 2026-12-15, cabin business, max_stops 1.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 171,
+       "completion_tokens": 85,
+       "total_tokens": 256,
+       "cost": 1.0132e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.0132e-05,
+        "upstream_inference_prompt_cost": 2.907e-06,
+        "upstream_inference_completions_cost": 7.225e-06
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 35,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"NYC\",\"destination\":\"Tokyo\",\"date\":\"2026-12-15\",\"cabin\":\"business\",\"max_stops\":1}",
+        "json_ok": true
+       }
+      ],
+      "chunks": 69,
+      "saw_done": true
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with parameters: origin Paris, destination Berlin, date 2026-11-30, cabin economy, max_stops 0.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 166,
+       "completion_tokens": 86,
+       "total_tokens": 252,
+       "cost": 1.0132e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.0132e-05,
+        "upstream_inference_prompt_cost": 2.822e-06,
+        "upstream_inference_completions_cost": 7.31e-06
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 36,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"Paris\",\"destination\":\"Berlin\",\"date\":\"2026-11-30\",\"cabin\":\"economy\",\"max_stops\":0}",
+        "json_ok": true
+       }
+      ]
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with parameters: origin Paris, destination Berlin, date 2026-11-30, cabin economy, max_stops 0.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 166,
+       "completion_tokens": 86,
+       "total_tokens": 252,
+       "cost": 1.0132e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.0132e-05,
+        "upstream_inference_prompt_cost": 2.822e-06,
+        "upstream_inference_completions_cost": 7.31e-06
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 36,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"Paris\",\"destination\":\"Berlin\",\"date\":\"2026-11-30\",\"cabin\":\"economy\",\"max_stops\":0}",
+        "json_ok": true
+       }
+      ],
+      "chunks": 70,
+      "saw_done": true
+     }
+    }
+   ]
+  },
+  "parasail/fp4": {
+   "tag": "parasail/fp4",
+   "quantization": "fp4",
+   "supports_tools": true,
+   "flags": [],
+   "text_ok": 4,
+   "tool_ok": 2,
+   "text_results": [
+    {
+     "prompt_idx": 0,
+     "ns1": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns the n-th Fibonacci number. We need a docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut we need to consider n-th Fibonacci number: Usually fib(0)=0, fib(1)=1, fib(2)=1, etc. The doctest lines: two lines. We can include two doctest lines",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 2.898e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 96,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.898e-05,
+        "upstream_inference_prompt_cost": 1.98e-06,
+        "upstream_inference_completions_cost": 2.7e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 177,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns the n-th Fibonacci number. We need a docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut we need to consider n-th Fibonacci number: Usually fib(0)=0, fib(1)=1, fib(2)=1, etc. The doctest lines: two lines. We can include two doctest lines",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 2.898e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 96,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.898e-05,
+        "upstream_inference_prompt_cost": 1.98e-06,
+        "upstream_inference_completions_cost": 2.7e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 177,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 16,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns the n-th Fibonacci number. We need a docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut we need to consider n-th Fibonacci number: Usually fib(0)=0, fib(1)=1, fib(2)=1, etc. The doctest lines: two lines. We can include two doctest lines",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 2.898e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 96,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.898e-05,
+        "upstream_inference_prompt_cost": 1.98e-06,
+        "upstream_inference_completions_cost": 2.7e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 177,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns1": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. Ensure numbering with \"1.\" etc. No other text. So output exactly 5 lines. Let's choose capitals: Paris, Berlin, Madrid, Rome, Vienna. Ensure each line starts with number and period. No extra spaces? They said \"1. through 5.\" So \"1.\" etc. Provide exactly that.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 161,
+       "total_tokens": 249,
+       "cost": 2.615e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.615e-05,
+        "upstream_inference_prompt_cost": 2e-06,
+        "upstream_inference_completions_cost": 2.415e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 132,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. Ensure numbering with \"1.\" etc. No extra text. So output exactly 5 lines. Let's choose: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Vienna. That satisfies.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 146,
+       "total_tokens": 234,
+       "cost": 2.39e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.39e-05,
+        "upstream_inference_prompt_cost": 2e-06,
+        "upstream_inference_completions_cost": 2.19e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 117,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 7,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5",
+      "reasoning": "The user wants a list of 5 European capitals, one per line, numbered 1. through 5. Nothing else. So just output:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nBut any 5 capitals. They didn't specify which ones. Just list 5. Ensure numbering with \"1.\" etc. No other text. So output exactly 5 lines. Let's choose capitals: Paris, Berlin, Madrid, Rome, Vienna. Ensure each line starts with number and period. No extra spaces? They said \"1. through 5.\" So \"1.\" etc. Let's do:\n\n1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Vienna\n\nThat's it.",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 180,
+       "total_tokens": 268,
+       "cost": 2.884e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 80,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.884e-05,
+        "upstream_inference_prompt_cost": 1.84e-06,
+        "upstream_inference_completions_cost": 2.7e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 154,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 2,
+     "ns1": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \"hello\\nworld\" should be represented as \"hello\\nworld\" in JSON. That is correct. So output exactly that.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 133,
+       "total_tokens": 235,
+       "cost": 2.205e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 96,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.205e-05,
+        "upstream_inference_prompt_cost": 2.1e-06,
+        "upstream_inference_completions_cost": 1.995e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 106,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \\n. So output exactly: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. That is the answer.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 136,
+       "total_tokens": 238,
+       "cost": 2.25e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 96,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.25e-05,
+        "upstream_inference_prompt_cost": 2.1e-06,
+        "upstream_inference_completions_cost": 2.04e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 109,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 8,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \\n. So output exactly: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. That is the answer.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 136,
+       "total_tokens": 238,
+       "cost": 2.25e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 96,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.25e-05,
+        "upstream_inference_prompt_cost": 2.1e-06,
+        "upstream_inference_completions_cost": 2.04e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 109,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 3,
+     "ns1": {
+      "content": "Ice is less dense than liquid water because its molecules form a rigid lattice that keeps them farther apart. This lower density makes ice float.",
+      "reasoning": "The user wants an explanation in exactly two short sentences. So we need to produce exactly two sentences, each short. The explanation: ice floats because its molecular structure creates a lattice that is less dense than liquid water. So we need to phrase it concisely. Two short sentences. Let's craft: \"Ice is less dense than liquid water because its molecules form a rigid lattice that keeps them farther apart. This lower density makes ice float.\" That's two sentences. They are short. That should satisfy.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 137,
+       "total_tokens": 216,
+       "cost": 2.228e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.228e-05,
+        "upstream_inference_prompt_cost": 1.73e-06,
+        "upstream_inference_completions_cost": 2.055e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 100,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "Ice is less dense than liquid water because its molecules form a rigid lattice that keeps them farther apart. This lower density makes ice float.",
+      "reasoning": "The user wants an explanation in exactly two short sentences. So we need to produce exactly two sentences, each short. The explanation: ice floats because its molecular structure creates a lattice that is less dense than liquid water. So we need to phrase it concisely. Two short sentences. Let's craft: \"Ice is less dense than liquid water because its molecules form a rigid lattice that keeps them farther apart. This lower density makes ice float.\" That's two sentences. They are short. That should satisfy.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 137,
+       "total_tokens": 216,
+       "cost": 2.228e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.228e-05,
+        "upstream_inference_prompt_cost": 1.73e-06,
+        "upstream_inference_completions_cost": 2.055e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 100,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 13,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "Ice is less dense than liquid water because its molecules form a rigid lattice that keeps them farther apart. This lower density makes ice float.",
+      "reasoning": "The user wants an explanation in exactly two short sentences. So we need to produce exactly two sentences, each short. The explanation: ice floats because its molecular structure creates a lattice that is less dense than liquid water. So we need to phrase it concisely. Two short sentences. Let's craft: \"Ice is less dense than liquid water because its molecules form a rigid lattice that keeps them farther apart. This lower density makes ice float.\" That's two sentences. They are short. That should satisfy.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 137,
+       "total_tokens": 216,
+       "cost": 2.228e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 2.228e-05,
+        "upstream_inference_prompt_cost": 1.73e-06,
+        "upstream_inference_completions_cost": 2.055e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 100,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    }
+   ],
+   "tool_results": [
+    {
+     "prompt_idx": 0,
+     "ns": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with origin NYC, destination Tokyo, date 2026-12-15, max_stops 1, cabin business.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 171,
+       "completion_tokens": 84,
+       "total_tokens": 255,
+       "cost": 1.613e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 160,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.613e-05,
+        "upstream_inference_prompt_cost": 3.53e-06,
+        "upstream_inference_completions_cost": 1.26e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 34,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"NYC\",\"destination\":\"Tokyo\",\"date\":\"2026-12-15\",\"max_stops\":1,\"cabin\":\"business\"}",
+        "json_ok": true
+       }
+      ]
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with origin NYC, destination Tokyo, date 2026-12-15, max_stops 1, cabin business.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 171,
+       "completion_tokens": 84,
+       "total_tokens": 255,
+       "cost": 1.613e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 160,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.613e-05,
+        "upstream_inference_prompt_cost": 3.53e-06,
+        "upstream_inference_completions_cost": 1.26e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 34,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"NYC\",\"destination\":\"Tokyo\",\"date\":\"2026-12-15\",\"max_stops\":1,\"cabin\":\"business\"}",
+        "json_ok": true
+       }
+      ],
+      "chunks": 11,
+      "saw_done": true
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns": {
+      "content": "",
+      "reasoning": "We need to call function search_flights with origin Paris, destination Berlin, date 2026-11-30, max_stops 0, cabin economy.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 166,
+       "completion_tokens": 83,
+       "total_tokens": 249,
+       "cost": 1.583e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 160,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.583e-05,
+        "upstream_inference_prompt_cost": 3.38e-06,
+        "upstream_inference_completions_cost": 1.245e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 33,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"Paris\",\"destination\":\"Berlin\",\"date\":\"2026-11-30\",\"max_stops\":0,\"cabin\":\"economy\"}",
+        "json_ok": true
+       }
+      ]
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to call function search_flights with origin Paris, destination Berlin, date 2026-11-30, max_stops 0, cabin economy.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 166,
+       "completion_tokens": 83,
+       "total_tokens": 249,
+       "cost": 1.583e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 160,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.583e-05,
+        "upstream_inference_prompt_cost": 3.38e-06,
+        "upstream_inference_completions_cost": 1.245e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 33,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"Paris\",\"destination\":\"Berlin\",\"date\":\"2026-11-30\",\"max_stops\":0,\"cabin\":\"economy\"}",
+        "json_ok": true
+       }
+      ],
+      "chunks": 9,
+      "saw_done": true
+     }
+    }
+   ]
+  },
+  "akashml/fp4": {
+   "tag": "akashml/fp4",
+   "quantization": "fp4",
+   "supports_tools": true,
+   "flags": [],
+   "text_ok": 4,
+   "tool_ok": 2,
+   "text_results": [
+    {
+     "prompt_idx": 0,
+     "ns1": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns the n-th Fibonacci number. Provide docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut careful: For n=0, return 0. For n=1, return 1. For n=2, return 1. The loop starting from 2 to n inclusive. For n=2, loop runs once",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 1.7388e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.7388e-05,
+        "upstream_inference_prompt_cost": 1.188e-06,
+        "upstream_inference_completions_cost": 1.62e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 177,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to output only the code. The function fib(n) returns the n-th Fibonacci number. Provide docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut careful: For n=0, return 0. For n=1, return 1. For n=2, return 1. For n=10, 55. That works.\n\nBut we need to ensure doctest",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 1.7388e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.7388e-05,
+        "upstream_inference_prompt_cost": 1.188e-06,
+        "upstream_inference_completions_cost": 1.62e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 177,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 162,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "",
+      "reasoning": "We need to output only the code. Provide a Python function fib(n) that returns nth Fibonacci number. Include docstring and two doctest lines. So something like:\n\ndef fib(n):\n    \"\"\"Return the n-th Fibonacci number.\n\n    >>> fib(0)\n    0\n    >>> fib(10)\n    55\n    \"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n+1):\n        a, b = b, a+b\n    return b\n\nBut we need to handle n=0 returns 0. For n=1 returns 1. For n=2 returns 1. For n=10 returns 55. That works.\n\nBut we need to include two doctest",
+      "finish_reason": "length",
+      "usage": {
+       "prompt_tokens": 98,
+       "completion_tokens": 180,
+       "total_tokens": 278,
+       "cost": 1.7388e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.7388e-05,
+        "upstream_inference_prompt_cost": 1.188e-06,
+        "upstream_inference_completions_cost": 1.62e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 177,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns1": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Warsaw",
+      "reasoning": "The user wants: \"List 5 European capitals, one per line, numbered 1. through 5. Nothing else.\" So we need to output exactly 5 lines, each with a number and a period, then a space, then the capital. No other text. Just the list. So we need to choose 5 European capitals. For example: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Warsaw. That satisfies. Ensure no extra text. Just the list.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 139,
+       "total_tokens": 227,
+       "cost": 1.3518e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.3518e-05,
+        "upstream_inference_prompt_cost": 1.008e-06,
+        "upstream_inference_completions_cost": 1.251e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 110,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Warsaw",
+      "reasoning": "The user wants: \"List 5 European capitals, one per line, numbered 1. through 5. Nothing else.\" So we need to output exactly 5 lines, each with a number and a period, then a space, then the capital. No other text. Just the list. So we need to choose 5 European capitals. For example: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Warsaw. That satisfies. Ensure no extra text. Just the list.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 139,
+       "total_tokens": 227,
+       "cost": 1.3518e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.3518e-05,
+        "upstream_inference_prompt_cost": 1.008e-06,
+        "upstream_inference_completions_cost": 1.251e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 110,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 131,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "1. Paris\n2. Berlin\n3. Madrid\n4. Rome\n5. Warsaw",
+      "reasoning": "The user wants: \"List 5 European capitals, one per line, numbered 1. through 5. Nothing else.\" So we need to output exactly 5 lines, each with a number and a period, then a space, then the capital. No other text. Just the list. So we need to choose 5 European capitals. For example: 1. Paris, 2. Berlin, 3. Madrid, 4. Rome, 5. Warsaw. That satisfies. Ensure no extra text. Just the list.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 88,
+       "completion_tokens": 139,
+       "total_tokens": 227,
+       "cost": 1.3518e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.3518e-05,
+        "upstream_inference_prompt_cost": 1.008e-06,
+        "upstream_inference_completions_cost": 1.251e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 110,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 2,
+     "ns1": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \\n. So output exactly that.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 115,
+       "total_tokens": 217,
+       "cost": 1.161e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.161e-05,
+        "upstream_inference_prompt_cost": 1.26e-06,
+        "upstream_inference_completions_cost": 1.035e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 88,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \\n. So output exactly: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. That is the answer.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 136,
+       "total_tokens": 238,
+       "cost": 1.35e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.35e-05,
+        "upstream_inference_prompt_cost": 1.26e-06,
+        "upstream_inference_completions_cost": 1.224e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 109,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 128,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "{\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}",
+      "reasoning": "The user wants a compact JSON object with keys 'a', 'b', 'c' mapped to [1, 2], 'hello\\nworld', and true. They want nothing else. So output should be a JSON object: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. They want compact, so no whitespace. Ensure proper escaping of newline in string: \\n. So output exactly: {\"a\":[1,2],\"b\":\"hello\\nworld\",\"c\":true}. That is the answer.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 102,
+       "completion_tokens": 136,
+       "total_tokens": 238,
+       "cost": 1.35e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.35e-05,
+        "upstream_inference_prompt_cost": 1.26e-06,
+        "upstream_inference_completions_cost": 1.224e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 109,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    },
+    {
+     "prompt_idx": 3,
+     "ns1": {
+      "content": "Ice floats because its crystal lattice expands, making it less dense than liquid water. The lower density keeps it buoyant.",
+      "reasoning": "The user wants an explanation in exactly two short sentences. So we need to produce exactly two sentences, each short. The explanation: ice floats because its molecular structure creates a lattice that is less dense than liquid water. So we can say: \"Ice floats because its crystal lattice expands, making it less dense than liquid water. The lower density keeps it buoyant.\" That's two sentences. But we need to ensure they are short. \"Ice floats because its crystal lattice expands, making it less dense than liquid water. The lower density keeps it buoyant.\" That is two sentences. They are short. That should satisfy. Ensure no extra sentences. Also no bullet points. Just two sentences. Let's produce that.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 176,
+       "total_tokens": 255,
+       "cost": 1.6686e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.6686e-05,
+        "upstream_inference_prompt_cost": 8.46e-07,
+        "upstream_inference_completions_cost": 1.584e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 142,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     },
+     "stream": {
+      "content": "Ice floats because its molecules form a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, so ice takes up more volume.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a more open lattice. So two short sentences. Must be exactly two sentences. They should be short. Let's craft: \"Ice floats because its molecules form a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, so ice takes up more volume.\" That's two sentences. They are short. Good.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 136,
+       "total_tokens": 215,
+       "cost": 1.3086e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.3086e-05,
+        "upstream_inference_prompt_cost": 8.46e-07,
+        "upstream_inference_completions_cost": 1.224e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 94,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [],
+      "chunks": 128,
+      "saw_done": true
+     },
+     "ns2": {
+      "content": "Ice floats because its molecules form a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, so ice occupies more volume.",
+      "reasoning": "We need to produce exactly two short sentences. The explanation: ice floats because its density is lower than liquid water due to hydrogen bonding creating a more open lattice. So two short sentences. Must be exactly two sentences. Each sentence should be short. Let's craft: \"Ice floats because its molecules form a lattice that is less dense than liquid water. The hydrogen bonds keep the molecules farther apart, so ice occupies more volume.\" That's two sentences. They are short. Good.",
+      "finish_reason": "stop",
+      "usage": {
+       "prompt_tokens": 79,
+       "completion_tokens": 135,
+       "total_tokens": 214,
+       "cost": 1.2996e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.2996e-05,
+        "upstream_inference_prompt_cost": 8.46e-07,
+        "upstream_inference_completions_cost": 1.215e-05
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 94,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": []
+     }
+    }
+   ],
+   "tool_results": [
+    {
+     "prompt_idx": 0,
+     "ns": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with origin NYC, destination Tokyo, date 2026-12-15, max_stops 1, cabin business.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 173,
+       "completion_tokens": 84,
+       "total_tokens": 257,
+       "cost": 1.0098e-05,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 1.0098e-05,
+        "upstream_inference_prompt_cost": 2.538e-06,
+        "upstream_inference_completions_cost": 7.56e-06
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 64,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"NYC\",\"destination\":\"Tokyo\",\"date\":\"2026-12-15\",\"max_stops\":1,\"cabin\":\"business\"}",
+        "json_ok": true
+       }
+      ]
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to call the function search_flights with origin NYC, destination Tokyo, date 2026-12-15, max_stops 1, cabin business.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 173,
+       "completion_tokens": 84,
+       "total_tokens": 257,
+       "cost": 9.522e-06,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 128,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 9.522e-06,
+        "upstream_inference_prompt_cost": 1.962e-06,
+        "upstream_inference_completions_cost": 7.56e-06
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 64,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"NYC\",\"destination\":\"Tokyo\",\"date\":\"2026-12-15\",\"max_stops\":1,\"cabin\":\"business\"}",
+        "json_ok": true
+       }
+      ],
+      "chunks": 61,
+      "saw_done": true
+     }
+    },
+    {
+     "prompt_idx": 1,
+     "ns": {
+      "content": "",
+      "reasoning": "We need to call function search_flights with origin Paris, destination Berlin, date 2026-11-30, max_stops 0, cabin economy.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 168,
+       "completion_tokens": 83,
+       "total_tokens": 251,
+       "cost": 9.918e-06,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 9.918e-06,
+        "upstream_inference_prompt_cost": 2.448e-06,
+        "upstream_inference_completions_cost": 7.47e-06
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 63,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"Paris\",\"destination\":\"Berlin\",\"date\":\"2026-11-30\",\"max_stops\":0,\"cabin\":\"economy\"}",
+        "json_ok": true
+       }
+      ]
+     },
+     "stream": {
+      "content": "",
+      "reasoning": "We need to call function search_flights with origin Paris, destination Berlin, date 2026-11-30, max_stops 0, cabin economy.",
+      "finish_reason": "tool_calls",
+      "usage": {
+       "prompt_tokens": 168,
+       "completion_tokens": 83,
+       "total_tokens": 251,
+       "cost": 9.342e-06,
+       "is_byok": false,
+       "prompt_tokens_details": {
+        "cached_tokens": 128,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+       },
+       "cost_details": {
+        "upstream_inference_cost": 9.342e-06,
+        "upstream_inference_prompt_cost": 1.872e-06,
+        "upstream_inference_completions_cost": 7.47e-06
+       },
+       "completion_tokens_details": {
+        "reasoning_tokens": 63,
+        "image_tokens": 0,
+        "audio_tokens": 0
+       }
+      },
+      "tool_calls": [
+       {
+        "name": "search_flights",
+        "arguments": "{\"origin\":\"Paris\",\"destination\":\"Berlin\",\"date\":\"2026-11-30\",\"max_stops\":0,\"cabin\":\"economy\"}",
+        "json_ok": true
+       }
+      ],
+      "chunks": 64,
+      "saw_done": true
+     }
+    }
+   ]
+  },
+  "deepinfra/bf16/flex": {
+   "tag": "deepinfra/bf16/flex",
+   "quantization": "bf16",
+   "supports_tools": true,
+   "flags": [],
+   "text_ok": 0,
+   "tool_ok": 0,
+   "text_results": [
+    {
+     "prompt_idx": 0,
+     "ns1": {
+      "error": {
+       "status": null,
+       "body": "TimeoutError('The read operation timed out')"
+      }
+     },
+     "stream": {
+      "error": {
+       "status": 408,
+       "body": "wall-clock stream timeout (>35s)"
+      }
+     },
+     "ns2": {
+      "error": {
+       "status": null,
+       "body": "TimeoutError('The read operation timed out')"
+      }
+     }
+    }
+   ],
+   "tool_results": []
+  }
+ }
+}

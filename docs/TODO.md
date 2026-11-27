@@ -3,11 +3,12 @@
 Open work, roughly in priority order. Each item says what it would establish.
 
 ## Detection coverage
-- [x] **KV-cache compression on a full-attention model** (gpt-oss-20b, 2026-11-25; experiments/README.md). A q4_0
+- [x] **KV-cache compression on a full-attention model** (gpt-oss-20b, 2026-11-25/27; experiments/README.md). A q4_0
       cache is plain at every length (5-34x the f16 cache's distance, wrong answers at 31k-63k tokens); an fp8 cache
-      on vLLM could not be told from vLLM's default. Next: point the copy-style probes at OpenRouter's gpt-oss
-      endpoints (they separate a 4-bit cache from honest serving on another engine; number tables do not), and try
-      Gemma-4 (sliding-window plus global layers).
+      on vLLM could not be told from vLLM's default. All 11 OpenRouter gpt-oss-20b endpoints scored on the copy probes
+      (`results/regret_profile/summary.json`): 10 of 11 sit at 0.0014-0.0051 regret (honest f16/vLLM range); SiliconFlow's
+      0.0455 is caused by rendering `Reasoning: medium` instead of `low` (0.0019 under medium), not a 4-bit cache. Next:
+      try Gemma-4 (sliding-window plus global layers).
 - [ ] **Longer contexts** (64k-128k) and multi-needle recall.
 - [ ] **Gemma-4-31B (16 endpoints) and Qwen3.6-35B-A3B (10)**: full referee audits, the most popular local-sized models
       after those done. Paused 2026-10-30: needs ~148 GB of weights (Q8 referee, Q6_K honest, Q2_K_XL substitute)
@@ -31,8 +32,14 @@ Open work, roughly in priority order. Each item says what it would establish.
       modified copy of the claimed model in an agent setting. Parked; revisit with a different setup.
 
 ## Cooperative mode in production
-- [x] **Challenge-only traces** (receipt v2): `trace: "deferred"`, rolling buffer, private client challenges, text
-      hash in the receipt. Next: span reveals (Merkle commitment) so a challenge need not fetch the whole trace.
+- [x] **Challenge-only traces & Merkle span reveals** (receipt v2 + `llmverify/merkle.py`): `trace: "deferred"`,
+      rolling buffer, private client challenges, text hash in the receipt, plus optional `steps_merkle_root` and
+      `GET /v1/verification/span/<trace_id>?start=S&end=E` compact O(log N) proofs (~96.6% smaller for a 16-token span
+      of a 512-token reply).
+- [x] **Verify-before-act guard proxy** (`llmverify/guard.py`, `experiments/verify_before_act_demo.py`): OpenAI-compatible
+      local guard wrapping `VerifyingClient` that keeps normal turns in zero-overhead deferred mode and automatically
+      escalates high-stakes / tool-call replies to immediate 1-pass referee verification (HTTP 409 block on rogue/modified
+      weights on the first attempt).
 - [x] **Native generation** in lv-engine (`generate`, bit-identical to the Python rule) and a batching server:
       16 concurrent verified clients at 134 tok/s on gpt-oss-20b (Python path: 47).
 - [x] Continuous batching (lv-engine cb_add / cb_step; server default).
