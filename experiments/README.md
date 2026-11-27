@@ -144,10 +144,14 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    logprobs while `crusoe/fp8` runs `1017` without logprobs, yet both share `(178, 52, 105)`), whereas multi-axis
    matches corroborate shared upstreams (`venice/fp8` ↔ `baseten` on `main`, Baseten's unique `+1` prompt0 offset,
    `(170, 44, 99)`, and `frequency_penalty_ignored`; `venice/ultrafast` ↔ `crusoe/fp8` on `1017`, `(178, 52, 105)`,
-   honoured `frequency_penalty`, and no logprobs). Parameter honesty:
-   **`siliconflow/fp8` ignores `stop` sequences on all three models** (`gpt-oss-20b`, `qwen3.8-27b`, `deepseek-v4.1-flash`),
-   `digitalocean` ignores `stop` on `deepseek-v4.1-flash`, `wafer` stops without stripping the stop string, and
-   `frequency_penalty: 2.0` is silently ignored on 10/25 `qwen3.8-27b` and 18/39 `deepseek-v4.1-flash` endpoints.
+   honoured `frequency_penalty`, and no logprobs). Parameter honesty: checking OpenRouter's `supported_parameters`
+   list separates genuine bugs from unadvertised features—`wafer/mxfp4` and `wafer/us` advertise `stop` on DeepSeek
+   V4.1 Flash yet fail to strip the stop string (`1 2 3 4 5`), whereas `siliconflow/fp8` and `digitalocean` do not
+   advertise `stop` (so OpenRouter/the provider silently drops it); similarly, `frequency_penalty: 2.0` is ignored
+   despite being *advertised* on **13/39** DeepSeek V4.1 Flash endpoints (`alibaba`, `baseten*`, `deepinfra*`,
+   `google-vertex/global`, `mancer/fp8`, `nebius/fp8`, `open-inference/fp4`, `relace/fp4`, `siliconflow/fp8`,
+   `venice/fp8`) and **3/25** Qwen3.8-27B endpoints (`modelrun/fp4`, `primeintellect/fp8`, `wafer/fp8`), plus 5 and 7
+   more where it is unadvertised.
 16. **27 November 2026 positional regret shape & OpenRouter `gpt-oss-20b` KV-copy referee scores (`experiments/regret_profile.py`, `results/regret_profile/summary.json`, $0).**
    Splitting greedy regret into opening tokens (0–29) vs. late tokens (80+) cleanly separates failure modes without new
    API calls: weight quantization is flat (`late/early ~ 1.0`), hidden system prompts / style shifts are front-loaded
