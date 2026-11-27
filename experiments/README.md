@@ -108,6 +108,15 @@ and cannot prove: [docs/soundness.md](../docs/soundness.md). OpenRouter spend fo
    still sends legacy E2EE V1 (no AAD / no `X-Encryption-Version: 3`) to the 6 remaining NEAR AI models, and its web
    app receipt verifier (`Eh`) returns `{contentMatchFailed: true, verified: true}` on hash mismatches while its caller
    (`EE`) checks only `verified`.
+13. **27 November 2026 `deepseek/deepseek-v4.1-flash` 39-endpoint clustering (`results/cluster/deepseek__deepseek-v4.1-flash.json`).**
+   Twenty temperature-0 prompts across all 39 live endpoints (20 `fp8`, 4 `fp4`/`mxfp4`, 15 `unknown`; spend $0.025)
+   showed two things: (a) greedy prefix clustering alone does not separate `fp8` from `fp4`/`mxfp4` on this model
+   (`relace/fp4` at 0.628 and `wafer` `mxfp4` at 0.572–0.601 sit inside the main `fp8` range of 0.501–0.620); and (b)
+   the slug is split across two checkpoints—6 endpoints (`alibaba`, `cloudflare` [both `unknown`], `crusoe/fp8`,
+   `siliconflow/fp8`, `open-inference/fp4`, and `venice/ultrafast`) cluster with the newer `deepseek-v4.1-flash-1017`
+   checkpoint (0.429–0.575 mean shared prefix vs 0.255–0.315 against the main 32-endpoint `v4.1-flash` pack;
+   `baidu/fp8` leans 1017 at 0.363 vs 0.295), while the other 13 `unknown` endpoints and `venice/fp8` sit cleanly in
+   the main `v4.1-flash` cluster (0.475–0.639).
 
 ## Image inputs (10 vision models)
 
