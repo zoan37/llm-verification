@@ -218,6 +218,12 @@ Thresholds come from honest machines (same weights, different hardware/engine/ke
   quantization noise. The earlier noisy Vulkan runs (Intel B70 and AMD 780M on Linux/Mesa, an older llama.cpp) are
   therefore specific to that GPU/driver/version, not to Vulkan. Each GPU/driver pair still needs its own baseline
   before a strict tier.
+- Deep-tail logprob amplification on looped architectures (2026-11-27): on `Inkling-2-Mini-UD-Q4_K_XL` (`inkling2_loop`,
+  AMD Strix Halo Vulkan vs. NVIDIA DGX Spark GB10 CUDA), deterministic positions with `p(top1) > 0.9999` and `regret = 0.0`
+  exhibited `1–4`-nat cross-vendor swings on ranks 2–5 deep in the tail (`-13` to `-17` nats, `p < 10^-6`). Unweighted
+  unclamped `topk` averaged `0.3773` nats across 96 honest cross-vendor tokens (exceeding Qwen-calibrated thresholds),
+  whereas clamping top-5 logprobs at `topk_floor = -8.0` nats (`p >= 3.35e-4`) cut honest noise 4.0× to `0.0945` while
+  increasing cheat-to-honest separation from `2.8×` to `3.4×`.
 - The referee's own arithmetic path matters. Against a BF16 transformers reference (MXFP4 experts dequantized, 48
   gpt-oss-20b replies, 14,361 positions), token-by-token decoding on two GPUs had top-1 logprob errors of 0.028-0.033
   and a different top-1 on 2.4-2.7% of positions, while the referee's one-pass replay (batches of up to 2,048 tokens)

@@ -194,3 +194,19 @@ def test_derive_challenge_with_drand_beacon_randomness():
     finally:
         srv.shutdown()
         srv.server_close()
+
+
+def test_score_token_topk_floor_suppresses_deep_tail_noise():
+    from llmverify.metrics import RefStep, score_token
+    from llmverify.sampling import SamplingSpec
+
+    ref = RefStep(
+        top=[(69026, -0.0), (19, -13.11), (68199, -14.66), (68872, -14.89), (68559, -15.52)],
+        lp=-0.0,
+    )
+    reported = [(69026, -0.0), (68872, -15.06), (68028, -15.90), (19, -17.15), (68079, -17.44)]
+    spec = SamplingSpec(temperature=0.0, top_k=20, seed=0)
+    raw = score_token(69026, ref, spec, "k", 0, reported_top=reported, reported_lp=-0.0)
+    clamped = score_token(69026, ref, spec, "k", 0, reported_top=reported, reported_lp=-0.0, topk_floor=-8.0)
+    assert raw.regret == 0.0 and raw.topk > 1.5
+    assert clamped.regret == 0.0 and clamped.topk == 0.0

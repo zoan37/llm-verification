@@ -94,7 +94,8 @@ def regret(token: int, ref: RefStep, spec: SamplingSpec, key: str, step: int) ->
 
 
 def score_token(token: int, ref: RefStep, spec: SamplingSpec, key: str, step: int,
-                reported_top: Optional[TopK] = None, reported_lp: Optional[float] = None) -> TokenScore:
+                reported_top: Optional[TopK] = None, reported_lp: Optional[float] = None,
+                topk_floor: Optional[float] = None) -> TokenScore:
     agree_tok = choose(ref.top, spec, key, step)  # the rule's own pick, ties broken as the provider must break them
     s = TokenScore(regret=regret(token, ref, spec, key, step), agree=float(token == agree_tok), lp=ref.lp)
     if len(ref.top) >= 2:
@@ -114,7 +115,10 @@ def score_token(token: int, ref: RefStep, spec: SamplingSpec, key: str, step: in
         if reported_lp is not None:
             s.drift = abs(float(reported_lp) - ref.lp)
         top5 = ref.top[:5]
-        s.topk = sum(abs(q.get(i, floor) - lp) for i, lp in top5) / len(top5)
+        if topk_floor is not None:
+            s.topk = sum(abs(max(q.get(i, floor), topk_floor) - max(lp, topk_floor)) for i, lp in top5) / len(top5)
+        else:
+            s.topk = sum(abs(q.get(i, floor) - lp) for i, lp in top5) / len(top5)
         s.wgap = sum(math.exp(lp) * abs(q.get(i, floor) - lp) for i, lp in ref.top)
     return s
 
