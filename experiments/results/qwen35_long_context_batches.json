@@ -1,0 +1,382 @@
+{
+  "alibaba": {
+    "batch1": {
+      "overall_regret": 0.02671,
+      "n_tokens": 867,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.0251,
+          "n": 291
+        },
+        "2-6k": {
+          "mean_regret": 0.01313,
+          "n": 252
+        },
+        "24k+": {
+          "mean_regret": 0.03872,
+          "n": 324
+        }
+      }
+    },
+    "batch2": {
+      "overall_regret": 0.03412,
+      "n_tokens": 1116,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.04316,
+          "n": 359
+        },
+        "2-6k": {
+          "mean_regret": 0.0241,
+          "n": 382
+        },
+        "24k+": {
+          "mean_regret": 0.03567,
+          "n": 375
+        }
+      }
+    }
+  },
+  "atlas-cloud__fp8": {
+    "batch1": {
+      "overall_regret": 0.03072,
+      "n_tokens": 943,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.03471,
+          "n": 325
+        },
+        "2-6k": {
+          "mean_regret": 0.01705,
+          "n": 250
+        },
+        "24k+": {
+          "mean_regret": 0.03648,
+          "n": 368
+        }
+      }
+    },
+    "batch2": {
+      "overall_regret": 0.05062,
+      "n_tokens": 1256,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.04863,
+          "n": 432
+        },
+        "2-6k": {
+          "mean_regret": 0.03699,
+          "n": 374
+        },
+        "24k+": {
+          "mean_regret": 0.06386,
+          "n": 450
+        }
+      }
+    }
+  },
+  "darkbloom__fp4": {
+    "batch1": {
+      "overall_regret": 0.067,
+      "n_tokens": 1149,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.07622,
+          "n": 438
+        },
+        "2-6k": {
+          "mean_regret": 0.05704,
+          "n": 342
+        },
+        "24k+": {
+          "mean_regret": 0.06528,
+          "n": 369
+        }
+      }
+    },
+    "batch2": {
+      "overall_regret": 0.06836,
+      "n_tokens": 1342,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.06585,
+          "n": 518
+        },
+        "2-6k": {
+          "mean_regret": 0.05758,
+          "n": 423
+        },
+        "24k+": {
+          "mean_regret": 0.08297,
+          "n": 401
+        }
+      }
+    }
+  },
+  "deepinfra__fp8": {
+    "batch1": {
+      "overall_regret": 0.0018,
+      "n_tokens": 854,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.00087,
+          "n": 290
+        },
+        "2-6k": {
+          "mean_regret": 0.00096,
+          "n": 248
+        },
+        "24k+": {
+          "mean_regret": 0.00332,
+          "n": 316
+        }
+      }
+    },
+    "batch2": {
+      "overall_regret": 0.0085,
+      "n_tokens": 1139,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.0019,
+          "n": 373
+        },
+        "2-6k": {
+          "mean_regret": 0.01534,
+          "n": 374
+        },
+        "24k+": {
+          "mean_regret": 0.00825,
+          "n": 392
+        }
+      }
+    }
+  },
+  "local__kv4-cache": {
+    "batch1": {
+      "overall_regret": 0.00331,
+      "n_tokens": 810,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.00425,
+          "n": 287
+        },
+        "2-6k": {
+          "mean_regret": 0.00187,
+          "n": 247
+        },
+        "24k+": {
+          "mean_regret": 0.00361,
+          "n": 276
+        }
+      }
+    },
+    "batch2": {
+      "overall_regret": 0.00437,
+      "n_tokens": 1100,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.00543,
+          "n": 347
+        },
+        "2-6k": {
+          "mean_regret": 0.0059,
+          "n": 352
+        },
+        "24k+": {
+          "mean_regret": 0.00209,
+          "n": 401
+        }
+      }
+    }
+  },
+  "local__q6_k-metal": {
+    "batch1": {
+      "overall_regret": 0.00223,
+      "n_tokens": 945,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.00353,
+          "n": 341
+        },
+        "2-6k": {
+          "mean_regret": 0.00156,
+          "n": 235
+        },
+        "24k+": {
+          "mean_regret": 0.00146,
+          "n": 369
+        }
+      }
+    },
+    "batch2": {
+      "overall_regret": 0.00226,
+      "n_tokens": 1089,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.00213,
+          "n": 361
+        },
+        "2-6k": {
+          "mean_regret": 0.00244,
+          "n": 341
+        },
+        "24k+": {
+          "mean_regret": 0.00222,
+          "n": 387
+        }
+      }
+    }
+  },
+  "local__substitute-q3_k_m": {
+    "batch1": {
+      "overall_regret": 0.01597,
+      "n_tokens": 818,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.01616,
+          "n": 296
+        },
+        "2-6k": {
+          "mean_regret": 0.01093,
+          "n": 240
+        },
+        "24k+": {
+          "mean_regret": 0.02006,
+          "n": 282
+        }
+      }
+    },
+    "batch2": {
+      "overall_regret": 0.01013,
+      "n_tokens": 1017,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.01216,
+          "n": 329
+        },
+        "2-6k": {
+          "mean_regret": 0.01085,
+          "n": 324
+        },
+        "24k+": {
+          "mean_regret": 0.00766,
+          "n": 364
+        }
+      }
+    }
+  },
+  "parasail__fp8": {
+    "batch1": {
+      "overall_regret": 0.00806,
+      "n_tokens": 842,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.01356,
+          "n": 314
+        },
+        "2-6k": {
+          "mean_regret": 0.00581,
+          "n": 237
+        },
+        "24k+": {
+          "mean_regret": 0.00395,
+          "n": 291
+        }
+      }
+    },
+    "batch2": {
+      "overall_regret": 0.0047,
+      "n_tokens": 1080,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.00149,
+          "n": 357
+        },
+        "2-6k": {
+          "mean_regret": 0.003,
+          "n": 355
+        },
+        "24k+": {
+          "mean_regret": 0.00946,
+          "n": 368
+        }
+      }
+    }
+  },
+  "siliconflow__fp8": {
+    "batch1": {
+      "overall_regret": 0.01588,
+      "n_tokens": 903,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.00196,
+          "n": 294
+        },
+        "2-6k": {
+          "mean_regret": 0.00186,
+          "n": 252
+        },
+        "24k+": {
+          "mean_regret": 0.03723,
+          "n": 357
+        }
+      }
+    },
+    "batch2": {
+      "overall_regret": 0.01366,
+      "n_tokens": 1062,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.01167,
+          "n": 366
+        },
+        "2-6k": {
+          "mean_regret": 0.01899,
+          "n": 349
+        },
+        "24k+": {
+          "mean_regret": 0.01038,
+          "n": 347
+        }
+      }
+    }
+  },
+  "venice": {
+    "batch1": {
+      "overall_regret": 0.00406,
+      "n_tokens": 921,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.00529,
+          "n": 314
+        },
+        "2-6k": {
+          "mean_regret": 0.00463,
+          "n": 239
+        },
+        "24k+": {
+          "mean_regret": 0.00263,
+          "n": 368
+        }
+      }
+    },
+    "batch2": {
+      "overall_regret": 0.00627,
+      "n_tokens": 1126,
+      "by_ctx_band": {
+        "12-24k": {
+          "mean_regret": 0.00411,
+          "n": 377
+        },
+        "2-6k": {
+          "mean_regret": 0.00764,
+          "n": 357
+        },
+        "24k+": {
+          "mean_regret": 0.00711,
+          "n": 392
+        }
+      }
+    }
+  }
+}

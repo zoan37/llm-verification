@@ -1,0 +1,106 @@
+{
+  "venice_prompts": 48,
+  "comparisons": {
+    "huihui-abliterated-Q4_K": {
+      "common_prompts": 48,
+      "exact_match_rate": 0.0833,
+      "prefix20_match_rate": 0.3542,
+      "mean_lcp_chars": 26.0,
+      "median_lcp_chars": 5,
+      "mean_word_jaccard": 0.3262
+    },
+    "jonathancoletti-uncensored-Q4_K_M": {
+      "common_prompts": 48,
+      "exact_match_rate": 0.0833,
+      "prefix20_match_rate": 0.4167,
+      "mean_lcp_chars": 29.0,
+      "median_lcp_chars": 9,
+      "mean_word_jaccard": 0.3296
+    },
+    "local__vulkan-r9700-windows": {
+      "common_prompts": 48,
+      "exact_match_rate": 0.0833,
+      "prefix20_match_rate": 0.4583,
+      "mean_lcp_chars": 27.7,
+      "median_lcp_chars": 12,
+      "mean_word_jaccard": 0.358
+    },
+    "local__q6_k-cuda": {
+      "common_prompts": 48,
+      "exact_match_rate": 0.0833,
+      "prefix20_match_rate": 0.4375,
+      "mean_lcp_chars": 27.6,
+      "median_lcp_chars": 10,
+      "mean_word_jaccard": 0.3599
+    },
+    "cerebras__fp16": {
+      "common_prompts": 48,
+      "exact_match_rate": 0.0833,
+      "prefix20_match_rate": 0.4167,
+      "mean_lcp_chars": 27.4,
+      "median_lcp_chars": 10,
+      "mean_word_jaccard": 0.3564
+    },
+    "deepinfra__bf16": {
+      "common_prompts": 48,
+      "exact_match_rate": 0.0625,
+      "prefix20_match_rate": 0.4167,
+      "mean_lcp_chars": 23.2,
+      "median_lcp_chars": 9,
+      "mean_word_jaccard": 0.3642
+    },
+    "parasail__fp8": {
+      "common_prompts": 48,
+      "exact_match_rate": 0.0833,
+      "prefix20_match_rate": 0.4375,
+      "mean_lcp_chars": 28.2,
+      "median_lcp_chars": 10,
+      "mean_word_jaccard": 0.3482
+    },
+    "local__substitute-q2_k_xl": {
+      "common_prompts": 48,
+      "exact_match_rate": 0.0417,
+      "prefix20_match_rate": 0.4375,
+      "mean_lcp_chars": 24.5,
+      "median_lcp_chars": 9,
+      "mean_word_jaccard": 0.3361
+    }
+  },
+  "control_vs_honest": {
+    "huihui-abliterated-Q4_K": {
+      "prefix20_match_rate": 0.6875,
+      "mean_lcp_chars": 104.1,
+      "mean_word_jaccard": 0.4544
+    },
+    "jonathancoletti-uncensored-Q4_K_M": {
+      "prefix20_match_rate": 0.7917,
+      "mean_lcp_chars": 100.9,
+      "mean_word_jaccard": 0.4823
+    },
+    "local__vulkan-r9700-windows": {
+      "prefix20_match_rate": 0.8958,
+      "mean_lcp_chars": 210.2,
+      "mean_word_jaccard": 0.638
+    },
+    "local__q6_k-cuda": {
+      "prefix20_match_rate": 0.8958,
+      "mean_lcp_chars": 200.2,
+      "mean_word_jaccard": 0.6532
+    },
+    "deepinfra__bf16": {
+      "prefix20_match_rate": 0.7917,
+      "mean_lcp_chars": 102.6,
+      "mean_word_jaccard": 0.5705
+    },
+    "parasail__fp8": {
+      "prefix20_match_rate": 0.8333,
+      "mean_lcp_chars": 137.1,
+      "mean_word_jaccard": 0.5508
+    },
+    "local__substitute-q2_k_xl": {
+      "prefix20_match_rate": 0.5625,
+      "mean_lcp_chars": 38.0,
+      "mean_word_jaccard": 0.4019
+    }
+  }
+}

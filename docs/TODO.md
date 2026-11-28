@@ -81,8 +81,18 @@ Open work, roughly in priority order. Each item says what it would establish.
 - [ ] Rotate audit prompts per snapshot (`prompts/generate.py`) and publish seeds after collection.
 
 ## Findings to follow up
-- [ ] Venice / Qwen3.8-27B: fingerprint against public uncensored builds (in progress).
-- [ ] Alibaba and SiliconFlow on Qwen3.5: distance grows at 32k (second long-context batch in progress).
+- [x] **Venice / Qwen3.8-27B vs public uncensored builds** (`experiments/results/venice_qwen38_uncensored_fingerprint.json`):
+      ruled out both `huihui-abliterated-Q4_K` (`LCP=26.0ch, pfx20=35.4%, jacc=0.326`) and
+      `jonathancoletti-uncensored-Q4_K_M` (`LCP=29.0ch, pfx20=41.7%, jacc=0.330`). Honest `cerebras__fp16` matches
+      other honest builds at `103-210ch` (`jacc=0.55-0.65`) and both uncensored builds at `101-104ch` (`jacc=0.45-0.48`),
+      whereas Venice diverges farther from stock `Qwen3.8-27B` (`LCP=23-28ch, jacc=0.36`) than even `Q2_K_XL` (`38ch, 0.40`),
+      pointing to a custom fine-tune, hidden prompt/template, or different model swap.
+- [x] **Alibaba and SiliconFlow on Qwen3.5 long context** (`experiments/results/qwen35_long_context_batches.json`,
+      batches 1 & 2 across `2k-32k`): honest baselines stay flat (`local__q6_k-metal 0.0022/0.0023`, `deepinfra 0.0018/0.0085`,
+      `venice 0.0041/0.0063`). `Alibaba` reproduces elevated regret in both batches (`B1=0.0267, 24k+=0.0387`;
+      `B2=0.0341, 12-24k=0.0432, 24k+=0.0357`, `~15x` honest); `Atlas-Cloud` worsens in B2 (`0.0506, 24k+=0.0639`);
+      `Darkbloom` stays `0.067-0.068` (`24k+=0.0830`); `SiliconFlow` shows `0.0372` at `24k+` in B1 and `0.0137` across all
+      bands in B2 (`~6x` honest).
 - [x] Silent top-k defaults: confirmed with the sampler fingerprint and explicit `top_k` 0 / -1 / 1000
       (`experiments/sampler_control.py`). Next: the same on Qwen3.8 and Gemma endpoints.
 - [x] DeepInfra fp8 / Mara / SambaNova serve byte-identical gpt-oss-120b output; Mara = SambaNova on DeepSeek V3.2 too.
