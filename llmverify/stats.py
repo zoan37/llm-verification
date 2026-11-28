@@ -304,6 +304,61 @@ def changepoint_eprocess(values: Sequence[float], tau: float, upper: float) -> C
 
 
 @dataclass
+class TailSpikeEProcess:
+    """Exact anytime-valid Bernoulli likelihood-ratio mixture supermartingale on tail exceedances
+    `I_t = 1[x_t > cutoff]` for catching intermittent / sporadic part-time cheaters.
+
+    A provider that cheats randomly on only 2%–5% of requests (never consecutively) keeps its global mean
+    below `tau`, causing standard mean-based e-processes and changepoint detectors to miss it. Under
+    `H0: P(x_t > cutoff | past) <= p0`, each mixture branch `p1 > p0` multiplies wealth by `p1 / p0` on a
+    spike and `(1 - p1) / (1 - p0)` otherwise, giving an exact nonnegative supermartingale with
+    `P(exists t >= 1: M_t >= 1/alpha) <= alpha` by Ville's inequality.
+    """
+    cutoff: float
+    p0: float = 1e-3
+    alt_rates: Sequence[float] = (0.01, 0.03, 0.10, 0.30)
+    n: int = 0
+    hits: int = 0
+    wealth: float = 1.0
+    history_max: float = 1.0
+    _rates: List[float] = field(default_factory=list)
+    _log_m: List[float] = field(default_factory=list)
+
+    def __post_init__(self):
+        if not self._rates:
+            self._rates = [float(p1) for p1 in self.alt_rates if self.p0 < float(p1) < 1.0]
+            if not self._rates:
+                self._rates = [min(0.99, self.p0 * 10.0)]
+        if not self._log_m:
+            self._log_m = [0.0] * len(self._rates)
+
+    def update(self, x: float) -> float:
+        self.n += 1
+        hit = float(x) > self.cutoff
+        if hit:
+            self.hits += 1
+        log_sum = -math.inf
+        for i, p1 in enumerate(self._rates):
+            step = math.log(p1 / self.p0) if hit else math.log((1.0 - p1) / (1.0 - self.p0))
+            self._log_m[i] += step
+            log_sum = _logaddexp(log_sum, self._log_m[i])
+        self.wealth = math.exp(min(log_sum - math.log(len(self._rates)), 700.0))
+        if self.wealth > self.history_max:
+            self.history_max = self.wealth
+        return self.wealth
+
+    def p_value(self) -> float:
+        return min(1.0, 1.0 / self.history_max)
+
+
+def tail_spike_eprocess(values: Sequence[float], cutoff: float, p0: float = 1e-3) -> TailSpikeEProcess:
+    ts = TailSpikeEProcess(cutoff=cutoff, p0=p0)
+    for v in values:
+        ts.update(v)
+    return ts
+
+
+@dataclass
 class Calibration:
     """Thresholds on the mean of a metric over n audited tokens, from honest runs.
 

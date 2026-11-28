@@ -183,3 +183,36 @@ def test_changepoint_eprocess_catches_reputation_farming_sleeper_100x_faster():
     v = led.verdict()
     assert v["status"] == "FAIL", f"Ledger missed delayed-onset sleeper: {v}"
     assert any("delayed-onset" in r for r in v["reasons"])
+
+
+def test_tail_spike_eprocess_catches_sporadic_part_time_cheater_with_valid_null():
+    import random
+    from llmverify.stats import ChangepointEProcess, EProcess, TailSpikeEProcess
+
+    # 1. Exact null validity at boundary P(x > 0.25) == p0 = 0.001
+    rng = random.Random(99)
+    fa = 0
+    for _ in range(500):
+        ts = TailSpikeEProcess(cutoff=0.25, p0=1e-3)
+        for _ in range(400):
+            ts.update(1.0 if rng.random() < 1e-3 else 0.005)
+        if ts.p_value() <= 1e-3:
+            fa += 1
+    assert fa <= 3
+
+    # 2. 5% random sporadic cheater (never consecutive): EProcess & Changepoint miss, TailSpike catches 100%!
+    caught_ts = caught_ep = 0
+    for trial in range(25):
+        r = random.Random(2000 + trial)
+        ep = EProcess(tau=0.05, upper=5.0)
+        ts = TailSpikeEProcess(cutoff=0.25, p0=1e-3)
+        for _ in range(250):
+            x = 1.20 if r.random() < 0.05 else 0.002
+            ep.update(x)
+            ts.update(x)
+        if ts.p_value() <= 1e-3:
+            caught_ts += 1
+        if ep.p_value() <= 1e-3:
+            caught_ep += 1
+    assert caught_ts == 25, f"expected 25/25 caught by TailSpikeEProcess, got {caught_ts}"
+    assert caught_ep < caught_ts
