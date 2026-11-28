@@ -14,6 +14,10 @@ experiments.
   PartTime         cheat on a fraction of requests only
   HiddenMessage    honest model, but use the near-ties to hide a message in the output that anyone holding the
                    weights can read back (`read_hidden`): a covert channel that passes every exact check
+  ContextTruncation honest weights, but silently drops part of the prompt KV cache (prefix, middle, or sliding
+                   window) while committing to the client's full prompt_ids
+  SamplerSkew      honest weights, but silently overrides the sampling distribution (undisclosed temperature
+                   sharpening or top-k/top-p tail truncation) while claiming the requested spec
 """
 
 from __future__ import annotations
@@ -277,3 +281,93 @@ def read_hidden(referee: Model, prompt_ids: Sequence[int], tokens: Sequence[int]
         j, pad = _slot(tag, step, n_bits)
         votes[j][int(tok == alt) ^ pad] += 1
     return [int(o > z) for z, o in votes], votes
+
+
+class ContextTruncation(VerifiableProvider):
+    """Silent KV-cache / context-window truncation cheater: runs the genuine model weights on a truncated
+    subset of `prompt_ids` (`prefix`, `sliding`, or `middle` eviction) to save prefill compute and KV VRAM,
+    while signing the receipt over the client's FULL `prompt_ids` so exact prompt-hash checks still pass.
+
+    Even when the dropped slice contains irrelevant middle filler, positional embeddings and attention
+    denominators shift across output tokens, lighting up regret, top-k logprob gap, and tail spikes.
+    """
+
+    def __init__(self, model: Model, signer: Signer, model_info: dict, *,
+                 mode: str = "prefix", keep_fraction: float = 0.5, window: Optional[int] = None):
+        super().__init__(model, signer, model_info)
+        if mode not in ("prefix", "sliding", "middle"):
+            raise ValueError(f"unknown truncation mode: {mode!r}")
+        self.mode = mode
+        self.keep_fraction = float(keep_fraction)
+        self.window = window
+
+    def _truncate(self, prompt_ids: Sequence[int]) -> List[int]:
+        ids = list(prompt_ids)
+        n = len(ids)
+        if n <= 2:
+            return ids
+        if self.mode == "sliding":
+            w = max(1, min(n, int(self.window if self.window is not None else max(1, round(n * self.keep_fraction)))))
+            return ids[-w:]
+        if self.mode == "prefix":
+            keep = max(1, min(n, int(round(n * self.keep_fraction))))
+            return ids[n - keep:]
+        # middle: keep beginning and end, evict middle tokens
+        drop = max(1, min(n - 2, int(round(n * (1.0 - self.keep_fraction)))))
+        left = max(1, (n - drop) // 2)
+        return ids[:left] + ids[left + drop:]
+
+    def generate(self, prompt_ids, spec, max_tokens, client_nonce=None) -> Generation:
+        nonce = client_nonce or new_nonce()
+        truncated = self._truncate(prompt_ids)
+        # Generate honestly from the truncated KV context...
+        inner = super().generate(truncated, spec, max_tokens, nonce)
+        # ...then forge the trace's prompt_ids to the FULL client prompt and sign the receipt!
+        forged_trace = Trace(list(prompt_ids), list(inner.trace.tokens), list(inner.trace.tops), inner.trace.finish_reason)
+        return Generation(forged_trace, make_receipt(self.signer, forged_trace, self.model_info, spec, nonce, max_tokens))
+
+
+class SamplerSkew(VerifiableProvider):
+    """Undisclosed sampler manipulation: runs the real model weights but silently sharpens/flattens
+    temperature (`temp_scale`) or truncates the tail (`effective_top_k`) before emitting tokens, while
+    committing skewed logprobs that pass exact rule-consistency checks against the requested `SamplingSpec`."""
+
+    def __init__(self, model: Model, signer: Signer, model_info: dict, *,
+                 temp_scale: float = 0.5, effective_top_k: Optional[int] = None):
+        super().__init__(model, signer, model_info)
+        self.temp_scale = float(temp_scale)
+        self.effective_top_k = effective_top_k
+
+    def _skew_top(self, raw_top) -> List[Tuple[int, float]]:
+        import math
+        top = [(int(i), float(lp)) for i, lp in raw_top]
+        if self.effective_top_k is not None and 1 <= self.effective_top_k < len(top):
+            # Collapse tail outside effective_top_k to near-zero probability
+            kept = top[:self.effective_top_k]
+            dropped = [(i, lp - 12.0) for i, lp in top[self.effective_top_k:]]
+            top = kept + dropped
+        if self.temp_scale != 1.0 and self.temp_scale > 0:
+            inv = 1.0 / self.temp_scale
+            scaled = [(i, lp * inv) for i, lp in top]
+            m = max(lp for _, lp in scaled)
+            z = m + math.log(sum(math.exp(lp - m) for _, lp in scaled))
+            # Renormalize as valid log-probabilities <= 0 summing to <= 1
+            top = [(i, lp - z - 1e-4) for i, lp in scaled]
+        return round_top(top)
+
+    def generate(self, prompt_ids, spec, max_tokens, client_nonce=None) -> Generation:
+        nonce = client_nonce or new_nonce()
+        tokens, tops = [], []
+        top = self._skew_top(self.model.start(list(prompt_ids), COMMIT_K))
+        finish = "length"
+        for step in range(max_tokens):
+            win = choose(top, spec, nonce, step)
+            tokens.append(win)
+            tops.append(top)
+            if win in self.eos:
+                finish = "stop"
+                break
+            if step + 1 < max_tokens:
+                top = self._skew_top(self.model.step(win, COMMIT_K))
+        trace = Trace(list(prompt_ids), tokens, tops, finish)
+        return Generation(trace, make_receipt(self.signer, trace, self.model_info, spec, nonce, max_tokens))

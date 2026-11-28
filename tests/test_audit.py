@@ -337,3 +337,42 @@ def test_ledger_tail_spike_catches_sporadic_part_time_cheater():
     assert verdict["means"]["regret"] < 0.05
     assert any("tail-spike" in reason for reason in verdict["reasons"])
     assert verdict["tail_spike"]["regret"]["hits"] >= 5
+
+
+def test_context_truncation_and_sampler_skew_pass_exact_but_caught_statistically():
+    from llmverify.attacks import ContextTruncation, SamplerSkew
+
+    model = ToyLM(weights_seed=1, machine=0, hw_noise=0.0)
+    signer = Signer()
+    prompts = [[(i * 13 + j * 7) % 60 + 2 for j in range(10)] for i in range(24)]
+
+    # 1. ContextTruncation (prefix / middle / sliding): passes exact receipt & prompt_hash, caught statistically!
+    spec_greedy = SamplingSpec(mode="greedy")
+    for mode in ("prefix", "middle", "sliding"):
+        attacker = ContextTruncation(model, signer, INFO, mode=mode, keep_fraction=0.3)
+        ledger = Ledger(f"trunc-{mode}", tolerances={"regret": 0.01, "wgap": 0.05}, alpha=1e-3)
+        for p in prompts:
+            gen = attacker.generate(p, spec_greedy, max_tokens=20)
+            # Exact check MUST pass: provider forged full prompt_ids and signed validly!
+            assert gen.trace.prompt_ids == p
+            chk = check_receipt(gen.receipt, gen.trace, expected_prompt_ids=p, expected_spec=spec_greedy,
+                                pinned_key=signer.public_hex)
+            assert chk.ok, chk.problems
+            scores = audit_trace(model, gen.trace, spec_greedy, gen.receipt.client_nonce, 0, len(gen.trace.tokens))
+            ledger.add(scores)
+        v = ledger.verdict()
+        assert v["status"] == "FAIL", f"ContextTruncation({mode}) escaped detection: {v}"
+
+    # 2. SamplerSkew (undisclosed temp sharpening + top-k tail truncation): passes exact rule check, caught by wgap!
+    spec_t1 = SamplingSpec(mode="gumbel", temperature=1.0, top_k=20, seed=42)
+    skew = SamplerSkew(model, signer, INFO, temp_scale=0.35, effective_top_k=3)
+    ledger_s = Ledger("sampler-skew", tolerances={"regret": 0.05, "wgap": 0.08}, alpha=1e-3)
+    for p in prompts:
+        gen = skew.generate(p, spec_t1, max_tokens=20)
+        chk = check_receipt(gen.receipt, gen.trace, expected_prompt_ids=p, expected_spec=spec_t1,
+                            pinned_key=signer.public_hex)
+        assert chk.ok, chk.problems
+        scores = audit_trace(model, gen.trace, spec_t1, gen.receipt.client_nonce, 0, len(gen.trace.tokens))
+        ledger_s.add(scores)
+    vs = ledger_s.verdict()
+    assert vs["status"] == "FAIL", f"SamplerSkew escaped detection: {vs}"
