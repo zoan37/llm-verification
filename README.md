@@ -85,6 +85,10 @@ python experiments/build_results.py --model openai/gpt-oss-20b --referee "..." -
 # or audit one OpenAI-compatible endpoint directly (zero C++ build needed with llama-server or vLLM!)
 llmverify audit --base-url https://host/v1 --model NAME --logprobs \
     --referee http://127.0.0.1:8080 --html audit_report.html
+
+# or wrap any untrusted OpenAI API with a drop-in Verify-Before-Act HTTP guard proxy!
+llmverify proxy --upstream https://host/v1 --referee http://127.0.0.1:8080 --port 8099
+# point your OpenAI SDK / agent at http://127.0.0.1:8099/v1 (blocks hijacked tool calls with HTTP 409)
 ```
 
 **Using a coding agent (Claude Code, Codex, Cursor, etc.)?** Point it at this repo — [AGENTS.md](AGENTS.md) gives it the exact setup, auditing, and `VerifyBeforeActGuard` recipes.

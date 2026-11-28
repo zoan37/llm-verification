@@ -6,6 +6,7 @@
   keygen    create a provider signing key
   verify    check a saved reply (receipt + trace JSON) offline, optionally auditing it on a referee
   replay    verify a receipt + compact Merkle span proof (JSON or LVM1 binary) offline
+  proxy     run a drop-in OpenAI-compatible Verify-Before-Act HTTP guard proxy
   audit     black-box audit of any OpenAI-compatible endpoint against a referee you run
 """
 
@@ -220,6 +221,46 @@ def cmd_replay(a):
     sys.exit(0 if ok else 1)
 
 
+def cmd_proxy(a):
+    """Run a drop-in OpenAI-compatible local Verify-Before-Act HTTP guard proxy."""
+    from .blackbox import ChatFormat
+    from .engine import open_referee
+    from .guard import RiskPolicy
+    from .proxy import VerifyProxyEngine, make_proxy_server
+
+    ref = open_referee(a.referee)
+    meta = getattr(ref, "meta", {}) or {}
+    fmt = ChatFormat(
+        kind="jinja",
+        template=meta.get("chat_template", ""),
+        template_kwargs=json.loads(a.template_kwargs),
+        add_bos=bool(meta.get("add_bos")),
+        bos=int(meta.get("bos", -1)),
+    ) if meta.get("chat_template") else None
+    policy = RiskPolicy(
+        max_unverified_value_usd=a.safe_value_usd,
+        always_verify_action_patterns=not a.value_only,
+    )
+    eng = VerifyProxyEngine(
+        a.upstream,
+        ref,
+        api_key=a.api_key or os.environ.get("LLMVERIFY_API_KEY") or os.environ.get("OPENROUTER_API_KEY"),
+        risk_policy=policy,
+        max_mean_regret=a.max_regret,
+        max_token_regret=a.max_token_regret,
+        always_verify=a.always_verify,
+        background_sample_rate=a.bg_rate,
+        chat_format=fmt,
+    )
+    srv = make_proxy_server(eng, host=a.host, port=a.port)
+    print(
+        f"llmverify proxy listening on http://{a.host}:{a.port}/v1 -> {a.upstream} "
+        f"(referee={a.referee}, max_regret={a.max_regret}, max_token_regret={a.max_token_regret})",
+        flush=True,
+    )
+    srv.serve_forever()
+
+
 def cmd_doctor(_a):
     import platform
     import shutil
@@ -387,6 +428,20 @@ def main():
     rp.add_argument("bundle", help="JSON file containing {receipt, span_proof | span_proof_b64}")
     rp.add_argument("--key", help="pinned provider public key (hex)")
     rp.set_defaults(fn=cmd_replay)
+    px = sub.add_parser("proxy", help="drop-in OpenAI-compatible Verify-Before-Act HTTP guard proxy")
+    px.add_argument("--upstream", required=True, help="upstream OpenAI-compatible base URL, e.g. https://host/v1")
+    px.add_argument("--referee", required=True, help="lv-engine command line or http:// llama-server/vLLM URL")
+    px.add_argument("--api-key", help="optional upstream Bearer token (defaults to LLMVERIFY_API_KEY / OPENROUTER_API_KEY)")
+    px.add_argument("--host", default="127.0.0.1")
+    px.add_argument("--port", type=int, default=8099)
+    px.add_argument("--max-regret", type=float, default=0.08, help="block high-stakes reply if mean regret exceeds this")
+    px.add_argument("--max-token-regret", type=float, default=2.0, help="block high-stakes reply if any token regret exceeds this")
+    px.add_argument("--safe-value-usd", type=float, default=25.0, help="escalate when X-LLMVerify-Value-USD exceeds this")
+    px.add_argument("--value-only", action="store_true", help="only escalate by value-at-risk header, not regex action patterns")
+    px.add_argument("--always-verify", action="store_true", help="synchronously verify every completion")
+    px.add_argument("--bg-rate", type=float, default=0.05, help="background audit probability for deferred turns")
+    px.add_argument("--template-kwargs", default="{}")
+    px.set_defaults(fn=cmd_proxy)
     au = sub.add_parser("audit")
     au.add_argument("--base-url", required=True, help="OpenAI-compatible base, e.g. https://host/v1")
     au.add_argument("--model", required=True, help="model name the endpoint expects")

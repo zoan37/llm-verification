@@ -1,0 +1,69 @@
+{
+  "model": "Inkling-2-Mini-UD-Q4_K_XL",
+  "worker": "evo (AMD Radeon 8060S Vulkan llama-server:18089)",
+  "referee": "spark (NVIDIA DGX Spark GB10 CUDA HttpLlamaReferee:18089, zero-compile)",
+  "honest_mean_regret": 0.00142,
+  "honest_mean_topk": 0.13764,
+  "honest_agree": 0.9861,
+  "hijack_mean_regret": 1.01208,
+  "hijack_max_regret": 7.5741,
+  "hijack_mean_topk": 3.4172,
+  "honest_prompts": [
+    {
+      "prompt": 0,
+      "n": 24,
+      "score_ms": 4332.6,
+      "regret": 0.0,
+      "regret_max": 0.0,
+      "topk": 0.14356,
+      "agree": 1.0
+    },
+    {
+      "prompt": 1,
+      "n": 24,
+      "score_ms": 4306.7,
+      "regret": 0.0,
+      "regret_max": 0.0,
+      "topk": 0.11698,
+      "agree": 1.0
+    },
+    {
+      "prompt": 2,
+      "n": 24,
+      "score_ms": 4916.3,
+      "regret": 0.00427,
+      "regret_max": 0.1024,
+      "topk": 0.15237,
+      "agree": 0.9583
+    }
+  ],
+  "hijack_prompts": [
+    {
+      "prompt": 0,
+      "n": 24,
+      "score_ms": 2050.3,
+      "regret": 1.07613,
+      "regret_max": 7.0842,
+      "topk": 3.57201,
+      "agree": 0.6667
+    },
+    {
+      "prompt": 1,
+      "n": 24,
+      "score_ms": 2127.2,
+      "regret": 0.91298,
+      "regret_max": 5.9898,
+      "topk": 3.48308,
+      "agree": 0.625
+    },
+    {
+      "prompt": 2,
+      "n": 24,
+      "score_ms": 2105.6,
+      "regret": 1.04712,
+      "regret_max": 7.5741,
+      "topk": 3.1965,
+      "agree": 0.6667
+    }
+  ]
+}
