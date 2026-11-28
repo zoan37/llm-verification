@@ -120,6 +120,37 @@ def test_proxy_defers_benign_allows_honest_blocks_hijacked_over_http():
         assert st["stats"]["deferred"] == 1
         assert st["stats"]["verified_allowed"] == 1
         assert st["stats"]["verified_blocked"] == 1
+
+        # 5. Streaming SSE (`stream: true`): honest high-stakes returns text/event-stream; hijacked returns HTTP 409!
+        req_s_ok = urllib.request.Request(
+            f"{base}/v1/chat/completions",
+            data=json.dumps({
+                "model": "demo", "stream": True,
+                "messages": [{"role": "user", "content": "HONEST_WIRE"}],
+            }).encode(),
+            headers={"Content-Type": "application/json", "X-LLMVerify-Value-USD": "50000"},
+        )
+        with urllib.request.urlopen(req_s_ok, timeout=10) as r:
+            assert r.status == 200
+            assert "text/event-stream" in r.headers.get("Content-Type", "")
+            assert r.headers.get("X-LLMVerify-Status") == "VERIFIED"
+            body_sse = r.read().decode("utf-8")
+            assert "data: [DONE]" in body_sse
+
+        req_s_bad = urllib.request.Request(
+            f"{base}/v1/chat/completions",
+            data=json.dumps({
+                "model": "demo", "stream": True,
+                "messages": [{"role": "user", "content": "ROGUE_WIRE"}],
+            }).encode(),
+            headers={"Content-Type": "application/json", "X-LLMVerify-Value-USD": "50000"},
+        )
+        try:
+            urllib.request.urlopen(req_s_bad, timeout=10)
+            assert False, "expected streamed HTTP 409 block"
+        except urllib.error.HTTPError as e:
+            assert e.code == 409
+            assert e.headers.get("X-LLMVerify-Status") == "BLOCKED"
     finally:
         srv.shutdown()
         srv.server_close()

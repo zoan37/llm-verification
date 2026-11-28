@@ -86,6 +86,11 @@ Open work, roughly in priority order. Each item says what it would establish.
 - [x] Silent top-k defaults: confirmed with the sampler fingerprint and explicit `top_k` 0 / -1 / 1000
       (`experiments/sampler_control.py`). Next: the same on Qwen3.8 and Gemma endpoints.
 - [x] DeepInfra fp8 / Mara / SambaNova serve byte-identical gpt-oss-120b output; Mara = SambaNova on DeepSeek V3.2 too.
-- [ ] Shared deployments among nondeterministic endpoints: longer replies, more prompts, prefix-length statistics.
+- [x] **Shared deployments among nondeterministic endpoints** (`experiments/results/shared_prefix_forensics.json`,
+      prefix-length ratio vs self-repeat LCP across 10 models in `data/raw-shared/`): even with 0% exact full-reply
+      matches, `venice__fp8 <-> deepinfra__fp8(__flex)` shares `216-243` char prefixes on `minimax-m3` (`13.5-15.2x`
+      background median, matching `deepinfra` internal tiers at `11.8x`), `baseten <-> venice__fp8` hits `29.2%` exact
+      and `462.5` char LCP (`3.0x` med, `1.36x` self) on `deepseek-v4.1-flash-1017`, and `atlas-cloud__fp8 <-> siliconflow__fp8`
+      hits `29.2%` exact (`3.21x` self) on `qwen3.6-35b-a3b`.
 - [x] Venice / DeepInfra: probable on Gemma-4-26B/31B, Qwen3.6, MiniMax M3 (top_k limit, image tokens, reasoning
       cap); not on Qwen3.5/3.8. A decisive test would need a timing side channel or a request feature only DeepInfra has.

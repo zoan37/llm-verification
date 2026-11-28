@@ -195,6 +195,180 @@ class VerifyProxyEngine:
             "scores": tscores,
         }
 
+    def _forward_upstream_stream(
+        self, path: str, body: Dict[str, Any], headers: Dict[str, str]
+    ) -> Tuple[int, List[bytes], Dict[str, Any]]:
+        """Forward a streaming request to upstream, collecting raw SSE frames and assembling
+        the equivalent ChatCompletion object for Verify-Before-Act inspection."""
+        if self.upstream_transport is not None:
+            # Allow test transports to return a normal ChatCompletion dict which we wrap as SSE frames
+            st, resp = self.upstream_transport(path, {**body, "stream": False}, headers)
+            if st >= 400:
+                return st, [], resp
+            text, _ = _extract_reply_text_and_tools(resp)
+            msg = (resp.get("choices") or [{}])[0].get("message") or {}
+            delta: Dict[str, Any] = {"role": "assistant"}
+            if msg.get("content"):
+                delta["content"] = msg["content"]
+            if msg.get("tool_calls"):
+                delta["tool_calls"] = msg["tool_calls"]
+            chunk = {
+                "id": resp.get("id", "chatcmpl-proxy"),
+                "object": "chat.completion.chunk",
+                "model": resp.get("model", body.get("model", "")),
+                "choices": [{"index": 0, "delta": delta, "finish_reason": "stop"}],
+            }
+            frames = [f"data: {json.dumps(chunk)}\n\n".encode("utf-8"), b"data: [DONE]\n\n"]
+            return st, frames, resp
+
+        url = f"{self.upstream_base}{path}"
+        fwd_headers = {"Content-Type": "application/json", "Accept": "text/event-stream"}
+        auth = headers.get("Authorization") or (f"Bearer {self.api_key}" if self.api_key else None)
+        if auth:
+            fwd_headers["Authorization"] = auth
+        req = urllib.request.Request(url, data=json.dumps(body).encode("utf-8"), headers=fwd_headers, method="POST")
+        frames: List[bytes] = []
+        content_parts: List[str] = []
+        tool_calls_by_idx: Dict[int, Dict[str, Any]] = {}
+        last_meta: Dict[str, Any] = {"id": "chatcmpl-proxy", "model": body.get("model", "")}
+        try:
+            with urllib.request.urlopen(req, timeout=180) as resp:
+                status = resp.status
+                for raw_line in resp:
+                    frames.append(raw_line)
+                    line = raw_line.decode("utf-8", errors="replace").strip()
+                    if not line.startswith("data:"):
+                        continue
+                    payload = line[5:].strip()
+                    if not payload or payload == "[DONE]":
+                        continue
+                    try:
+                        ev = json.loads(payload)
+                    except Exception:
+                        continue
+                    if ev.get("id"):
+                        last_meta["id"] = ev["id"]
+                    if ev.get("model"):
+                        last_meta["model"] = ev["model"]
+                    ch = (ev.get("choices") or [{}])[0]
+                    delta = ch.get("delta") or {}
+                    if delta.get("content"):
+                        content_parts.append(str(delta["content"]))
+                    for tc in delta.get("tool_calls") or []:
+                        idx = int(tc.get("index", 0))
+                        entry = tool_calls_by_idx.setdefault(
+                            idx, {"id": tc.get("id", ""), "type": "function", "function": {"name": "", "arguments": ""}}
+                        )
+                        if tc.get("id"):
+                            entry["id"] = tc["id"]
+                        fn = tc.get("function") or {}
+                        if fn.get("name"):
+                            entry["function"]["name"] += str(fn["name"])
+                        if fn.get("arguments"):
+                            entry["function"]["arguments"] += str(fn["arguments"])
+        except urllib.error.HTTPError as e:
+            raw = e.read().decode("utf-8", errors="replace")
+            try:
+                return e.code, [], json.loads(raw)
+            except Exception:
+                return e.code, [], {"error": {"message": raw}}
+
+        assembled_msg: Dict[str, Any] = {"role": "assistant", "content": "".join(content_parts)}
+        if tool_calls_by_idx:
+            assembled_msg["tool_calls"] = [tool_calls_by_idx[i] for i in sorted(tool_calls_by_idx)]
+        assembled = {
+            **last_meta,
+            "choices": [{"index": 0, "message": assembled_msg, "finish_reason": "stop"}],
+        }
+        return status, frames, assembled
+
+    def handle_chat_stream(
+        self,
+        body: Dict[str, Any],
+        req_headers: Optional[Dict[str, str]] = None,
+    ) -> Tuple[int, Optional[List[bytes]], Optional[Dict[str, Any]], Dict[str, str]]:
+        """Process a `stream: true` `/v1/chat/completions` request safely:
+        buffers upstream SSE frames, enforces Verify-Before-Act BEFORE flushing any bytes to
+        the client, and returns `(200, sse_frames, None, headers)` on allow or `(409, None, error_json, headers)` on block."""
+        hdrs = req_headers or {}
+        with self._lock:
+            self.stats["total"] += 1
+        var_usd: Optional[float] = None
+        for k, v in hdrs.items():
+            if k.lower() == "x-llmverify-value-usd":
+                try:
+                    var_usd = float(v)
+                except ValueError:
+                    pass
+        if var_usd is None and "value_at_risk_usd" in body:
+            try:
+                var_usd = float(body.pop("value_at_risk_usd"))
+            except (TypeError, ValueError):
+                body.pop("value_at_risk_usd", None)
+
+        status, frames, resp = self._forward_upstream_stream("/chat/completions", body, hdrs)
+        if status >= 400:
+            with self._lock:
+                self.stats["upstream_errors"] += 1
+            return status, None, resp, {"X-LLMVerify-Status": "UPSTREAM_ERROR"}
+
+        reply_text, has_tools = _extract_reply_text_and_tools(resp)
+        messages = body.get("messages") or []
+        need_sync = self.should_verify_sync(reply_text, has_tools, var_usd)
+        if not need_sync:
+            with self._lock:
+                self.stats["deferred"] += 1
+            self._record_event({
+                "ts": round(time.time(), 2), "mode": "deferred_stream", "action": "ALLOWED",
+                "value_at_risk_usd": var_usd, "has_tools": has_tools,
+            })
+            return status, frames, None, {"X-LLMVerify-Status": "DEFERRED", "X-LLMVerify-Latency-Ms": "0.0"}
+
+        audit = self._score_reply(messages, reply_text)
+        with self._lock:
+            self.ledger.add(audit["scores"])
+        reasons: List[str] = []
+        if audit["mean_regret"] > self.max_mean_regret:
+            reasons.append(f"mean_regret {audit['mean_regret']:.4f} > limit {self.max_mean_regret:.4f}")
+        if audit["max_regret"] > self.max_token_regret:
+            reasons.append(f"max_token_regret {audit['max_regret']:.4f} > limit {self.max_token_regret:.4f}")
+        if reasons:
+            with self._lock:
+                self.stats["verified_blocked"] += 1
+            self._record_event({
+                "ts": round(time.time(), 2), "mode": "sync_vba_stream", "action": "BLOCKED",
+                "value_at_risk_usd": var_usd, "mean_regret": audit["mean_regret"],
+                "max_regret": audit["max_regret"], "latency_ms": audit["latency_ms"], "reasons": reasons,
+            })
+            return 409, None, {
+                "error": {
+                    "type": "llmverify_blocked",
+                    "message": "Verify-Before-Act guard blocked streamed high-stakes reply: " + "; ".join(reasons),
+                    "reasons": reasons,
+                    "audit": {k: v for k, v in audit.items() if k != "scores"},
+                    "blocked_preview": reply_text[:200],
+                }
+            }, {
+                "X-LLMVerify-Status": "BLOCKED",
+                "X-LLMVerify-Regret": f"{audit['mean_regret']:.5f}",
+                "X-LLMVerify-Max-Regret": f"{audit['max_regret']:.4f}",
+                "X-LLMVerify-Latency-Ms": f"{audit['latency_ms']:.1f}",
+            }
+
+        with self._lock:
+            self.stats["verified_allowed"] += 1
+        self._record_event({
+            "ts": round(time.time(), 2), "mode": "sync_vba_stream", "action": "ALLOWED",
+            "value_at_risk_usd": var_usd, "mean_regret": audit["mean_regret"],
+            "max_regret": audit["max_regret"], "latency_ms": audit["latency_ms"],
+        })
+        return status, frames, None, {
+            "X-LLMVerify-Status": "VERIFIED",
+            "X-LLMVerify-Regret": f"{audit['mean_regret']:.5f}",
+            "X-LLMVerify-Max-Regret": f"{audit['max_regret']:.4f}",
+            "X-LLMVerify-Latency-Ms": f"{audit['latency_ms']:.1f}",
+        }
+
     def handle_chat(
         self,
         body: Dict[str, Any],
@@ -344,6 +518,21 @@ def make_proxy_server(engine: VerifyProxyEngine, host: str = "127.0.0.1", port: 
                 body = json.loads(raw.decode("utf-8"))
             except Exception as e:
                 self._send_json(400, {"error": {"message": f"invalid JSON: {e}"}})
+                return
+            if body.get("stream"):
+                code, frames, err_obj, hdrs = engine.handle_chat_stream(body, dict(self.headers.items()))
+                if frames is None:
+                    self._send_json(code, err_obj, hdrs)
+                else:
+                    payload = b"".join(frames)
+                    self.send_response(code)
+                    self.send_header("Content-Type", "text/event-stream")
+                    self.send_header("Cache-Control", "no-cache")
+                    self.send_header("Content-Length", str(len(payload)))
+                    for k, v in hdrs.items():
+                        self.send_header(k, v)
+                    self.end_headers()
+                    self.wfile.write(payload)
                 return
             code, resp, hdrs = engine.handle_chat(body, dict(self.headers.items()))
             self._send_json(code, resp, hdrs)
