@@ -1,0 +1,23 @@
+{
+  "model": "gemma-4-26B-A4B-it-Q4_K_M",
+  "architecture": "hybrid_swa_5to1_global_moe",
+  "hardware": "NVIDIA DGX Spark GB10 (CUDA, -fa on)",
+  "probe": "3_needle_30k_ledger_recall",
+  "ctx_len": 29610,
+  "needles": {
+    "ROW-0066": "N727383-Z28",
+    "ROW-0330": "N117999-Z96",
+    "ROW-0594": "N408615-Z67"
+  },
+  "kv": {
+    "f16": { "n_tok": 66, "recall_count": 3, "regret_mean": 0.0, "regret_max": 0.0, "wgap_mean": 0.04109, "topk_mean": 0.34384, "agree": 1.0 },
+    "q8_0": { "n_tok": 73, "recall_count": 3, "regret_mean": 0.01493, "regret_max": 1.0902, "wgap_mean": 0.01267, "topk_mean": 0.21299, "agree": 0.9863 },
+    "q4_0": { "n_tok": 73, "recall_count": 3, "regret_mean": 0.01493, "regret_max": 1.0902, "wgap_mean": 0.01703, "topk_mean": 0.33712, "agree": 0.9863 }
+  },
+  "sampling_regime_validation_qwen35_35b_720tok": {
+    "honest_T1.0": { "t_eff": 0.984, "t_ci": [0.931, 1.043], "z_ce": 0.56, "z_head": 1.08, "tail_obs": 3, "tail_exp": 3.5 },
+    "low_temp_T0.72": { "t_eff": 0.843, "t_ci": [0.805, 0.885], "z_ce": 6.52, "z_head": 0.1, "tail_obs": 0, "tail_exp": 3.9 },
+    "pure_top_p_0.85": { "t_eff": 0.883, "t_ci": [0.84, 0.93], "z_ce": 4.51, "z_head": 1.03, "tail_obs": 0, "tail_exp": 3.6 },
+    "pure_min_p_0.06": { "t_eff": 0.882, "t_ci": [0.84, 0.928], "z_ce": 4.69, "z_head": 0.66, "tail_obs": 0, "tail_exp": 4.0 }
+  }
+}

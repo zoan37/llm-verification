@@ -117,6 +117,71 @@ def effective_temperature(
     }
 
 
+def head_pit_test(
+    replies: Sequence[Sequence[Optional[TokenScore]]],
+    head_cut: float = 0.70,
+    min_var_lp: float = 0.8,
+) -> Dict[str, Optional[float]]:
+    """Head-only PIT test conditioned on uncertain positions (`var_lp >= min_var_lp`) and head draws (`pit <= head_cut`).
+
+    Disentangles pure tail truncation (`top_p >= 0.80` / `min_p`) from temperature sharpening (`T < 1`):
+      - Under honest T=1 OR pure tail truncation above `head_cut`, all surviving probabilities in the head
+        are rescaled by the same constant, so `U | (U <= head_cut)` stays EXACTLY Uniform(0, head_cut)
+        with mean `head_cut / 2` and `z_head ~= 0`.
+      - Under silent temperature lowering (`T < 1`), higher-probability head tokens are exponentially boosted
+        relative to runner-ups even inside `U <= head_cut`, driving `z_head << -3`.
+    """
+    vals = [
+        s.pit for r in replies for s in r
+        if s is not None and s.pit is not None and s.var_lp is not None
+        and s.var_lp >= min_var_lp and s.pit <= head_cut
+    ]
+    n = len(vals)
+    if n < 30:
+        return {"mean": None, "expected": head_cut / 2.0, "z": None, "p": None, "n_tokens": n}
+    mean = sum(vals) / n
+    se = math.sqrt((head_cut * head_cut / 12.0) / n)
+    z = (mean - head_cut / 2.0) / se
+    return {"mean": mean, "expected": head_cut / 2.0, "z": z, "p": 2 * normal_sf(abs(z)), "n_tokens": n}
+
+
+def sampling_diagnosis(
+    replies: Sequence[Sequence[Optional[TokenScore]]],
+    segments: Sequence[dict],
+    requested: float = 1.0,
+) -> Dict[str, object]:
+    """Classify sampled-output anomalies by combining `effective_temperature`, `head_pit_test`, and `sampler_test`."""
+    et = effective_temperature(replies, requested=requested)
+    hp = head_pit_test(replies)
+    st = sampler_test(segments) or {}
+    truncs = {k: st[k]["bound"] for k in ("top_k", "top_p", "min_p") if st.get(k, {}).get("bound") is not None}
+    t_eff = et.get("t_eff")
+    z_head = hp.get("z")
+    t_lo, t_hi = et.get("lo"), et.get("hi")
+
+    if t_eff is None or et["n_tokens"] < 100:
+        label = "INSUFFICIENT_DATA"
+    elif t_lo is not None and t_lo > requested * 1.08:
+        label = "MODEL_OR_QUANT_DRIFT"
+    elif z_head is not None and z_head <= -3.5 and not truncs:
+        label = "SILENT_LOW_TEMPERATURE"
+    elif z_head is not None and z_head <= -3.5 and truncs:
+        label = "LOW_TEMP_OR_TIGHT_TOPK"
+    elif truncs and (z_head is None or z_head > -3.0):
+        label = "PURE_TAIL_TRUNCATION"
+    elif t_hi is not None and t_hi < requested * 0.92:
+        label = "SILENT_LOW_TEMPERATURE"
+    else:
+        label = "CONSISTENT"
+
+    return {
+        "diagnosis": label,
+        "effective_temperature": et,
+        "head_pit": hp,
+        "truncation_bounds": truncs,
+    }
+
+
 def tail_test(replies: Sequence[Sequence[Optional[TokenScore]]]) -> Dict[str, Optional[float]]:
     """Long-tail draws: observed number of sampled tokens with p < 1e-4 vs the number the referee expects (the sum of
     its per-position tail mass). Under honest temperature-1, top_p-1 sampling the count is a sum of independent-ish
@@ -445,6 +510,75 @@ class CombinedEProcess:
     def observe(self, current_wealths: Sequence[float], weights: Optional[Sequence[float]] = None) -> float:
         self.n += 1
         self.wealth = combine_evalues(current_wealths, weights)
+        if self.wealth > self.history_max:
+            self.history_max = self.wealth
+        return self.wealth
+
+    def p_value(self) -> float:
+        return min(1.0, 1.0 / max(self.history_max, 1e-300))
+
+
+@dataclass
+class MultivariateEProcess:
+    """Anytime-valid multivariate e-process over correlated metrics with ZERO independence assumptions.
+
+    Given per-metric null tolerances `tau_m > 0` and weights `w_m >= 0` (summing to 1), defines the
+    normalized scalarized observation at step t:
+        S_t = sum_m w_m * (min(X_{t,m}, upper_m) / tau_m).
+    By linearity of expectation — valid under ARBITRARY correlation across metrics — under H0
+    (E[X_{t,m}] <= tau_m for all m), we have E_H0[S_t] <= 1.0 and 0 <= S_t <= U_S := sum_m w_m*(upper_m/tau_m).
+
+    Because per-metric noise averages down BEFORE betting while coordinated multi-metric drift adds up,
+    `MultivariateEProcess` detects subtle simultaneous drift (e.g. Q8->Q6 or q4_0 KV cache) significantly
+    faster than testing each metric alone or post-hoc Vovk-Wang wealth averaging.
+    """
+    tolerances: Dict[str, float]
+    uppers: Optional[Dict[str, float]] = None
+    weights: Optional[Dict[str, float]] = None
+    n: int = 0
+    wealth: float = 1.0
+    history_max: float = 1.0
+    _ep: Optional[EProcess] = field(default=None, init=False, repr=False)
+    _cp: Optional[ChangepointEProcess] = field(default=None, init=False, repr=False)
+    _norm_w: Dict[str, float] = field(default_factory=dict, init=False, repr=False)
+    _uppers: Dict[str, float] = field(default_factory=dict, init=False, repr=False)
+
+    def __post_init__(self):
+        if not self.tolerances:
+            raise ValueError("tolerances must be non-empty")
+        for m, tau in self.tolerances.items():
+            if tau <= 0:
+                raise ValueError(f"tolerance for {m} must be > 0")
+        raw_w = self.weights or {m: 1.0 for m in self.tolerances}
+        tot = sum(max(0.0, float(raw_w.get(m, 0.0))) for m in self.tolerances)
+        if tot <= 0:
+            raise ValueError("weights must have positive sum")
+        self._norm_w = {m: max(0.0, float(raw_w.get(m, 0.0))) / tot for m in self.tolerances}
+        self._uppers = {
+            m: float((self.uppers or {}).get(m, max(5.0, tau * 20.0)))
+            for m, tau in self.tolerances.items()
+        }
+        u_s = sum(self._norm_w[m] * (self._uppers[m] / self.tolerances[m]) for m in self.tolerances)
+        self._ep = EProcess(tau=1.0, upper=u_s)
+        self._cp = ChangepointEProcess(tau=1.0, upper=u_s)
+
+    def update(self, obs: Dict[str, Optional[float]]) -> float:
+        present = [m for m in self.tolerances if obs.get(m) is not None]
+        if not present:
+            return self.wealth
+        # Renormalize weights over metrics present on this step (still E_H0[S_t] <= 1.0!).
+        w_sum = sum(self._norm_w[m] for m in present)
+        if w_sum <= 0:
+            return self.wealth
+        s = sum(
+            (self._norm_w[m] / w_sum) * (min(max(0.0, float(obs[m])), self._uppers[m]) / self.tolerances[m])
+            for m in present
+        )
+        self.n += 1
+        assert self._ep is not None and self._cp is not None
+        e1 = self._ep.update(s)
+        e2 = self._cp.update(s)
+        self.wealth = 0.5 * (e1 + e2)
         if self.wealth > self.history_max:
             self.history_max = self.wealth
         return self.wealth

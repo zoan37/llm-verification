@@ -1,0 +1,53 @@
+{
+  "alpha": 0.001,
+  "null_false_positives": {
+    "rho=0.0": {
+      "trials": 200,
+      "tokens_per_trial": 1000,
+      "fp_multivariate": 0,
+      "fp_combined": 0
+    },
+    "rho=0.5": {
+      "trials": 200,
+      "tokens_per_trial": 1000,
+      "fp_multivariate": 0,
+      "fp_combined": 0
+    },
+    "rho=0.95": {
+      "trials": 200,
+      "tokens_per_trial": 1000,
+      "fp_multivariate": 0,
+      "fp_combined": 0
+    }
+  },
+  "coordinated_subtle_drift_1.35x_tau": {
+    "bonferroni_single_median_tokens": 161.0,
+    "vovk_wang_combined_median_tokens": 161.0,
+    "multivariate_eprocess_median_tokens": 97.0,
+    "speedup_vs_bonferroni_x": 1.66,
+    "speedup_vs_vovk_wang_x": 1.66
+  },
+  "entropy_gated_20pct_cheat": {
+    "single_regret_median_tokens": 1067.0,
+    "multivariate_median_tokens": 834.0,
+    "speedup_x": 1.28
+  },
+  "ultra_low_rate_sporadic_multiscale_tailspike": {
+    "rate=0.5%": {
+      "median_spans_to_catch": 2013.0,
+      "power_within_2500_spans": 0.66
+    },
+    "rate=1.0%": {
+      "median_spans_to_catch": 575.0,
+      "power_within_2500_spans": 0.98
+    },
+    "rate=2.0%": {
+      "median_spans_to_catch": 175.0,
+      "power_within_2500_spans": 1.0
+    },
+    "rate=5.0%": {
+      "median_spans_to_catch": 53.0,
+      "power_within_2500_spans": 1.0
+    }
+  }
+}

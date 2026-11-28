@@ -21,7 +21,14 @@ from .engine import Model
 from .metrics import RefStep, TokenScore, score_reply
 from .receipt import Receipt, Trace
 from .sampling import SamplingSpec
-from .stats import Calibration, ChangepointEProcess, CombinedEProcess, EProcess, TailSpikeEProcess
+from .stats import (
+    Calibration,
+    ChangepointEProcess,
+    CombinedEProcess,
+    EProcess,
+    MultivariateEProcess,
+    TailSpikeEProcess,
+)
 
 REFEREE_K = 50
 
@@ -254,6 +261,7 @@ class Ledger:
     _cps: Dict[str, ChangepointEProcess] = field(default_factory=dict)
     _tails: Dict[str, TailSpikeEProcess] = field(default_factory=dict)
     _combined: Dict[str, CombinedEProcess] = field(default_factory=dict)
+    _mv: Optional[MultivariateEProcess] = None
     _joint: CombinedEProcess = field(default_factory=CombinedEProcess)
     # Optional honest near-tie flip curve [(margin upper edge, flip rate), ...] for a tier that pins the exact
     # weights: how often an honest machine picks something other than the referee's rule choice, by the referee's
@@ -282,6 +290,10 @@ class Ledger:
                 v = s.get(m)
                 if v is not None:
                     span_vals.setdefault(m, []).append(v)
+            if len(self.tolerances) > 1:
+                if self._mv is None:
+                    self._mv = MultivariateEProcess(self.tolerances, uppers=self.uppers)
+                self._mv.update({m: s.get(m) for m in self.tolerances})
         for m, cutoff in self.tail_cutoffs.items():
             vals = span_vals.get(m)
             if vals:
@@ -294,7 +306,10 @@ class Ledger:
                     wealths.append(self._cps[m].wealth)
                 self._combined.setdefault(m, CombinedEProcess()).observe(wealths)
         if self._combined:
-            self._joint.observe([cb.wealth for cb in self._combined.values()])
+            joint_ws = [cb.wealth for cb in self._combined.values()]
+            if self._mv is not None:
+                joint_ws.append(self._mv.wealth)
+            self._joint.observe(joint_ws)
 
     def add_failure(self, reason: str):
         """Exact failures (bad signature, rule violation, altered prompt) are conclusive on their own."""
@@ -360,6 +375,10 @@ class Ledger:
             status = "PASS"
         return {"status": status, "n_tokens": n, "audits": self.audits, "means": means, "eprocess": e_vals,
                 "changepoint": cp_vals, "tail_spike": ts_vals, "combined": comb_vals,
+                "multivariate": (
+                    {"p": self._mv.p_value(), "wealth": self._mv.wealth, "n": self._mv.n}
+                    if self._mv is not None else None
+                ),
                 "joint": {"p": self._joint.p_value(), "wealth": self._joint.wealth, "n": self._joint.n},
                 "thresholds": thresholds, "reasons": reasons, "warnings": warnings, "steering": steering}
 

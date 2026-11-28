@@ -110,3 +110,90 @@ def test_effective_temperature_recovers_low_exact_and_high_temps():
     assert low["hi"] < 0.90 and low["z"] > 5.0
     assert honest["lo"] <= 1.0 <= honest["hi"]
     assert high["lo"] > 1.15 and high["z"] < -5.0
+
+
+def test_head_pit_disentangles_low_temp_from_top_p_truncation():
+    import math
+    import random
+    from llmverify.metrics import TokenScore
+    from llmverify.stats import head_pit_test, sampling_diagnosis
+
+    rng = random.Random(99)
+
+    def run_mode(mode: str):
+        scores = []
+        for _ in range(2500):
+            logits = [rng.gauss(0.0, 1.3) for _ in range(60)]
+            m = max(logits)
+            e1 = [math.exp(x - m) for x in logits]
+            z1 = sum(e1)
+            p1 = [x / z1 for x in e1]
+            lp1 = [math.log(max(p, 1e-300)) for p in p1]
+            ent = -sum(p * lp for p, lp in zip(p1, lp1))
+            var_lp = max(0.0, sum(p * lp * lp for p, lp in zip(p1, lp1)) - ent * ent)
+            order = sorted(range(len(p1)), key=lambda i: -p1[i])
+            if mode == "honest":
+                q = p1
+            elif mode == "low_temp":
+                mt = max(x / 0.72 for x in logits)
+                et = [math.exp(x / 0.72 - mt) for x in logits]
+                zt = sum(et)
+                q = [x / zt for x in et]
+            else:  # pure top_p=0.85 truncation at T=1.0
+                q = [0.0] * len(p1)
+                cum = 0.0
+                for idx in order:
+                    q[idx] = p1[idx]
+                    cum += p1[idx]
+                    if cum >= 0.85:
+                        break
+                zq = sum(q)
+                q = [x / zq for x in q]
+            u = rng.random()
+            acc = 0.0
+            pick = len(q) - 1
+            for i, prob in enumerate(q):
+                acc += prob
+                if u <= acc:
+                    pick = i
+                    break
+            mass_above = sum(p for i, p in enumerate(p1) if p > p1[pick])
+            pit = mass_above + rng.random() * p1[pick]
+            scores.append(TokenScore(
+                regret=max(0.0, max(lp1) - lp1[pick]), agree=1.0 if pick == order[0] else 0.0,
+                lp=lp1[pick], ce_dev=lp1[pick] + ent, var_lp=var_lp, pit=pit,
+            ))
+        return [scores]
+
+    hp_honest = head_pit_test(run_mode("honest"))
+    hp_temp = head_pit_test(run_mode("low_temp"))
+    hp_topp = head_pit_test(run_mode("top_p"))
+    assert abs(hp_honest["z"]) < 3.0
+    assert hp_temp["z"] < -4.0  # pure low temp skews even the head U <= 0.70!
+    assert abs(hp_topp["z"]) < 3.0  # pure top_p=0.85 leaves the head U <= 0.70 completely uniform!
+    diag = sampling_diagnosis(run_mode("low_temp"), [])
+    assert diag["diagnosis"] == "SILENT_LOW_TEMPERATURE"
+
+
+def test_multivariate_eprocess_null_safety_and_drift_power():
+    import random
+    from llmverify.stats import MultivariateEProcess
+
+    rng = random.Random(2026)
+    tols = {"regret": 0.02, "wgap": 0.10, "topk": 0.30}
+    uppers = {"regret": 2.0, "wgap": 4.0, "topk": 6.0}
+
+    # Perfectly correlated (100%) honest null -> MUST NOT false alarm
+    mv_null = MultivariateEProcess(tols, uppers=uppers)
+    for _ in range(1500):
+        u = rng.random()
+        # Same shared shock across all 3 metrics (exact E = 0.75 * tau)
+        scale = -0.75 * (0.0 if u <= 0 else __import__("math").log(max(1.0 - u, 1e-12)))
+        mv_null.update({m: scale * tau for m, tau in tols.items()})
+    assert mv_null.p_value() > 1e-3
+
+    # Subtle coordinated +45% drift across all 3 metrics -> caught cleanly!
+    mv_drift = MultivariateEProcess(tols, uppers=uppers)
+    for _ in range(600):
+        mv_drift.update({m: 1.45 * tau * (-__import__("math").log(max(1.0 - rng.random(), 1e-12))) for m, tau in tols.items()})
+    assert mv_drift.p_value() <= 1e-3
