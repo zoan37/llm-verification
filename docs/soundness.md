@@ -58,7 +58,7 @@ runs at false-flag rate α, `Ledger` combines three exact anytime-valid supermar
 
 All three rest on the stated assumption that an honest provider's expected metric (or tail exceedance rate) stays within its calibrated tolerance. That assumption is the weak point: τ comes from measuring honest machines, and an honest platform nobody measured (new hardware, new engine, new kernel) can sit outside it. Every verdict is only as good as the honest baselines behind it. See [calibration](#calibration).
 
-**Native 1-pass prefill throughput (`lv-engine`)**: auditing replays the prompt + audited span in a single parallel prefill pass rather than token-by-token decode. Measured on `Qwen3.5-35B-A3B` (`Q4_K_M`, NVIDIA GB10 CUDA, 162 total tokens): `span=16` takes 163.5 ms (97.9 audited tok/s), `span=32` takes 137.0 ms (233.6 tok/s), and `span=64` takes 161.4 ms (**396.5 audited tok/s**).
+**Native 1-pass prefill throughput & cross-vendor parity (`lv-engine`)**: auditing replays the prompt + audited span in a single parallel prefill pass rather than token-by-token decode. Measured on `Qwen3.5-35B-A3B` (`Q4_K_M`, NVIDIA GB10 CUDA, 162 total tokens): `span=16` takes 163.5 ms (97.9 audited tok/s), `span=32` takes 137.0 ms (233.6 tok/s), and `span=64` takes 161.4 ms (**396.5 audited tok/s**). Cross-vendor parity check (4 × 64-token replies generated on AMD Strix Halo Vulkan `llama-server`, audited on NVIDIA GB10 CUDA `lv-engine`): `mean_regret = 0.00185` nats, `mean_topk = 0.08364` nats, `98.05%` top-1 agreement (118.4 ms vs 206.5 ms on `llama-server` for the same 16-token span, 1.74×–3.65× faster depending on prompt length).
 
 **Compact binary Merkle span proofs (`merkle.pack_span_proof`) & Verify-Before-Act (`guard.VerifyBeforeActGuard`)**: for tool calls or financial actions, the client can verify just the critical action span without transferring the full reply trace. A 24-token action span inside a 94-token `Qwen3.5-35B-A3B` reply shrinks from 29,737 B (full JSON trace) to 7,842 B (JSON `SpanProof`) to **2,742 B** (`LVM1+zlib` binary proof, 2.86× smaller than JSON, 1.04 ms pack / 0.40 ms unpack). Verified live cross-hardware (AMD Strix Halo Vulkan provider → NVIDIA GB10 CUDA referee): an honest tool call passed with 0.0000 regret and 24/24 token agreement, while a sleeper hijack carrying valid Ed25519 + valid Merkle proof + valid normalized top-20 passing the exact sampling rule was blocked pre-execution at 1.4563 nats mean regret (18.5766 nats peak token regret).
 
@@ -279,9 +279,14 @@ Findings from adversarial reviews, each now a regression test in `tests/test_red
 3. **Equivalence classes.** Speculative decoding with verification, expert offloading, and other lossless
    tricks produce M's distribution and are (correctly) indistinguishable. Lossy tricks smaller than honest
    noise are also indistinguishable, and arguably fine. The line between them is a policy choice (the tolerance).
-4. **Long context.** Most measurements use short prompts. On gpt-oss-20b up to 63k tokens, a 4-bit KV cache's
+4. **Long context & KV-cache quantization.** Most measurements use short prompts. On gpt-oss-20b up to 63k tokens, a 4-bit KV cache's
    per-token distance stayed flat while its wrong answers grew, and honest cross-engine noise on dense number tables
-   was ~10x that on code; long-context audits need their own calibration, per prompt type.
+   was ~10x that on code; long-context audits need their own calibration, per prompt type. On `Qwen3.5-35B-A3B` (`Q4_K_M`,
+   NVIDIA GB10 CUDA) with a 1,608-token structured audit-table prompt (64 generated tokens scored against an `f16` KV
+   referee): `f16` KV gave `regret = 0.00398` (`max = 0.132`, `topk = 0.0585`), `q8_0` KV remained near-lossless at
+   `regret = 0.00714` (`max = 0.457`, `topk = 0.0669`), whereas `q4_0` KV jumped `5.4×` to `regret = 0.02144`
+   (`max = 1.118` nats, `topk = 0.1171`, `2/64` spikes `> 0.2`) — crossing calibrated 128-token regret limits (`0.0194`)
+   while `q8_0` stays inside honest cross-hardware tolerance.
 5. **Calibration coverage.** Every new hardware platform and engine needs an honest baseline before its
    providers can be judged in a strict tier. Measured so far: Apple Metal, NVIDIA CUDA (GB10, RTX PRO 6000), ARM and
    x86 CPUs, vLLM BF16, AMD R9700 on Vulkan under Windows (gpt-oss-20b, Qwen3.8-27B), RTX 4090 on CUDA under WSL2
