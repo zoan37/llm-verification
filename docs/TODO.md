@@ -3,12 +3,13 @@
 Open work, roughly in priority order. Each item says what it would establish.
 
 ## Detection coverage
-- [x] **KV-cache compression on a full-attention model** (gpt-oss-20b, 2026-11-25/27; experiments/README.md). A q4_0
-      cache is plain at every length (5-34x the f16 cache's distance, wrong answers at 31k-63k tokens); an fp8 cache
-      on vLLM could not be told from vLLM's default. All 11 OpenRouter gpt-oss-20b endpoints scored on the copy probes
-      (`results/regret_profile/summary.json`): 10 of 11 sit at 0.0014-0.0051 regret (honest f16/vLLM range); SiliconFlow's
-      0.0455 is caused by rendering `Reasoning: medium` instead of `low` (0.0019 under medium), not a 4-bit cache. Next:
-      try Gemma-4 (sliding-window plus global layers).
+- [x] **KV-cache compression on full-attention & hybrid models** (gpt-oss-20b, Qwen3.5-35B-A3B, Gemma-4-26B;
+      `experiments/results/gemma4_26b_kv_quant.json`). On full-attention `gpt-oss-20b`, `q4_0` is 5-34x `f16` at every
+      length and causes wrong answers at 31k-63k. On hybrid 5:1 sliding-window + global `Gemma-4-26B` (`-fa on`, 3k/7k/14k
+      structured ledger), `q8_0` matches `f16` while `q4_0` separates cleanly in cooperative `wgap` (2.0-3.0x) and `topk`
+      (1.6-2.5x) at every length (plus `regret=0.0559, max=4.75` at 7k), even at 3k where greedy tokens agree 100%. All 11
+      OpenRouter gpt-oss-20b endpoints scored on copy probes (`results/regret_profile/summary.json`): 10 of 11 sit in honest
+      f16/vLLM range; SiliconFlow's 0.0455 is caused by rendering `Reasoning: medium` instead of `low`.
 - [ ] **Longer contexts** (64k-128k) and multi-needle recall.
 - [ ] **Gemma-4-31B (16 endpoints) and Qwen3.6-35B-A3B (10)**: full referee audits, the most popular local-sized models
       after those done. Paused 2026-10-30: needs ~148 GB of weights (Q8 referee, Q6_K honest, Q2_K_XL substitute)
@@ -27,9 +28,16 @@ Open work, roughly in priority order. Each item says what it would establish.
 - [x] **Image inputs on vision models** (`experiments/image_fidelity.py`): codes at 36-7 px + billed image tokens.
 - [x] **Scheduled snapshots** (`experiments/snapshot.py`): weekly Qwen3.8 snapshot on the Spark (systemd user timer
       `lv-snapshot.timer`, ~$0.40 a run), each compared with the previous. Next: more models, time-of-day variation.
-- [ ] **Effective temperature** for every endpoint (Darkbloom first).
-- [ ] **Modified-model demo (parked 2026-11-01)**: show end to end that a referee flags replies from a covertly
-      modified copy of the claimed model in an agent setting. Parked; revisit with a different setup.
+- [x] **Effective temperature** for every endpoint (`llmverify.stats.effective_temperature`, closed-form exponential-family
+      Fisher-scoring MLE + 95% CI, run across all 109 scored endpoints in `experiments/results/effective_temperature_leaderboard.json`):
+      local honest baselines sit at `0.997-1.002` (`z ~ 0`), while `groq` (`gpt-oss-20b`) sits at `0.861 [0.845, 0.877]` (`z=+15.1`),
+      `darkbloom` (`gemma-4-26b`) at `18.96` (`z=-43.2`), `darkbloom__fp4` (`qwen3.5/3.6`) at `1.121-1.128` (`z=-8.2/-8.8`), and
+      `venice__fp8` (`qwen3.8-27b`) at `1.227 [1.196, 1.260]` (`z=-17.0`).
+- [x] **Modified-model agent demo** (`experiments/modified_model_agent_demo.py`, `experiments/results/modified_model_agent_demo_live.json`):
+      end-to-end 3-turn treasury agent across AMD Radeon 8060S Vulkan worker → NVIDIA GB10 CUDA referee (`Qwen3.5-35B-A3B`).
+      A sleeper-triggered covert provider passes benign `$0` and `$5` turns identically, then attempts a `$50,000` redirect to
+      `0xSHADOW999` on turn 3 and is blocked with HTTP 409 in `129.6 ms` (`max_regret=13.64`) before tool execution while the
+      honest cross-vendor provider executes cleanly in `166.3 ms` (`regret=0.0000`, `100%` agreement).
 
 ## Cooperative mode in production
 - [x] **Challenge-only traces & Merkle span reveals** (receipt v2 + `llmverify/merkle.py`): `trace: "deferred"`,
@@ -61,8 +69,11 @@ Open work, roughly in priority order. Each item says what it would establish.
 - [x] Recorded, not reported upstream (llama.cpp does not accept AI-written reports): on GB10 (sm_121) the batched
       MXFP4 path costs gpt-oss-20b ~2% perplexity (4.549 vs 4.459 at batch 8; RTX 4090 4.458 vs 4.457),
       experiments/results/path-noise-gpt-oss-20b.json.
-- [ ] Cross-machine referee in the cooperative attack run (provider and referee were on one machine, so `wgap`
-      noise is underestimated there).
+- [x] **Cross-machine referee in the cooperative attack run** (`experiments/cross_vendor_cooperative_attacks.py`,
+      `experiments/results/cross_vendor_qwen35.json`): real AMD Radeon 8060S Vulkan worker → NVIDIA GB10 CUDA referee
+      (`Qwen3.5-35B-A3B Q4_K_M`, ~760 tok/scenario). Honest cross-vendor passes (`regret=0.00711, wgap=0.0321, topk=0.2115,
+      joint p=1.0`); untriggered 1-sentence bias (`p=2.0e-232`), thinking suppression (`p=1.3e-216`), 50% truncation (`p=2.0e-54`),
+      and 1-in-8 sporadic cheating (`p=1.4e-34`) are all caught.
 - [ ] A BF16 referee where possible (Qwen3.5/3.8 used Q8_0, which cannot separate FP8-class providers).
 
 ## Pipeline

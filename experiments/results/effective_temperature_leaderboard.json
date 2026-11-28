@@ -1,0 +1,886 @@
+{
+  "google__gemma-4-26b-a4b-it": [
+    {
+      "endpoint": "io-net__bf16",
+      "t_eff": 0.9674,
+      "ci_lo": 0.9275,
+      "ci_hi": 1.0109,
+      "z": 1.49,
+      "n_tokens": 11042
+    },
+    {
+      "endpoint": "coreweave__bf16",
+      "t_eff": 0.9969,
+      "ci_lo": 0.954,
+      "ci_hi": 1.0438,
+      "z": 0.14,
+      "n_tokens": 10779
+    },
+    {
+      "endpoint": "parasail__bf16",
+      "t_eff": 1.0148,
+      "ci_lo": 0.9706,
+      "ci_hi": 1.0633,
+      "z": -0.64,
+      "n_tokens": 11164
+    },
+    {
+      "endpoint": "google-vertex__global",
+      "t_eff": 1.029,
+      "ci_lo": 0.9851,
+      "ci_hi": 1.0771,
+      "z": -1.27,
+      "n_tokens": 11068
+    },
+    {
+      "endpoint": "local__vllm-bf16",
+      "t_eff": 1.0364,
+      "ci_lo": 0.9916,
+      "ci_hi": 1.0854,
+      "z": -1.58,
+      "n_tokens": 11119
+    },
+    {
+      "endpoint": "deepinfra__fp8",
+      "t_eff": 1.0519,
+      "ci_lo": 1.0052,
+      "ci_hi": 1.1032,
+      "z": -2.19,
+      "n_tokens": 11009
+    },
+    {
+      "endpoint": "primeintellect__bf16",
+      "t_eff": 1.0582,
+      "ci_lo": 1.0108,
+      "ci_hi": 1.1102,
+      "z": -2.43,
+      "n_tokens": 11022
+    },
+    {
+      "endpoint": "cloudflare",
+      "t_eff": 1.0869,
+      "ci_lo": 1.037,
+      "ci_hi": 1.1418,
+      "z": -3.54,
+      "n_tokens": 11064
+    },
+    {
+      "endpoint": "nextbit__bf16",
+      "t_eff": 1.0964,
+      "ci_lo": 1.0461,
+      "ci_hi": 1.1517,
+      "z": -3.93,
+      "n_tokens": 11151
+    },
+    {
+      "endpoint": "venice__bf16",
+      "t_eff": 1.0988,
+      "ci_lo": 1.0475,
+      "ci_hi": 1.1554,
+      "z": -3.95,
+      "n_tokens": 11152
+    },
+    {
+      "endpoint": "dekallm__bf16",
+      "t_eff": 1.1001,
+      "ci_lo": 1.0493,
+      "ci_hi": 1.1562,
+      "z": -4.05,
+      "n_tokens": 11137
+    },
+    {
+      "endpoint": "siliconflow__fp8",
+      "t_eff": 1.1495,
+      "ci_lo": 1.0949,
+      "ci_hi": 1.2098,
+      "z": -5.88,
+      "n_tokens": 11064
+    },
+    {
+      "endpoint": "makora",
+      "t_eff": 1.2179,
+      "ci_lo": 1.1542,
+      "ci_hi": 1.2891,
+      "z": -7.74,
+      "n_tokens": 10700
+    },
+    {
+      "endpoint": "akashml__fp4",
+      "t_eff": 8.375,
+      "ci_lo": 6.209,
+      "ci_hi": 12.8618,
+      "z": -41.44,
+      "n_tokens": 11269
+    },
+    {
+      "endpoint": "local__substitute-q4_0",
+      "t_eff": 8.9655,
+      "ci_lo": 6.533,
+      "ci_hi": 14.2842,
+      "z": -41.93,
+      "n_tokens": 11092
+    },
+    {
+      "endpoint": "darkbloom",
+      "t_eff": 18.9593,
+      "ci_lo": 10.4521,
+      "ci_hi": 101.8881,
+      "z": -43.25,
+      "n_tokens": 10998
+    }
+  ],
+  "openai__gpt-oss-120b": [
+    {
+      "endpoint": "groq",
+      "t_eff": 0.9257,
+      "ci_lo": 0.8977,
+      "ci_hi": 0.9555,
+      "z": 4.67,
+      "n_tokens": 11912
+    },
+    {
+      "endpoint": "mara",
+      "t_eff": 1.0091,
+      "ci_lo": 0.9765,
+      "ci_hi": 1.044,
+      "z": -0.53,
+      "n_tokens": 11894
+    },
+    {
+      "endpoint": "amazon-bedrock__eu-west-1",
+      "t_eff": 1.019,
+      "ci_lo": 0.9858,
+      "ci_hi": 1.0546,
+      "z": -1.11,
+      "n_tokens": 12020
+    },
+    {
+      "endpoint": "akashml__bf16",
+      "t_eff": 1.0334,
+      "ci_lo": 0.9996,
+      "ci_hi": 1.0696,
+      "z": -1.93,
+      "n_tokens": 12004
+    },
+    {
+      "endpoint": "sail-research__fp4",
+      "t_eff": 1.0441,
+      "ci_lo": 1.0094,
+      "ci_hi": 1.0812,
+      "z": -2.52,
+      "n_tokens": 11876
+    },
+    {
+      "endpoint": "amazon-bedrock",
+      "t_eff": 1.0449,
+      "ci_lo": 1.0101,
+      "ci_hi": 1.0821,
+      "z": -2.56,
+      "n_tokens": 11892
+    },
+    {
+      "endpoint": "coreweave__fp4",
+      "t_eff": 1.0495,
+      "ci_lo": 1.0145,
+      "ci_hi": 1.087,
+      "z": -2.81,
+      "n_tokens": 11715
+    },
+    {
+      "endpoint": "local__cuda-rtxpro6000",
+      "t_eff": 1.0498,
+      "ci_lo": 1.0146,
+      "ci_hi": 1.0876,
+      "z": -2.81,
+      "n_tokens": 12174
+    },
+    {
+      "endpoint": "together",
+      "t_eff": 1.051,
+      "ci_lo": 1.0152,
+      "ci_hi": 1.0894,
+      "z": -2.83,
+      "n_tokens": 11857
+    },
+    {
+      "endpoint": "sambanova",
+      "t_eff": 1.0529,
+      "ci_lo": 1.0175,
+      "ci_hi": 1.0909,
+      "z": -2.98,
+      "n_tokens": 11919
+    },
+    {
+      "endpoint": "google-vertex__global",
+      "t_eff": 1.0581,
+      "ci_lo": 1.0222,
+      "ci_hi": 1.0967,
+      "z": -3.24,
+      "n_tokens": 11993
+    },
+    {
+      "endpoint": "nebius__fp4",
+      "t_eff": 1.0625,
+      "ci_lo": 1.0269,
+      "ci_hi": 1.1007,
+      "z": -3.53,
+      "n_tokens": 11908
+    },
+    {
+      "endpoint": "near-ai__fp4",
+      "t_eff": 1.0681,
+      "ci_lo": 1.0275,
+      "ci_hi": 1.112,
+      "z": -3.38,
+      "n_tokens": 9529
+    },
+    {
+      "endpoint": "baseten__fp4",
+      "t_eff": 1.0703,
+      "ci_lo": 1.0328,
+      "ci_hi": 1.1107,
+      "z": -3.8,
+      "n_tokens": 11590
+    },
+    {
+      "endpoint": "mancer__fp8",
+      "t_eff": 1.0756,
+      "ci_lo": 1.0388,
+      "ci_hi": 1.115,
+      "z": -4.18,
+      "n_tokens": 11884
+    },
+    {
+      "endpoint": "crusoe__bf16",
+      "t_eff": 1.087,
+      "ci_lo": 1.0491,
+      "ci_hi": 1.1277,
+      "z": -4.73,
+      "n_tokens": 11879
+    },
+    {
+      "endpoint": "parasail__fp4",
+      "t_eff": 1.0906,
+      "ci_lo": 1.0525,
+      "ci_hi": 1.1315,
+      "z": -4.91,
+      "n_tokens": 11785
+    },
+    {
+      "endpoint": "baseten__fp4__us",
+      "t_eff": 1.0932,
+      "ci_lo": 1.0546,
+      "ci_hi": 1.1347,
+      "z": -4.99,
+      "n_tokens": 11919
+    },
+    {
+      "endpoint": "siliconflow__fp8",
+      "t_eff": 1.1206,
+      "ci_lo": 1.1029,
+      "ci_hi": 1.1388,
+      "z": -14.73,
+      "n_tokens": 50477
+    },
+    {
+      "endpoint": "venice__int4",
+      "t_eff": 1.1483,
+      "ci_lo": 1.1058,
+      "ci_hi": 1.1942,
+      "z": -7.56,
+      "n_tokens": 12095
+    },
+    {
+      "endpoint": "phala",
+      "t_eff": 1.177,
+      "ci_lo": 1.1282,
+      "ci_hi": 1.2302,
+      "z": -8.02,
+      "n_tokens": 9720
+    },
+    {
+      "endpoint": "novita__fp4",
+      "t_eff": 1.2056,
+      "ci_lo": 1.154,
+      "ci_hi": 1.2619,
+      "z": -9.02,
+      "n_tokens": 9699
+    },
+    {
+      "endpoint": "cerebras__fp16",
+      "t_eff": 1.2874,
+      "ci_lo": 1.2365,
+      "ci_hi": 1.3427,
+      "z": -13.68,
+      "n_tokens": 12079
+    },
+    {
+      "endpoint": "deepinfra__bf16",
+      "t_eff": 1.7393,
+      "ci_lo": 1.6441,
+      "ci_hi": 1.8462,
+      "z": -25.03,
+      "n_tokens": 11159
+    },
+    {
+      "endpoint": "dekallm__bf16",
+      "t_eff": 4.0835,
+      "ci_lo": 3.607,
+      "ci_hi": 4.7048,
+      "z": -45.76,
+      "n_tokens": 11721
+    },
+    {
+      "endpoint": "digitalocean",
+      "t_eff": 6.0716,
+      "ci_lo": 5.0839,
+      "ci_hi": 7.5356,
+      "z": -51.16,
+      "n_tokens": 12021
+    },
+    {
+      "endpoint": "local__substitute-gpt-oss-20b",
+      "t_eff": null,
+      "ci_lo": null,
+      "ci_hi": null,
+      "z": -214.72,
+      "n_tokens": 11647
+    }
+  ],
+  "openai__gpt-oss-20b": [
+    {
+      "endpoint": "groq",
+      "t_eff": 0.8608,
+      "ci_lo": 0.8455,
+      "ci_hi": 0.8766,
+      "z": 15.1,
+      "n_tokens": 11242
+    },
+    {
+      "endpoint": "parasail__fp4",
+      "t_eff": 0.9786,
+      "ci_lo": 0.9595,
+      "ci_hi": 0.9985,
+      "z": 2.1,
+      "n_tokens": 11328
+    },
+    {
+      "endpoint": "local__cpu-grace",
+      "t_eff": 0.9973,
+      "ci_lo": 0.9782,
+      "ci_hi": 1.0172,
+      "z": 0.27,
+      "n_tokens": 11445
+    },
+    {
+      "endpoint": "dekallm__bf16",
+      "t_eff": 0.9975,
+      "ci_lo": 0.978,
+      "ci_hi": 1.0178,
+      "z": 0.25,
+      "n_tokens": 11388
+    },
+    {
+      "endpoint": "local__cuda-rtx4090-wsl2",
+      "t_eff": 0.9999,
+      "ci_lo": 0.9809,
+      "ci_hi": 1.0197,
+      "z": 0.01,
+      "n_tokens": 11593
+    },
+    {
+      "endpoint": "local__vulkan-b70-linux",
+      "t_eff": 1.0008,
+      "ci_lo": 0.9812,
+      "ci_hi": 1.0213,
+      "z": -0.08,
+      "n_tokens": 11481
+    },
+    {
+      "endpoint": "local__vulkan-r9700-windows",
+      "t_eff": 1.0094,
+      "ci_lo": 0.9892,
+      "ci_hi": 1.0304,
+      "z": -0.9,
+      "n_tokens": 11409
+    },
+    {
+      "endpoint": "amazon-bedrock",
+      "t_eff": 1.0135,
+      "ci_lo": 0.9938,
+      "ci_hi": 1.0339,
+      "z": -1.33,
+      "n_tokens": 11476
+    },
+    {
+      "endpoint": "amazon-bedrock__eu-west-1",
+      "t_eff": 1.015,
+      "ci_lo": 0.9944,
+      "ci_hi": 1.0366,
+      "z": -1.42,
+      "n_tokens": 11394
+    },
+    {
+      "endpoint": "coreweave__fp4",
+      "t_eff": 1.0169,
+      "ci_lo": 0.9973,
+      "ci_hi": 1.0373,
+      "z": -1.68,
+      "n_tokens": 11560
+    },
+    {
+      "endpoint": "akashml__fp4",
+      "t_eff": 1.0219,
+      "ci_lo": 1.002,
+      "ci_hi": 1.0425,
+      "z": -2.17,
+      "n_tokens": 11595
+    },
+    {
+      "endpoint": "siliconflow__fp8",
+      "t_eff": 1.0381,
+      "ci_lo": 1.0271,
+      "ci_hi": 1.0493,
+      "z": -6.97,
+      "n_tokens": 34326
+    },
+    {
+      "endpoint": "deepinfra__bf16",
+      "t_eff": 1.0445,
+      "ci_lo": 1.0043,
+      "ci_hi": 1.088,
+      "z": -2.18,
+      "n_tokens": 3398
+    },
+    {
+      "endpoint": "darkbloom__fp8",
+      "t_eff": 1.2093,
+      "ci_lo": 1.1827,
+      "ci_hi": 1.2371,
+      "z": -18.25,
+      "n_tokens": 11347
+    },
+    {
+      "endpoint": "local__substitute-requant",
+      "t_eff": 1.5753,
+      "ci_lo": 1.5382,
+      "ci_hi": 1.6143,
+      "z": -46.71,
+      "n_tokens": 11902
+    }
+  ],
+  "qwen__qwen3.5-35b-a3b": [
+    {
+      "endpoint": "parasail__fp8",
+      "t_eff": 0.9783,
+      "ci_lo": 0.9535,
+      "ci_hi": 1.0043,
+      "z": 1.64,
+      "n_tokens": 10243
+    },
+    {
+      "endpoint": "venice",
+      "t_eff": 0.9823,
+      "ci_lo": 0.9575,
+      "ci_hi": 1.0085,
+      "z": 1.33,
+      "n_tokens": 10146
+    },
+    {
+      "endpoint": "deepinfra__fp8",
+      "t_eff": 0.9861,
+      "ci_lo": 0.9603,
+      "ci_hi": 1.0133,
+      "z": 1.01,
+      "n_tokens": 9565
+    },
+    {
+      "endpoint": "local__q6_k-metal",
+      "t_eff": 0.9968,
+      "ci_lo": 0.9715,
+      "ci_hi": 1.0234,
+      "z": 0.24,
+      "n_tokens": 10177
+    },
+    {
+      "endpoint": "siliconflow__fp8",
+      "t_eff": 1.0271,
+      "ci_lo": 1.0064,
+      "ci_hi": 1.0488,
+      "z": -2.58,
+      "n_tokens": 17203
+    },
+    {
+      "endpoint": "local__cpu-arm-q8",
+      "t_eff": 1.0285,
+      "ci_lo": 1.0017,
+      "ci_hi": 1.0567,
+      "z": -2.09,
+      "n_tokens": 10315
+    },
+    {
+      "endpoint": "alibaba",
+      "t_eff": 1.0459,
+      "ci_lo": 1.0175,
+      "ci_hi": 1.076,
+      "z": -3.23,
+      "n_tokens": 10249
+    },
+    {
+      "endpoint": "local__substitute-q3_k_m",
+      "t_eff": 1.0607,
+      "ci_lo": 1.0321,
+      "ci_hi": 1.0908,
+      "z": -4.3,
+      "n_tokens": 10270
+    },
+    {
+      "endpoint": "atlas-cloud__fp8",
+      "t_eff": 1.1056,
+      "ci_lo": 1.0751,
+      "ci_hi": 1.1378,
+      "z": -7.31,
+      "n_tokens": 10533
+    },
+    {
+      "endpoint": "darkbloom__fp4",
+      "t_eff": 1.1209,
+      "ci_lo": 1.0893,
+      "ci_hi": 1.1543,
+      "z": -8.18,
+      "n_tokens": 10275
+    },
+    {
+      "endpoint": "local__substitute-iq2_xxs",
+      "t_eff": 1.2496,
+      "ci_lo": 1.2112,
+      "ci_hi": 1.2905,
+      "z": -15.43,
+      "n_tokens": 10226
+    },
+    {
+      "endpoint": "local__substitute-qwen3.5-4b",
+      "t_eff": 2.8168,
+      "ci_lo": 2.6544,
+      "ci_hi": 3.0004,
+      "z": -58.2,
+      "n_tokens": 10475
+    }
+  ],
+  "qwen__qwen3.6-35b-a3b": [
+    {
+      "endpoint": "venice__fp8",
+      "t_eff": 0.9528,
+      "ci_lo": 0.9306,
+      "ci_hi": 0.9762,
+      "z": 3.87,
+      "n_tokens": 11506
+    },
+    {
+      "endpoint": "phala",
+      "t_eff": 0.9648,
+      "ci_lo": 0.9427,
+      "ci_hi": 0.9879,
+      "z": 2.95,
+      "n_tokens": 11418
+    },
+    {
+      "endpoint": "akashml__fp8",
+      "t_eff": 0.9705,
+      "ci_lo": 0.9484,
+      "ci_hi": 0.9935,
+      "z": 2.5,
+      "n_tokens": 12001
+    },
+    {
+      "endpoint": "coreweave__fp8",
+      "t_eff": 0.9722,
+      "ci_lo": 0.9499,
+      "ci_hi": 0.9957,
+      "z": 2.31,
+      "n_tokens": 11581
+    },
+    {
+      "endpoint": "deepinfra__fp8",
+      "t_eff": 0.9759,
+      "ci_lo": 0.9532,
+      "ci_hi": 0.9998,
+      "z": 1.98,
+      "n_tokens": 11542
+    },
+    {
+      "endpoint": "parasail__fp8",
+      "t_eff": 0.9786,
+      "ci_lo": 0.9549,
+      "ci_hi": 1.0034,
+      "z": 1.7,
+      "n_tokens": 11556
+    },
+    {
+      "endpoint": "dekallm",
+      "t_eff": 0.9887,
+      "ci_lo": 0.9655,
+      "ci_hi": 1.013,
+      "z": 0.92,
+      "n_tokens": 11760
+    },
+    {
+      "endpoint": "siliconflow__fp8",
+      "t_eff": 1.0007,
+      "ci_lo": 0.9824,
+      "ci_hi": 1.0197,
+      "z": -0.08,
+      "n_tokens": 20460
+    },
+    {
+      "endpoint": "local__llamacpp-4090",
+      "t_eff": 1.0011,
+      "ci_lo": 0.9749,
+      "ci_hi": 1.0288,
+      "z": -0.08,
+      "n_tokens": 9465
+    },
+    {
+      "endpoint": "local__honest-ud-q6",
+      "t_eff": 1.0022,
+      "ci_lo": 0.9759,
+      "ci_hi": 1.0299,
+      "z": -0.16,
+      "n_tokens": 9588
+    },
+    {
+      "endpoint": "local__strata-4090",
+      "t_eff": 1.0823,
+      "ci_lo": 1.0534,
+      "ci_hi": 1.1129,
+      "z": -5.87,
+      "n_tokens": 9449
+    },
+    {
+      "endpoint": "local__strata-nodraft-4090",
+      "t_eff": 1.0851,
+      "ci_lo": 1.0548,
+      "ci_hi": 1.1172,
+      "z": -5.8,
+      "n_tokens": 9481
+    },
+    {
+      "endpoint": "local__strata155-4090",
+      "t_eff": 1.0851,
+      "ci_lo": 1.0548,
+      "ci_hi": 1.1172,
+      "z": -5.8,
+      "n_tokens": 9481
+    },
+    {
+      "endpoint": "darkbloom__fp4",
+      "t_eff": 1.1276,
+      "ci_lo": 1.0964,
+      "ci_hi": 1.1606,
+      "z": -8.79,
+      "n_tokens": 11444
+    },
+    {
+      "endpoint": "local__substitute-ud-q2",
+      "t_eff": 1.1391,
+      "ci_lo": 1.1075,
+      "ci_hi": 1.1726,
+      "z": -9.56,
+      "n_tokens": 9555
+    },
+    {
+      "endpoint": "atlas-cloud__fp8",
+      "t_eff": 1.1545,
+      "ci_lo": 1.1236,
+      "ci_hi": 1.1872,
+      "z": -11.0,
+      "n_tokens": 11715
+    }
+  ],
+  "qwen__qwen3.8-27b": [
+    {
+      "endpoint": "tenstorrent__fp4",
+      "t_eff": 0.9572,
+      "ci_lo": 0.9357,
+      "ci_hi": 0.9796,
+      "z": 3.66,
+      "n_tokens": 9492
+    },
+    {
+      "endpoint": "near-ai__fp8",
+      "t_eff": 0.9586,
+      "ci_lo": 0.9362,
+      "ci_hi": 0.9821,
+      "z": 3.39,
+      "n_tokens": 8895
+    },
+    {
+      "endpoint": "wafer__fp8",
+      "t_eff": 0.9633,
+      "ci_lo": 0.942,
+      "ci_hi": 0.9856,
+      "z": 3.18,
+      "n_tokens": 9814
+    },
+    {
+      "endpoint": "chutes__fp8",
+      "t_eff": 0.967,
+      "ci_lo": 0.9448,
+      "ci_hi": 0.9903,
+      "z": 2.75,
+      "n_tokens": 9839
+    },
+    {
+      "endpoint": "modal",
+      "t_eff": 0.9686,
+      "ci_lo": 0.9461,
+      "ci_hi": 0.9922,
+      "z": 2.59,
+      "n_tokens": 9867
+    },
+    {
+      "endpoint": "phala",
+      "t_eff": 0.9725,
+      "ci_lo": 0.9499,
+      "ci_hi": 0.9961,
+      "z": 2.27,
+      "n_tokens": 9770
+    },
+    {
+      "endpoint": "parasail__fp8",
+      "t_eff": 0.9748,
+      "ci_lo": 0.9529,
+      "ci_hi": 0.9977,
+      "z": 2.15,
+      "n_tokens": 9693
+    },
+    {
+      "endpoint": "coreweave__fp8",
+      "t_eff": 0.9752,
+      "ci_lo": 0.9527,
+      "ci_hi": 0.9988,
+      "z": 2.06,
+      "n_tokens": 10088
+    },
+    {
+      "endpoint": "dekallm",
+      "t_eff": 0.9758,
+      "ci_lo": 0.9537,
+      "ci_hi": 0.9989,
+      "z": 2.05,
+      "n_tokens": 10031
+    },
+    {
+      "endpoint": "reka__fp8",
+      "t_eff": 0.9765,
+      "ci_lo": 0.9542,
+      "ci_hi": 1.0,
+      "z": 1.96,
+      "n_tokens": 9998
+    },
+    {
+      "endpoint": "ionstream__fp8",
+      "t_eff": 0.9767,
+      "ci_lo": 0.9545,
+      "ci_hi": 0.9999,
+      "z": 1.97,
+      "n_tokens": 9764
+    },
+    {
+      "endpoint": "akashml__fp8",
+      "t_eff": 0.978,
+      "ci_lo": 0.9558,
+      "ci_hi": 1.0013,
+      "z": 1.86,
+      "n_tokens": 9813
+    },
+    {
+      "endpoint": "cloudflare",
+      "t_eff": 0.9805,
+      "ci_lo": 0.9582,
+      "ci_hi": 1.0039,
+      "z": 1.64,
+      "n_tokens": 9780
+    },
+    {
+      "endpoint": "deepinfra__bf16",
+      "t_eff": 0.9862,
+      "ci_lo": 0.9641,
+      "ci_hi": 1.0093,
+      "z": 1.18,
+      "n_tokens": 9907
+    },
+    {
+      "endpoint": "mancer__fp8",
+      "t_eff": 0.9904,
+      "ci_lo": 0.9673,
+      "ci_hi": 1.0146,
+      "z": 0.79,
+      "n_tokens": 9797
+    },
+    {
+      "endpoint": "local__q6_k-cuda",
+      "t_eff": 0.9972,
+      "ci_lo": 0.974,
+      "ci_hi": 1.0215,
+      "z": 0.23,
+      "n_tokens": 9598
+    },
+    {
+      "endpoint": "darkbloom__fp4",
+      "t_eff": 0.9988,
+      "ci_lo": 0.9761,
+      "ci_hi": 1.0226,
+      "z": 0.1,
+      "n_tokens": 9496
+    },
+    {
+      "endpoint": "local__vulkan-r9700-windows",
+      "t_eff": 1.0,
+      "ci_lo": 0.9772,
+      "ci_hi": 1.024,
+      "z": -0.0,
+      "n_tokens": 9903
+    },
+    {
+      "endpoint": "cerebras__fp16",
+      "t_eff": 1.002,
+      "ci_lo": 0.979,
+      "ci_hi": 1.0261,
+      "z": -0.17,
+      "n_tokens": 9823
+    },
+    {
+      "endpoint": "alibaba",
+      "t_eff": 1.0504,
+      "ci_lo": 1.0245,
+      "ci_hi": 1.0777,
+      "z": -3.91,
+      "n_tokens": 9415
+    },
+    {
+      "endpoint": "modelrun__fp4",
+      "t_eff": 1.0528,
+      "ci_lo": 1.0278,
+      "ci_hi": 1.079,
+      "z": -4.25,
+      "n_tokens": 9810
+    },
+    {
+      "endpoint": "local__substitute-q2_k_xl",
+      "t_eff": 1.1349,
+      "ci_lo": 1.108,
+      "ci_hi": 1.1632,
+      "z": -10.89,
+      "n_tokens": 10101
+    },
+    {
+      "endpoint": "venice__fp8",
+      "t_eff": 1.2268,
+      "ci_lo": 1.1956,
+      "ci_hi": 1.2596,
+      "z": -17.04,
+      "n_tokens": 9354
+    }
+  ]
+}

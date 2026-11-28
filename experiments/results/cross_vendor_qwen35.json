@@ -1,0 +1,184 @@
+{
+  "worker": "http://127.0.0.1:28088",
+  "referee_desc": "qwen35moe 35B.A3B Q4_K - Medium",
+  "referee_devices": [
+    "NVIDIA GB10"
+  ],
+  "tolerances": {
+    "regret": 0.025,
+    "wgap": 0.12,
+    "topk": 0.35
+  },
+  "scenarios": [
+    {
+      "scenario": "honest_cross_vendor_amd_to_nvidia",
+      "n_prompts": 8,
+      "n_tokens": 754,
+      "regret_mean": 0.00711,
+      "regret_max": 0.7381,
+      "wgap_mean": 0.03208,
+      "topk_mean": 0.21152,
+      "agree": 0.9695,
+      "verdict_status": "PASS",
+      "reasons": [],
+      "joint_p": 1.0,
+      "combined_p_values": {
+        "wgap": 1.0,
+        "topk": 0.854388880049576,
+        "regret": 1.0
+      },
+      "tail_spike": {
+        "regret": {
+          "p": 1.0,
+          "wealth": 0.5530598424631885,
+          "hits": 0,
+          "n": 8
+        }
+      }
+    },
+    {
+      "scenario": "hidden_1sentence_system_bias_untriggered",
+      "n_prompts": 8,
+      "n_tokens": 756,
+      "regret_mean": 0.55847,
+      "regret_max": 9.2166,
+      "wgap_mean": 1.34689,
+      "topk_mean": 2.29205,
+      "agree": 0.7923,
+      "verdict_status": "FAIL",
+      "reasons": [
+        "regret: mean 0.5585 exceeds tolerance 0.025 (anytime p = 1.9e-31 over 756 tokens)",
+        "wgap: mean 1.3469 exceeds tolerance 0.12 (anytime p = 6.1e-42 over 756 tokens)",
+        "topk: mean 2.2920 exceeds tolerance 0.35 (anytime p = 3.4e-102 over 756 tokens)"
+      ],
+      "joint_p": 2.0241066561661162e-232,
+      "combined_p_values": {
+        "wgap": 1.7265001252675358e-117,
+        "topk": 6.442037293384434e-233,
+        "regret": 7.550190541247273e-124
+      },
+      "tail_spike": {
+        "regret": {
+          "p": 2.6086952907270787e-17,
+          "wealth": 3.83333386445945e+16,
+          "hits": 7,
+          "n": 8
+        }
+      }
+    },
+    {
+      "scenario": "silent_thinking_suppression",
+      "n_prompts": 8,
+      "n_tokens": 764,
+      "regret_mean": 0.29199,
+      "regret_max": 26.304,
+      "wgap_mean": 0.44219,
+      "topk_mean": 1.51698,
+      "agree": 0.8717,
+      "verdict_status": "FAIL",
+      "reasons": [
+        "regret: mean 0.2920 exceeds tolerance 0.025 (anytime p = 4.4e-06 over 764 tokens)",
+        "wgap: mean 0.4422 exceeds tolerance 0.12 (anytime p = 1.2e-31 over 764 tokens)",
+        "topk: mean 1.5170 exceeds tolerance 0.35 (anytime p = 4.5e-106 over 764 tokens)"
+      ],
+      "joint_p": 1.29843903791855e-216,
+      "combined_p_values": {
+        "wgap": 7.969734800474057e-104,
+        "topk": 4.328130126395166e-217,
+        "regret": 1.8269808528038983e-19
+      },
+      "tail_spike": {
+        "regret": {
+          "p": 6.095702468759503e-20,
+          "wealth": 1.6405000164050057e+19,
+          "hits": 8,
+          "n": 8
+        }
+      }
+    },
+    {
+      "scenario": "silent_50pct_context_truncation",
+      "n_prompts": 8,
+      "n_tokens": 768,
+      "regret_mean": 0.1203,
+      "regret_max": 11.4589,
+      "wgap_mean": 0.13833,
+      "topk_mean": 0.62826,
+      "agree": 0.9349,
+      "verdict_status": "FAIL",
+      "reasons": [
+        "regret: delayed-onset shift exceeds tolerance 0.025 (changepoint p = 8.8e-08 at token 768)",
+        "topk: mean 0.6283 exceeds tolerance 0.35 (anytime p = 1e-28 over 768 tokens)"
+      ],
+      "joint_p": 1.9662403928710943e-54,
+      "combined_p_values": {
+        "wgap": 0.033578346596183924,
+        "topk": 3.832791763878851e-55,
+        "regret": 1.6214896709365663e-06
+      },
+      "tail_spike": {
+        "regret": {
+          "p": 0.0001020514750595594,
+          "wealth": 4211.868823929488,
+          "hits": 2,
+          "n": 8
+        }
+      }
+    },
+    {
+      "scenario": "sporadic_1in8_cheater",
+      "n_prompts": 8,
+      "n_tokens": 754,
+      "regret_mean": 0.04552,
+      "regret_max": 24.6862,
+      "wgap_mean": 0.09739,
+      "topk_mean": 0.46186,
+      "agree": 0.9615,
+      "verdict_status": "FAIL",
+      "reasons": [
+        "wgap: delayed-onset shift exceeds tolerance 0.12 (changepoint p = 8.9e-13 at token 754)",
+        "topk: delayed-onset shift exceeds tolerance 0.35 (changepoint p = 2.4e-35 at token 754)"
+      ],
+      "joint_p": 1.4471468112513842e-34,
+      "combined_p_values": {
+        "wgap": 1.772158630722492e-12,
+        "topk": 4.82382270417128e-35,
+        "regret": 0.10825443376286499
+      },
+      "tail_spike": {
+        "regret": {
+          "p": 0.037438540676357025,
+          "wealth": 26.710442819997905,
+          "hits": 1,
+          "n": 8
+        }
+      }
+    },
+    {
+      "scenario": "tool_history_1digit_tamper_50_to_500",
+      "n_prompts": 1,
+      "n_tokens": 96,
+      "regret_mean": 0.10188,
+      "regret_max": 7.8924,
+      "wgap_mean": 0.20275,
+      "topk_mean": 0.40429,
+      "agree": 0.9688,
+      "verdict_status": "PASS",
+      "reasons": [],
+      "joint_p": 1.0,
+      "combined_p_values": {
+        "wgap": 1.0,
+        "topk": 0.623221238406972,
+        "regret": 1.0
+      },
+      "tail_spike": {
+        "regret": {
+          "p": 1.0,
+          "wealth": 0.8908908908908909,
+          "hits": 0,
+          "n": 1
+        }
+      }
+    }
+  ]
+}

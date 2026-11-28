@@ -5,6 +5,7 @@
   serve     run the cooperative provider (OpenAI-compatible, signed receipts) on a GGUF model
   keygen    create a provider signing key
   verify    check a saved reply (receipt + trace JSON) offline, optionally auditing it on a referee
+  replay    verify a receipt + compact Merkle span proof (JSON or LVM1 binary) offline
   audit     black-box audit of any OpenAI-compatible endpoint against a referee you run
 """
 
@@ -145,12 +146,78 @@ def cmd_audit(a):
                 scored.append(s)
     summ = endpoint_summary(scored, raw)
     g = summ["greedy"]
-    print(json.dumps({"greedy_regret": g["regret"], "other_token_share": g["disagree"]["mean"],
-                      "sampled_fit": (summ.get("sample_answer") or {}).get("likelihood"),
-                      "pit": (summ.get("sample_answer") or {}).get("pit"),
-                      "logprob_self_consistency": self_consistency(raw), "logprob_alignment": logprob_alignment(raw),
-                      "integrity": summ["integrity"]}, indent=1, default=float))
+    out_obj = {"greedy_regret": g["regret"], "other_token_share": g["disagree"]["mean"],
+               "sampled_fit": (summ.get("sample_answer") or {}).get("likelihood"),
+               "pit": (summ.get("sample_answer") or {}).get("pit"),
+               "logprob_self_consistency": self_consistency(raw), "logprob_alignment": logprob_alignment(raw),
+               "integrity": summ["integrity"]}
+    print(json.dumps(out_obj, indent=1, default=float))
+    if getattr(a, "html", None):
+        from .html_report import render_audit_html
+        from .report import flags as report_flags
+        html_str = render_audit_html(
+            summ, scored,
+            model=a.model,
+            base_url=a.base_url,
+            referee_desc=meta.get("desc") or a.referee,
+            audit_flags=report_flags(summ, None),
+        )
+        Path(a.html).write_text(html_str, encoding="utf-8")
+        print(f"Wrote interactive HTML audit report -> {a.html}")
     print("Compare greedy_regret with an honest machine scored the same way (see docs/black-box.md).")
+
+
+def cmd_replay(a):
+    """Verify a signed receipt + compact Merkle SpanProof (JSON or base64/binary LVM1) offline."""
+    import base64
+    from .merkle import SpanProof, unpack_span_proof, verify_span_proof
+    from .receipt import Receipt, check_receipt_header
+    from .sampling import SamplingSpec, choose
+
+    raw = json.loads(Path(a.bundle).read_text())
+    receipt = Receipt.from_dict(raw["receipt"])
+    chk = check_receipt_header(receipt, pinned_key=a.key)
+    problems = list(chk.problems)
+
+    span_ok = None
+    span_len = 0
+    if "span_proof_b64" in raw:
+        sp = unpack_span_proof(base64.b64decode(raw["span_proof_b64"]))
+    elif "span_proof" in raw:
+        sp = SpanProof.from_dict(raw["span_proof"])
+    else:
+        sp = None
+
+    if sp is not None:
+        if not receipt.steps_merkle_root:
+            problems.append("receipt has no steps_merkle_root to verify span proof against")
+            span_ok = False
+        else:
+            ok_m, msg_m = verify_span_proof(sp, receipt.steps_merkle_root, receipt.n_tokens)
+            span_ok = ok_m
+            span_len = len(sp.tokens)
+            if not ok_m:
+                problems.append(f"merkle span proof failed: {msg_m}")
+            else:
+                spec = SamplingSpec(**receipt.sampling)
+                for j, (tok, top) in enumerate(zip(sp.tokens, sp.tops)):
+                    exp_tok = choose(top, spec, receipt.client_nonce, sp.start + j)
+                    if exp_tok != tok:
+                        problems.append(f"sampling rule violation at step {sp.start + j}: got {tok}, expected {exp_tok}")
+                        span_ok = False
+                        break
+
+    ok = len(problems) == 0
+    print(json.dumps({
+        "ok": ok,
+        "provider_key": receipt.provider_key,
+        "n_tokens": receipt.n_tokens,
+        "steps_merkle_root": receipt.steps_merkle_root,
+        "span_verified": span_ok,
+        "span_tokens": span_len,
+        "problems": problems,
+    }, indent=1))
+    sys.exit(0 if ok else 1)
 
 
 def cmd_doctor(_a):
@@ -260,17 +327,32 @@ def cmd_demo(_a):
     sp_rt = unpack_span_proof(blob)
     ok_m, _ = verify_span_proof(sp_rt, root, len(sample_g.trace.tokens))
 
+    elapsed = time.perf_counter() - t0
     print("-" * 70)
     print(f"Delayed-onset sleeper (5,000 honest -> 0.25 nat):  caught in {caught_cp} tokens  (ChangepointEProcess)")
     print(f"Sporadic 5% part-time cheater:                     caught in {caught_ts} spans   (TailSpikeEProcess)")
     print(f"Compact binary Merkle SpanProof (8/32 tokens):     {len(blob)} bytes (LVM1+zlib, verified={ok_m})")
-    print(f"Completed in {time.perf_counter() - t0:.2f}s (no GPU required). See docs/soundness.md for guarantees.")
+    print(f"Completed in {elapsed:.2f}s (no GPU required). See docs/soundness.md for guarantees.")
+    if getattr(_a, "html", None):
+        from .html_report import render_demo_html
+        Path(_a.html).write_text(
+            render_demo_html(
+                rows,
+                sleeper_tokens=caught_cp,
+                sporadic_spans=caught_ts,
+                merkle_bytes=len(blob),
+                elapsed_s=elapsed,
+            ),
+            encoding="utf-8",
+        )
+        print(f"Wrote interactive HTML showcase -> {_a.html}")
 
 
 def main():
     ap = argparse.ArgumentParser(prog="llmverify")
     sub = ap.add_subparsers(dest="cmd", required=True)
     dm = sub.add_parser("demo", help="2-second zero-GPU showcase of attacks, detectors, and Merkle span proofs")
+    dm.add_argument("--html", help="optional path to write a standalone interactive HTML showcase report")
     dm.set_defaults(fn=cmd_demo)
     dr = sub.add_parser("doctor", help="check local Python deps, GPU, lv-engine binary, and API key readiness")
     dr.set_defaults(fn=cmd_doctor)
@@ -299,13 +381,17 @@ def main():
     v = sub.add_parser("verify")
     v.add_argument("reply", help="JSON file: a chat completion with a verification object, or {receipt, trace}")
     v.add_argument("--key", help="pinned provider public key (hex)")
-    v.add_argument("--referee", help="lv-engine command line to audit the reply on")
+    v.add_argument("--referee", help="lv-engine command line or http:// llama-server/vLLM URL to audit the reply on")
     v.set_defaults(fn=cmd_verify)
+    rp = sub.add_parser("replay", help="verify a signed receipt + compact Merkle SpanProof offline")
+    rp.add_argument("bundle", help="JSON file containing {receipt, span_proof | span_proof_b64}")
+    rp.add_argument("--key", help="pinned provider public key (hex)")
+    rp.set_defaults(fn=cmd_replay)
     au = sub.add_parser("audit")
     au.add_argument("--base-url", required=True, help="OpenAI-compatible base, e.g. https://host/v1")
     au.add_argument("--model", required=True, help="model name the endpoint expects")
     au.add_argument("--api-key")
-    au.add_argument("--referee", required=True, help="lv-engine command line running the true weights")
+    au.add_argument("--referee", required=True, help="lv-engine command line or http:// llama-server/vLLM URL")
     au.add_argument("--chat", default="jinja", choices=["jinja", "harmony"])
     au.add_argument("--template-kwargs", default="{}")
     au.add_argument("--reasoning-effort")
@@ -314,6 +400,7 @@ def main():
     au.add_argument("--n", type=int, default=24)
     au.add_argument("--max-tokens", type=int, default=256)
     au.add_argument("--out", default="audit-out")
+    au.add_argument("--html", help="optional path to write a standalone interactive HTML audit scorecard")
     au.set_defaults(fn=cmd_audit)
     a = ap.parse_args()
     a.fn(a)

@@ -269,6 +269,7 @@ Findings from adversarial reviews, each now a regression test in `tests/test_red
 | 2026-10-30 | Server clamped max_tokens, so an honest server "failed" the client's check | low | server and client reject out-of-range values |
 | 2026-10-30 | A malformed trace crashed the client instead of being recorded | low | parse/validation errors are recorded as failures |
 | 2026-10-30 | The long-tail test used a normal z-score where only ~0.8 long-tail tokens are expected (Gemma-4): our own honest BF16 reference drew 5, a 1-in-1000 event that z called 4.8σ, and was flagged for "junk tokens" | medium (false flag on an honest endpoint) | exact Poisson tails (conservative for a Poisson-binomial) with family-wise thresholds: under one expected false flag across ~100 endpoints; three weakly supported truncation flags (p 2-4e-3) were withdrawn until the sampler fingerprint confirmed them |
+| 2026-11-28 | Reusing KV prefixes in `lv-engine` via `llama_memory_seq_rm` on a sliding-window model (`Gemma-4-26B`, `W=1024`) when `ctx > W` silently corrupted scored logits by up to `14.88` nats (`max_rank_diff = 26,197`), even though `llama_memory_seq_rm` returned `true` | high (silent referee corruption) | `score()` cold-clears KV memory (`prefix_cache=false`) by default; prefix reuse is strictly opt-in for verified full-attention models only |
 
 ## Open problems
 
@@ -290,11 +291,25 @@ Findings from adversarial reviews, each now a regression test in `tests/test_red
    referee): `f16` KV gave `regret = 0.00398` (`max = 0.132`, `topk = 0.0585`), `q8_0` KV remained near-lossless at
    `regret = 0.00714` (`max = 0.457`, `topk = 0.0669`), whereas `q4_0` KV jumped `5.4×` to `regret = 0.02144`
    (`max = 1.118` nats, `topk = 0.1171`, `2/64` spikes `> 0.2`) — crossing calibrated 128-token regret limits (`0.0194`)
-   while `q8_0` stays inside honest cross-hardware tolerance.
-5. **Calibration coverage.** Every new hardware platform and engine needs an honest baseline before its
+   while `q8_0` stays inside honest cross-hardware tolerance. On hybrid sliding-window + global MoE (`Gemma-4-26B-A4B-it`,
+   `Q4_K_M`, `-fa on`, `experiments/results/gemma4_26b_kv_quant.json`) across `3k`, `7k`, and `14k` structured-ledger probes:
+   `q8_0` KV stays inside `f16` noise (`wgap = 0.0067–0.0094` vs `f16` `0.0055–0.0170`), whereas `q4_0` KV separates cleanly
+   at **every** length in cooperative logprob metrics (`wgap = 2.0–3.0×`, `topk = 1.6–2.5×`, and `regret = 0.0559, max = 4.75`
+   at `7k`), even at `3k` where greedy tokens match `100%` (`regret = 0.0`).
+5. **Calibration coverage & cross-vendor cooperative attacks.** Every new hardware platform and engine needs an honest baseline before its
    providers can be judged in a strict tier. Measured so far: Apple Metal, NVIDIA CUDA (GB10, RTX PRO 6000), ARM and
-   x86 CPUs, vLLM BF16, AMD R9700 on Vulkan under Windows (gpt-oss-20b, Qwen3.8-27B), RTX 4090 on CUDA under WSL2
-   (gpt-oss-20b), Intel Arc Pro B70 on Vulkan under Linux (gpt-oss-20b). Next: AMD ROCm/HIP.
+   x86 CPUs, vLLM BF16, AMD R9700 on Vulkan under Windows (gpt-oss-20b, Qwen3.8-27B), AMD Radeon 8060S (Strix Halo) on
+   Vulkan under Linux (Qwen3.5-35B-A3B), RTX 4090 on CUDA under WSL2 (gpt-oss-20b), Intel Arc Pro B70 on Vulkan under Linux
+   (gpt-oss-20b). In a true cross-vendor cooperative attack suite (`AMD Radeon 8060S Vulkan` worker → `NVIDIA GB10 CUDA`
+   referee, `Qwen3.5-35B-A3B Q4_K_M`, `experiments/results/cross_vendor_qwen35.json`, ~760 tokens/scenario): honest cross-vendor
+   passes cleanly (`regret = 0.00711`, `wgap = 0.0321`, `topk = 0.2115`, `joint p = 1.0`), while untriggered 1-sentence
+   system bias (`joint p = 2.0e-232`), silent thinking suppression (`p = 1.3e-216`), 50% context truncation (`p = 2.0e-54`),
+   and a 1-in-8 sporadic cheater (`p = 1.4e-34`) are all caught. A single-turn 1-digit tool-history tamper (`50→500`, 96 tok,
+   `max_regret = 7.89`) slips multi-turn ledger accumulation on a single turn, empirically confirming why synchronous
+   Verify-Before-Act (`max_regret > 2.0`) is required for high-stakes agent calls — demonstrated end-to-end in
+   `experiments/results/modified_model_agent_demo_live.json`, where a sleeper hijack (`$5` passes identically, `$50,000`
+   redirects to `0xSHADOW999`) is blocked with HTTP 409 in `129.6 ms` (`max_regret = 13.64`) while honest cross-vendor
+   executes in `166.3 ms` (`regret = 0.0000`, `100%` agreement). Next: AMD ROCm/HIP.
 6. **Privacy.** Audits need the prompt and the reply. Self-audits keep data with the user; third-party referees
    see it unless they run in a TEE.
 7. **Tool/agent traces.** Multi-turn and tool-call formats add template surface where honest providers differ.

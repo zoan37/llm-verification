@@ -74,6 +74,49 @@ def likelihood_test(replies: Sequence[Sequence[Optional[TokenScore]]]) -> Dict[s
             "excess_ce_hi": None if ci["lo"] is None else -ci["lo"], "n_tokens": len(devs)}
 
 
+def effective_temperature(
+    replies: Sequence[Sequence[Optional[TokenScore]]],
+    requested: float = 1.0,
+) -> Dict[str, Optional[float]]:
+    """Estimate an endpoint's effective sampling temperature `T_eff` from referee log-probabilities.
+
+    By the exponential-family cumulant identity for p_beta(x) proportional to p_1(x)^beta
+    (where beta = requested / T_eff), around beta = 1:
+        E_beta[log p_1(x) + H_1] = (beta - 1) * Var_1(log p_1(x)) + O((beta - 1)^2).
+    Using the referee's exact per-position `ce_dev = log p_1(x) + H_1` and `var_lp = Var_1(log p_1(x))`,
+    the one-step Fisher-scoring MLE is:
+        beta_hat = 1 + sum(ce_dev) / sum(var_lp),   SE(beta_hat) = 1 / sqrt(sum(var_lp)),
+        T_eff    = requested / beta_hat.
+
+    Honest same-weights endpoints sit at T_eff ~= requested (z ~= 0). Silently lower temperatures or
+    aggressive top-k/top-p/min-p truncation pull T_eff < requested (z > 0), while silent higher
+    temperatures, heavy quantization, or model swaps push T_eff > requested (z < 0).
+    """
+    devs = [s for r in replies for s in r if s is not None and s.ce_dev is not None and s.var_lp is not None]
+    if not devs:
+        return {"t_eff": None, "lo": None, "hi": None, "beta": None, "z": None, "n_tokens": 0}
+    tot = sum(s.ce_dev for s in devs)
+    var = sum(s.var_lp for s in devs)
+    if var <= 0:
+        return {"t_eff": None, "lo": None, "hi": None, "beta": None, "z": 0.0, "n_tokens": len(devs)}
+    beta = 1.0 + tot / var
+    se = 1.0 / math.sqrt(var)
+    z = tot / math.sqrt(var)
+    b_hi = beta + 1.96 * se
+    b_lo = beta - 1.96 * se
+    t_eff = (requested / beta) if beta > 1e-6 else None
+    t_lo = (requested / b_hi) if b_hi > 1e-6 else None
+    t_hi = (requested / b_lo) if b_lo > 1e-6 else None
+    return {
+        "t_eff": t_eff,
+        "lo": t_lo,
+        "hi": t_hi,
+        "beta": beta,
+        "z": z,
+        "n_tokens": len(devs),
+    }
+
+
 def tail_test(replies: Sequence[Sequence[Optional[TokenScore]]]) -> Dict[str, Optional[float]]:
     """Long-tail draws: observed number of sampled tokens with p < 1e-4 vs the number the referee expects (the sum of
     its per-position tail mass). Under honest temperature-1, top_p-1 sampling the count is a sum of independent-ish

@@ -1,0 +1,23 @@
+{
+  "model": "gemma-4-26B-A4B-it-Q4_K_M",
+  "architecture": "hybrid_swa_5to1_global_moe",
+  "hardware": "NVIDIA DGX Spark GB10 (CUDA, -fa on)",
+  "probe": "deterministic_structured_ledger_recall_96tok",
+  "results": {
+    "f16": {
+      "3k_early": { "ctx_len": 2993, "n_tok": 89, "regret_mean": 0.0, "regret_max": 0.0, "wgap_mean": 0.00551, "topk_mean": 0.20876, "agree": 1.0, "exact_recall": true },
+      "7k_mid": { "ctx_len": 7020, "n_tok": 91, "regret_mean": 0.0, "regret_max": 0.0, "wgap_mean": 0.01697, "topk_mean": 0.2348, "agree": 1.0, "exact_recall": true },
+      "14k_long": { "ctx_len": 13957, "n_tok": 96, "regret_mean": 0.01619, "regret_max": 1.0171, "wgap_mean": 0.01054, "topk_mean": 0.24076, "agree": 0.9792, "exact_recall": true }
+    },
+    "q8_0": {
+      "3k_early": { "ctx_len": 2993, "n_tok": 89, "regret_mean": 0.0, "regret_max": 0.0, "wgap_mean": 0.00671, "topk_mean": 0.23636, "agree": 1.0, "exact_recall": true },
+      "7k_mid": { "ctx_len": 7020, "n_tok": 96, "regret_mean": 0.00517, "regret_max": 0.4961, "wgap_mean": 0.00908, "topk_mean": 0.24777, "agree": 0.9896, "exact_recall": true },
+      "14k_long": { "ctx_len": 13957, "n_tok": 91, "regret_mean": 0.00359, "regret_max": 0.2946, "wgap_mean": 0.00935, "topk_mean": 0.30945, "agree": 0.978, "exact_recall": true }
+    },
+    "q4_0": {
+      "3k_early": { "ctx_len": 2993, "n_tok": 89, "regret_mean": 0.0, "regret_max": 0.0, "wgap_mean": 0.01624, "topk_mean": 0.33374, "agree": 1.0, "exact_recall": true },
+      "7k_mid": { "ctx_len": 7020, "n_tok": 85, "regret_mean": 0.05586, "regret_max": 4.7485, "wgap_mean": 0.03472, "topk_mean": 0.58641, "agree": 0.9882, "exact_recall": true },
+      "14k_long": { "ctx_len": 13957, "n_tok": 92, "regret_mean": 0.01451, "regret_max": 0.7717, "wgap_mean": 0.02117, "topk_mean": 0.42277, "agree": 0.9783, "exact_recall": true }
+    }
+  }
+}

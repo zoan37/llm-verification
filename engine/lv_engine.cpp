@@ -180,6 +180,7 @@ struct Engine {
     int n_threads = 8;
     int n_past = 0;  // tokens in the KV cache for start/step
     const float * last_logits = nullptr;
+    std::vector<llama_token> score_kv_seq;  // tokens currently cached in seq 0 by score() for prefix reuse
 
     std::vector<llama_token> tokenize(const std::string & text, bool special) {
         std::vector<llama_token> out(text.size() + 16);
@@ -255,30 +256,42 @@ struct Engine {
         step["top"] = topk(lg, k, lse);
         step["lp"] = (double) lg[actual] - lse;
         if (!stats) return step;
-        // Stats at temperature `temp`
+        // Stats at temperature `temp` (skip exp() below mx - 36 where p < 2.3e-16 < DBL_EPSILON,
+        // and sort only significant probabilities p >= 1e-12 unless the distribution is ultra-flat).
+        const double inv_t = 1.0 / temp;
         double mx = -INFINITY;
-        for (int v = 0; v < n_vocab; v++) mx = std::max(mx, (double) lg[v] / temp);
+        for (int v = 0; v < n_vocab; v++) {
+            const double x = (double) lg[v] * inv_t;
+            if (x > mx) mx = x;
+        }
+        const double z_cut = mx - 36.0;
         double z = 0.0;
-        for (int v = 0; v < n_vocab; v++) z += std::exp((double) lg[v] / temp - mx);
+        for (int v = 0; v < n_vocab; v++) {
+            const double x = (double) lg[v] * inv_t;
+            if (x >= z_cut) z += std::exp(x - mx);
+        }
         const double lse_t = mx + std::log(z);
-        const double lp_x = (double) lg[actual] / temp - lse_t;
+        const double lp_x = (double) lg[actual] * inv_t - lse_t;
         double ent = 0.0, m2 = 0.0, above = 0.0, tail = 0.0;
         const double tail_lp = std::log(1e-4), lp_max = mx - lse_t;
         constexpr int NM = sizeof(MINP_GRID) / sizeof(MINP_GRID[0]);
         double ex_minp[NM] = {0};
         double minp_lp[NM];
         for (int m = 0; m < NM; m++) minp_lp[m] = lp_max + std::log(MINP_GRID[m]);
-        std::vector<double> probs(n_vocab);
+        std::vector<double> sig_probs;
+        sig_probs.reserve(2048);
         int rank = 0;
         for (int v = 0; v < n_vocab; v++) {
-            const double lp = (double) lg[v] / temp - lse_t;
+            const double lp = (double) lg[v] * inv_t - lse_t;
+            if (lp > lp_x) rank++;
+            if (lp < -36.0) continue;
             const double p = std::exp(lp);
-            probs[v] = p;
             ent -= p * lp;
             m2 += p * lp * lp;
-            if (lp > lp_x) { above += p; rank++; }
+            if (lp > lp_x) above += p;
             if (lp < tail_lp) tail += p;
             for (int m = 0; m < NM; m++) if (lp < minp_lp[m]) ex_minp[m] += p;
+            if (p >= 1e-12) sig_probs.push_back(p);
         }
         step["lp_t"] = lp_x;
         step["entropy"] = ent;
@@ -290,20 +303,51 @@ struct Engine {
         // top_k removes everything past the K most likely tokens; top_p keeps the shortest likeliest prefix whose
         // mass reaches P (the token that crosses P stays), so it removes the tokens whose mass_above is >= P.
         const int kmax = std::min(TOPK_MAX, n_vocab);
-        std::partial_sort(probs.begin(), probs.begin() + kmax, probs.end(), std::greater<double>());
-        std::vector<double> cum(kmax);
-        for (int i = 0; i < kmax; i++) cum[i] = (i ? cum[i - 1] : 0.0) + probs[i];
+        const int n_sig = (int) sig_probs.size();
+        const int sort_k = std::min(kmax, n_sig);
+        if (sort_k < n_sig)
+            std::partial_sort(sig_probs.begin(), sig_probs.begin() + sort_k, sig_probs.end(), std::greater<double>());
+        else
+            std::sort(sig_probs.begin(), sig_probs.end(), std::greater<double>());
+        std::vector<double> cum(sort_k);
+        for (int i = 0; i < sort_k; i++) cum[i] = (i ? cum[i - 1] : 0.0) + sig_probs[i];
+        const double tail_untracked = sort_k > 0 ? std::max(0.0, 1.0 - cum.back()) : 1.0;
+        bool used_full = false;
+        std::vector<double> full_probs;
+        auto ensure_full = [&]() {
+            if (used_full) return;
+            used_full = true;
+            full_probs.resize(n_vocab);
+            for (int v = 0; v < n_vocab; v++) {
+                const double lp = (double) lg[v] * inv_t - lse_t;
+                full_probs[v] = lp >= -36.0 ? std::exp(lp) : 0.0;
+            }
+            std::sort(full_probs.begin(), full_probs.end(), std::greater<double>());
+            cum.resize(n_vocab);
+            for (int i = 0; i < n_vocab; i++) cum[i] = (i ? cum[i - 1] : 0.0) + full_probs[i];
+        };
         json ex_k = json::array(), ex_p = json::array(), ex_mp = json::array();
-        for (int K : TOPK_GRID) ex_k.push_back(std::max(0.0, 1.0 - cum[std::min(K, kmax) - 1]));
-        bool sorted_all = false;
+        for (int K : TOPK_GRID) {
+            const int idx = std::min(K, n_vocab) - 1;
+            if (idx < (int) cum.size()) ex_k.push_back(std::max(0.0, 1.0 - cum[idx]));
+            else if (tail_untracked <= 1e-9) ex_k.push_back(tail_untracked);
+            else { ensure_full(); ex_k.push_back(std::max(0.0, 1.0 - cum[idx])); }
+        }
+        bool sorted_sig_all = (sort_k == n_sig);
         for (double P : TOPP_GRID) {
             int j = (int) (std::lower_bound(cum.begin(), cum.end(), P) - cum.begin());
-            if (j == kmax && !sorted_all) {  // a flat distribution: the nucleus is longer than TOPK_MAX
-                std::sort(probs.begin() + kmax, probs.end(), std::greater<double>());
-                cum.resize(n_vocab);
-                for (int i = kmax; i < n_vocab; i++) cum[i] = cum[i - 1] + probs[i];
-                sorted_all = true;
-                j = (int) (std::lower_bound(cum.begin(), cum.end(), P) - cum.begin());
+            if (j == (int) cum.size() && !used_full) {
+                if (!sorted_sig_all) {
+                    std::sort(sig_probs.begin() + sort_k, sig_probs.end(), std::greater<double>());
+                    cum.resize(n_sig);
+                    for (int i = sort_k; i < n_sig; i++) cum[i] = cum[i - 1] + sig_probs[i];
+                    sorted_sig_all = true;
+                    j = (int) (std::lower_bound(cum.begin(), cum.end(), P) - cum.begin());
+                }
+                if (j == (int) cum.size() && (cum.empty() || cum.back() < P)) {
+                    ensure_full();
+                    j = (int) (std::lower_bound(cum.begin(), cum.end(), P) - cum.begin());
+                }
             }
             ex_p.push_back(j >= (int) cum.size() ? 0.0 : std::max(0.0, 1.0 - cum[j]));
         }
@@ -322,7 +366,7 @@ struct Engine {
     }
 
     json score(const std::vector<llama_token> & context, const std::vector<llama_token> & reply, int k, double temp,
-               bool stats) {
+               bool stats, bool prefix_cache = false) {
         if (context.empty() || reply.empty()) throw std::runtime_error("empty context or reply");
         check_ids(context);
         check_ids(reply);
@@ -331,11 +375,29 @@ struct Engine {
         seq.insert(seq.end(), reply.begin(), reply.end());
         const int n = (int) seq.size(), first = (int) context.size() - 1;  // logits at i predict seq[i+1]
         if (n > n_ctx) throw std::runtime_error("sequence longer than context");
-        llama_memory_clear(llama_get_memory(ctx), true);
+        llama_memory_t mem = llama_get_memory(ctx);
+        int start_pos = 0;
+        if (prefix_cache && !score_kv_seq.empty()) {
+            const int lim = std::min((int) score_kv_seq.size(), first);
+            int lcp = 0;
+            while (lcp < lim && score_kv_seq[lcp] == seq[lcp]) lcp++;
+            // Only reuse KV cache when seq_rm cleanly drops the suffix (recurrent/DeltaNet models return false
+            // and fall back automatically to a cold clear so logits stay identical).
+            if (lcp > 0 && llama_memory_seq_rm(mem, 0, lcp, -1)) {
+                start_pos = lcp;
+            } else {
+                llama_memory_clear(mem, true);
+                score_kv_seq.clear();
+            }
+        } else {
+            llama_memory_clear(mem, true);
+            score_kv_seq.clear();
+        }
         n_past = 0;
+        last_logits = nullptr;
         json steps = json::array();
         llama_batch batch = llama_batch_init(n_batch, 0, 1);
-        for (int start = 0; start < n - 1; start += n_batch) {
+        for (int start = start_pos; start < n - 1; start += n_batch) {
             const int end = std::min(start + n_batch, n - 1);
             batch.n_tokens = 0;
             for (int i = start; i < end; i++) {
@@ -346,23 +408,31 @@ struct Engine {
                 batch.seq_id[j][0] = 0;
                 batch.logits[j] = i >= first;
             }
-            if (llama_decode(ctx, batch) != 0) { llama_batch_free(batch); throw std::runtime_error("llama_decode failed"); }
+            if (llama_decode(ctx, batch) != 0) {
+                score_kv_seq.clear();
+                llama_batch_free(batch);
+                throw std::runtime_error("llama_decode failed");
+            }
             // Score this batch's positions in parallel: each needs passes over the full vocabulary, which dominate
             // the runtime once the forward pass is on a GPU.
             const int lo = std::max(start, first), cnt = end - lo;
-            std::vector<json> out(std::max(cnt, 0));
-            std::vector<const float *> rows(std::max(cnt, 0));
-            for (int i = lo; i < end; i++) rows[i - lo] = llama_get_logits_ith(ctx, i - start);
-            const int nt = std::max(1, std::min(n_threads, cnt));
-            std::vector<std::thread> pool;
-            for (int t = 0; t < nt; t++)
-                pool.emplace_back([&, t]() {
-                    for (int j = t; j < cnt; j += nt) out[j] = score_step(rows[j], k, seq[lo + j + 1], temp, stats);
-                });
-            for (auto & th : pool) th.join();
-            for (auto & o : out) steps.push_back(std::move(o));
+            if (cnt > 0) {
+                std::vector<json> out(cnt);
+                std::vector<const float *> rows(cnt);
+                for (int i = lo; i < end; i++) rows[i - lo] = llama_get_logits_ith(ctx, i - start);
+                const int nt = std::max(1, std::min(n_threads, cnt));
+                std::vector<std::thread> pool;
+                for (int t = 0; t < nt; t++)
+                    pool.emplace_back([&, t]() {
+                        for (int j = t; j < cnt; j += nt) out[j] = score_step(rows[j], k, seq[lo + j + 1], temp, stats);
+                    });
+                for (auto & th : pool) th.join();
+                for (auto & o : out) steps.push_back(std::move(o));
+            }
         }
         llama_batch_free(batch);
+        if (prefix_cache) score_kv_seq.assign(seq.begin(), seq.begin() + (n - 1));
+        else score_kv_seq.clear();
         return steps;
     }
 
@@ -495,6 +565,7 @@ struct Engine {
         }
         if (cells > n_ctx) throw std::runtime_error("requests need more context than -c provides");
         llama_memory_clear(llama_get_memory(ctx), true);
+        score_kv_seq.clear();
         n_past = 0;
         last_logits = nullptr;  // start/step state is gone
         for (int s = 0; s < B; s++) prefill(seqs[s], s, k);
@@ -524,6 +595,7 @@ struct Engine {
         }
         if (!cb_active()) {  // first use since start/step or generate: start from an empty cache
             llama_memory_clear(llama_get_memory(ctx), true);
+            score_kv_seq.clear();
             n_past = 0;
             last_logits = nullptr;
             cb_cells = 0;
@@ -550,6 +622,7 @@ struct Engine {
     // their slots and cells and later finish into requests that no longer exist.
     void cb_reset() {
         if (ctx) llama_memory_clear(llama_get_memory(ctx), true);  // also cells of a prefill that threw midway
+        score_kv_seq.clear();
         std::fill(cb_used.begin(), cb_used.end(), 0);
         std::fill(cb.begin(), cb.end(), Seq());
         cb_cells = 0;
@@ -587,6 +660,7 @@ struct Engine {
         if (cb_active()) throw std::runtime_error("continuous batch in progress");
         if ((int) context.size() >= n_ctx) throw std::runtime_error("context too long");
         llama_memory_clear(llama_get_memory(ctx), true);
+        score_kv_seq.clear();
         // decode in batches; only the final token's logits are needed
         llama_batch batch = llama_batch_init(n_batch, 0, 1);
         const int n = (int) context.size();
@@ -757,7 +831,8 @@ int main(int argc, char ** argv) {
             } else if (cmd == "score") {
                 auto context = req["context"].get<std::vector<llama_token>>();
                 auto reply = req["tokens"].get<std::vector<llama_token>>();
-                resp["steps"] = E.score(context, reply, k, temperature(1.0), req.value("stats", true));
+                resp["steps"] = E.score(context, reply, k, temperature(1.0), req.value("stats", true),
+                                        req.value("prefix_cache", false));
             } else if (cmd == "generate") {
                 resp["results"] = E.generate(req.at("requests"), k);
             } else if (cmd == "cb_add") {

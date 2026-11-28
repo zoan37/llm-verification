@@ -67,8 +67,9 @@ and referee run batch-invariant kernels on GPUs of one group, the numbers agree 
 uv venv && uv pip install -e ".[dev]"
 # or from GitHub: pip install git+https://github.com/zoan37/llm-verification
 
-llmverify demo                         # 2-second zero-GPU showcase of attacks, e-processes & Merkle proofs
+llmverify demo --html demo.html        # 1-second zero-GPU showcase + standalone HTML scorecard
 llmverify doctor                       # check Python deps, GPU, lv-engine binary, API keys
+llmverify replay bundle.json --key HEX # offline verification of a signed receipt + Merkle SpanProof
 pytest -q                              # full test suite on the toy model, no GPU needed
 
 # build the C++ referee engine against a llama.cpp checkout
@@ -82,10 +83,8 @@ python experiments/score_model.py --model openai/gpt-oss-20b --chat harmony --re
 python experiments/build_results.py --model openai/gpt-oss-20b --referee "..." --anchor "..."
 
 # or audit one OpenAI-compatible endpoint directly (zero C++ build needed with llama-server or vLLM!)
-llmverify audit --base-url https://host/v1 --model NAME --logprobs --referee http://127.0.0.1:8080
-# or with native C++ lv-engine (fastest 1-pass prefill):
 llmverify audit --base-url https://host/v1 --model NAME --logprobs \
-    --referee "engine/build/lv-engine -m model.gguf -c 8192"
+    --referee http://127.0.0.1:8080 --html audit_report.html
 ```
 
 **Using a coding agent (Claude Code, Codex, Cursor, etc.)?** Point it at this repo — [AGENTS.md](AGENTS.md) gives it the exact setup, auditing, and `VerifyBeforeActGuard` recipes.
