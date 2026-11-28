@@ -10,7 +10,12 @@ Open work, roughly in priority order. Each item says what it would establish.
       (1.6-2.5x) at every length (plus `regret=0.0559, max=4.75` at 7k), even at 3k where greedy tokens agree 100%. All 11
       OpenRouter gpt-oss-20b endpoints scored on copy probes (`results/regret_profile/summary.json`): 10 of 11 sit in honest
       f16/vLLM range; SiliconFlow's 0.0455 is caused by rendering `Reasoning: medium` instead of `low`.
-- [ ] **Longer contexts** (64k-128k) and multi-needle recall.
+- [x] **Longer contexts (30k-60k) and 3-needle recall** (`experiments/results/gemma4_30k_and_temp_validation.json`,
+      `experiments/results/gemma4_60k_3needle_kv_quant.json`): on `Gemma-4-26B-A4B-it` (`-fa on`), 3 dispersed needles
+      (10%/50%/90% depth) hit 3/3 recall at both 29.6k and 60.0k even on `q4_0` KV with flat greedy regret (`0.00407` at
+      60k, invisible to black-box token-only checks), yet cooperative top-20 `wgap` jumps **3.5× vs f16 (5.6× vs q8_0)**
+      to `0.13765` and `topk` hits `0.54215` — proving logprob commitments catch silent 4-bit KV compression where black-box
+      regret cannot. (Next: 128k on rented GPU.)
 - [ ] **Gemma-4-31B (16 endpoints) and Qwen3.6-35B-A3B (10)**: full referee audits, the most popular local-sized models
       after those done. Paused 2026-10-30: needs ~148 GB of weights (Q8 referee, Q6_K honest, Q2_K_XL substitute)
       over home wifi; `~/lv/fetch_new.sh` on the Spark resumes it. Qwen3.8-Flash-Next (180B, Alibaba-only on
@@ -78,7 +83,9 @@ Open work, roughly in priority order. Each item says what it would establish.
 
 ## Pipeline
 - [ ] Full-vocabulary statistics only for sampled replies; multithread or move to GPU (scoring is CPU-bound).
-- [ ] Rotate audit prompts per snapshot (`prompts/generate.py`) and publish seeds after collection.
+- [x] **Rotate audit prompts per snapshot** (`prompts/generate.py` commit-reveal `--commit-out` / `--verify-commit` / `--drand`,
+      wired into `experiments/snapshot.py --rotate-prompts`, tested in `tests/test_prompts_rotate.py`): pre-commits
+      `{seed_sha256, prompts_sha256}` before collection and publishes the seed only after collection completes.
 
 ## Findings to follow up
 - [x] **Venice / Qwen3.8-27B vs public uncensored builds** (`experiments/results/venice_qwen38_uncensored_fingerprint.json`):

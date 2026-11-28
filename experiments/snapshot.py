@@ -31,11 +31,26 @@ ap.add_argument("--reasoning-effort")
 ap.add_argument("--budget-usd", type=float, required=True, help="stop collecting when the key's total usage reaches this")
 ap.add_argument("--date", default=dt.date.today().isoformat())
 ap.add_argument("--pause-cmd")
+ap.add_argument("--rotate-prompts", action="store_true", help="generate a fresh rotating prompt set and publish its seed after collection")
+ap.add_argument("--prompt-seed", help="explicit seed for --rotate-prompts (auto-generated secret hex if omitted)")
+ap.add_argument("--n-prompts", type=int, default=48)
 a = ap.parse_args()
 
 key = a.model.replace("/", "__")
 root = Path("data/snapshots") / a.date
-prompts = [p["prompt"] if isinstance(p, dict) else p for p in json.loads(Path("prompts/general.json").read_text())]
+root.mkdir(parents=True, exist_ok=True)
+prompt_meta = {"rotated": False}
+prompts_file = Path("prompts/general.json")
+if a.rotate_prompts or a.prompt_seed:
+    import secrets
+    from prompts.generate import commit_seed, generate as gen_prompts
+    seed = a.prompt_seed or secrets.token_hex(16)
+    prompts = gen_prompts(seed, a.n_prompts)
+    prompts_file = root / "prompts.json"
+    prompts_file.write_text(json.dumps(prompts, indent=1))
+    prompt_meta = {"rotated": True, "seed": seed, **commit_seed(seed, a.n_prompts)}
+else:
+    prompts = [p["prompt"] if isinstance(p, dict) else p for p in json.loads(prompts_file.read_text())]
 
 # 1. collect (resumable: endpoints already collected are skipped)
 openrouter.collect(a.model, prompts, root / "raw", workers=8, modes=("greedy", "sample"), max_tokens=320,
@@ -50,7 +65,8 @@ for sub in ("raw", "scores"):
             shutil.copy(f, dst / f.name)
 # 3. score
 cmd = [sys.executable, "experiments/score_model.py", "--model", a.model, "--engine", a.engine, "--chat", a.chat,
-       "--template-kwargs", a.template_kwargs, "--raw-root", str(root / "raw"), "--scores-root", str(root / "scores")]
+       "--template-kwargs", a.template_kwargs, "--prompts", str(prompts_file),
+       "--raw-root", str(root / "raw"), "--scores-root", str(root / "scores")]
 if a.pause_cmd:
     cmd += ["--pause-cmd", a.pause_cmd]
 subprocess.run(cmd, check=True)
@@ -96,6 +112,7 @@ for f in (root / "raw" / key).glob("*.jsonl.gz"):
         cost += sum(((r.get("usage") or {}).get("cost") or 0) for r in openrouter.load(f))
 dest = out_dir / f"{a.date}.json"
 dest.write_text(json.dumps({"model": a.model, "date": a.date, "compared_with": prev_name, "cost_usd": round(cost, 4),
+                            "prompt_rotation": prompt_meta,
                             "endpoints": now,
                             "changes": changes}, indent=1, default=float))
 print(f"{a.model} {a.date} vs {prev_name}: {len(changes)} endpoints changed; collection cost ${cost:.2f}")

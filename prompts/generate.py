@@ -26,6 +26,9 @@ TASKS = [
     "Describe how {process} works in plain language.",
     "List {n} interesting facts about {subject}.",
     "Write a product description for {product}.",
+    "Return a compact JSON object with keys `summary`, `tradeoffs` (list of {n} strings), and `recommendation` comparing {pair}.",
+    "Identify {n} subtle bugs or edge cases when implementing a {lang} function that {code_task}.",
+    "You are explaining {concept} during a code review for {audience}. Write {n} concise sentences.",
 ]
 FILL = {
     "lang": ["Python", "JavaScript", "Go", "Rust", "C", "TypeScript", "Java"],
@@ -80,9 +83,53 @@ def generate(seed: str, n: int):
     return out
 
 
+def prompt_set_digest(prompts) -> str:
+    payload = json.dumps(list(prompts), ensure_ascii=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def commit_seed(seed: str, n: int) -> dict:
+    """Create a pre-collection commitment over (seed, prompts) without revealing the seed."""
+    prompts = generate(seed, n)
+    return {
+        "n": int(n),
+        "seed_sha256": hashlib.sha256(seed.encode("utf-8")).hexdigest(),
+        "prompts_sha256": prompt_set_digest(prompts),
+    }
+
+
+def verify_revealed_seed(seed: str, commitment: dict) -> bool:
+    """Verify after collection that a revealed seed matches the pre-published commitment."""
+    n = int(commitment["n"])
+    if hashlib.sha256(seed.encode("utf-8")).hexdigest() != commitment["seed_sha256"]:
+        return False
+    return prompt_set_digest(generate(seed, n)) == commitment["prompts_sha256"]
+
+
 if __name__ == "__main__":
+    import secrets
     ap = argparse.ArgumentParser()
-    ap.add_argument("--seed", required=True)
+    ap.add_argument("--seed", help="seed string (auto-generates 128-bit secret hex if omitted)")
+    ap.add_argument("--drand", action="store_true", help="mix latest drand quicknet beacon randomness into the seed")
     ap.add_argument("--n", type=int, default=48)
+    ap.add_argument("--commit-out", help="optional path to write pre-collection {seed_sha256, prompts_sha256} commitment")
+    ap.add_argument("--verify-commit", help="verify --seed against an existing commitment JSON file")
     a = ap.parse_args()
-    print(json.dumps(generate(a.seed, a.n), indent=1))
+    seed = a.seed or secrets.token_hex(16)
+    if a.verify_commit:
+        comm = json.loads(open(a.verify_commit, "r", encoding="utf-8").read())
+        ok = verify_revealed_seed(seed, comm)
+        print(json.dumps({"verified": ok, "seed_sha256": comm.get("seed_sha256"), "prompts_sha256": comm.get("prompts_sha256")}))
+        raise SystemExit(0 if ok else 1)
+    if a.drand:
+        import sys
+        from pathlib import Path
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+        from llmverify.beacon import fetch_drand_beacon
+        b = fetch_drand_beacon()
+        seed = f"{seed}:drand:{b['round']}:{b['randomness']}"
+    prompts = generate(seed, a.n)
+    if a.commit_out:
+        with open(a.commit_out, "w", encoding="utf-8") as f:
+            json.dump(commit_seed(seed, a.n), f, indent=2)
+    print(json.dumps(prompts, indent=1))

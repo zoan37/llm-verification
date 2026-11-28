@@ -1,0 +1,18 @@
+{
+  "model": "gemma-4-26B-A4B-it-Q4_K_M",
+  "architecture": "hybrid_swa_5to1_global_moe",
+  "hardware": "NVIDIA DGX Spark GB10 (CUDA, -fa on)",
+  "probe": "3_needle_60k_ledger_recall",
+  "ctx_len": 60037,
+  "needles": {
+    "ROW-0134": "M465875-Q75",
+    "ROW-0670": "M210459-Q32",
+    "ROW-1206": "M855043-Q86"
+  },
+  "kv": {
+    "f16": { "n_tok": 110, "recall_count": 3, "regret_mean": 0.00526, "regret_max": 0.5784, "wgap_mean": 0.03971, "topk_mean": 0.2855, "agree": 0.9909 },
+    "q8_0": { "n_tok": 78, "recall_count": 3, "regret_mean": 0.00206, "regret_max": 0.1605, "wgap_mean": 0.02451, "topk_mean": 0.30939, "agree": 0.9872 },
+    "q4_0": { "n_tok": 76, "recall_count": 3, "regret_mean": 0.00407, "regret_max": 0.3091, "wgap_mean": 0.13765, "topk_mean": 0.54215, "agree": 0.9868 }
+  },
+  "key_finding": "At 60k tokens, Gemma-4-26B q4_0 KV keeps 3/3 multi-needle recall and 0.00407 greedy regret (invisible to token-only black-box auditing), yet cooperative top-20 wgap jumps 3.5x vs f16 (5.6x vs q8_0) to 0.13765 and topk hits 0.54215."
+}
