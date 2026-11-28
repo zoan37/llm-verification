@@ -21,7 +21,7 @@ from .engine import Model
 from .metrics import RefStep, TokenScore, score_reply
 from .receipt import Receipt, Trace
 from .sampling import SamplingSpec
-from .stats import Calibration, EProcess
+from .stats import Calibration, ChangepointEProcess, EProcess
 
 REFEREE_K = 50
 
@@ -249,6 +249,7 @@ class Ledger:
     audits: int = 0
     hard_failures: List[str] = field(default_factory=list)
     _eps: Dict[str, EProcess] = field(default_factory=dict)
+    _cps: Dict[str, ChangepointEProcess] = field(default_factory=dict)
     # Optional honest near-tie flip curve [(margin upper edge, flip rate), ...] for a tier that pins the exact
     # weights: how often an honest machine picks something other than the referee's rule choice, by the referee's
     # margin. With it, the verdict warns when flips exceed it (tie steering). Warning only: the curve depends on the
@@ -267,6 +268,8 @@ class Ledger:
                     continue
                 e = self._eps.setdefault(m, EProcess(tau=tau, upper=self.uppers.get(m, 5.0)))
                 e.update(v)
+                cp = self._cps.setdefault(m, ChangepointEProcess(tau=tau, upper=self.uppers.get(m, 5.0)))
+                cp.update(v)
 
     def add_failure(self, reason: str):
         """Exact failures (bad signature, rule violation, altered prompt) are conclusive on their own."""
@@ -282,10 +285,17 @@ class Ledger:
             counts[m], means[m] = len(vals), (sum(vals) / len(vals) if vals else None)
         reasons = list(self.hard_failures)
         e_vals = {m: {"p": e.p_value(), "wealth": e.wealth, "n": e.n} for m, e in self._eps.items()}
+        cp_vals = {m: {"p": cp.p_value(), "wealth": cp.wealth, "n": cp.n} for m, cp in self._cps.items()}
+        # Split alpha/2 between steady-state EProcess and delayed-onset ChangepointEProcess (Bonferroni-valid!)
+        half_alpha = self.alpha / 2.0
         for m, e in self._eps.items():
-            if e.p_value() <= self.alpha:
+            cp = self._cps.get(m)
+            if e.p_value() <= half_alpha:
                 reasons.append(f"{m}: mean {means[m]:.4f} exceeds tolerance {e.tau} "
                                f"(anytime p = {e.p_value():.2g} over {e.n} tokens)")
+            elif cp is not None and cp.p_value() <= half_alpha:
+                reasons.append(f"{m}: delayed-onset shift exceeds tolerance {cp.tau} "
+                               f"(changepoint p = {cp.p_value():.2g} at token {cp.n})")
         thresholds = {}
         if calibration is not None:
             for m in ("regret", "wgap", "topk"):
@@ -307,7 +317,8 @@ class Ledger:
         else:
             status = "PASS"
         return {"status": status, "n_tokens": n, "audits": self.audits, "means": means, "eprocess": e_vals,
-                "thresholds": thresholds, "reasons": reasons, "warnings": warnings, "steering": steering}
+                "changepoint": cp_vals, "thresholds": thresholds, "reasons": reasons, "warnings": warnings,
+                "steering": steering}
 
     def steering_test(self, floor: float = 1e-3) -> Optional[dict]:
         """Observed flips (token != the referee's rule choice) against the honest flip curve, over tokens whose

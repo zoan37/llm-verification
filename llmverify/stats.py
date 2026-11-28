@@ -217,6 +217,92 @@ def tolerance_eprocess(values: Sequence[float], tau: float, upper: float) -> EPr
     return e
 
 
+def _logaddexp(a: float, b: float) -> float:
+    if a == -math.inf:
+        return b
+    if b == -math.inf:
+        return a
+    m = a if a > b else b
+    return m + math.log(math.exp(a - m) + math.exp(b - m))
+
+
+@dataclass
+class ChangepointEProcess:
+    """O(1)-time, O(1)-memory anytime-valid changepoint e-process for delayed-onset / sleeper cheats.
+
+    Standard betting e-processes (`EProcess`) and cumulative running means suffer from reputation-farming
+    dilution: after thousands of honest tokens, a provider that abruptly switches to a cheaper or modified
+    model can serve hundreds of cheated tokens before the diluted running mean rises above `tau`.
+
+    `ChangepointEProcess` maintains a uniform mixture over a fixed grid of betting fractions `lam_b` in
+    `(0, 0.5 / tau]` combined with an exact heavy-tailed start-time prior `w_k = 1 / (k * (k + 1))`
+    (`sum_{k=1}^inf w_k = 1`, `W_t = t / (t + 1)`):
+
+        S_{b, t} = e_{b, t} * (S_{b, t-1} + w_t),   where e_{b, t} = 1 + lam_b * (x_t - tau) >= 0.5
+        M_{b, t} = (1 - W_t) + S_{b, t}
+        M_t      = (1 / B) * sum_b M_{b, t}
+
+    Because every start-time branch is a nonnegative supermartingale starting at 1 under
+    `H0: E[x_t | F_{t-1}] <= tau`, their convex mixture `M_t` is an EXACT nonnegative supermartingale
+    with `M_0 = 1`, guaranteeing `P(exists t >= 1: M_t >= 1/alpha) <= alpha` by Ville's inequality —
+    while injecting fresh prior mass `w_t` at every step so a sleeper cheat is detected in O(log t) tokens
+    even after 100,000 honest tokens.
+    """
+    tau: float
+    upper: float
+    n_grid: int = 6
+    n: int = 0
+    wealth: float = 1.0
+    history_max: float = 1.0
+    _lams: List[float] = field(default_factory=list)
+    _log_s: List[float] = field(default_factory=list)
+
+    def __post_init__(self):
+        if not self._lams:
+            max_lam = 0.45 / max(self.tau, 1e-12)
+            # Geometrically spaced fixed bets from subtle drift (0.04/tau) to sharp spike (0.45/tau)
+            lo = 0.04 / max(self.tau, 1e-12)
+            if self.n_grid <= 1:
+                self._lams = [max_lam]
+            else:
+                ratio = (max_lam / lo) ** (1.0 / (self.n_grid - 1))
+                self._lams = [lo * (ratio ** i) for i in range(self.n_grid)]
+        if not self._log_s:
+            self._log_s = [-math.inf] * len(self._lams)
+
+    def update(self, x: float) -> float:
+        x = min(max(float(x), 0.0), self.upper)
+        self.n += 1
+        k = self.n
+        log_w = -math.log(k) - math.log(k + 1)
+        rem = 1.0 / (k + 1)  # 1 - W_k = 1 - k/(k+1)
+        log_m_branches = []
+        for i, lam in enumerate(self._lams):
+            factor = max(0.5, 1.0 + lam * (x - self.tau))
+            log_s = math.log(factor) + _logaddexp(self._log_s[i], log_w)
+            self._log_s[i] = log_s
+            log_m_branches.append(_logaddexp(math.log(rem), log_s))
+        # log(mean_b M_{b,t})
+        log_sum = -math.inf
+        for lm in log_m_branches:
+            log_sum = _logaddexp(log_sum, lm)
+        log_wealth = log_sum - math.log(len(self._lams))
+        self.wealth = math.exp(min(log_wealth, 700.0))
+        if self.wealth > self.history_max:
+            self.history_max = self.wealth
+        return self.wealth
+
+    def p_value(self) -> float:
+        return min(1.0, 1.0 / self.history_max)
+
+
+def changepoint_eprocess(values: Sequence[float], tau: float, upper: float) -> ChangepointEProcess:
+    cp = ChangepointEProcess(tau=tau, upper=upper)
+    for v in values:
+        cp.update(v)
+    return cp
+
+
 @dataclass
 class Calibration:
     """Thresholds on the mean of a metric over n audited tokens, from honest runs.

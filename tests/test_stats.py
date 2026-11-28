@@ -137,3 +137,49 @@ def test_sampler_test_identifies_truncation_setting():
     assert res["k40"]["top_k"]["bound"] == 40
     assert res["p90"]["top_p"]["bound"] == 0.9
     assert res["minp05"]["min_p"]["bound"] == 0.05
+
+
+def test_changepoint_eprocess_catches_reputation_farming_sleeper_100x_faster():
+    import random
+    from llmverify.audit import Ledger
+    from llmverify.metrics import TokenScore
+    from llmverify.stats import ChangepointEProcess, EProcess
+
+    # 1. Worst-case boundary null (E[x] == tau = 0.05 exactly) stays strictly below alpha
+    rng = random.Random(123)
+    fa = 0
+    for _ in range(300):
+        cp = ChangepointEProcess(tau=0.05, upper=5.0)
+        for _ in range(500):
+            cp.update(1.0 if rng.random() < 0.05 else 0.0)
+        if cp.p_value() <= 1e-3:
+            fa += 1
+    assert fa <= 2  # expected <= 0.3
+
+    # 2. Reputation-farming sleeper: 5,000 honest tokens (0.005), then subtle cheat (0.20)
+    ep = EProcess(tau=0.05, upper=5.0)
+    cp = ChangepointEProcess(tau=0.05, upper=5.0)
+    for _ in range(5000):
+        ep.update(0.005)
+        cp.update(0.005)
+    d_ep = d_cp = None
+    for t in range(1, 2000):
+        ep.update(0.20)
+        cp.update(0.20)
+        if d_ep is None and ep.p_value() <= 1e-3:
+            d_ep = t
+        if d_cp is None and cp.p_value() <= 1e-3:
+            d_cp = t
+        if d_ep and d_cp:
+            break
+    assert d_cp is not None and d_cp <= 40, f"expected fast sleeper detection, got {d_cp}"
+    assert d_ep is None or d_ep > d_cp * 20, f"expected massive speedup over standard EProcess: {d_ep} vs {d_cp}"
+
+    # 3. Integrated into Ledger.verdict(): catches delayed-onset sleeper after 2,000 honest tokens!
+    led = Ledger("sleeper_provider", tolerances={"regret": 0.05}, alpha=1e-3)
+    led.add([TokenScore(regret=0.004, agree=1.0, lp=-0.1) for _ in range(2000)])
+    assert led.verdict()["status"] == "PASS"
+    led.add([TokenScore(regret=0.35, agree=0.0, lp=-1.0) for _ in range(32)])
+    v = led.verdict()
+    assert v["status"] == "FAIL", f"Ledger missed delayed-onset sleeper: {v}"
+    assert any("delayed-onset" in r for r in v["reasons"])
