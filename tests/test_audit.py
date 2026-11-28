@@ -159,3 +159,38 @@ def test_eprocess_variance_never_goes_negative():
     for _ in range(10_000):
         e.update(0.1)
         assert e.wealth > 0
+
+
+def test_derive_challenge_with_drand_beacon_randomness():
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+    import json
+    import threading
+    from llmverify.audit import derive_challenge
+    from llmverify.beacon import fetch_drand_latest
+
+    digest, secret = b"\xaa" * 32, b"\xbb" * 32
+    c0 = derive_challenge(digest, secret, 128, 16, 1.0)
+    c1 = derive_challenge(digest, secret, 128, 16, 1.0, beacon_randomness=b"\x01" * 32)
+    c2 = derive_challenge(digest, secret, 128, 16, 1.0, beacon_randomness=b"\x02" * 32)
+    assert c1 == derive_challenge(digest, secret, 128, 16, 1.0, beacon_randomness=b"\x01" * 32)
+    assert len({(c0.start, c0.end), (c1.start, c1.end), (c2.start, c2.end)}) >= 2
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            body = json.dumps({"round": 9876543, "randomness": "cd" * 32}).encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(body)
+
+        def log_message(self, *args):
+            pass
+
+    srv = HTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    try:
+        b = fetch_drand_latest(endpoints=[f"http://127.0.0.1:{srv.server_address[1]}"], use_cache=False)
+        assert b is not None and b.round == 9876543 and b.randomness == bytes.fromhex("cd" * 32)
+    finally:
+        srv.shutdown()
+        srv.server_close()

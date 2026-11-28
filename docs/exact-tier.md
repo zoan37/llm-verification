@@ -71,8 +71,10 @@ with tokens chosen by the public seeded rule (`llmverify/vllm_rule.py`; greedy, 
 min-p all measured exact; works with speculative decoding). A referee in the same group scores prompt + reply in one
 prefill and compares every committed number:
 
-- honest replies: 0 differing positions in every test (over 300,000 honest tokens across gpt-oss-20b and
-  Qwen3-8B, five GPU models, two groups);
+- honest replies: 0 differing positions in every test (over 300,000 honest tokens across gpt-oss-20b,
+  Qwen3-8B, and Qwen2.5-7B-Instruct, seven GPU models, two groups — including a live cross-datacenter
+  **A100 SXM4 (`sm_80`) ↔ L40S (`sm_89`)** run on vLLM 0.32.0: 471/471 tokens, 9,420/9,420 top-20 logprobs
+  bit-exact at `0.0000` nats max diff, 6.73× prefill speedup over decode, Merkle span proofs 80.9%–87.1% smaller);
 - edited replies, re-signed so every client-side check passes: all caught, at the edited token, with edits as small
   as 1e-4 in a logprob.
 

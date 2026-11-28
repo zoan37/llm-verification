@@ -38,11 +38,13 @@ def new_auditor_secret() -> bytes:
 
 
 def derive_challenge(receipt_digest: bytes, secret: bytes, n_tokens: int, span: int = 16,
-                     audit_probability: float = 1.0) -> Challenge:
+                     audit_probability: float = 1.0, beacon_randomness: bytes = b"") -> Challenge:
     """The span starts uniformly in [-(span-1), n-1] and is clipped to the reply, so every token, including the
     first and last (a yes/no answer, a tool name), is audited with the same probability. A start uniform over
-    [0, n-span] would audit the edges ~span times less often than the middle (found in red-team review)."""
-    d = hmac.new(secret, b"llmverify-challenge-v2" + receipt_digest, hashlib.sha256).digest()
+    [0, n-span] would audit the edges ~span times less often than the middle (found in red-team review).
+    When `beacon_randomness` (e.g. a post-receipt drand quicknet round) is supplied, it is mixed into the
+    derivation so the auditor cannot bias which span is selected."""
+    d = hmac.new(secret, b"llmverify-challenge-v2" + receipt_digest + beacon_randomness, hashlib.sha256).digest()
     audit = int.from_bytes(d[:8], "big") / float(1 << 64) < audit_probability
     if n_tokens <= span:
         return Challenge(audit, 0, n_tokens)
