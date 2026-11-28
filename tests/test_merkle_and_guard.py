@@ -306,3 +306,29 @@ def test_verify_merkle_span_guard_allows_honest_and_blocks_sleeper():
                                        expected_spec=spec, expected_nonce=nonce, expected_max_tokens=64)
     assert dec_bad.allowed is False
     assert dec_bad.action_audit["max_regret"] > 10.0
+
+
+def test_risk_policy_value_at_risk_gating():
+    from llmverify.client import VerifyingClient
+    from llmverify.guard import RiskPolicy, VerifyBeforeActGuard
+    from llmverify.receipt import Signer
+
+    signer = Signer()
+    tok_stub = type("Tok", (), {"eos_ids": [], "n_vocab": 256})()
+    ref_stub = type("Ref", (), {"n_vocab": 256})()
+    client = VerifyingClient("http://unused", tokenizer=tok_stub, template="chatml", referee=ref_stub, pinned_key=signer.public_hex)
+
+    # 5% audit rate * $1,000 penalty * 0.5 safety factor -> $25 safe unverified ceiling
+    pol = RiskPolicy.from_audit_economics(
+        audit_rate=0.05, slash_penalty_usd=1000.0, safety_factor=0.5, always_verify_action_patterns=False
+    )
+    assert pol.max_unverified_value_usd == 25.0
+    guard = VerifyBeforeActGuard(client, risk_policy=pol)
+
+    # $5 action stays below ceiling -> skip synchronous latency (covered by probabilistic auditing)
+    assert guard.should_verify("transfer_usdc('0xCafe', 5)", value_at_risk_usd=5.0) is False
+    # $50,000 action exceeds ceiling -> MUST run synchronous Verify-Before-Act even on plain prose!
+    assert guard.should_verify("Proceed with wire approval.", value_at_risk_usd=50_000.0) is True
+    # No value supplied -> falls back to action-pattern detector
+    assert guard.should_verify("Hello, how are you?") is False
+    assert guard.should_verify("transfer_usdc('0xAlice', 50)") is True

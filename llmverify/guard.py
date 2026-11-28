@@ -35,9 +35,38 @@ from .sampling import SamplingSpec
 
 # Default detector for high-stakes replies when working with text tool-call formats or JSON actions.
 DEFAULT_ACTION_RE = re.compile(
-    r"(<tool_call>|\"tool_calls\"\s*:|\"function\"\s*:|\b(bash|shell|exec|transfer|send_tx|rm\s+-rf|curl\s+)\b)",
+    r"(<tool_call>|\"tool_calls\"\s*:|\"function\"\s*:|\b(bash|shell|exec|transfer|send_tx|withdraw|approve|rm\s+-rf|curl\s+)(?:\b|_))",
     re.IGNORECASE,
 )
+
+
+@dataclass(frozen=True)
+class RiskPolicy:
+    """Economic & pattern policy deciding when a reply MUST trigger synchronous Verify-Before-Act.
+
+    Probabilistic post-hoc auditing (`audit_rate` against a provider bond/penalty `slash_penalty_usd`)
+    deters low-value cheating with zero latency overhead, but CANNOT deter a targeted high-stakes hijack
+    whose external value exceeds `safety_factor * audit_rate * slash_penalty_usd`. Setting
+    `max_unverified_value_usd` (or deriving it via `from_audit_economics(...)`) automatically escalates
+    any action above that ceiling to synchronous pre-execution verification (`verify_merkle_span`).
+    """
+    max_unverified_value_usd: Optional[float] = None
+    always_verify_action_patterns: bool = True
+
+    @classmethod
+    def from_audit_economics(
+        cls,
+        *,
+        audit_rate: float = 0.05,
+        slash_penalty_usd: float = 1000.0,
+        safety_factor: float = 0.5,
+        always_verify_action_patterns: bool = True,
+    ) -> "RiskPolicy":
+        ceiling = max(0.0, float(safety_factor) * float(audit_rate) * float(slash_penalty_usd))
+        return cls(
+            max_unverified_value_usd=ceiling,
+            always_verify_action_patterns=always_verify_action_patterns,
+        )
 
 
 @dataclass
@@ -57,6 +86,7 @@ class VerifyBeforeActGuard:
         client: VerifyingClient,
         *,
         is_high_stakes: Optional[Callable[[str], bool]] = None,
+        risk_policy: Optional[RiskPolicy] = None,
         max_action_regret: float = 0.08,
         max_single_token_regret: float = 2.0,
         max_action_wgap: Optional[float] = None,
@@ -67,12 +97,23 @@ class VerifyBeforeActGuard:
             raise ValueError("VerifyBeforeActGuard requires a client with a local referee")
         self.client = client
         self.is_high_stakes = is_high_stakes or (lambda text: bool(DEFAULT_ACTION_RE.search(text or "")))
+        self.risk_policy = risk_policy or RiskPolicy()
         self.max_action_regret = max_action_regret
         self.max_single_token_regret = max_single_token_regret
         self.max_action_wgap = max_action_wgap
         self.background_challenge_rate = background_challenge_rate
         self.action_span_finder = action_span_finder
         self.stats = {"total": 0, "high_stakes": 0, "blocked": 0, "escalated_audits": 0}
+
+    def should_verify(self, text: str, *, value_at_risk_usd: Optional[float] = None) -> bool:
+        """Decide whether a reply requires synchronous pre-execution verification based on `risk_policy`."""
+        pol = self.risk_policy
+        if value_at_risk_usd is not None and pol.max_unverified_value_usd is not None:
+            if float(value_at_risk_usd) > pol.max_unverified_value_usd:
+                return True
+            if not pol.always_verify_action_patterns:
+                return False
+        return bool(self.is_high_stakes(text))
 
     def chat(self, messages: List[dict], **kwargs) -> GuardDecision:
         """Send a chat request with deferred receipts; escalate to immediate referee verification on high-stakes replies."""
