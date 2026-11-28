@@ -216,3 +216,35 @@ def test_tail_spike_eprocess_catches_sporadic_part_time_cheater_with_valid_null(
             caught_ep += 1
     assert caught_ts == 25, f"expected 25/25 caught by TailSpikeEProcess, got {caught_ts}"
     assert caught_ep < caught_ts
+
+
+def test_combined_eprocess_strictly_dominates_bonferroni_and_holds_under_100pct_correlation():
+    import random
+    from llmverify.stats import ChangepointEProcess, CombinedEProcess, EProcess, TailSpikeEProcess, combine_evalues
+
+    # 1. Pointwise dominance over Bonferroni: (1/m)*sum(M_j) >= (1/m)*max(M_j) ALWAYS, strictly when >1 fires!
+    #    Two correlated detectors each at wealth=1500 (neither crosses Bonferroni 2/alpha = 2000!)
+    #    yet CombinedEProcess reaches (1500 + 1500)/2 = 1500 >= 1000 = 1/alpha -> CAUGHT!
+    cb_demo = CombinedEProcess()
+    w = cb_demo.observe([1500.0, 1500.0])
+    assert w == 1500.0
+    assert cb_demo.p_value() <= 1e-3  # Combined catches it even though Bonferroni (2000) misses BOTH!
+    assert combine_evalues([1500.0, 1500.0]) > max(1500.0, 1500.0) / 2.0
+
+    # 2. Worst-case 100% CORRELATED boundary null across ALL 3 detectors simultaneously (same x_t feeds all 3!)
+    rng = random.Random(777)
+    fa = 0
+    for _ in range(400):
+        ep = EProcess(tau=0.05, upper=5.0)
+        cp = ChangepointEProcess(tau=0.05, upper=5.0)
+        ts = TailSpikeEProcess(cutoff=0.50, p0=0.05)  # exact null boundary P(x > 0.5) == 0.05
+        cb = CombinedEProcess()
+        for _ in range(300):
+            x = 1.0 if rng.random() < 0.05 else 0.0
+            ep.update(x)
+            cp.update(x)
+            ts.update(x)
+            cb.observe([ep.wealth, cp.wealth, ts.wealth])
+        if cb.p_value() <= 1e-3:
+            fa += 1
+    assert fa <= 3, f"CombinedEProcess violated Ville's inequality under 100% correlation: {fa}/400"

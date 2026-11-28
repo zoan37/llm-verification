@@ -21,7 +21,7 @@ from .engine import Model
 from .metrics import RefStep, TokenScore, score_reply
 from .receipt import Receipt, Trace
 from .sampling import SamplingSpec
-from .stats import Calibration, ChangepointEProcess, EProcess, TailSpikeEProcess
+from .stats import Calibration, ChangepointEProcess, CombinedEProcess, EProcess, TailSpikeEProcess
 
 REFEREE_K = 50
 
@@ -253,6 +253,7 @@ class Ledger:
     _eps: Dict[str, EProcess] = field(default_factory=dict)
     _cps: Dict[str, ChangepointEProcess] = field(default_factory=dict)
     _tails: Dict[str, TailSpikeEProcess] = field(default_factory=dict)
+    _combined: Dict[str, CombinedEProcess] = field(default_factory=dict)
     # Optional honest near-tie flip curve [(margin upper edge, flip rate), ...] for a tier that pins the exact
     # weights: how often an honest machine picks something other than the referee's rule choice, by the referee's
     # margin. With it, the verdict warns when flips exceed it (tie steering). Warning only: the curve depends on the
@@ -274,6 +275,8 @@ class Ledger:
                 e.update(v)
                 cp = self._cps.setdefault(m, ChangepointEProcess(tau=tau, upper=self.uppers.get(m, 5.0)))
                 cp.update(v)
+                if m not in self.tail_cutoffs:
+                    self._combined.setdefault(m, CombinedEProcess()).observe([e.wealth, cp.wealth])
             for m in self.tail_cutoffs:
                 v = s.get(m)
                 if v is not None:
@@ -283,6 +286,12 @@ class Ledger:
             if vals:
                 ts = self._tails.setdefault(m, TailSpikeEProcess(cutoff=cutoff, p0=self.tail_p0))
                 ts.update(sum(vals) / len(vals))
+                wealths = [ts.wealth]
+                if m in self._eps:
+                    wealths.append(self._eps[m].wealth)
+                if m in self._cps:
+                    wealths.append(self._cps[m].wealth)
+                self._combined.setdefault(m, CombinedEProcess()).observe(wealths)
 
     def add_failure(self, reason: str):
         """Exact failures (bad signature, rule violation, altered prompt) are conclusive on their own."""
@@ -301,11 +310,14 @@ class Ledger:
         cp_vals = {m: {"p": cp.p_value(), "wealth": cp.wealth, "n": cp.n} for m, cp in self._cps.items()}
         ts_vals = {m: {"p": ts.p_value(), "wealth": ts.wealth, "hits": ts.hits, "n": ts.n}
                    for m, ts in self._tails.items()}
-        # Bonferroni-split alpha across active anytime-valid detectors per metric (2 without tail_cutoffs, 3 with).
+        comb_vals = {m: {"p": cb.p_value(), "wealth": cb.wealth, "n": cb.n} for m, cb in self._combined.items()}
+        # Exact Vovk-Wang arithmetic e-value merger (`CombinedEProcess`): strictly dominates Bonferroni splitting
+        # at every timestep t while preserving P(exists t: M_comb(t) >= 1/alpha) <= alpha under arbitrary correlation!
         for m in dict.fromkeys((*self._eps, *self._tails)):
             e = self._eps.get(m)
             cp = self._cps.get(m)
             ts = self._tails.get(m)
+            cb = self._combined.get(m)
             n_det = (1 if e is not None else 0) + (1 if cp is not None else 0) + (1 if ts is not None else 0)
             det_alpha = self.alpha / max(1, n_det)
             if e is not None and e.p_value() <= det_alpha:
@@ -317,6 +329,9 @@ class Ledger:
             elif ts is not None and ts.p_value() <= det_alpha:
                 reasons.append(f"{m}: sporadic tail spikes ({ts.hits}/{ts.n} spans > {ts.cutoff}) "
                                f"(tail-spike p = {ts.p_value():.2g})")
+            elif cb is not None and cb.p_value() <= self.alpha:
+                reasons.append(f"{m}: combined e-process merger exceeds 1/alpha "
+                               f"(combined p = {cb.p_value():.2g})")
         thresholds = {}
         if calibration is not None:
             for m in ("regret", "wgap", "topk"):
@@ -338,8 +353,8 @@ class Ledger:
         else:
             status = "PASS"
         return {"status": status, "n_tokens": n, "audits": self.audits, "means": means, "eprocess": e_vals,
-                "changepoint": cp_vals, "tail_spike": ts_vals, "thresholds": thresholds, "reasons": reasons,
-                "warnings": warnings, "steering": steering}
+                "changepoint": cp_vals, "tail_spike": ts_vals, "combined": comb_vals, "thresholds": thresholds,
+                "reasons": reasons, "warnings": warnings, "steering": steering}
 
     def steering_test(self, floor: float = 1e-3) -> Optional[dict]:
         """Observed flips (token != the referee's rule choice) against the honest flip curve, over tokens whose

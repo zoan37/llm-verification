@@ -358,6 +358,58 @@ def tail_spike_eprocess(values: Sequence[float], cutoff: float, p0: float = 1e-3
     return ts
 
 
+def combine_evalues(wealths: Sequence[float], weights: Optional[Sequence[float]] = None) -> float:
+    """Exact anytime-valid arithmetic e-value combiner (Vovk & Wang 2021):
+
+        M_comb = sum_j w_j * M_j,   where w_j >= 0 and sum_j w_j = 1.
+
+    By linearity of expectation, if each M_j is a valid e-variable (E_H0[M_j] <= 1) or supermartingale
+    under H0 — under ARBITRARY dependence/correlation (no independence required!) — then M_comb is an
+    exact valid e-variable / nonnegative supermartingale with P(exists t: M_comb(t) >= 1/alpha) <= alpha.
+
+    Strictly dominates Bonferroni splitting at every timestep: since M_j >= 0,
+        (1/m) * sum_j M_j  >=  (1/m) * max_j M_j
+    with strict gain whenever multiple detectors or correlated metrics accumulate evidence simultaneously.
+    """
+    if not wealths:
+        return 1.0
+    if weights is None:
+        w = [1.0 / len(wealths)] * len(wealths)
+    else:
+        if len(weights) != len(wealths):
+            raise ValueError("weights length must match wealths length")
+        total = sum(float(x) for x in weights)
+        if total <= 0.0:
+            raise ValueError("weights must sum to a positive value")
+        w = [float(x) / total for x in weights]
+    return sum(wi * max(0.0, float(mi)) for wi, mi in zip(w, wealths))
+
+
+@dataclass
+class CombinedEProcess:
+    """Tracks the running supremum of a weighted arithmetic mixture of anytime-valid e-processes.
+
+    Because the weighted sum of nonnegative supermartingales M_comb(t) = sum_j w_j * M_j(t) is itself a
+    nonnegative supermartingale (for arbitrary dependence across metrics/detectors), Ville's inequality
+    guarantees P(sup_{t>=1} M_comb(t) >= 1/alpha) <= alpha while strictly dominating Bonferroni whenever
+    multiple detectors (e.g. steady EProcess + ChangepointEProcess + TailSpikeEProcess, or regret + wgap)
+    fire together.
+    """
+    wealth: float = 1.0
+    history_max: float = 1.0
+    n: int = 0
+
+    def observe(self, current_wealths: Sequence[float], weights: Optional[Sequence[float]] = None) -> float:
+        self.n += 1
+        self.wealth = combine_evalues(current_wealths, weights)
+        if self.wealth > self.history_max:
+            self.history_max = self.wealth
+        return self.wealth
+
+    def p_value(self) -> float:
+        return min(1.0, 1.0 / max(self.history_max, 1e-300))
+
+
 @dataclass
 class Calibration:
     """Thresholds on the mean of a metric over n audited tokens, from honest runs.
