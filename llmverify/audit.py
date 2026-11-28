@@ -254,6 +254,7 @@ class Ledger:
     _cps: Dict[str, ChangepointEProcess] = field(default_factory=dict)
     _tails: Dict[str, TailSpikeEProcess] = field(default_factory=dict)
     _combined: Dict[str, CombinedEProcess] = field(default_factory=dict)
+    _joint: CombinedEProcess = field(default_factory=CombinedEProcess)
     # Optional honest near-tie flip curve [(margin upper edge, flip rate), ...] for a tier that pins the exact
     # weights: how often an honest machine picks something other than the referee's rule choice, by the referee's
     # margin. With it, the verdict warns when flips exceed it (tie steering). Warning only: the curve depends on the
@@ -292,6 +293,8 @@ class Ledger:
                 if m in self._cps:
                     wealths.append(self._cps[m].wealth)
                 self._combined.setdefault(m, CombinedEProcess()).observe(wealths)
+        if self._combined:
+            self._joint.observe([cb.wealth for cb in self._combined.values()])
 
     def add_failure(self, reason: str):
         """Exact failures (bad signature, rule violation, altered prompt) are conclusive on their own."""
@@ -332,6 +335,9 @@ class Ledger:
             elif cb is not None and cb.p_value() <= self.alpha:
                 reasons.append(f"{m}: combined e-process merger exceeds 1/alpha "
                                f"(combined p = {cb.p_value():.2g})")
+        if not reasons and len(self._combined) > 1 and self._joint.p_value() <= self.alpha:
+            reasons.append(f"joint cross-metric e-process ({', '.join(self._combined)}) "
+                           f"exceeds 1/alpha (joint p = {self._joint.p_value():.2g})")
         thresholds = {}
         if calibration is not None:
             for m in ("regret", "wgap", "topk"):
@@ -353,8 +359,9 @@ class Ledger:
         else:
             status = "PASS"
         return {"status": status, "n_tokens": n, "audits": self.audits, "means": means, "eprocess": e_vals,
-                "changepoint": cp_vals, "tail_spike": ts_vals, "combined": comb_vals, "thresholds": thresholds,
-                "reasons": reasons, "warnings": warnings, "steering": steering}
+                "changepoint": cp_vals, "tail_spike": ts_vals, "combined": comb_vals,
+                "joint": {"p": self._joint.p_value(), "wealth": self._joint.wealth, "n": self._joint.n},
+                "thresholds": thresholds, "reasons": reasons, "warnings": warnings, "steering": steering}
 
     def steering_test(self, floor: float = 1e-3) -> Optional[dict]:
         """Observed flips (token != the referee's rule choice) against the honest flip curve, over tokens whose

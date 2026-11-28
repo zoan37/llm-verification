@@ -248,3 +248,12 @@ def test_combined_eprocess_strictly_dominates_bonferroni_and_holds_under_100pct_
         if cb.p_value() <= 1e-3:
             fa += 1
     assert fa <= 3, f"CombinedEProcess violated Ville's inequality under 100% correlation: {fa}/400"
+
+    # 3. Cross-metric `joint` e-process in Ledger merges regret + wgap simultaneously!
+    from llmverify.audit import Ledger
+    from llmverify.metrics import TokenScore
+    led = Ledger("joint-test", tolerances={"regret": 0.05, "wgap": 0.08}, alpha=1e-3)
+    led.add([TokenScore(regret=0.25, wgap=0.35, agree=0.0, lp=-1.0) for _ in range(80)])
+    v = led.verdict()
+    assert v["status"] == "FAIL"
+    assert v["joint"]["p"] <= 1e-3 and v["joint"]["n"] >= 1
