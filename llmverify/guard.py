@@ -26,9 +26,10 @@ from dataclasses import dataclass, field
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Callable, List, Optional, Tuple
 
-from .audit import audit_trace
+from .audit import audit_trace, validate_ref_steps
 from .client import VerifiedReply, VerifyingClient
-from .metrics import means
+from .merkle import SpanProof, check_span_proof
+from .metrics import means, score_reply
 from .receipt import Receipt, ReceiptCheck, Trace, check_receipt, text_digest
 from .sampling import SamplingSpec
 
@@ -235,6 +236,79 @@ class VerifyBeforeActGuard:
                 and summary["wgap"] > self.max_action_wgap):
             reasons.append(f"verify-before-act BLOCK: mean wgap {summary['wgap']:.4f} > {self.max_action_wgap}")
 
+        if reasons:
+            self.stats["blocked"] += 1
+            return GuardDecision(False, True, reply, reasons, action_audit=summary)
+        return GuardDecision(True, True, reply, action_audit=summary)
+
+    def verify_merkle_span(
+        self,
+        receipt: Receipt,
+        proof: SpanProof,
+        prompt_ids: List[int],
+        prefix_tokens: List[int],
+        *,
+        text: Optional[str] = None,
+        expected_spec: Optional[SamplingSpec] = None,
+        expected_nonce: Optional[str] = None,
+        expected_max_tokens: Optional[int] = None,
+        pinned_key: Optional[str] = None,
+        expected_model: Optional[dict] = None,
+    ) -> GuardDecision:
+        """Compact Merkle span-only Verify-Before-Act check: verifies only `[proof.start, proof.end)`
+        (e.g., a 16-24 token tool-call span at the tail of a 4,000-token reasoning reply) using a ~1.5-6 KB
+        `SpanProof` without fetching or hashing the full trace."""
+        self.stats["total"] += 1
+        self.stats["high_stakes"] += 1
+        self.stats["escalated_audits"] += 1
+        vocab = getattr(self.client.referee, "n_vocab", None)
+        chk = check_span_proof(
+            receipt, proof, text=text,
+            expected_prompt_ids=prompt_ids,
+            expected_spec=expected_spec,
+            expected_nonce=expected_nonce,
+            expected_max_tokens=expected_max_tokens,
+            pinned_key=pinned_key or self.client.pinned_key,
+            expected_model=expected_model or self.client.expected_model,
+            vocab=vocab,
+        )
+        reply = VerifiedReply(text or "", receipt, None, chk)
+        if not chk.ok:
+            for p in chk.problems:
+                self.client.ledger.add_failure(p)
+            self.stats["blocked"] += 1
+            return GuardDecision(False, True, reply, list(chk.problems))
+        if len(prefix_tokens) != proof.start:
+            msg = f"prefix_tokens length {len(prefix_tokens)} != proof.start {proof.start}"
+            self.stats["blocked"] += 1
+            return GuardDecision(False, True, reply, [msg])
+
+        spec = expected_spec or SamplingSpec(**receipt.sampling)
+        temp = spec.temperature if not spec.greedy else 1.0
+        context = list(prompt_ids) + [int(t) for t in prefix_tokens]
+        ref = self.client.referee.score(context, proof.tokens, k=50, temperature=temp, stats=False)
+        validate_ref_steps(ref, len(proof.tokens), vocab=vocab)
+        scores = score_reply(
+            proof.tokens, ref, spec, receipt.client_nonce,
+            reported_tops=proof.tops,
+            reported_lps=[dict(top).get(t) for t, top in zip(proof.tokens, proof.tops)],
+            step_offset=proof.start,
+        )
+        self.client.ledger.add(scores)
+        valid = [s for s in scores if s is not None]
+        summary = {"tokens": len(valid), "span": [proof.start, proof.end], **means(scores, ("regret", "agree", "wgap", "topk"))}
+        max_reg = max((s.regret for s in valid), default=0.0)
+        summary["max_regret"] = max_reg
+        reply.audit = summary
+
+        reasons = []
+        if summary["regret"] is not None and summary["regret"] > self.max_action_regret:
+            reasons.append(f"verify-before-act BLOCK: mean regret {summary['regret']:.4f} > {self.max_action_regret}")
+        if max_reg > self.max_single_token_regret:
+            reasons.append(f"verify-before-act BLOCK: peak token regret {max_reg:.4f} > {self.max_single_token_regret}")
+        if (self.max_action_wgap is not None and summary.get("wgap") is not None
+                and summary["wgap"] > self.max_action_wgap):
+            reasons.append(f"verify-before-act BLOCK: mean wgap {summary['wgap']:.4f} > {self.max_action_wgap}")
         if reasons:
             self.stats["blocked"] += 1
             return GuardDecision(False, True, reply, reasons, action_audit=summary)

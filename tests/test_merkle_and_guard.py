@@ -207,3 +207,102 @@ def test_guard_http_proxy_returns_409_on_rogue_action():
         assert body["guard"]["allowed"] is False
     finally:
         srv.shutdown()
+
+
+def test_compact_binary_span_proof_roundtrip_and_compression():
+    import json
+    import pytest
+    from llmverify.merkle import (
+        build_root_and_span_proof,
+        pack_span_proof,
+        unpack_span_proof,
+        verify_span_proof,
+    )
+    from llmverify.receipt import round_top
+    from llmverify.sampling import COMMIT_K
+
+    n = 256
+    tokens = [i % 64 for i in range(n)]
+    tops = [
+        round_top([(tok, -0.15)] + [((tok + k + 1) % 200, -4.0 - 0.1 * k) for k in range(COMMIT_K - 1)])
+        for tok in tokens
+    ]
+    root, sp = build_root_and_span_proof(tokens, tops, 240, 256)
+    json_bytes = len(json.dumps(sp.to_dict(), separators=(",", ":")).encode())
+    bin_bytes = pack_span_proof(sp, compress=True)
+    raw_bytes = pack_span_proof(sp, compress=False)
+    assert len(bin_bytes) < json_bytes / 2, f"expected >2x compression: {len(bin_bytes)} vs {json_bytes}"
+
+    for blob in (bin_bytes, raw_bytes):
+        rt = unpack_span_proof(blob)
+        assert rt.start == sp.start and rt.end == sp.end and rt.n_tokens == sp.n_tokens
+        assert rt.tokens == sp.tokens and rt.siblings == sp.siblings
+        ok, err = verify_span_proof(rt, root, n)
+        assert ok, err
+
+    # Reject corrupted header and oversized payload cap
+    with pytest.raises(ValueError, match="header"):
+        unpack_span_proof(b"BAD!" + bin_bytes[4:])
+    with pytest.raises(ValueError, match="size cap"):
+        unpack_span_proof(bin_bytes, max_uncompressed=32)
+
+
+def test_verify_merkle_span_guard_allows_honest_and_blocks_sleeper():
+    import time
+    from llmverify.client import VerifyingClient
+    from llmverify.guard import VerifyBeforeActGuard
+    from llmverify.merkle import build_root_and_span_proof, pack_span_proof, unpack_span_proof
+    from llmverify.metrics import RefStep
+    from llmverify.receipt import Receipt, Signer, Trace, VERSION, new_nonce, round_top, text_digest
+    from llmverify.sampling import COMMIT_K, SamplingSpec
+
+    spec = SamplingSpec(mode="greedy")
+    signer = Signer()
+    nonce = new_nonce()
+    prompt_ids = [1, 2, 3, 4]
+    honest_top = round_top([(10, -0.15)] + [(20 + k, -5.0 - 0.1 * k) for k in range(COMMIT_K - 1)])
+    tokens = [10] * 32
+    tops = [honest_top] * 32
+
+    class ToyRef:
+        n_vocab = 256
+        def score(self, context, span_tokens, k=50, temperature=1.0, stats=False):
+            return [RefStep(top=honest_top, lp=dict(honest_top).get(int(t), -12.0)) for t in span_tokens]
+
+    tok_stub = type("Tok", (), {"eos_ids": [], "n_vocab": 256})()
+    client = VerifyingClient("http://unused", tokenizer=tok_stub, template="chatml", referee=ToyRef(), pinned_key=signer.public_hex)
+    guard = VerifyBeforeActGuard(client, max_action_regret=0.10, max_single_token_regret=2.0)
+
+    # 1. Honest tail span via binary SpanProof -> ALLOWED
+    tr_ok = Trace(prompt_ids=prompt_ids, tokens=tokens, tops=tops, finish_reason="stop")
+    root_ok, sp_ok = build_root_and_span_proof(tokens, tops, 16, 32)
+    sp_ok_rt = unpack_span_proof(pack_span_proof(sp_ok))
+    rcpt_ok = signer.sign(Receipt(
+        version=VERSION, model={"id": "toy"}, sampling=spec.to_dict(), client_nonce=nonce,
+        max_tokens=64, prompt_sha256=tr_ok.prompt_digest(), steps_sha256=tr_ok.steps_digest(),
+        n_prompt=4, n_tokens=32, finish_reason="stop", created=int(time.time()),
+        provider_key=signer.public_hex, text_sha256=text_digest("ok"), steps_merkle_root=root_ok,
+    ))
+    dec_ok = guard.verify_merkle_span(rcpt_ok, sp_ok_rt, prompt_ids, tokens[:16], text="ok",
+                                      expected_spec=spec, expected_nonce=nonce, expected_max_tokens=64)
+    assert dec_ok.allowed is True
+    assert dec_ok.action_audit["max_regret"] == 0.0
+
+    # 2. Sleeper hijack at step 25 (token 99 forged as top-1) -> BLOCKED!
+    bad_toks = list(tokens)
+    bad_tops = list(tops)
+    bad_toks[25] = 99
+    bad_tops[25] = round_top([(99, -0.15)] + [(50 + k, -5.0 - 0.1 * k) for k in range(COMMIT_K - 1)])
+    tr_bad = Trace(prompt_ids=prompt_ids, tokens=bad_toks, tops=bad_tops, finish_reason="stop")
+    root_bad, sp_bad = build_root_and_span_proof(bad_toks, bad_tops, 16, 32)
+    sp_bad_rt = unpack_span_proof(pack_span_proof(sp_bad))
+    rcpt_bad = signer.sign(Receipt(
+        version=VERSION, model={"id": "toy"}, sampling=spec.to_dict(), client_nonce=nonce,
+        max_tokens=64, prompt_sha256=tr_bad.prompt_digest(), steps_sha256=tr_bad.steps_digest(),
+        n_prompt=4, n_tokens=32, finish_reason="stop", created=int(time.time()),
+        provider_key=signer.public_hex, text_sha256=text_digest("hijack"), steps_merkle_root=root_bad,
+    ))
+    dec_bad = guard.verify_merkle_span(rcpt_bad, sp_bad_rt, prompt_ids, bad_toks[:16], text="hijack",
+                                       expected_spec=spec, expected_nonce=nonce, expected_max_tokens=64)
+    assert dec_bad.allowed is False
+    assert dec_bad.action_audit["max_regret"] > 10.0

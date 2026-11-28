@@ -16,14 +16,17 @@ separation: `0x00 || step_bytes` for leaves, `0x01 || left || right` for interna
 from __future__ import annotations
 
 import hashlib
+import struct
+import zlib
 from dataclasses import dataclass
 from typing import List, Sequence, Tuple
 
-from .receipt import canonical, lp_units
+from .receipt import LOGPROB_DECIMALS, canonical, lp_units
 from .sampling import TopK
 
 LEAF_PREFIX = b"\x00llmverify-step-v1:"
 NODE_PREFIX = b"\x01llmverify-node-v1:"
+BINARY_PROOF_MAGIC = b"LVM1"
 
 
 def step_leaf_hash(step_index: int, token: int, top: Sequence) -> bytes:
@@ -303,3 +306,91 @@ def check_span_proof(
             break
 
     return ReceiptCheck(not p, p)
+
+
+def pack_span_proof(proof: SpanProof, *, compress: bool = True) -> bytes:
+    """Serialize a `SpanProof` into a compact binary wire format (`LVM1` + optional zlib).
+
+    Stores canonical `1e-4`-nat integer logprob units, uint32 token IDs, and raw 32-byte sibling digests
+    instead of JSON strings/hex — shrinking a 16-token proof from ~6 KB JSON down to ~1.3–1.8 KB (~99%
+    smaller than a full 512-token JSON trace).
+    """
+    buf = bytearray()
+    n_steps = len(proof.tokens)
+    if len(proof.tops) != n_steps:
+        raise ValueError("tokens and tops length mismatch")
+    buf += struct.pack("!IIII", int(proof.start), int(proof.end), int(proof.n_tokens), len(proof.siblings))
+    for tok, top in zip(proof.tokens, proof.tops):
+        if int(tok) < 0:
+            raise ValueError("negative token id")
+        buf += struct.pack("!IH", int(tok), len(top))
+        for tid, lp in top:
+            if int(tid) < 0:
+                raise ValueError("negative candidate token id")
+            buf += struct.pack("!Ii", int(tid), int(lp_units(lp)))
+    for lvl, idx, h in proof.siblings:
+        digest = bytes.fromhex(h.removeprefix("0x"))
+        if len(digest) != 32:
+            raise ValueError("sibling hash must be 32 bytes")
+        buf += struct.pack("!BI", int(lvl), int(idx))
+        buf += digest
+    if compress:
+        return BINARY_PROOF_MAGIC + b"\x01" + zlib.compress(bytes(buf), level=6)
+    return BINARY_PROOF_MAGIC + b"\x00" + bytes(buf)
+
+
+def unpack_span_proof(blob: bytes, *, max_uncompressed: int = 2_000_000) -> SpanProof:
+    """Decode a compact binary `SpanProof` produced by `pack_span_proof`."""
+    if len(blob) < 5 or blob[:4] != BINARY_PROOF_MAGIC:
+        raise ValueError("invalid binary span proof header")
+    flag = blob[4]
+    if flag == 1:
+        dc = zlib.decompressobj()
+        raw = dc.decompress(blob[5:], max_uncompressed + 1)
+        if len(raw) > max_uncompressed or not dc.eof:
+            raise ValueError("binary span proof exceeds size cap")
+    elif flag == 0:
+        raw = blob[5:]
+        if len(raw) > max_uncompressed:
+            raise ValueError("binary span proof exceeds size cap")
+    else:
+        raise ValueError(f"unsupported binary span proof compression flag {flag}")
+
+    pos = 0
+    if len(raw) < 16:
+        raise ValueError("truncated binary span proof")
+    start, end, n_tokens, n_sibs = struct.unpack_from("!IIII", raw, pos)
+    pos += 16
+    if not (0 <= start < end <= n_tokens):
+        raise ValueError("invalid span bounds in binary proof")
+    n_steps = end - start
+    scale = 10 ** LOGPROB_DECIMALS
+    tokens: List[int] = []
+    tops: List[TopK] = []
+    for _ in range(n_steps):
+        if pos + 6 > len(raw):
+            raise ValueError("truncated step header in binary proof")
+        tok, k = struct.unpack_from("!IH", raw, pos)
+        pos += 6
+        if pos + k * 8 > len(raw):
+            raise ValueError("truncated top-k entries in binary proof")
+        top: TopK = []
+        for _ in range(k):
+            tid, q = struct.unpack_from("!Ii", raw, pos)
+            pos += 8
+            top.append((int(tid), q / scale))
+        tokens.append(int(tok))
+        tops.append(top)
+    siblings: List[Tuple[int, int, str]] = []
+    for _ in range(n_sibs):
+        if pos + 37 > len(raw):
+            raise ValueError("truncated sibling entry in binary proof")
+        lvl, idx = struct.unpack_from("!BI", raw, pos)
+        pos += 5
+        digest = raw[pos : pos + 32].hex()
+        pos += 32
+        siblings.append((int(lvl), int(idx), digest))
+    if pos != len(raw):
+        raise ValueError("trailing bytes in binary span proof")
+    return SpanProof(start=int(start), end=int(end), n_tokens=int(n_tokens),
+                     tokens=tokens, tops=tops, siblings=siblings)
