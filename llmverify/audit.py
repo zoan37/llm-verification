@@ -18,7 +18,7 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Sequence, Tuple
 
 from .engine import Model
-from .metrics import TokenScore, score_reply
+from .metrics import RefStep, TokenScore, score_reply
 from .receipt import Receipt, Trace
 from .sampling import SamplingSpec
 from .stats import Calibration, EProcess
@@ -73,9 +73,157 @@ def audit_trace(referee: Model, trace: Trace, spec: SamplingSpec, key: str, star
     temp = spec.temperature if not spec.greedy else 1.0
     # top-k only: the cooperative checks (regret, agreement, top-k drift) do not use full-vocabulary statistics
     ref = referee.score(context, span_tokens, k=REFEREE_K, temperature=temp, stats=False)
+    validate_ref_steps(ref, end - start, vocab=vocab)
     return score_reply(span_tokens, ref, spec, key, reported_tops=trace.tops[start:end],
                        reported_lps=[dict(top).get(t) for t, top in zip(span_tokens, trace.tops[start:end])],
                        step_offset=start)
+
+
+def validate_ref_steps(ref_steps: Sequence[RefStep], expected_len: int, vocab: Optional[int] = None) -> None:
+    """Validate `RefStep` entries returned by a (possibly untrusted/remote) referee.
+    Rejects non-finite or positive logprobs, duplicate token IDs, unsorted top-k lists, and probabilities
+    summing above 1 so a buggy or adversarial referee cannot corrupt regret/topk metrics."""
+    if len(ref_steps) != expected_len:
+        raise ValueError(f"referee returned {len(ref_steps)} steps, expected {expected_len}")
+    for idx, step in enumerate(ref_steps):
+        if type(step.lp) not in (int, float) or not math.isfinite(step.lp) or step.lp > 1e-6:
+            raise ValueError(f"referee step {idx}: invalid chosen logprob {step.lp!r}")
+        if not step.top:
+            continue
+        ids = [i for i, _ in step.top]
+        if len(set(ids)) != len(ids):
+            raise ValueError(f"referee step {idx}: duplicate token ids in ref.top")
+        if any(type(i) is not int or i < 0 or (vocab is not None and i >= vocab) for i in ids):
+            raise ValueError(f"referee step {idx}: token id out of range")
+        lps = [lp for _, lp in step.top]
+        if any(type(lp) not in (int, float) or not math.isfinite(lp) or lp > 1e-6 for lp in lps):
+            raise ValueError(f"referee step {idx}: invalid logprob in ref.top")
+        if any(lps[k] < lps[k + 1] - 1e-6 for k in range(len(lps) - 1)):
+            raise ValueError(f"referee step {idx}: ref.top is not sorted descending")
+        if sum(math.exp(lp) for lp in lps) > 1.0 + max(len(lps), 20) * 1e-4 + 1e-3:
+            raise ValueError(f"referee step {idx}: ref.top probabilities sum to more than 1")
+
+
+def corroborate_trace(
+    referees: Sequence[Tuple[str, Model]],
+    trace: Trace,
+    spec: SamplingSpec,
+    key: str,
+    *,
+    start: int = 0,
+    end: Optional[int] = None,
+    max_regret: float = 0.05,
+    max_topk: float = 0.35,
+    min_agree: int = 2,
+) -> dict:
+    """Multi-referee quorum audit for untrusted referee sets.
+
+    Runs `audit_trace` across `referees` (`[(name, model), ...]`), isolates any referee returning malformed
+    `RefStep`s, and resolves a majority verdict (`PASS`, `FAIL`, or `DISPUTED`) while identifying dissenting
+    or malformed referees. Protects honest providers against a single lying referee and flags colluding
+    referees that rubber-stamp a fraudulent trace."""
+    flag_refs: List[str] = []
+    clean_refs: List[str] = []
+    malformed_refs: Dict[str, str] = {}
+    per_ref: Dict[str, dict] = {}
+    scores_by_ref: Dict[str, List[Optional[TokenScore]]] = {}
+    for name, ref in referees:
+        try:
+            sc = audit_trace(ref, trace, spec, key, start=start, end=end)
+        except Exception as e:
+            malformed_refs[name] = str(e)
+            continue
+        valid = [s for s in sc if s is not None]
+        mean_r = (sum(s.regret for s in valid) / len(valid)) if valid else 0.0
+        tk_vals = [s.topk for s in valid if s.topk is not None]
+        mean_tk = (sum(tk_vals) / len(tk_vals)) if tk_vals else 0.0
+        flagged = (mean_r > max_regret) or (mean_tk > max_topk)
+        scores_by_ref[name] = sc
+        per_ref[name] = {"flagged": flagged, "mean_regret": mean_r, "mean_topk": mean_tk, "n_tokens": len(valid)}
+        (flag_refs if flagged else clean_refs).append(name)
+
+    if len(flag_refs) >= min_agree and len(flag_refs) > len(clean_refs):
+        status = "FAIL"
+        dissenting = list(clean_refs)
+        consensus_scores = scores_by_ref[flag_refs[0]]
+    elif len(clean_refs) >= min_agree and len(clean_refs) > len(flag_refs):
+        status = "PASS"
+        dissenting = list(flag_refs)
+        consensus_scores = scores_by_ref[clean_refs[0]]
+    else:
+        status = "DISPUTED"
+        dissenting = []
+        consensus_scores = None
+    return {
+        "status": status,
+        "flag_referees": flag_refs,
+        "clean_referees": clean_refs,
+        "dissenting_referees": dissenting,
+        "malformed_referees": malformed_refs,
+        "per_referee": per_ref,
+        "scores": consensus_scores,
+    }
+
+
+def check_referee_honeypot(
+    referee: Model,
+    trace: Trace,
+    spec: SamplingSpec,
+    *,
+    key: str = "honeypot",
+    start: int = 0,
+    end: Optional[int] = None,
+    corrupt_count: int = 4,
+    min_regret: float = 0.5,
+    seed: int = 0,
+) -> dict:
+    """Anti-lazy check for remote/untrusted referees: replaces `corrupt_count` tokens in `[start, end)` with
+    out-of-top-k token IDs and calls `referee.score(...)` via the normal audit interface. An honest referee
+    running prefill scores high regret on the corrupted positions; a lazy referee echoing canned high logprobs
+    for whatever tokens it receives fails the check."""
+    import random as _random
+
+    end = len(trace.tokens) if end is None else end
+    if not 0 <= start < end <= len(trace.tokens):
+        raise ValueError("bad span")
+    span_len = end - start
+    vocab = getattr(referee, "n_vocab", None)
+    used_ids = {int(t) for t in trace.tokens[start:end]}
+    for top in trace.tops[start:end]:
+        for tid, _ in top:
+            used_ids.add(int(tid))
+    rng = _random.Random(seed)
+    n_edit = min(span_len, max(1, int(corrupt_count)))
+    edit_rel = sorted(rng.sample(range(span_len), n_edit))
+    bad_tokens = list(trace.tokens[start:end])
+    cand_id = 0
+    for rel in edit_rel:
+        while cand_id in used_ids:
+            cand_id += 1
+        if vocab is not None and cand_id >= vocab:
+            cand_id = (bad_tokens[rel] + 1) % vocab
+        bad_tokens[rel] = cand_id
+        used_ids.add(cand_id)
+
+    context = list(trace.prompt_ids) + list(trace.tokens[:start])
+    temp = spec.temperature if not spec.greedy else 1.0
+    try:
+        ref = referee.score(context, bad_tokens, k=REFEREE_K, temperature=temp, stats=False)
+        validate_ref_steps(ref, span_len, vocab=vocab)
+    except Exception as e:
+        return {"caught": False, "mean_regret": 0.0, "malformed": str(e),
+                "corrupted_positions": [start + r for r in edit_rel]}
+    sc = score_reply(bad_tokens, ref, spec, key, reported_tops=trace.tops[start:end],
+                     reported_lps=[dict(top).get(t) for t, top in zip(bad_tokens, trace.tops[start:end])],
+                     step_offset=start)
+    valid = [s for s in sc if s is not None]
+    mean_r = (sum(s.regret for s in valid) / len(valid)) if valid else 0.0
+    return {
+        "caught": mean_r >= min_regret,
+        "mean_regret": mean_r,
+        "malformed": None,
+        "corrupted_positions": [start + r for r in edit_rel],
+    }
 
 
 @dataclass

@@ -210,3 +210,109 @@ def test_score_token_topk_floor_suppresses_deep_tail_noise():
     clamped = score_token(69026, ref, spec, "k", 0, reported_top=reported, reported_lp=-0.0, topk_floor=-8.0)
     assert raw.regret == 0.0 and raw.topk > 1.5
     assert clamped.regret == 0.0 and clamped.topk == 0.0
+
+
+def test_validate_ref_steps_blocks_malformed_untrusted_referee():
+    import pytest
+    from llmverify.audit import validate_ref_steps
+    from llmverify.metrics import RefStep
+
+    good = [RefStep(top=[(1, -0.2), (2, -2.5)], lp=-0.2)]
+    validate_ref_steps(good, 1, vocab=100)
+
+    # Positive logprob
+    with pytest.raises(ValueError, match="invalid chosen logprob"):
+        validate_ref_steps([RefStep(top=[(1, -0.2)], lp=0.5)], 1)
+    # Unsorted top-k
+    with pytest.raises(ValueError, match="not sorted descending"):
+        validate_ref_steps([RefStep(top=[(1, -2.5), (2, -0.2)], lp=-0.2)], 1)
+    # Duplicate token ids
+    with pytest.raises(ValueError, match="duplicate token ids"):
+        validate_ref_steps([RefStep(top=[(1, -0.2), (1, -2.5)], lp=-0.2)], 1)
+    # Probabilities summing > 1
+    with pytest.raises(ValueError, match="more than 1"):
+        validate_ref_steps([RefStep(top=[(1, -0.05), (2, -0.05)], lp=-0.05)], 1)
+
+
+def test_corroborate_trace_exonerates_honest_provider_and_catches_colluding_referee():
+    from llmverify.audit import corroborate_trace
+    from llmverify.metrics import RefStep
+    from llmverify.receipt import Trace, round_top
+    from llmverify.sampling import COMMIT_K, SamplingSpec
+
+    spec = SamplingSpec(mode="greedy")
+    # Build a clean valid 16-token trace
+    base_top = round_top([(0, -0.2)] + [(i, -4.0 - 0.1 * i) for i in range(1, COMMIT_K)])
+    trace = Trace(prompt_ids=[1, 2, 3], tokens=[0] * 16, tops=[base_top] * 16, finish_reason="length")
+
+    class HonestRef:
+        n_vocab = 256
+        def score(self, context, tokens, k=50, temperature=1.0, stats=False):
+            return [RefStep(top=base_top, lp=dict(base_top).get(t, -10.0)) for t in tokens]
+
+    class RogueFramingRef:
+        n_vocab = 256
+        def score(self, context, tokens, k=50, temperature=1.0, stats=False):
+            fake = round_top([(99, -0.2)] + [(100 + i, -4.0 - 0.1 * i) for i in range(1, COMMIT_K)])
+            return [RefStep(top=fake, lp=-10.0) for _ in tokens]
+
+    class MalformedRef:
+        n_vocab = 256
+        def score(self, context, tokens, k=50, temperature=1.0, stats=False):
+            return [RefStep(top=[(0, 5.0)], lp=5.0) for _ in tokens]
+
+    # 1. Rogue referee tries to frame honest provider -> 2 honest referees outvote it, provider PASSES!
+    res = corroborate_trace(
+        [("rogue", RogueFramingRef()), ("honest1", HonestRef()), ("honest2", HonestRef()), ("broken", MalformedRef())],
+        trace, spec, "k1",
+    )
+    assert res["status"] == "PASS"
+    assert res["dissenting_referees"] == ["rogue"]
+    assert "broken" in res["malformed_referees"]
+
+    # 2. Cheating provider (tokens don't match honest distribution) with 1 colluding referee returning clean scores
+    bad_trace = Trace(prompt_ids=[1, 2, 3], tokens=[50] * 16, tops=[base_top] * 16, finish_reason="length")
+
+    class ColludingRef:
+        n_vocab = 256
+        def score(self, context, tokens, k=50, temperature=1.0, stats=False):
+            # Lies to cover for bad_trace by giving token 50 high logprob and matching top-5
+            return [RefStep(top=base_top, lp=-0.2) for _ in tokens]
+
+    res2 = corroborate_trace(
+        [("honest1", HonestRef()), ("colluder", ColludingRef()), ("honest2", HonestRef())],
+        bad_trace, spec, "k2",
+    )
+    assert res2["status"] == "FAIL"
+    assert res2["dissenting_referees"] == ["colluder"]
+
+
+def test_check_referee_honeypot_catches_lazy_referee_and_passes_honest():
+    from llmverify.audit import check_referee_honeypot
+    from llmverify.metrics import RefStep
+    from llmverify.receipt import Trace, round_top
+    from llmverify.sampling import COMMIT_K, SamplingSpec
+
+    spec = SamplingSpec(mode="greedy")
+    base_top = round_top([(0, -0.2)] + [(i, -4.0 - 0.1 * i) for i in range(1, COMMIT_K)])
+    trace = Trace(prompt_ids=[1, 2, 3], tokens=[0] * 16, tops=[base_top] * 16, finish_reason="length")
+
+    class HonestRef:
+        n_vocab = 256
+        def score(self, context, tokens, k=50, temperature=1.0, stats=False):
+            return [RefStep(top=base_top, lp=dict(base_top).get(t, -9.0)) for t in tokens]
+
+    class LazyEchoRef:
+        n_vocab = 256
+        def score(self, context, tokens, k=50, temperature=1.0, stats=False):
+            # Lazy referee never runs prefill; just echoes whatever token it was sent as top-1!
+            return [RefStep(top=[(int(t), -0.05), ((int(t) + 1) % 256, -6.0)], lp=-0.05) for t in tokens]
+
+    ok = check_referee_honeypot(HonestRef(), trace, spec, seed=42)
+    assert ok["caught"] is True
+    assert ok["mean_regret"] > 1.0
+    assert ok["malformed"] is None
+
+    lazy = check_referee_honeypot(LazyEchoRef(), trace, spec, seed=42)
+    assert lazy["caught"] is False
+    assert lazy["mean_regret"] == 0.0
