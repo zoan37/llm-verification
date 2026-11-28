@@ -1,5 +1,7 @@
-"""Command line: python -m llmverify <command>
+"""Command line: python -m llmverify <command> (or `llmverify <command>` after `pip install -e .`)
 
+  demo      2-second zero-GPU showcase of honest vs cheating providers & Verify-Before-Act
+  doctor    check Python deps, GPU, lv-engine binary, and API key readiness
   serve     run the cooperative provider (OpenAI-compatible, signed receipts) on a GGUF model
   keygen    create a provider signing key
   verify    check a saved reply (receipt + trace JSON) offline, optionally auditing it on a referee
@@ -151,9 +153,124 @@ def cmd_audit(a):
     print("Compare greedy_regret with an honest machine scored the same way (see docs/black-box.md).")
 
 
+def cmd_doctor(_a):
+    import platform
+    import shutil
+    import subprocess
+    checks = []
+    checks.append(("python", True, platform.python_version()))
+    for pkg in ("numpy", "cryptography", "jinja2"):
+        try:
+            mod = __import__(pkg)
+            checks.append((f"pkg:{pkg}", True, getattr(mod, "__version__", "installed")))
+        except ImportError:
+            checks.append((f"pkg:{pkg}", False, "missing (pip install -e .)"))
+    repo_root = Path(__file__).resolve().parents[1]
+    lv_candidates = [
+        repo_root / "engine" / "build" / "lv-engine",
+        repo_root / "engine" / "lv-engine",
+        Path(shutil.which("lv-engine")) if shutil.which("lv-engine") else None,
+    ]
+    lv_found = next((str(p) for p in lv_candidates if p is not None and p.exists()), None)
+    checks.append(("lv-engine", lv_found is not None, lv_found or "not built yet (optional for ToyLM/demo; build via cmake -S engine -B engine/build)"))
+    gpu = None
+    if shutil.which("nvidia-smi"):
+        try:
+            gpu = subprocess.check_output(["nvidia-smi", "--query-gpu=name", "--format=csv,noheader"], text=True, timeout=5).strip().splitlines()[0]
+        except Exception:
+            gpu = None
+    elif platform.system() == "Darwin":
+        gpu = "Apple Metal"
+    checks.append(("gpu", gpu is not None, gpu or "none detected (CPU/remote SSH referee still works)"))
+    or_key = bool(os.environ.get("OPENROUTER_API_KEY") or (Path.home() / ".config" / "openrouter" / "api-key").exists())
+    checks.append(("openrouter-key", or_key, "configured" if or_key else "not set (only needed for OpenRouter audits)"))
+    for name, ok, detail in checks:
+        tag = "OK  " if ok else "INFO" if name in ("lv-engine", "gpu", "openrouter-key") else "FAIL"
+        print(f"[{tag}] {name:16s} {detail}")
+    print("\nTry: llmverify demo   (zero-GPU showcase)  |  pytest -q   (full test suite)")
+
+
+def cmd_demo(_a):
+    import random
+    import time
+    from .attacks import ContextTruncation, ExactSpeculative, LossySpeculative, SamplerSkew, SwapModel
+    from .audit import Ledger, audit_trace
+    from .merkle import build_root_and_span_proof, pack_span_proof, unpack_span_proof, verify_span_proof
+    from .provider import VerifiableProvider
+    from .receipt import Signer, check_receipt
+    from .sampling import SamplingSpec
+    from .stats import ChangepointEProcess, TailSpikeEProcess
+    from .toy import ToyLM
+
+    t0 = time.perf_counter()
+    target = ToyLM(weights_seed=1, machine=0, hw_noise=0.0)
+    other_hw = ToyLM(weights_seed=1, machine=7, hw_noise=0.015)
+    cheap = ToyLM(weights_seed=2, machine=0, hw_noise=0.0)
+    signer = Signer()
+    info = {"name": "toy-demo"}
+    spec_g = SamplingSpec(mode="greedy")
+    spec_s = SamplingSpec(mode="gumbel", temperature=1.0, top_k=20, seed=17)
+    prompts = [[(i * 13 + j * 7) % 60 + 2 for j in range(10)] for i in range(18)]
+
+    def eval_provider(prov, spec, tol_regret=0.015, tol_wgap=0.12):
+        led = Ledger("demo", tolerances={"regret": tol_regret, "wgap": tol_wgap}, alpha=1e-3)
+        exact_ok = True
+        for i, p in enumerate(prompts):
+            g = prov.generate(p, spec, max_tokens=16, client_nonce=f"d-{i}")
+            chk = check_receipt(g.receipt, g.trace, expected_prompt_ids=p, expected_spec=spec, pinned_key=signer.public_hex)
+            if not chk.ok:
+                exact_ok = False
+                led.add_failure("; ".join(chk.problems))
+            else:
+                led.add(audit_trace(target, g.trace, spec, g.receipt.client_nonce))
+        v = led.verdict()
+        return exact_ok, v["status"], v["means"]["regret"], v["means"]["wgap"]
+
+    rows = [
+        ("Honest (other GPU noise)", *eval_provider(VerifiableProvider(other_hw, signer, info), spec_g)),
+        ("Lossless ExactSpeculative", *eval_provider(ExactSpeculative(cheap, target, signer, info, k_draft=4), spec_s)),
+        ("SwapModel (wrong weights)", *eval_provider(SwapModel(cheap, signer, info), spec_g)),
+        ("ContextTruncation (KV drop)", *eval_provider(ContextTruncation(target, signer, info, mode="prefix", keep_fraction=0.3), spec_g)),
+        ("SamplerSkew (temp/top-k)", *eval_provider(SamplerSkew(target, signer, info, temp_scale=0.35, effective_top_k=3), spec_s)),
+        ("LossySpeculative (cheat)", *eval_provider(LossySpeculative(cheap, target, signer, info, k_draft=4, relax_rank=8, relax_gap=2.5), spec_s)),
+    ]
+
+    print("=== llmverify zero-GPU demo (ToyLM) ===")
+    print(f"{'Scenario':29s} | {'Exact':5s} | {'Verdict':7s} | {'Regret':8s} | {'WGap':8s}")
+    print("-" * 70)
+    for name, ex, st, reg, wg in rows:
+        print(f"{name:29s} | {'PASS' if ex else 'FAIL':5s} | {st:7s} | {reg or 0.0:8.4f} | {wg or 0.0:8.4f}")
+
+    # Delayed-onset sleeper (ChangepointEProcess) & 5% sporadic cheater (TailSpikeEProcess)
+    cp = ChangepointEProcess(tau=0.05, upper=5.0)
+    for _ in range(5000):
+        cp.update(0.005)
+    caught_cp = next((t for t in range(1, 500) if (cp.update(0.25) and cp.p_value() <= 1e-3)), None)
+    rng = random.Random(42)
+    ts = TailSpikeEProcess(cutoff=0.25, p0=1e-3)
+    caught_ts = next((s for s in range(1, 400) if (ts.update(1.2 if rng.random() < 0.05 else 0.002) and ts.p_value() <= 1e-3)), None)
+
+    # Compact binary LVM1 Merkle span proof roundtrip
+    sample_g = VerifiableProvider(target, signer, info).generate(prompts[0], spec_g, max_tokens=32, client_nonce="merkle-0")
+    root, sp = build_root_and_span_proof(sample_g.trace.tokens, sample_g.trace.tops, 24, 32)
+    blob = pack_span_proof(sp)
+    sp_rt = unpack_span_proof(blob)
+    ok_m, _ = verify_span_proof(sp_rt, root, len(sample_g.trace.tokens))
+
+    print("-" * 70)
+    print(f"Delayed-onset sleeper (5,000 honest -> 0.25 nat):  caught in {caught_cp} tokens  (ChangepointEProcess)")
+    print(f"Sporadic 5% part-time cheater:                     caught in {caught_ts} spans   (TailSpikeEProcess)")
+    print(f"Compact binary Merkle SpanProof (8/32 tokens):     {len(blob)} bytes (LVM1+zlib, verified={ok_m})")
+    print(f"Completed in {time.perf_counter() - t0:.2f}s (no GPU required). See docs/soundness.md for guarantees.")
+
+
 def main():
     ap = argparse.ArgumentParser(prog="llmverify")
     sub = ap.add_subparsers(dest="cmd", required=True)
+    dm = sub.add_parser("demo", help="2-second zero-GPU showcase of attacks, detectors, and Merkle span proofs")
+    dm.set_defaults(fn=cmd_demo)
+    dr = sub.add_parser("doctor", help="check local Python deps, GPU, lv-engine binary, and API key readiness")
+    dr.set_defaults(fn=cmd_doctor)
     k = sub.add_parser("keygen")
     k.add_argument("--out", default="provider.key")
     k.set_defaults(fn=cmd_keygen)

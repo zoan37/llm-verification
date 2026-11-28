@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llmverify"
+version = "0.2.0"
+description = "Statistical and cryptographic verification of LLM inference endpoints"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.24",
+    "cryptography>=41",
+    "jinja2>=3.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "pillow>=10"]
+
+[project.scripts]
+llmverify = "llmverify.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["llmverify*"]

@@ -46,11 +46,12 @@ and referee run batch-invariant kernels on GPUs of one group, the numbers agree 
 | Path | What |
 |---|---|
 | `llmverify/sampling.py` | public decoding rule: greedy or seeded Gumbel-max |
-| `llmverify/metrics.py`, `stats.py` | per-token metrics; bootstrap CIs, PIT/likelihood tests, anytime-valid e-processes, calibration |
+| `llmverify/metrics.py`, `stats.py`, `power.py` | per-token metrics; bootstrap CIs, PIT/likelihood tests, anytime-valid e-process triad (`EProcess`, `ChangepointEProcess`, `TailSpikeEProcess`, `CombinedEProcess`), power & audit-cost calculator |
 | `llmverify/receipt.py`, `provider.py`, `server.py`, `client.py` | cooperative mode: signed receipts, generation, OpenAI-compatible server, verifying client |
+| `llmverify/merkle.py`, `guard.py` | compact binary Merkle span proofs (`LVM1+zlib`) and `VerifyBeforeActGuard` (`RiskPolicy`) for pre-execution tool-call verification |
 | `llmverify/vllm_rule.py`, `upstream.py` | the sampling rule as a vLLM logits processor (speculative decoding supported); signing front end for vLLM or llama-server |
-| `llmverify/audit.py` | challenges, referee audits, per-provider evidence ledger |
-| `llmverify/attacks.py` | cheating providers (laundering, confident draft, prompt injection, grinding, tie steering, part-time) |
+| `llmverify/audit.py` | challenges, referee audits, multi-referee corroboration, honeypots, per-provider evidence ledger |
+| `llmverify/attacks.py` | cheating providers (swap, laundering, confident draft, KV/context truncation, sampler skew, lossy vs lossless speculative decoding, multi-turn tool-history tamper, prompt injection, grinding, tie steering, covert channel, part-time) |
 | `llmverify/openrouter.py`, `blackbox.py`, `localgen.py`, `report.py` | black-box audits of OpenRouter endpoints |
 | `llmverify/toy.py` | tiny synthetic LM with the engine interface, for tests |
 | `engine/lv_engine.cpp` | llama.cpp front end: one-pass scoring with full-vocabulary statistics, step-wise generation |
@@ -62,10 +63,15 @@ and referee run batch-invariant kernels on GPUs of one group, the numbers agree 
 ## Quick start
 
 ```bash
-uv venv && uv pip install -r requirements.txt
-.venv/bin/python -m pytest -q          # runs entirely on the toy model, no GPU needed
+# Install directly (exposes the `llmverify` CLI)
+uv venv && uv pip install -e ".[dev]"
+# or from GitHub: pip install git+https://github.com/zoan37/llm-verification
 
-# build the engine against a llama.cpp checkout
+llmverify demo                         # 2-second zero-GPU showcase of attacks, e-processes & Merkle proofs
+llmverify doctor                       # check Python deps, GPU, lv-engine binary, API keys
+pytest -q                              # full test suite on the toy model, no GPU needed
+
+# build the C++ referee engine against a llama.cpp checkout
 cmake -S engine -B engine/build -DLLAMA_CPP_DIR=/path/to/llama.cpp -DCMAKE_BUILD_TYPE=Release
 cmake --build engine/build -j
 
@@ -76,9 +82,11 @@ python experiments/score_model.py --model openai/gpt-oss-20b --chat harmony --re
 python experiments/build_results.py --model openai/gpt-oss-20b --referee "..." --anchor "..."
 
 # or audit one OpenAI-compatible endpoint directly
-python -m llmverify audit --base-url https://host/v1 --model NAME --logprobs \
+llmverify audit --base-url https://host/v1 --model NAME --logprobs \
     --referee "engine/build/lv-engine -m model.gguf -c 8192"
 ```
+
+**Using a coding agent (Claude Code, Codex, Cursor, etc.)?** Point it at this repo — [AGENTS.md](AGENTS.md) gives it the exact setup, auditing, and `VerifyBeforeActGuard` recipes.
 
 ## Status
 
