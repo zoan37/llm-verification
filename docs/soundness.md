@@ -309,7 +309,11 @@ Findings from adversarial reviews, each now a regression test in `tests/test_red
    Verify-Before-Act (`max_regret > 2.0`) is required for high-stakes agent calls — demonstrated end-to-end in
    `experiments/results/modified_model_agent_demo_live.json`, where a sleeper hijack (`$5` passes identically, `$50,000`
    redirects to `0xSHADOW999`) is blocked with HTTP 409 in `129.6 ms` (`max_regret = 13.64`) while honest cross-vendor
-   executes in `166.3 ms` (`regret = 0.0000`, `100%` agreement). Next: AMD ROCm/HIP.
+   executes in `166.3 ms` (`regret = 0.0000`, `100%` agreement). In a matching live cross-vendor **seeded Gumbel-max**
+   (`T=1.0, top_k=20`, `experiments/results/gumbel_cross_vendor_qwen35.json`, 96 tok/scenario) run between AMD Radeon 8060S
+   Vulkan and NVIDIA GB10 CUDA: honest Gumbel-max passes with `regret = 0.00780`, `wgap = 0.0601`, `topk = 0.2066`,
+   `agree = 93.75%`, `joint p = 1.0`, while seed grinding (`regret = 0.6816`, `87×` honest, `p = 3.2e-13`) and unseeded
+   `T=1.0` sampling (`regret = 0.4713`, `60×` honest, `p = 1.9e-4`) fail decisively inside 96 tokens. Next: AMD ROCm/HIP.
 6. **Privacy.** Audits need the prompt and the reply. Self-audits keep data with the user; third-party referees
    see it unless they run in a TEE.
 7. **Tool/agent traces.** Multi-turn and tool-call formats add template surface where honest providers differ.

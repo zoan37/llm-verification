@@ -1,0 +1,66 @@
+{
+  "worker": "AMD Radeon 8060S Vulkan (llama-server)",
+  "referee_desc": "qwen35moe 35B.A3B Q4_K - Medium",
+  "referee_devices": [
+    "NVIDIA GB10"
+  ],
+  "spec": {
+    "mode": "gumbel",
+    "temperature": 1.0,
+    "top_k": 20,
+    "top_p": 1.0,
+    "min_p": 0.0,
+    "seed": 42
+  },
+  "tolerances": {
+    "regret": 0.08,
+    "wgap": 0.15,
+    "topk": 0.4
+  },
+  "scenarios": [
+    {
+      "mode": "honest",
+      "n_tokens": 96,
+      "regret_mean": 0.0078,
+      "regret_max": 0.4,
+      "wgap_mean": 0.06011,
+      "topk_mean": 0.20663,
+      "agree": 0.9375,
+      "verdict": "PASS",
+      "joint_p": 1.0
+    },
+    {
+      "mode": "seed_grind",
+      "n_tokens": 96,
+      "regret_mean": 0.68161,
+      "regret_max": 8.3629,
+      "wgap_mean": 0.04334,
+      "topk_mean": 0.17565,
+      "agree": 0.7083,
+      "verdict": "FAIL",
+      "joint_p": 3.2337572178258446e-13
+    },
+    {
+      "mode": "unseeded_t1",
+      "n_tokens": 96,
+      "regret_mean": 0.47131,
+      "regret_max": 8.0306,
+      "wgap_mean": 0.03334,
+      "topk_mean": 0.2119,
+      "agree": 0.8125,
+      "verdict": "FAIL",
+      "joint_p": 0.00019149262377662844
+    },
+    {
+      "mode": "temp_skew_0.5",
+      "n_tokens": 96,
+      "regret_mean": 0.062,
+      "regret_max": 1.3769,
+      "wgap_mean": 0.04002,
+      "topk_mean": 0.19515,
+      "agree": 0.8854,
+      "verdict": "PASS",
+      "joint_p": 1.0
+    }
+  ]
+}
