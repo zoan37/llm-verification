@@ -112,12 +112,15 @@ class SpanProof:
         )
 
 
-def make_span_proof(tokens: Sequence[int], tops: Sequence[TopK], start: int, end: int) -> SpanProof:
-    """Generate a minimal multi-proof for contiguous steps `[start, end)`."""
+def build_root_and_span_proof(
+    tokens: Sequence[int], tops: Sequence[TopK], start: int, end: int
+) -> Tuple[str, SpanProof]:
+    """Build both the Merkle root and a compact span proof in a single tree pass (50% less hashing)."""
     n = len(tokens)
     if not (0 <= start < end <= n):
         raise ValueError(f"invalid span [{start}, {end}) for n_tokens={n}")
     levels = build_tree(tokens, tops)
+    root = levels[-1][0].hex()
     needed = set(range(start, end))
     siblings: List[Tuple[int, int, str]] = []
 
@@ -131,7 +134,7 @@ def make_span_proof(tokens: Sequence[int], tops: Sequence[TopK], start: int, end
             parent_set.add(idx // 2)
         needed = parent_set
 
-    return SpanProof(
+    proof = SpanProof(
         start=start,
         end=end,
         n_tokens=n,
@@ -139,6 +142,13 @@ def make_span_proof(tokens: Sequence[int], tops: Sequence[TopK], start: int, end
         tops=[[(int(i), float(lp)) for i, lp in top] for top in tops[start:end]],
         siblings=siblings,
     )
+    return root, proof
+
+
+def make_span_proof(tokens: Sequence[int], tops: Sequence[TopK], start: int, end: int) -> SpanProof:
+    """Generate a minimal multi-proof for contiguous steps `[start, end)`."""
+    _, proof = build_root_and_span_proof(tokens, tops, start, end)
+    return proof
 
 
 def verify_span_proof(proof: SpanProof, expected_root: str, expected_n_tokens: int) -> Tuple[bool, str]:
