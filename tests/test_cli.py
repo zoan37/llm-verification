@@ -49,3 +49,90 @@ def test_keygen_never_writes_a_world_readable_key(tmp_path, capsys):
     out.chmod(0o644)
     cmd_keygen(argparse.Namespace(out=str(out)))
     assert os.stat(out).st_mode & 0o777 == 0o600 and len(out.read_text().strip()) == 64
+
+
+def test_http_llama_and_vllm_referees_and_demo_doctor(capsys):
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+    import threading
+    from llmverify.__main__ import cmd_demo, cmd_doctor
+    from llmverify.engine import HttpLlamaReferee, HttpVllmReferee, open_referee
+
+    # 1. Mock stock llama-server HTTP referee
+    class LlamaHandler(BaseHTTPRequestHandler):
+        def log_message(self, *args):
+            pass
+        def do_GET(self):
+            body = json.dumps({"chat_template": "", "add_bos_token": True, "bos_token_id": 1,
+                               "eos_token_id": 2, "n_vocab": 256, "model_alias": "mock-llama"}).encode()
+            self.send_response(200); self.send_header("Content-Type", "application/json"); self.end_headers()
+            self.wfile.write(body)
+        def do_POST(self):
+            raw = self.rfile.read(int(self.headers.get("Content-Length", "0")))
+            req = json.loads(raw)
+            if self.path == "/tokenize":
+                out = {"tokens": [1, 10, 11]}
+            elif self.path == "/detokenize":
+                out = {"content": "ok"}
+            else:
+                out = {"completion_probabilities": [{"id": 10, "logprob": -0.1,
+                       "top_logprobs": [{"id": 10, "logprob": -0.1}, {"id": 11, "logprob": -3.0}]}]}
+            body = json.dumps(out).encode()
+            self.send_response(200); self.send_header("Content-Type", "application/json"); self.end_headers()
+            self.wfile.write(body)
+
+    srv = ThreadingHTTPServer(("127.0.0.1", 0), LlamaHandler)
+    th = threading.Thread(target=srv.serve_forever, daemon=True)
+    th.start()
+    try:
+        url = f"http://127.0.0.1:{srv.server_address[1]}"
+        ref = open_referee(url)
+        assert isinstance(ref, HttpLlamaReferee)
+        assert ref.tokenize("hi") == [1, 10, 11]
+        assert ref.detokenize([10]) == "ok"
+        assert ref.n_vocab == 256
+        steps = ref.score([1], [10, 11], k=2)
+        assert len(steps) == 2 and steps[0].top[0] == (10, -0.1) and steps[1].lp == -3.0
+    finally:
+        srv.shutdown()
+
+    # 2. Mock stock vLLM HTTP referee
+    class VllmHandler(BaseHTTPRequestHandler):
+        def log_message(self, *args):
+            pass
+        def do_POST(self):
+            raw = self.rfile.read(int(self.headers.get("Content-Length", "0")))
+            _ = json.loads(raw)
+            if self.path == "/tokenize":
+                out = {"tokens": [5, 6]}
+            elif self.path == "/detokenize":
+                out = {"prompt": "vllm-ok"}
+            else:
+                out = {"prompt_logprobs": [
+                    None,
+                    {"token_id:7": {"logprob": -0.2, "token_id": 7}, "token_id:8": {"logprob": -2.5, "token_id": 8}},
+                    {"token_id:8": {"logprob": -0.3, "token_id": 8}, "token_id:7": {"logprob": -2.1, "token_id": 7}},
+                ]}
+            body = json.dumps(out).encode()
+            self.send_response(200); self.send_header("Content-Type", "application/json"); self.end_headers()
+            self.wfile.write(body)
+
+    vsrv = ThreadingHTTPServer(("127.0.0.1", 0), VllmHandler)
+    vth = threading.Thread(target=vsrv.serve_forever, daemon=True)
+    vth.start()
+    try:
+        vref = open_referee(f"vllm://127.0.0.1:{vsrv.server_address[1]}/qwen-test")
+        assert isinstance(vref, HttpVllmReferee)
+        assert vref.tokenize("hi") == [5, 6]
+        assert vref.detokenize([7]) == "vllm-ok"
+        vsteps = vref.score([5], [7, 8], k=2)
+        assert len(vsteps) == 2 and vsteps[0].lp == -0.2 and vsteps[1].lp == -0.3
+    finally:
+        vsrv.shutdown()
+
+    # 3. Smoke-test `llmverify doctor` and `llmverify demo`
+    cmd_doctor(argparse.Namespace())
+    doc_out = capsys.readouterr().out
+    assert "python" in doc_out
+    cmd_demo(argparse.Namespace())
+    demo_out = capsys.readouterr().out
+    assert "Lossless ExactSpeculative" in demo_out and "ChangepointEProcess" in demo_out

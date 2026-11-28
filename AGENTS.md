@@ -15,14 +15,20 @@ pytest -q                    # full test suite (runs on ToyLM, no GPU required)
 ## 2. Common Tasks
 
 ### A. Black-box audit of any OpenAI-compatible endpoint
-Requires a local (or SSH-accessible) `lv-engine` running the true reference GGUF weights:
+Works with either a **zero-compile HTTP referee** (any stock `llama-server` or `vLLM` you already have running!) or the faster native C++ `lv-engine`:
 
 ```bash
-# Build lv-engine against llama.cpp (one-time)
+# Zero-compile option 1: point directly at an existing stock llama-server
+llmverify audit --base-url https://host/v1 --model MODEL_NAME --logprobs \
+  --referee http://127.0.0.1:8080
+
+# Zero-compile option 2: point directly at a vLLM server (1-pass prompt_logprobs)
+llmverify audit --base-url https://host/v1 --model MODEL_NAME --logprobs \
+  --referee vllm://127.0.0.1:8000/MODEL_ID
+
+# Fastest option: build native C++ lv-engine against llama.cpp (1-pass prefill)
 cmake -S engine -B engine/build -DLLAMA_CPP_DIR=/path/to/llama.cpp -DCMAKE_BUILD_TYPE=Release
 cmake --build engine/build -j
-
-# Audit one endpoint
 llmverify audit --base-url https://host/v1 --model MODEL_NAME --logprobs \
   --referee "engine/build/lv-engine -m /path/to/model.gguf -c 8192"
 ```

@@ -72,7 +72,7 @@ def cmd_serve(a):
 
 def cmd_verify(a):
     from .audit import audit_trace
-    from .engine import LlamaEngine
+    from .engine import open_referee
     from .metrics import means
     from .receipt import Receipt, Trace, check_receipt, text_digest
     from .sampling import SamplingSpec
@@ -81,7 +81,7 @@ def cmd_verify(a):
     receipt, trace = Receipt.from_dict(v["receipt"]), Trace.from_dict(v["trace"])
     # The referee's tokenizer supplies what the trace alone cannot: end-of-generation ids (padding and truncation
     # checks), the vocabulary size and the detokenized text. Without one, only the text hash ties text to receipt.
-    ref = LlamaEngine(shlex.split(a.referee)) if a.referee else None
+    ref = open_referee(a.referee) if a.referee else None
     eos = list(ref.eos_ids) if ref else []
     chk = check_receipt(receipt, trace, pinned_key=a.key, eos_ids=eos, vocab=ref.n_vocab if ref else None)
     if "choices" in d:  # a full chat completion: the text the user saw must be the text that was signed
@@ -119,7 +119,7 @@ def cmd_audit(a):
     from . import openrouter
     importlib.reload(openrouter)
     from .blackbox import ChatFormat, TokenMap, score_record
-    from .engine import LlamaEngine
+    from .engine import open_referee
     from .peer import logprob_alignment, self_consistency
     from .report import endpoint_summary
     prompts = [p["prompt"] if isinstance(p, dict) else p for p in json.loads(Path(a.prompts).read_text())][: a.n]
@@ -131,7 +131,7 @@ def cmd_audit(a):
     if raw_path is None:
         sys.exit("spend budget reached before the endpoint was fully collected; nothing to audit")
     raw = openrouter.load(raw_path)
-    eng = LlamaEngine(shlex.split(a.referee))
+    eng = open_referee(a.referee)
     meta = eng.meta
     fmt = ChatFormat(kind=a.chat, template=meta.get("chat_template", ""), template_kwargs=json.loads(a.template_kwargs),
                      add_bos=bool(meta.get("add_bos")), bos=int(meta.get("bos", -1)))

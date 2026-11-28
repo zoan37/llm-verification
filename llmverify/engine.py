@@ -139,3 +139,194 @@ class LlamaEngine:
             self.proc.wait(timeout=10)
         except Exception:
             self.proc.kill()
+
+
+class HttpLlamaReferee:
+    """Zero-compile HTTP referee talking to any stock `llama-server` (no C++ build needed).
+
+    Uses `/tokenize`, `/detokenize`, `/props`, and `/completion` (`n_predict=0, n_probs=k, cache_prompt=False`)
+    for single-pass prompt+span teacher-forcing. Slightly slower than native C++ `lv-engine` on long prompts,
+    but lets anyone audit endpoints immediately against an existing `llama-server` instance.
+    """
+
+    def __init__(self, base_url: str, *, timeout: float = 120.0):
+        self.base = base_url.rstrip("/")
+        self.timeout = float(timeout)
+        self._meta: Optional[dict] = None
+
+    def _post(self, path: str, payload: dict) -> dict:
+        import urllib.request
+        req = urllib.request.Request(
+            f"{self.base}{path}",
+            data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+        )
+        with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+            return json.loads(resp.read())
+
+    def _get(self, path: str) -> dict:
+        import urllib.request
+        with urllib.request.urlopen(f"{self.base}{path}", timeout=self.timeout) as resp:
+            return json.loads(resp.read())
+
+    @property
+    def meta(self) -> dict:
+        if self._meta is None:
+            props = self._get("/props")
+            self._meta = {
+                "chat_template": props.get("chat_template") or "",
+                "add_bos": bool(props.get("add_bos_token", True)),
+                "bos": int(props.get("bos_token_id", -1)),
+                "eos": [int(props["eos_token_id"])] if props.get("eos_token_id") is not None else [],
+                "n_vocab": int(props.get("n_vocab") or 0),
+                "desc": str(props.get("model_alias") or "llama-server"),
+            }
+        return self._meta
+
+    @property
+    def eos_ids(self) -> List[int]:
+        return list(self.meta.get("eos") or [])
+
+    @property
+    def n_vocab(self) -> int:
+        return int(self.meta.get("n_vocab") or 0)
+
+    def tokenize(self, text: str, special: bool = False) -> List[int]:
+        r = self._post("/tokenize", {"content": text, "add_special": bool(special)})
+        return [int(t) for t in r.get("tokens") or []]
+
+    def detokenize(self, tokens: Sequence[int]) -> str:
+        r = self._post("/detokenize", {"tokens": [int(t) for t in tokens]})
+        return str(r.get("content") or "")
+
+    def score(self, context: Sequence[int], tokens: Sequence[int], k: int = 20,
+              temperature: float = 1.0, stats: bool = False) -> List[RefStep]:
+        ctx = [int(t) for t in context]
+        toks = [int(t) for t in tokens]
+        if not toks:
+            return []
+        # Stock llama-server `/completion` with `n_predict=0` returns next-token probabilities for the final
+        # prompt position only; enabling `cache_prompt=True` reuses the KV cache across positions so step 0
+        # prefills `ctx` once and steps 1..len(toks)-1 each evaluate a single cached token.
+        steps: List[RefStep] = []
+        prefix = list(ctx)
+        for tok in toks:
+            r = self._post("/completion", {
+                "prompt": prefix,
+                "n_predict": 0,
+                "n_probs": int(k),
+                "post_sampling_probs": False,
+                "cache_prompt": True,
+            })
+            probs = r.get("completion_probabilities") or r.get("prompt_probabilities") or []
+            if not probs:
+                raise RuntimeError("llama-server returned no completion_probabilities")
+            entry = probs[-1]
+            raw_top = entry.get("top_logprobs") or []
+            top = sorted(((int(x["id"]), float(x["logprob"])) for x in raw_top), key=lambda x: (-x[1], x[0]))[:k]
+            tmap = dict(top)
+            lp = float(tmap[tok]) if tok in tmap else float(entry.get("logprob", -20.0))
+            steps.append(RefStep(top=top, lp=lp))
+            prefix.append(tok)
+        return steps
+
+
+class HttpVllmReferee:
+    """Zero-compile HTTP referee talking to any OpenAI-compatible vLLM server (`prompt_logprobs=k`)."""
+
+    def __init__(self, base_url: str, model: str, *, timeout: float = 120.0):
+        self.base = base_url.rstrip("/")
+        self.model = model
+        self.timeout = float(timeout)
+        self._meta: Optional[dict] = None
+
+    def _post(self, path: str, payload: dict) -> dict:
+        import urllib.request
+        req = urllib.request.Request(
+            f"{self.base}{path}",
+            data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+        )
+        with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+            return json.loads(resp.read())
+
+    @property
+    def meta(self) -> dict:
+        if self._meta is None:
+            self._meta = {"chat_template": "", "add_bos": False, "bos": -1, "eos": [], "n_vocab": 0, "desc": self.model}
+        return self._meta
+
+    @property
+    def eos_ids(self) -> List[int]:
+        return []
+
+    @property
+    def n_vocab(self) -> int:
+        return 0
+
+    def tokenize(self, text: str, special: bool = False) -> List[int]:
+        r = self._post("/tokenize", {"model": self.model, "prompt": text, "add_special_tokens": bool(special)})
+        return [int(t) for t in r.get("tokens") or []]
+
+    def detokenize(self, tokens: Sequence[int]) -> str:
+        r = self._post("/detokenize", {"model": self.model, "tokens": [int(t) for t in tokens]})
+        return str(r.get("prompt") or "")
+
+    def score(self, context: Sequence[int], tokens: Sequence[int], k: int = 20,
+              temperature: float = 1.0, stats: bool = False) -> List[RefStep]:
+        ctx = [int(t) for t in context]
+        toks = [int(t) for t in tokens]
+        if not toks:
+            return []
+        r = self._post("/v1/completions", {
+            "model": self.model,
+            "prompt": ctx + toks,
+            "max_tokens": 1,
+            "temperature": 0.0,
+            "prompt_logprobs": int(k),
+            "return_tokens_as_token_ids": True,
+        })
+        plps = r.get("prompt_logprobs")
+        if plps is None and r.get("choices"):
+            c0 = r["choices"][0]
+            plps = c0.get("prompt_logprobs") or (c0.get("logprobs") or {}).get("prompt_logprobs")
+        start = len(ctx)
+        if not plps or len(plps) < start + len(toks):
+            raise RuntimeError(f"vLLM returned {0 if not plps else len(plps)} prompt_logprobs, need >= {start + len(toks)}")
+        steps: List[RefStep] = []
+        for j, tok in enumerate(toks):
+            raw = plps[start + j] or {}
+            pairs = []
+            for raw_k, val in raw.items():
+                if isinstance(val, dict):
+                    tid_s = str(val.get("token_id", raw_k))
+                    tid = int(tid_s.split(":", 1)[1] if tid_s.startswith("token_id:") else tid_s)
+                    lp = float(val["logprob"])
+                else:
+                    tid_s = str(raw_k)
+                    tid = int(tid_s.split(":", 1)[1] if tid_s.startswith("token_id:") else tid_s)
+                    lp = float(val)
+                pairs.append((tid, lp))
+            top = sorted(pairs, key=lambda x: (-x[1], x[0]))[:k]
+            tmap = dict(top)
+            steps.append(RefStep(top=top, lp=float(tmap.get(tok, -20.0))))
+        return steps
+
+
+def open_referee(spec: str):
+    """Open a referee from a CLI string:
+      - `http://host:port` or `https://host:port` -> zero-compile `HttpLlamaReferee` (stock `llama-server`)
+      - `vllm://host:port/model_id`               -> zero-compile `HttpVllmReferee` (stock `vLLM`)
+      - anything else                             -> `LlamaEngine(shlex.split(spec))` (native C++ `lv-engine`)
+    """
+    import shlex
+    s = spec.strip()
+    if s.startswith("vllm://"):
+        rest = s[len("vllm://"):]
+        host_port, _, model_id = rest.partition("/")
+        if not model_id:
+            raise ValueError("vllm:// referee requires a model id: vllm://host:port/model_id")
+        return HttpVllmReferee(f"http://{host_port}", model_id)
+    if s.startswith("http://") or s.startswith("https://"):
+        return HttpLlamaReferee(s)
+    return LlamaEngine(shlex.split(s))

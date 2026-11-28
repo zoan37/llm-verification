@@ -81,7 +81,9 @@ python experiments/score_model.py --model openai/gpt-oss-20b --chat harmony --re
     --engine "engine/build/lv-engine -m gpt-oss-20b-MXFP4.gguf -c 8192"
 python experiments/build_results.py --model openai/gpt-oss-20b --referee "..." --anchor "..."
 
-# or audit one OpenAI-compatible endpoint directly
+# or audit one OpenAI-compatible endpoint directly (zero C++ build needed with llama-server or vLLM!)
+llmverify audit --base-url https://host/v1 --model NAME --logprobs --referee http://127.0.0.1:8080
+# or with native C++ lv-engine (fastest 1-pass prefill):
 llmverify audit --base-url https://host/v1 --model NAME --logprobs \
     --referee "engine/build/lv-engine -m model.gguf -c 8192"
 ```
