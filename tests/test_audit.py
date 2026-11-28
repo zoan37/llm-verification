@@ -376,3 +376,46 @@ def test_context_truncation_and_sampler_skew_pass_exact_but_caught_statistically
         ledger_s.add(scores)
     vs = ledger_s.verdict()
     assert vs["status"] == "FAIL", f"SamplerSkew escaped detection: {vs}"
+
+
+def test_exact_speculative_zero_fp_and_lossy_speculative_caught():
+    from llmverify.attacks import ExactSpeculative, LossySpeculative
+
+    target = ToyLM(weights_seed=1, machine=0, hw_noise=0.0)
+    draft = ToyLM(weights_seed=2, machine=0, hw_noise=0.0)  # weaker/different draft weights!
+    signer = Signer()
+    prompts = [[(i * 11 + j * 5) % 60 + 2 for j in range(8)] for i in range(16)]
+    spec = SamplingSpec(mode="gumbel", temperature=1.0, top_k=20, seed=17)
+
+    # 1. ExactSpeculative (lossless speculative decoding): MUST pass 100% exact & statistical checks (0% FP!)
+    exact_spec = ExactSpeculative(draft, target, signer, INFO, k_draft=4)
+    honest_ref = VerifiableProvider(target, signer, INFO)
+    led_exact = Ledger("exact-spec", tolerances={"regret": 0.01, "wgap": 0.12}, alpha=1e-3)
+    for i, p in enumerate(prompts):
+        nonce = f"spec-nonce-{i}"
+        g_spec = exact_spec.generate(p, spec, max_tokens=20, client_nonce=nonce)
+        g_ref = honest_ref.generate(p, spec, max_tokens=20, client_nonce=nonce)
+        # Bit-for-bit identical tokens and committed top-k logprobs as target-only generation!
+        assert g_spec.trace.tokens == g_ref.trace.tokens
+        assert g_spec.trace.tops == g_ref.trace.tops
+        chk = check_receipt(g_spec.receipt, g_spec.trace, expected_prompt_ids=p, expected_spec=spec,
+                            pinned_key=signer.public_hex)
+        assert chk.ok, chk.problems
+        led_exact.add(audit_trace(target, g_spec.trace, spec, nonce))
+    v_exact = led_exact.verdict()
+    assert v_exact["status"] == "PASS", f"Lossless ExactSpeculative falsely flagged! {v_exact}"
+    assert v_exact["means"]["regret"] == 0.0
+
+    # 2. LossySpeculative (cheats by accepting draft tokens in target's top-8): passes exact checks, CAUGHT statistically!
+    lossy = LossySpeculative(draft, target, signer, INFO, k_draft=4, relax_rank=8, relax_gap=2.5)
+    led_lossy = Ledger("lossy-spec", tolerances={"regret": 0.01, "wgap": 0.12}, alpha=1e-3)
+    for i, p in enumerate(prompts):
+        nonce = f"lossy-nonce-{i}"
+        g_lossy = lossy.generate(p, spec, max_tokens=20, client_nonce=nonce)
+        chk = check_receipt(g_lossy.receipt, g_lossy.trace, expected_prompt_ids=p, expected_spec=spec,
+                            pinned_key=signer.public_hex)
+        assert chk.ok, chk.problems
+        led_lossy.add(audit_trace(target, g_lossy.trace, spec, nonce))
+    assert lossy.relaxed_accepts > 0
+    v_lossy = led_lossy.verdict()
+    assert v_lossy["status"] == "FAIL", f"LossySpeculative escaped detection! {v_lossy}"

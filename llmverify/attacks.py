@@ -18,6 +18,10 @@ experiments.
                    window) while committing to the client's full prompt_ids
   SamplerSkew      honest weights, but silently overrides the sampling distribution (undisclosed temperature
                    sharpening or top-k/top-p tail truncation) while claiming the requested spec
+  ExactSpeculative honest lossless speculative decoding (cheap draft proposes, target verifies & commits exact
+                   target logprobs + exact seeded rule): MUST pass 100% of exact and statistical checks (0% FP)
+  LossySpeculative cheats by accepting cheap draft tokens whenever target rank <= relax_rank and gap <= relax_gap
+                   without resampling, committing patched logprobs
 """
 
 from __future__ import annotations
@@ -369,5 +373,127 @@ class SamplerSkew(VerifiableProvider):
                 break
             if step + 1 < max_tokens:
                 top = self._skew_top(self.model.step(win, COMMIT_K))
+        trace = Trace(list(prompt_ids), tokens, tops, finish)
+        return Generation(trace, make_receipt(self.signer, trace, self.model_info, spec, nonce, max_tokens))
+
+
+class ExactSpeculative(VerifiableProvider):
+    """Honest lossless speculative decoding (equivalence class test): a cheap `draft` model proposes `k_draft`
+    tokens ahead, and the target `model` verifies the entire draft batch in ONE parallel `score()` pass,
+    accepting only the prefix that matches the exact public sampling rule `choose(round_top(target), spec, nonce, step)`
+    and correcting at the first mismatch. Produces the EXACT same token sequence and committed top-k logprobs as
+    target-only decoding — proving lossless speculative acceleration incurs 0% false positives."""
+
+    def __init__(self, draft: Model, target: Model, signer: Signer, model_info: dict, *, k_draft: int = 4):
+        super().__init__(target, signer, model_info)
+        self.draft = draft
+        self.k_draft = max(1, int(k_draft))
+        self.accepted_draft_tokens = 0
+        self.total_tokens = 0
+
+    def generate(self, prompt_ids, spec, max_tokens, client_nonce=None) -> Generation:
+        nonce = client_nonce or new_nonce()
+        tokens: List[int] = []
+        tops: List[List[Tuple[int, float]]] = []
+        finish = "length"
+        while len(tokens) < max_tokens:
+            rem = max_tokens - len(tokens)
+            lookahead = min(self.k_draft, rem)
+            ctx = list(prompt_ids) + tokens
+            d_toks: List[int] = []
+            d_top = round_top(self.draft.start(ctx, COMMIT_K))
+            for i in range(lookahead):
+                dt = choose(d_top, spec, nonce, len(tokens) + i)
+                d_toks.append(dt)
+                if dt in self.eos or i + 1 >= lookahead:
+                    break
+                d_top = round_top(self.draft.step(dt, COMMIT_K))
+            ref_steps = self.model.score(ctx, d_toks, k=COMMIT_K, stats=False)
+            for dt, rs in zip(d_toks, ref_steps):
+                step_idx = len(tokens)
+                ttop = round_top(rs.top)
+                exact_tok = choose(ttop, spec, nonce, step_idx)
+                tokens.append(exact_tok)
+                tops.append(ttop)
+                self.total_tokens += 1
+                if exact_tok == dt:
+                    self.accepted_draft_tokens += 1
+                    if exact_tok in self.eos:
+                        finish = "stop"
+                        break
+                else:
+                    if exact_tok in self.eos:
+                        finish = "stop"
+                    break
+            if finish == "stop":
+                break
+        trace = Trace(list(prompt_ids), tokens, tops, finish)
+        return Generation(trace, make_receipt(self.signer, trace, self.model_info, spec, nonce, max_tokens))
+
+
+class LossySpeculative(VerifiableProvider):
+    """Cheating lossy speculative decoding: uses a cheap `draft` model to propose tokens and silently relaxes
+    target verification — accepting the draft token whenever it appears within the target's top `relax_rank`
+    and within `relax_gap` nats of target's winner, patching committed logprobs to satisfy the exact rule check.
+    Saves compute by skipping rejection-resampling, but leaks into regret and wgap under referee audits."""
+
+    def __init__(self, draft: Model, target: Model, signer: Signer, model_info: dict, *,
+                 k_draft: int = 4, relax_rank: int = 8, relax_gap: float = 2.0):
+        super().__init__(target, signer, model_info)
+        self.draft = draft
+        self.k_draft = max(1, int(k_draft))
+        self.relax_rank = max(2, int(relax_rank))
+        self.relax_gap = float(relax_gap)
+        self.relaxed_accepts = 0
+
+    def generate(self, prompt_ids, spec, max_tokens, client_nonce=None) -> Generation:
+        nonce = client_nonce or new_nonce()
+        tokens: List[int] = []
+        tops: List[List[Tuple[int, float]]] = []
+        finish = "length"
+        while len(tokens) < max_tokens:
+            rem = max_tokens - len(tokens)
+            lookahead = min(self.k_draft, rem)
+            ctx = list(prompt_ids) + tokens
+            d_toks: List[int] = []
+            d_top = round_top(self.draft.start(ctx, COMMIT_K))
+            for i in range(lookahead):
+                dt = choose(d_top, spec, nonce, len(tokens) + i)
+                d_toks.append(dt)
+                if dt in self.eos or i + 1 >= lookahead:
+                    break
+                d_top = round_top(self.draft.step(dt, COMMIT_K))
+            ref_steps = self.model.score(ctx, d_toks, k=COMMIT_K, stats=False)
+            for dt, rs in zip(d_toks, ref_steps):
+                step_idx = len(tokens)
+                ttop = round_top(rs.top)
+                exact_tok = choose(ttop, spec, nonce, step_idx)
+                tmap = dict(ttop)
+                top_ids = [i for i, _ in ttop[:self.relax_rank]]
+                if dt == exact_tok:
+                    chosen, ctop = exact_tok, ttop
+                elif dt in top_ids and (ttop[0][1] - tmap.get(dt, -99.0)) <= self.relax_gap:
+                    import math
+                    chosen = dt
+                    ctop = _lower_winner(ttop, exact_tok, dt, spec, nonce, step_idx)
+                    if choose(ctop, spec, nonce, step_idx) != dt:
+                        ctop = _force_winner(ttop, dt, spec, nonce, step_idx)
+                    # Keep sum(exp(lp)) <= 1 so the stealthy cheater passes exact probability-sum checks!
+                    total_p = sum(math.exp(lp) for _, lp in ctop)
+                    if total_p > 0.995:
+                        shift = math.log(total_p) + 5e-3
+                        ctop = round_top([(i, lp - shift) for i, lp in ctop])
+                    self.relaxed_accepts += 1
+                else:
+                    chosen, ctop = exact_tok, ttop
+                tokens.append(chosen)
+                tops.append(ctop)
+                if chosen in self.eos:
+                    finish = "stop"
+                    break
+                if chosen != dt:
+                    break
+            if finish == "stop":
+                break
         trace = Trace(list(prompt_ids), tokens, tops, finish)
         return Generation(trace, make_receipt(self.signer, trace, self.model_info, spec, nonce, max_tokens))
