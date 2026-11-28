@@ -193,7 +193,7 @@ def cmd_doctor(_a):
 def cmd_demo(_a):
     import random
     import time
-    from .attacks import ContextTruncation, ExactSpeculative, LossySpeculative, SamplerSkew, SwapModel
+    from .attacks import ExactSpeculative, LossySpeculative, SamplerSkew, SwapModel, ToolHistoryTamper
     from .audit import Ledger, audit_trace
     from .merkle import build_root_and_span_proof, pack_span_proof, unpack_span_proof, verify_span_proof
     from .provider import VerifiableProvider
@@ -210,13 +210,13 @@ def cmd_demo(_a):
     info = {"name": "toy-demo"}
     spec_g = SamplingSpec(mode="greedy")
     spec_s = SamplingSpec(mode="gumbel", temperature=1.0, top_k=20, seed=17)
-    prompts = [[(i * 13 + j * 7) % 60 + 2 for j in range(10)] for i in range(18)]
+    prompts = [[(i * 13 + j * 7) % 60 + 2 for j in range(10)] for i in range(24)]
 
-    def eval_provider(prov, spec, tol_regret=0.015, tol_wgap=0.12):
+    def eval_provider(prov, spec, tol_regret=0.01, tol_wgap=0.12):
         led = Ledger("demo", tolerances={"regret": tol_regret, "wgap": tol_wgap}, alpha=1e-3)
         exact_ok = True
         for i, p in enumerate(prompts):
-            g = prov.generate(p, spec, max_tokens=16, client_nonce=f"d-{i}")
+            g = prov.generate(p, spec, max_tokens=20, client_nonce=f"d-{i}")
             chk = check_receipt(g.receipt, g.trace, expected_prompt_ids=p, expected_spec=spec, pinned_key=signer.public_hex)
             if not chk.ok:
                 exact_ok = False
@@ -230,7 +230,10 @@ def cmd_demo(_a):
         ("Honest (other GPU noise)", *eval_provider(VerifiableProvider(other_hw, signer, info), spec_g)),
         ("Lossless ExactSpeculative", *eval_provider(ExactSpeculative(cheap, target, signer, info, k_draft=4), spec_s)),
         ("SwapModel (wrong weights)", *eval_provider(SwapModel(cheap, signer, info), spec_g)),
-        ("ContextTruncation (KV drop)", *eval_provider(ContextTruncation(target, signer, info, mode="prefix", keep_fraction=0.3), spec_g)),
+        ("ToolHistoryTamper (turn-2)", *eval_provider(
+            ToolHistoryTamper(target, signer, info, lambda pids: list(pids[:-2]) + [((pids[-2] + 17) % 60) + 2, ((pids[-1] + 29) % 60) + 2]),
+            spec_g,
+        )),
         ("SamplerSkew (temp/top-k)", *eval_provider(SamplerSkew(target, signer, info, temp_scale=0.35, effective_top_k=3), spec_s)),
         ("LossySpeculative (cheat)", *eval_provider(LossySpeculative(cheap, target, signer, info, k_draft=4, relax_rank=8, relax_gap=2.5), spec_s)),
     ]
