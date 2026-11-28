@@ -316,3 +316,24 @@ def test_check_referee_honeypot_catches_lazy_referee_and_passes_honest():
     lazy = check_referee_honeypot(LazyEchoRef(), trace, spec, seed=42)
     assert lazy["caught"] is False
     assert lazy["mean_regret"] == 0.0
+
+
+def test_ledger_tail_spike_catches_sporadic_part_time_cheater():
+    from llmverify.metrics import TokenScore
+
+    ledger = Ledger("sporadic", tolerances={"regret": 0.05}, tail_cutoffs={"regret": 0.18}, alpha=1e-3)
+    cheat_spans = {50, 100, 150, 200, 250, 300}
+    verdict = None
+    for idx in range(1, 310):
+        r = 0.22 if idx in cheat_spans else 0.002
+        ledger.add([TokenScore(regret=r, agree=1.0 if r < 0.1 else 0.0, lp=-0.1) for _ in range(8)])
+        v = ledger.verdict()
+        if v["status"] == "FAIL":
+            verdict = v
+            break
+    assert verdict is not None
+    # Global mean stays far below tau=0.05 (6*0.22/300 + 0.002 = 0.0064) and isolated 8-token spikes decay
+    # between hits in ChangepointEProcess, so TailSpikeEProcess makes the catch!
+    assert verdict["means"]["regret"] < 0.05
+    assert any("tail-spike" in reason for reason in verdict["reasons"])
+    assert verdict["tail_spike"]["regret"]["hits"] >= 5

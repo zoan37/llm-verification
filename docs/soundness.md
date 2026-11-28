@@ -50,13 +50,17 @@ A referee holding M's weights replays the reply (one forward pass over prompt + 
 | `wgap`, `topk` | provider's logprobs | probability distributions that differ from M's even when top tokens agree (close quantizations, the "confident draft") |
 | `pit`, `ce_dev` (likelihood) | tokens only, temperature-1 sampling, known sampler | text that is not distributed like M's samples: other models, wrong temperature, truncation of the tail |
 
-Guarantee (calibrated tolerance): with thresholds fitted on honest cross-hardware runs at false-flag rate α,
-a provider whose per-token metric mean exceeds the honest tolerance τ by δ is flagged after
-O(σ²/δ²) audited tokens. In cooperative mode the e-process verdict (`stats.EProcess`) is anytime-valid: the
-auditor can check after every audit and stop whenever, with P(false flag) ≤ α *under the stated assumption that
-an honest provider's expected per-token metric is at most τ*. That assumption is the weak point: τ comes from
-measuring honest machines, and an honest platform nobody measured (new hardware, new engine, new kernel) can sit
-outside it. Every verdict is only as good as the honest baselines behind it. See [calibration](#calibration).
+Guarantee (calibrated tolerance — 3-detector anytime-valid triad): with thresholds fitted on honest cross-hardware
+runs at false-flag rate α, `Ledger` combines three exact anytime-valid supermartingale detectors (Bonferroni-split across active detectors, preserving P(false flag) ≤ α under optional stopping):
+1. **Steady subtle cheats (`stats.EProcess`)**: a provider whose per-token metric mean exceeds the honest tolerance τ by δ is flagged after O(σ²/δ²) audited tokens.
+2. **Delayed-onset / reputation-farming sleepers (`stats.ChangepointEProcess`)**: O(1)-time/memory start-time mixture supermartingale ($w_k = \frac{1}{k(k+1)}$ over 6 fixed bets) that prevents honest history from diluting a sudden model swap. After 10,000 honest tokens, a 0.20-nat shift is caught in 31 tokens vs 3,240 for standard `EProcess` (104.5× faster) and a 1.50-nat sleeper in 10 tokens vs 385 (38.5× faster), while holding worst-case boundary null false positives to 0.05% at α = 10⁻³.
+3. **Intermittent / sporadic part-time cheats (`stats.TailSpikeEProcess`)**: exact Bernoulli likelihood-ratio mixture supermartingale on per-span tail exceedances $\mathbf{1}[\bar{x}_{\text{span}} > c]$ under $H_0: \mathbb{P}(\bar{x}_{\text{span}} > c \mid \mathcal{F}_{t-1}) \le p_0$. Catches 2%–5% sporadic cheats whose global mean stays below τ and whose isolated spikes decay between hits in changepoint detectors (100% detection at 5% sporadic rate in 68 spans where both `EProcess` and `ChangepointEProcess` catch 0%).
+
+All three rest on the stated assumption that an honest provider's expected metric (or tail exceedance rate) stays within its calibrated tolerance. That assumption is the weak point: τ comes from measuring honest machines, and an honest platform nobody measured (new hardware, new engine, new kernel) can sit outside it. Every verdict is only as good as the honest baselines behind it. See [calibration](#calibration).
+
+**Native 1-pass prefill throughput (`lv-engine`)**: auditing replays the prompt + audited span in a single parallel prefill pass rather than token-by-token decode. Measured on `Qwen3.5-35B-A3B` (`Q4_K_M`, NVIDIA GB10 CUDA, 162 total tokens): `span=16` takes 163.5 ms (97.9 audited tok/s), `span=32` takes 137.0 ms (233.6 tok/s), and `span=64` takes 161.4 ms (**396.5 audited tok/s**).
+
+**Compact binary Merkle span proofs (`merkle.pack_span_proof`) & Verify-Before-Act (`guard.VerifyBeforeActGuard`)**: for tool calls or financial actions, the client can verify just the critical action span without transferring the full reply trace. A 24-token action span inside a 94-token `Qwen3.5-35B-A3B` reply shrinks from 29,737 B (full JSON trace) to 7,842 B (JSON `SpanProof`) to **2,742 B** (`LVM1+zlib` binary proof, 2.86× smaller than JSON, 1.04 ms pack / 0.40 ms unpack). Verified live cross-hardware (AMD Strix Halo Vulkan provider → NVIDIA GB10 CUDA referee): an honest tool call passed with 0.0000 regret and 24/24 token agreement, while a sleeper hijack carrying valid Ed25519 + valid Merkle proof + valid normalized top-20 passing the exact sampling rule was blocked pre-execution at 1.4563 nats mean regret (18.5766 nats peak token regret).
 
 Guarantee (calibration-free): the PIT and likelihood tests need no honest baselines at all. If tokens were
 sampled from M at temperature 1, PIT values are exactly i.i.d. U(0,1) and the likelihood sum is a martingale
@@ -110,12 +114,13 @@ who can fake any of them.
 | Hidden system prompt / template change | integrity signal (prompt token count) only | **exact** | `test_hidden_prompt_is_detected` |
 | Nonce/seed grinding to pick a preferred sample | n/a | **exact** if the client sets nonce and seed | `test_nonce_grinding_is_detected_when_client_sets_nonce` |
 | Tie steering: nudge committed logprobs at near-ties to choose the output | n/a (can't tell from sampling) | **bounded, not prevented**: see below | `attacks.TieSteering` |
-| Cheat only on some requests | caught at a rate ∝ cheating share × audit rate | same; every request is committed before audit selection | `test_part_time_cheat_is_caught_given_enough_audits` |
+| Cheat only on some requests | caught at a rate ∝ cheating share × audit rate | caught even at 2%–5% sporadic rates via `TailSpikeEProcess` (`Ledger(tail_cutoffs=...)`); every request is committed before audit selection | `test_part_time_cheat_is_caught_given_enough_audits`; `test_ledger_tail_spike_catches_sporadic_part_time_cheater` |
+| Delayed-onset / reputation-farming sleeper | diluted by honest history | caught in O(log t) tokens via `ChangepointEProcess` (104.5× faster after 10k honest tokens) | `test_changepoint_eprocess_catches_delayed_sleeper_after_honest_farming` |
 | Recognise audit traffic, behave only then | **open** in black-box mode (probes can be fingerprinted) | closed: audits pick from real committed traffic after the fact | |
-| Targeted one-off attack (e.g. a malicious tool call for one user) | not caught by sampling audits | caught if the client audits *that* reply (verify-before-act) | |
+| Targeted one-off attack (e.g. a malicious tool call for one user) | not caught by sampling audits | caught pre-execution via span-only `VerifyBeforeActGuard.verify_merkle_span()` with 2.7 KB `LVM1` proof | `tests/test_merkle_and_guard.py` |
 | Return cached reply for a different prompt | regret | exact (prompt and nonce committed) | |
 | Truncation or token drops on output | dropped-token repair flags it | exact | |
-| Referee lies or is lazy | — | **open**: use several referees on different hardware; send referees known-bad traces | |
+| Referee lies or is lazy | — | mitigated: `validate_ref_steps`, multi-referee majority quorum (`corroborate_trace`), and corrupted-token honeypots (`check_referee_honeypot`) | `tests/test_audit.py` |
 
 ### Tie steering: the residual freedom
 
