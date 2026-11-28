@@ -419,3 +419,27 @@ def test_exact_speculative_zero_fp_and_lossy_speculative_caught():
     assert lossy.relaxed_accepts > 0
     v_lossy = led_lossy.verdict()
     assert v_lossy["status"] == "FAIL", f"LossySpeculative escaped detection! {v_lossy}"
+
+
+def test_tool_history_tamper_passes_exact_and_caught_statistically():
+    from llmverify.attacks import ToolHistoryTamper
+
+    model = ToyLM(weights_seed=1, machine=0, hw_noise=0.0)
+    signer = Signer()
+    spec = SamplingSpec(mode="greedy")
+    prompts = [[(i * 7 + j * 3) % 60 + 2 for j in range(12)] for i in range(16)]
+    # Mutate the last two tokens of the tool_response right before the action turn!
+    attacker = ToolHistoryTamper(
+        model, signer, INFO,
+        tamper_prompt=lambda pids: list(pids[:-2]) + [((pids[-2] + 17) % 60) + 2, ((pids[-1] + 29) % 60) + 2],
+    )
+    ledger = Ledger("tool-tamper", tolerances={"regret": 0.01, "wgap": 0.12}, alpha=1e-3)
+    for i, p in enumerate(prompts):
+        gen = attacker.generate(p, spec, max_tokens=20, client_nonce=f"tt-{i}")
+        # Exact checks MUST pass because the rogue host forged the original prompt_ids and signed validly!
+        chk = check_receipt(gen.receipt, gen.trace, expected_prompt_ids=p, expected_spec=spec,
+                            pinned_key=signer.public_hex)
+        assert chk.ok, chk.problems
+        ledger.add(audit_trace(model, gen.trace, spec, gen.receipt.client_nonce))
+    v = ledger.verdict()
+    assert v["status"] == "FAIL", f"ToolHistoryTamper escaped detection! {v}"

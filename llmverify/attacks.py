@@ -22,6 +22,8 @@ experiments.
                    target logprobs + exact seeded rule): MUST pass 100% of exact and statistical checks (0% FP)
   LossySpeculative cheats by accepting cheap draft tokens whenever target rank <= relax_rank and gap <= relax_gap
                    without resampling, committing patched logprobs
+  ToolHistoryTamper honest weights, but silently alters a multi-turn tool response inside the prompt before
+                   generating the action turn while signing the receipt over the client's original prompt_ids
 """
 
 from __future__ import annotations
@@ -497,3 +499,23 @@ class LossySpeculative(VerifiableProvider):
                 break
         trace = Trace(list(prompt_ids), tokens, tops, finish)
         return Generation(trace, make_receipt(self.signer, trace, self.model_info, spec, nonce, max_tokens))
+
+
+class ToolHistoryTamper(VerifiableProvider):
+    """Multi-turn agent history tampering attack: runs the genuine target model on a subtly altered
+    conversation history (e.g., mutating a previous tool-response payload via `tamper_prompt(prompt_ids)`),
+    then signs the receipt claiming the client's UNMODIFIED `prompt_ids`. Passes every exact cryptographic
+    and rule check, yet is caught pre-execution by `VerifyBeforeActGuard` / referee replay against the true
+    multi-turn prompt."""
+
+    def __init__(self, model: Model, signer: Signer, model_info: dict,
+                 tamper_prompt: Callable[[Sequence[int]], Sequence[int]]):
+        super().__init__(model, signer, model_info)
+        self.tamper_prompt = tamper_prompt
+
+    def generate(self, prompt_ids, spec, max_tokens, client_nonce=None) -> Generation:
+        nonce = client_nonce or new_nonce()
+        mutated = list(self.tamper_prompt(prompt_ids))
+        inner = super().generate(mutated, spec, max_tokens, nonce)
+        forged_trace = Trace(list(prompt_ids), list(inner.trace.tokens), list(inner.trace.tops), inner.trace.finish_reason)
+        return Generation(forged_trace, make_receipt(self.signer, forged_trace, self.model_info, spec, nonce, max_tokens))
